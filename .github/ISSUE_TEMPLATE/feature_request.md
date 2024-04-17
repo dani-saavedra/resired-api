@@ -7,11 +7,13 @@ assignees: ''
 
 ---
 
-Yo como XXX
-Requiero YYY
-Para ZZZ
+# Descripción
 
-Criterios de Aceptación:
+**Yo como** XXX
+**Requiero** YYY
+**Para** ZZZ
+
+# Criterios de Aceptación
 
 * A
 * B
