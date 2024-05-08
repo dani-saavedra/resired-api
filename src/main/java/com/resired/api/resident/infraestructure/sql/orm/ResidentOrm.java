@@ -12,19 +12,19 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "USER")
+@Table(name = "USER_APP")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResidentOrm {
+
     @Id
-    @Column
     private UUID id;
 
-    @Column(name = "first_name")
+    @Column
     private String firstName;
 
-    @Column(name = "last_name")
+    @Column
     private String lastName;
 
     @Column
@@ -33,10 +33,10 @@ public class ResidentOrm {
     @Column
     private String password;
 
-    @Column(name = "created_date")
+    @Column
     private LocalDateTime createdDate;
 
-    @Column(name = "update_date")
+    @Column
     private LocalDateTime updateDate;
 
     @Column
