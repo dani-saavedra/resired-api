@@ -17,13 +17,14 @@ CREATE TABLE Home
 
 CREATE TABLE user_app
 (
-    id           VARCHAR(500) NOT NULL,
-    first_name   VARCHAR(255),
-    last_name    VARCHAR(255),
-    email        VARCHAR(255),
-    password     VARCHAR(255),
-    created_date TIMESTAMP,
-    update_date  TIMESTAMP,
-    active       INTEGER,
-    PRIMARY KEY (id)
+    document_id   VARCHAR(500) NOT NULL,
+    document_type VARCHAR(15)  NOT NULL,
+    first_name    VARCHAR(255),
+    last_name     VARCHAR(255),
+    email         VARCHAR(255),
+    password      VARCHAR(255),
+    created_date  TIMESTAMP,
+    update_date   TIMESTAMP,
+    active        INTEGER,
+    PRIMARY KEY (document_id)
 );
