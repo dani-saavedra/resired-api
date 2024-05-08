@@ -6,10 +6,10 @@ import lombok.Getter;
 @Getter
 public class Resident {
 
-    private String userId;
-    private String userName;
-    private String userLastName;
-    private String profile;
+    private final String userId;
+    private final String userName;
+    private final String userLastName;
+    private final String profile;
     private boolean active;
     boolean mandatoryChangePassword;
 
