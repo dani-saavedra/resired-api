@@ -3,6 +3,7 @@ package com.resired.api.security.application.usecase;
 import com.resired.api.security.application.dto.AuthenticationRequest;
 import com.resired.api.security.application.dto.AuthenticationResponse;
 import com.resired.api.security.application.exception.InactiveUserException;
+import com.resired.api.security.application.exception.InvalidCredentialException;
 import com.resired.api.security.domain.entity.Resident;
 import com.resired.api.security.domain.repository.UserPort;
 import com.resired.api.security.domain.service.AuthenticationService;
@@ -21,6 +22,9 @@ public class AuthUseCase {
         String encryptPass = authService.encrypt(auth.password());
 
         Resident resident = userPort.getResidentByCredentials(auth.email(), encryptPass);
+        if (resident == null) {
+            throw new InvalidCredentialException();
+        }
         if (!resident.isActive()) {
             throw new InactiveUserException(resident.getUserId());
         }

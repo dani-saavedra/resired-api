@@ -16,6 +16,9 @@ public class UserAdapter implements UserPort {
     @Override
     public Resident getResidentByCredentials(String email, String password) {
         UserOrm user = userJpaRepository.findByEmailAndPassword(email, password);
+        if (user == null) {
+            return null;
+        }
         Resident resident = new Resident(user.getDocumentId(), user.getFirstName(), user.getLastName(), user.isActive());
         resident.validateMandatoryChangePassword(user.getUpdateDate());
         return resident;
