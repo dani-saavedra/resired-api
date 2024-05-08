@@ -2,22 +2,22 @@ package com.resired.api.security.domain.entity;
 
 import java.time.LocalDateTime;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 public class Resident {
 
-    String userId;
-    String userName;
-    String userLastName;
-    String profile;
-
+    private String userId;
+    private String userName;
+    private String userLastName;
+    private String profile;
+    private boolean active;
     boolean mandatoryChangePassword;
 
-    public Resident(String userId, String userName, String userLastName) {
+    public Resident(String userId, String userName, String userLastName, boolean active) {
         this.userId = userId;
         this.userName = userName;
         this.userLastName = userLastName;
+        this.active = active;
         this.profile = "Resident";
     }
 
