@@ -1,25 +1,23 @@
-package com.resired.api.resident.infraestructure.sql.orm;
+package com.resired.api.security.infraestructure.sql.orm;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 @Table(name = "USER_APP")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResidentOrm {
+public class UserOrm {
 
     @Id
-    private UUID id;
+    private String documentId;
 
     @Column
     private String firstName;
