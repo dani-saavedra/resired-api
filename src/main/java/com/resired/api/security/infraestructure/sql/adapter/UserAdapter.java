@@ -23,7 +23,10 @@ public class UserAdapter implements UserPort {
             return null;
         }
         User resident = new User(user.getDocumentId(), user.getFirstName(), user.getLastName(), user.isActive(),
-            user.getUserRols().stream().map(UserRolOrm::converToEntity).toList());
+            user.getUserRols().stream()
+                .filter(UserRolOrm::isActive)
+                .map(UserRolOrm::converToEntity)
+                .toList());
         resident.validateMandatoryChangePassword(user.getUpdateDate());
         return resident;
     }

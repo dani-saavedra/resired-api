@@ -16,4 +16,4 @@ INSERT INTO user_rol (user_document, rol, active, neighborhood_id, home_id, crea
 VALUES ('1151943929', 'RESIDENT', true, 1, 1, '2024-05-11 12:00:00');
 
 INSERT INTO user_rol (user_document, rol, active, neighborhood_id, home_id, created_date)
-VALUES ('1151943929', 'RESIDENT', true, 1, 1, '2024-05-11 12:15:00');
+VALUES ('1151943929', 'GUARD', false, 1, 1, '2024-05-11 12:15:00');
