@@ -13,8 +13,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class NeighborhoodOrm {
+
     @Id
-    private UUID id;
+    private Long id;
 
     @Column
     private String name;
@@ -22,8 +23,6 @@ public class NeighborhoodOrm {
     @Column
     private String address;
 
-    @Column(name = "root_id")
-    private UUID rootId;
 }
 
 

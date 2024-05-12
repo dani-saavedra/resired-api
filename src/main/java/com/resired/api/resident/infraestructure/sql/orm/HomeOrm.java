@@ -28,8 +28,8 @@ public class HomeOrm {
     private LocalDateTime createdDate;
 
     @Column(name = "owner_id")
-    private UUID ownerId;
+    private String ownerId;
 
     @Column(name = "neighborhood_id")
-    private UUID neighborhoodId;
+    private int neighborhoodId;
 }
