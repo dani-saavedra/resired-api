@@ -2,6 +2,7 @@ package com.resired.api.security.infraestructure.sql.orm;
 
 import com.resired.api.resident.infraestructure.sql.orm.HomeOrm;
 import com.resired.api.resident.infraestructure.sql.orm.NeighborhoodOrm;
+import com.resired.api.security.domain.entity.Rol;
 import com.resired.api.security.domain.enums.UserType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -41,4 +42,8 @@ public class UserRolOrm {
 
     @Column
     private LocalDateTime updateDate;
+
+    public Rol converToEntity() {
+        return new Rol(rol, neighborhood.getId(), neighborhood.getName(), home.getId(), home.getName());
+    }
 }

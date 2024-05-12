@@ -1,6 +1,10 @@
 package com.resired.api.security.application.dto;
 
-public record AuthenticationResponse(String token, String profile, String userName,
+import com.resired.api.security.domain.entity.Rol;
+
+import java.util.List;
+
+public record AuthenticationResponse(String token, List<Rol> roles, String userName,
                                      String userId, Boolean mandatoryChange) {
 
 }

@@ -7,9 +7,10 @@ import com.resired.api.security.application.exception.InvalidCredentialException
 import com.resired.api.security.domain.entity.User;
 import com.resired.api.security.domain.repository.UserPort;
 import com.resired.api.security.domain.service.AuthenticationService;
-import java.security.GeneralSecurityException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.security.GeneralSecurityException;
 
 @Service
 @AllArgsConstructor
@@ -28,8 +29,8 @@ public class AuthUseCase {
             throw new InactiveUserException(user.getUserId());
         }
 
-        String jwt = Jwt.generateToken("user.get()", user.getUserId());
-        return new AuthenticationResponse(jwt,"", user.getUserName(),
+        String jwt = Jwt.generateToken(user.getUserId());
+        return new AuthenticationResponse(jwt, user.getRoles(), user.getUserName(),
             user.getUserId(), user.isMandatoryChangePassword());
     }
 

@@ -1,6 +1,8 @@
 package com.resired.api.security.domain.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
 import lombok.Getter;
 
 @Getter
@@ -9,15 +11,16 @@ public class User {
     private final String userId;
     private final String userName;
     private final String userLastName;
-    //private final String profile;
-    private boolean active;
+    private final List<Rol> roles;
+    private final boolean active;
     boolean mandatoryChangePassword;
 
-    public User(String userId, String userName, String userLastName, boolean active) {
+    public User(String userId, String userName, String userLastName, boolean active, List<Rol> roles) {
         this.userId = userId;
         this.userName = userName;
         this.userLastName = userLastName;
         this.active = active;
+        this.roles = roles;
     }
 
     public void validateMandatoryChangePassword(LocalDateTime update) {
