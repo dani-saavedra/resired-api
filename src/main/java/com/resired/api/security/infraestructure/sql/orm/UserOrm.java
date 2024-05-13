@@ -1,13 +1,12 @@
 package com.resired.api.security.infraestructure.sql.orm;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import java.time.LocalDateTime;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "USER_APP")
@@ -18,6 +17,9 @@ public class UserOrm {
 
     @Id
     private String documentId;
+
+    @OneToMany(mappedBy = "userId")
+    private List<UserRolOrm> userRols;
 
     @Column
     private String firstName;
