@@ -1,16 +1,14 @@
 package com.resired.api.guard.infrastructure.sql.orm;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "PACKAGE")
+@Table(name = "package")
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class PacketOrm {
     @Id
@@ -42,5 +40,17 @@ public class PacketOrm {
     private String description;
 
     @Column
-    private String neighborhoodId;
+    private Long neighborhoodId;
+
+    public PacketOrm(String receiver, String trackingNumber, Long homeId, LocalDateTime receptionDate, String guardId, String status, LocalDateTime updateDate, String description, Long neighborhoodId) {
+        this.receiver = receiver;
+        this.trackingNumber = trackingNumber;
+        this.homeId = homeId;
+        this.receptionDate = receptionDate;
+        this.guardId = guardId;
+        this.status = status;
+        this.updateDate = updateDate;
+        this.description = description;
+        this.neighborhoodId = neighborhoodId;
+    }
 }

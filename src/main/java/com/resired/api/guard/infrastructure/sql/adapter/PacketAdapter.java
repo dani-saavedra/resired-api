@@ -7,6 +7,8 @@ import com.resired.api.guard.infrastructure.sql.orm.PacketOrm;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+
 @Repository
 @AllArgsConstructor
 public class PacketAdapter implements PacketPort {
@@ -14,7 +16,19 @@ public class PacketAdapter implements PacketPort {
 
     @Override
     public void registerPacket(Packet packet) {
-        PacketOrm packetOrm = new PacketOrm();
+        LocalDateTime nowDate = LocalDateTime.now();
+
+        PacketOrm packetOrm = new PacketOrm(
+            packet.getReceiver(),
+            packet.getTrackingNumber(),
+            1L,
+            nowDate,
+            "1151943929",
+            packet.getStatus().name(),
+            nowDate,
+            packet.getDescription(),
+            1L
+        );
 
         packetJpaRepository.save(packetOrm);
     }
