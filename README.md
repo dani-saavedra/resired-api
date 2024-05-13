@@ -3,7 +3,7 @@ Java 17
 Docker
 
 OPEN API:
-http://localhost:8080/swagger-ui/index.html
+http://localhost:8080/api/swagger-ui/index.html
 
 docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=clave -e MYSQL_DATABASE=resired -e MYSQL_USER=resired -e MYSQL_PASSWORD=resired mysql:8.4.0
 
