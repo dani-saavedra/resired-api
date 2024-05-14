@@ -17,3 +17,19 @@ VALUES ('1151943929', 'RESIDENT', true, 1, 1, '2024-05-11 12:00:00');
 
 INSERT INTO user_rol (user_document, rol, active, neighborhood_id, home_id, created_date)
 VALUES ('1151943929', 'GUARD', false, 1, 1, '2024-05-11 12:15:00');
+
+INSERT INTO news (title, content, category, neighborhood_id, image, created_date)
+VALUES ('Nuevo récord de goles en el campeonato local',
+        'El equipo local ha marcado un nuevo récord de goles en la historia del campeonato, superando las expectativas de los aficionados.',
+        'EVENTS',
+        1,
+        'https://cucutadeportivofc.com/wp-content/uploads/2022/08/cropped-Cucuta_Deportivo_2022.png',
+        NOW());
+
+INSERT INTO news (title, content, category, neighborhood_id, image, created_date)
+VALUES ('Próximo festival de música en el parque central',
+        '¡Prepárate para el festival de música más grande del año en nuestro vecindario! Bandas locales e invitadas te esperan para una jornada llena de diversión y entretenimiento.',
+        'EVENTS',
+        1,
+        'https://concepto.de/wp-content/uploads/2020/03/musica-e1584123209397.jpg',
+        NOW());
