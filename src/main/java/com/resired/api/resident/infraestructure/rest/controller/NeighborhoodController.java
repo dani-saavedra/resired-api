@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @RequestMapping(path = "/neighborhood")
 @AllArgsConstructor
@@ -18,7 +16,7 @@ public class NeighborhoodController {
     private final NeighborhoodUseCase useCase;
 
     @GetMapping("/{id}/news")
-    public List<NewsResponse> getNews(@PathVariable(name = "id") Long neighborhoodId) {
+    public NewsResponse getNews(@PathVariable(name = "id") Long neighborhoodId) {
         return useCase.getNewsFromNeighborhood(neighborhoodId);
     }
 }

@@ -1,10 +1,8 @@
 package com.resired.api.resident.application.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.resired.api.resident.domain.enums.NewsCategoryEnum;
+import com.resired.api.resident.domain.entity.News;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
-public record NewsResponse(Long id, String title, String description, String image,
-                           @JsonProperty("creation_date") LocalDateTime creationDate, NewsCategoryEnum category) {
+public record NewsResponse(List<News> news) {
 }
