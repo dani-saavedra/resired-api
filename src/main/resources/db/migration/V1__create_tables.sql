@@ -49,7 +49,7 @@ CREATE TABLE user_rol
 
 CREATE TABLE news
 (
-    id              INT AUTO_INCREMENT PRIMARY KEY,
+    id              BIGINT AUTO_INCREMENT PRIMARY KEY,
     title           VARCHAR(500)  NOT NULL,
     content         VARCHAR(2500) NOT NULL,
     category        VARCHAR(35)   NOT NULL,
@@ -57,4 +57,20 @@ CREATE TABLE news
     image           VARCHAR(500)  NOT NULL,
     created_date    TIMESTAMP     NOT NULL,
     FOREIGN KEY (neighborhood_id) REFERENCES neighborhood (id)
+);
+
+CREATE TABLE package
+(
+    id                  BIGINT AUTO_INCREMENT PRIMARY KEY,
+    guard_id            varchar(500) NOT NULL,
+    home_id             BIGINT       NOT NULL,
+    receiver            varchar(500) NOT NULL,
+    tracking_number     VARCHAR(50)  NOT NULL,
+    status              varchar(50)  NOT NULL,
+    package_transporter varchar(200) NULL,
+    description         VARCHAR(200) NULL,
+    received_date       TIMESTAMP    NOT NULL,
+    update_date         TIMESTAMP    NULL,
+    FOREIGN KEY (guard_id) REFERENCES user_app (document_id),
+    FOREIGN KEY (home_id) REFERENCES home (id)
 );

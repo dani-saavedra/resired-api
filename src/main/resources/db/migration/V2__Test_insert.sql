@@ -3,6 +3,9 @@ VALUES (1, 'Acqua Residencial', 'Calle 17 14a-25', 'chia');
 
 
 INSERT INTO user_app (document_id, document_type, first_name, last_name, email, password, created_date, update_date, active)
+VALUES ('12345', 'CC', 'Guard', 'Ian', 'guard.ian@gmail.com', 'v73xi9w5t5GIrYFFyJvNWQ==', '2024-05-06 10:00:00', null, true);
+
+INSERT INTO user_app (document_id, document_type, first_name, last_name, email, password, created_date, update_date, active)
 VALUES ('1151943929', 'CC', 'John', 'Doe', 'john.doe@gmail.com', 'v73xi9w5t5GIrYFFyJvNWQ==', '2024-05-06 10:00:00', null, true);
 
 INSERT INTO home (name, home_type, created_date, neighborhood_id, owner_id)
@@ -33,3 +36,9 @@ VALUES ('Próximo festival de música en el parque central',
         1,
         'https://concepto.de/wp-content/uploads/2020/03/musica-e1584123209397.jpg',
         NOW());
+
+INSERT INTO package (guard_id, home_id, receiver, tracking_number, status, package_transporter, description, received_date)
+VALUES ('12345', 1, 'John Doe', 'ABC123', 'TO_COLLECT', 'Servientrega', 'Electronics', '2024-05-14 12:00:00');
+
+INSERT INTO package (guard_id, home_id, receiver, tracking_number, status, package_transporter, description, received_date)
+VALUES ('12345', 1, 'Daniel', '321ABC', 'TO_COLLECT', 'Interapidisimo', 'caja', '2024-05-14 14:00:00');
