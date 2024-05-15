@@ -46,3 +46,15 @@ CREATE TABLE user_rol
     FOREIGN KEY (neighborhood_id) REFERENCES neighborhood (id),
     FOREIGN KEY (home_id) REFERENCES home (id)
 );
+
+CREATE TABLE news
+(
+    id              INT AUTO_INCREMENT PRIMARY KEY,
+    title           VARCHAR(500)  NOT NULL,
+    content         VARCHAR(2500) NOT NULL,
+    category        VARCHAR(35)   NOT NULL,
+    neighborhood_id BIGINT        NOT NULL,
+    image           VARCHAR(500)  NOT NULL,
+    created_date    TIMESTAMP     NOT NULL,
+    FOREIGN KEY (neighborhood_id) REFERENCES neighborhood (id)
+);
