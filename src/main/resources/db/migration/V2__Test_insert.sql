@@ -38,7 +38,7 @@ VALUES ('Próximo festival de música en el parque central',
         NOW());
 
 INSERT INTO package (guard_id, home_id, receiver, tracking_number, status, package_transporter, description, received_date)
-VALUES ('12345', 1, 'John Doe', 'ABC123', 'PENDING', 'Servientrega', 'Electronics', '2024-05-14 12:00:00');
+VALUES ('12345', 1, 'John Doe', 'ABC123', 'TO_COLLECT', 'Servientrega', 'Electronics', '2024-05-14 12:00:00');
 
 INSERT INTO package (guard_id, home_id, receiver, tracking_number, status, package_transporter, description, received_date)
-VALUES ('12345', 1, 'Daniel', '321ABC', 'PENDING', 'Interapidisimo', 'caja', '2024-05-14 14:00:00');
+VALUES ('12345', 1, 'Daniel', '321ABC', 'TO_COLLECT', 'Interapidisimo', 'caja', '2024-05-14 14:00:00');
