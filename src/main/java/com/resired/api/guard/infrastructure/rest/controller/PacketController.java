@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(path = "/api/guard/package")
+@RequestMapping(path = "/guard/package")
 @AllArgsConstructor
 public class PacketController {
     private final PacketUseCase packetService;
 
-    @PostMapping(path = "/")
-    public RegisterPacketResponse registerPacket(@RequestBody RegisterPacketRequest packetRequest){
+    @PostMapping(path = "")
+    public RegisterPacketResponse registerPacket(@RequestBody RegisterPacketRequest packetRequest) {
         return packetService.registerPacket(packetRequest);
     }
 }

@@ -1,5 +1,6 @@
 package com.resired.api.guard.infrastructure.sql.orm;
 
+import com.resired.api.guard.domain.enums.PacketStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,41 +17,42 @@ public class PacketOrm {
     private Long id;
 
     @Column
+    private String guardId;
+
+    @Column
+    private Long homeId;
+
+    @Column
     private String receiver;
 
     @Column
     private String trackingNumber;
 
     @Column
-    private Long homeId;
-
-    @Column
-    private LocalDateTime receptionDate;
-
-    @Column
-    private String guardId;
-
-    @Column
-    private String status;
-
-    @Column
-    private LocalDateTime updateDate;
+    private String packageTransporter;
 
     @Column
     private String description;
 
     @Column
-    private Long neighborhoodId;
+    @Enumerated(EnumType.STRING)
+    private PacketStatus status;
 
-    public PacketOrm(String receiver, String trackingNumber, Long homeId, LocalDateTime receptionDate, String guardId, String status, LocalDateTime updateDate, String description, Long neighborhoodId) {
+    @Column(name = "received_date")
+    private LocalDateTime receptionDate;
+
+    @Column
+    private LocalDateTime updateDate;
+
+    public PacketOrm(String guardId, Long homeId, String receiver, String trackingNumber, String packageTransporter, String description, PacketStatus status, LocalDateTime receptionDate, LocalDateTime updateDate) {
+        this.guardId = guardId;
+        this.homeId = homeId;
         this.receiver = receiver;
         this.trackingNumber = trackingNumber;
-        this.homeId = homeId;
-        this.receptionDate = receptionDate;
-        this.guardId = guardId;
-        this.status = status;
-        this.updateDate = updateDate;
+        this.packageTransporter = packageTransporter;
         this.description = description;
-        this.neighborhoodId = neighborhoodId;
+        this.status = status;
+        this.receptionDate = receptionDate;
+        this.updateDate = updateDate;
     }
 }

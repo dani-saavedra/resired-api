@@ -12,24 +12,25 @@ import java.time.LocalDateTime;
 @Repository
 @AllArgsConstructor
 public class PacketAdapter implements PacketPort {
-    private PacketJpaRepository packetJpaRepository;
+    private final PacketJpaRepository packetJpaRepository;
 
     @Override
     public void registerPacket(Packet packet) {
         LocalDateTime nowDate = LocalDateTime.now();
 
         PacketOrm packetOrm = new PacketOrm(
+            "12345", // TODO: update
+            packet.getHomeId(),
             packet.getReceiver(),
             packet.getTrackingNumber(),
-            1L,
-            nowDate,
-            "1151943929",
-            packet.getStatus().name(),
-            nowDate,
+            packet.getPackageTransporter(),
             packet.getDescription(),
-            1L
+            packet.getStatus(),
+            nowDate,
+            nowDate
         );
 
         packetJpaRepository.save(packetOrm);
     }
+
 }
