@@ -22,7 +22,7 @@ public class UserAdapter implements UserPort {
         if (user == null) {
             return null;
         }
-        User resident = new User(user.getDocumentId(), user.getFirstName(), user.getLastName(), user.isActive(),
+        User resident = new User(user.getDocumentId(), user.getFirstName(), user.getEmail(), user.getLastName(), user.isActive(),
             user.getUserRols().stream()
                 .filter(UserRolOrm::isActive)
                 .map(UserRolOrm::converToEntity)

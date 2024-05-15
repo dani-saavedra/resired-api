@@ -18,6 +18,7 @@ public class AuthUseCase {
 
     private final AuthenticationService authService;
     private final UserPort userPort;
+    private final JwtService jwtService;
 
     public AuthenticationResponse authUser(AuthenticationRequest auth) throws GeneralSecurityException {
         String encryptPass = authService.encrypt(auth.password());
@@ -29,7 +30,7 @@ public class AuthUseCase {
             throw new InactiveUserException(user.getUserId());
         }
 
-        String jwt = Jwt.generateToken(user.getUserId());
+        String jwt = jwtService.generateToken(user.getEmail());
         return new AuthenticationResponse(jwt, user.getRoles(), user.getUserName(),
             user.getUserId(), user.isMandatoryChangePassword());
     }

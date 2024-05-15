@@ -5,7 +5,7 @@ import com.resired.api.security.domain.entity.Rol;
 
 import java.util.List;
 
-public record AuthenticationResponse(String token, List<Rol> roles, @JsonProperty("user_name") String userName,
+public record AuthenticationResponse(String accessToken, List<Rol> roles, @JsonProperty("user_name") String userName,
                                      @JsonProperty("user_id") String userId, @JsonProperty("mandatory_change") Boolean mandatoryChange) {
 
 }
