@@ -22,7 +22,7 @@ public class UserAdapter implements UserPort {
         if (user == null) {
             return null;
         }
-        User resident = new User(user.getDocumentId(), user.getFirstName(), user.getEmail(), user.getLastName(), user.isActive(),
+        User resident = new User(user.getUserId(), user.getFirstName(), user.getLastName(), user.getEmail(), user.isActive(),
             user.getUserRols().stream()
                 .filter(UserRolOrm::isActive)
                 .map(UserRolOrm::converToEntity)
@@ -32,7 +32,7 @@ public class UserAdapter implements UserPort {
     }
 
     @Override
-    public void changePassword(String documentId, String newEncryptPass) {
-        userJpaRepository.updatePassword(documentId, newEncryptPass);
+    public void changePassword(String userId, String newEncryptPass) {
+        userJpaRepository.updatePassword(userId, newEncryptPass);
     }
 }

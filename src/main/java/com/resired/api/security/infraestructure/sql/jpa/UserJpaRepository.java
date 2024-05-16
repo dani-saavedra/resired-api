@@ -14,6 +14,6 @@ public interface UserJpaRepository extends JpaRepository<UserOrm, UUID> {
     UserOrm findByEmail(String email);
 
     @Modifying(clearAutomatically = true)
-    @Query("update UserOrm userApp set userApp.password =:newPassword where userApp.documentId =:documentId")
-    void updatePassword(@Param("documentId") String documentId, @Param("newPassword") String newPassword);
+    @Query("update UserOrm userApp set userApp.password =:newPassword where userApp.userId =:userId")
+    void updatePassword(@Param("documentId") String userId, @Param("newPassword") String newPassword);
 }
