@@ -16,7 +16,8 @@ import java.util.List;
 public class UserOrm {
 
     @Id
-    private String documentId;
+    @Column(name = "document_id")
+    private String userId;
 
     @OneToMany(mappedBy = "userId", fetch = FetchType.EAGER)
     private List<UserRolOrm> userRols;
