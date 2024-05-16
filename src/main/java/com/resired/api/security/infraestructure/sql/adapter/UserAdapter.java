@@ -5,13 +5,13 @@ import com.resired.api.security.domain.repository.UserPort;
 import com.resired.api.security.infraestructure.sql.jpa.UserJpaRepository;
 import com.resired.api.security.infraestructure.sql.orm.UserOrm;
 import com.resired.api.security.infraestructure.sql.orm.UserRolOrm;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
 @AllArgsConstructor
+@Transactional
 public class UserAdapter implements UserPort {
 
     private UserJpaRepository userJpaRepository;
@@ -29,5 +29,10 @@ public class UserAdapter implements UserPort {
                 .toList());
         resident.validateMandatoryChangePassword(user.getUpdateDate());
         return resident;
+    }
+
+    @Override
+    public void changePassword(String documentId, String newEncryptPass) {
+        userJpaRepository.updatePassword(documentId, newEncryptPass);
     }
 }
