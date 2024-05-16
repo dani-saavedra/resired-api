@@ -18,7 +18,7 @@ public class UserOrm {
     @Id
     private String documentId;
 
-    @OneToMany(mappedBy = "userId")
+    @OneToMany(mappedBy = "userId", fetch = FetchType.EAGER)
     private List<UserRolOrm> userRols;
 
     @Column
