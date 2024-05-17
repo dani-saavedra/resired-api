@@ -15,7 +15,7 @@ public class HomeUseCase {
     private final HomePort port;
 
 
-    public PackagesResponse getPackages(Long homeId) {
+    public PackagesResponse getPackages(Integer homeId) {
         List<Package> packages = port.getPackages(homeId).getPackages();
         return new PackagesResponse(packages);
     }

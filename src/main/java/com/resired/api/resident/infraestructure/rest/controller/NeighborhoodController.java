@@ -16,7 +16,7 @@ public class NeighborhoodController {
     private final NeighborhoodUseCase useCase;
 
     @GetMapping("/{id}/news")
-    public NewsResponse getNews(@PathVariable(name = "id") Long neighborhoodId) {
+    public NewsResponse getNews(@PathVariable(name = "id") Integer neighborhoodId) {
         return useCase.getNewsFromNeighborhood(neighborhoodId);
     }
 }

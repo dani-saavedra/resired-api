@@ -13,7 +13,7 @@ public class HomeAdapter implements HomePort {
     private HomeJpaRepository jpaRepository;
 
     @Override
-    public Home getPackages(Long homeId) {
+    public Home getPackages(Integer homeId) {
         Home home = new Home(homeId);
         jpaRepository.getPackages(homeId).forEach(p -> home.addPackages(p.toEntity()));
         return home;

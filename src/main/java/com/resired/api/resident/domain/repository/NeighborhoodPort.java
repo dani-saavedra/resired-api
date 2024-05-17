@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface NeighborhoodPort {
 
-    List<News> getNews(Long id);
+    List<News> getNews(Integer id);
 }

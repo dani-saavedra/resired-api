@@ -18,7 +18,7 @@ public class HomeController {
 
     @PreAuthorize("hasAuthority('RESIDENT')")
     @GetMapping("/{id}/packages")
-    public PackagesResponse getPackages(@PathVariable(name = "id") Long homeId) {
+    public PackagesResponse getPackages(@PathVariable(name = "id") Integer homeId) {
         return useCase.getPackages(homeId);
     }
 }

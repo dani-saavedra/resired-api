@@ -15,7 +15,7 @@ public class NeighborhoodAdapter implements NeighborhoodPort {
     private NeighborhoodJpaRepository jpaRepository;
 
     @Override
-    public List<News> getNews(Long neighborhoodId) {
+    public List<News> getNews(Integer neighborhoodId) {
         return jpaRepository.getNewsByNeighborhood(neighborhoodId).stream().map(orm ->
             new News(orm.getId(), orm.getTitle(), orm.getContent(), orm.getImage(),
                 orm.getCategory(), orm.getCreatedDate())).toList();

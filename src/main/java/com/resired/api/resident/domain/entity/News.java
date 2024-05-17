@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 public class News {
 
-    private Long id;
+    private Integer id;
     private String title;
     private String description;
     private String image;
