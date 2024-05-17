@@ -21,7 +21,7 @@ public class AccountUseCase {
         String encryptPass = authService.encrypt(request.oldPassword());
         User user = userPort.getResidentByCredentials(request.email(), encryptPass);
         if (user == null) {
-            throw new InvalidCredentialException();
+            throw new InvalidCredentialException(request.email());
         }
         String newEncryptPass = authService.encrypt(request.newPassword());
         userPort.changePassword(user.getUserId(),newEncryptPass);

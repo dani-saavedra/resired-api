@@ -24,7 +24,7 @@ public class AuthUseCase {
         String encryptPass = authService.encrypt(auth.password());
         User user = userPort.getResidentByCredentials(auth.email(), encryptPass);
         if (user == null) {
-            throw new InvalidCredentialException();
+            throw new InvalidCredentialException(auth.email());
         }
         if (!user.isActive()) {
             throw new InactiveUserException(user.getUserId());

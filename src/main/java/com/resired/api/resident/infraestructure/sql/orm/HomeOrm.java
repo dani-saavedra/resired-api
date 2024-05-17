@@ -32,4 +32,5 @@ public class HomeOrm {
 
     @Column(name = "neighborhood_id")
     private int neighborhoodId;
+
 }
