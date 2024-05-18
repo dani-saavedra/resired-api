@@ -19,18 +19,22 @@ import java.time.LocalDateTime;
 public class UserRolOrm {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "user_document")
-    private String userId;
+    @Column(name = "user_id")
+    private Integer userId;
 
-    @Column
     @Enumerated(EnumType.STRING)
+    @Column(name = "rol", nullable = false, columnDefinition = "VARCHAR(255)")
     private UserType rol;
 
     @Column
-    private boolean active;
+    private Integer active;
+
+    public Boolean isActive() {
+        return active == 1;
+    }
 
     @ManyToOne
     @JoinColumn(name = "neighborhood_id")

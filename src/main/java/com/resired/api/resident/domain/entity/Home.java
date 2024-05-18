@@ -7,11 +7,11 @@ import java.util.List;
 
 public class Home {
 
-    private Long id;
+    private Integer id;
     @Getter
     private List<Package> packages;
 
-    public Home(Long id) {
+    public Home(Integer id) {
         this.id = id;
         packages = new ArrayList<>();
     }

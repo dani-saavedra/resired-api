@@ -12,11 +12,11 @@ public class Rol {
     @JsonProperty("user_type")
     private UserType userType;
     @JsonProperty("neighborhood_id")
-    private Long neighborhoodId;
+    private Integer neighborhoodId;
     @JsonProperty("neighborhood_name")
     private String neighborhoodName;
     @JsonProperty("home_id")
-    private Long homeId;
+    private Integer homeId;
     @JsonProperty("home_name")
     private String homeName;
 

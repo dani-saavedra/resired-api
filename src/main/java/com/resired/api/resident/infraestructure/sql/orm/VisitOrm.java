@@ -8,28 +8,20 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "HOME")
+@Table(name = "visit")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class HomeOrm {
+public class VisitOrm {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @ManyToOne
+    @JoinColumn(name = "qr_id")
+    private QrOrm qr;
+
     @Column
-    private String name;
-
-    @Column(name = "type")
-    private String homeType;
-
-    @Column(name = "created_date")
-    private LocalDateTime createdDate;
-
-    @Column(name = "owner_id")
-    private Integer ownerId;
-
-    @Column(name = "neighborhood_id")
-    private Integer neighborhoodId;
-
+    private LocalDateTime checkIn;
 }

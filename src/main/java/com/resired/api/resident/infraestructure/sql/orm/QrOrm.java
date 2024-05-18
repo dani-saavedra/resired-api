@@ -4,9 +4,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
+import static java.sql.Types.TINYINT;
 
 @Entity
 @Table(name = "QR")
@@ -14,19 +14,15 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class QrOrm {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
-    @Column(name = "home_id")
-    private Long homeId;
-
-    @Column(name = "user_id")
-    private UUID userId;
-
-    @Column(name = "created_date")
-    private LocalDateTime createdDate;
-
-    @Column
+    @JdbcTypeCode(TINYINT)
     private boolean available;
+
+    @JoinColumn(name = "visitor_id")
+    @ManyToOne
+    private VisitorOrm visitor;
 }

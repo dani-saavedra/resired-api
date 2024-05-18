@@ -9,14 +9,18 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "USER_APP")
+@Table(name = "user_app")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserOrm {
 
     @Id
-    @Column(name = "document_id")
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(nullable = false, unique = true, name = "document_id")
     private String userId;
 
     @OneToMany(mappedBy = "userId", fetch = FetchType.EAGER)
@@ -41,5 +45,9 @@ public class UserOrm {
     private LocalDateTime updateDate;
 
     @Column
-    private boolean active;
+    private Integer active;
+
+    public Boolean isActive() {
+        return active == 1;
+    }
 }

@@ -11,7 +11,7 @@ public class NeighborhoodUseCase {
 
     private final NeighborhoodPort port;
 
-    public NewsResponse getNewsFromNeighborhood(Long neighborhood) {
+    public NewsResponse getNewsFromNeighborhood(Integer neighborhood) {
         return new NewsResponse(port.getNews(neighborhood));
     }
 }

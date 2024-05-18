@@ -17,10 +17,10 @@ import java.time.LocalDateTime;
 public class PackageOrm {
 
     @Id
-    private Long id;
+    private Integer id;
 
     @Column
-    private String guardId;
+    private Integer guardId;
 
     @JoinColumn(name = "home_id")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -38,8 +38,8 @@ public class PackageOrm {
     @Column
     private String description;
 
-    @Column
     @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false, columnDefinition = "VARCHAR(50)")
     private PackageStatusEnum status;
 
     @Column(name = "received_date")

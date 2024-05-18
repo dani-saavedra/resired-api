@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class NewsOrm {
 
     @Id
-    private Long id;
+    private Integer id;
 
     @Column
     private String title;
@@ -24,12 +24,12 @@ public class NewsOrm {
     @Column
     private String content;
 
-    @Column
     @Enumerated(EnumType.STRING)
+    @Column(name = "category", nullable = false, columnDefinition = "VARCHAR(35)")
     private NewsCategoryEnum category;
 
     @Column(name = "neighborhood_id")
-    private Long neighborhoodId;
+    private Integer neighborhoodId;
 
     @Column
     private String image;

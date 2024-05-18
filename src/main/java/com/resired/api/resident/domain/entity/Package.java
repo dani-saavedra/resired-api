@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 public class Package {
 
-    private Long id;
+    private Integer id;
     private String receiver;
     private String trackingNumber;
     private String packageTransporter;
