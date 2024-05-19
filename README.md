@@ -10,6 +10,9 @@ This repository is the monolith of the backend side that offers all the function
 * [Java] >= 17
 * [Docker]
 
+For installing Make in Windows check out the following [Question from Stack Overflow](
+https://stackoverflow.com/questions/2532234/how-to-run-a-makefile-in-windows)
+
 ```
 git clone git@github.com:dani-saavedra/resired-api.git
 cd resired-api
