@@ -27,12 +27,12 @@ public class AuthUseCase {
             throw new InvalidCredentialException(auth.email());
         }
         if (!user.isActive()) {
-            throw new InactiveUserException(user.getUserId());
+            throw new InactiveUserException(user.getDocumentId());
         }
 
         String jwt = jwtService.generateToken(user.getEmail());
         return new AuthenticationResponse(jwt, user.getRoles(), user.getUserName(),
-            user.getUserId(), user.isMandatoryChangePassword());
+            user.getDocumentId(), user.isMandatoryChangePassword());
     }
 
 }

@@ -6,5 +6,7 @@ public interface UserPort {
 
     User getResidentByCredentials(String email, String password);
 
-    void changePassword(String userId, String newEncryptPass);
+    void changePassword(String documentId, String newEncryptPass);
+
+    User getResidentByDocument(String documentId);
 }

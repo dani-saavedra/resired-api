@@ -5,10 +5,11 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 public class Home {
 
-    private Integer id;
-    @Getter
+    private final Integer id;
+    private String name;
     private List<Package> packages;
 
     public Home(Integer id) {
@@ -16,7 +17,15 @@ public class Home {
         packages = new ArrayList<>();
     }
 
+    public Home(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+        packages = new ArrayList<>();
+    }
+
     public void addPackages(Package newPackage) {
         packages.add(newPackage);
     }
+
+
 }

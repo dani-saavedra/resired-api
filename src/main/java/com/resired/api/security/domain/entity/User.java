@@ -8,7 +8,8 @@ import lombok.Getter;
 @Getter
 public class User {
 
-    private final String userId;
+    private final Integer id;
+    private final String documentId;
     private final String userName;
     private final String email;
     private final String userLastName;
@@ -16,8 +17,9 @@ public class User {
     private final boolean active;
     boolean mandatoryChangePassword;
 
-    public User(String userId, String userName, String email, String userLastName, boolean active, List<Rol> roles) {
-        this.userId = userId;
+    public User(Integer id, String documentId, String userName, String email, String userLastName, boolean active, List<Rol> roles) {
+        this.id = id;
+        this.documentId = documentId;
         this.userName = userName;
         this.userLastName = userLastName;
         this.active = active;
