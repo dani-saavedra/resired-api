@@ -5,4 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface QrJpaRepository extends JpaRepository<QrOrm, Integer> {
 
+    QrOrm findByQr(String qr);
 }
