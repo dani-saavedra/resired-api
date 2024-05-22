@@ -5,13 +5,14 @@ import com.resired.api.resident.infraestructure.sql.jpa.QrJpaRepository;
 import com.resired.api.resident.infraestructure.sql.jpa.VisitorJpaRepository;
 import com.resired.api.resident.infraestructure.sql.orm.QrOrm;
 import com.resired.api.resident.infraestructure.sql.orm.VisitorOrm;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.resired.api.security.domain.service.JwtSecurity;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Repository
 @AllArgsConstructor
@@ -19,8 +20,8 @@ public class ResidentAdapter implements ResidentPort {
 
     private final VisitorJpaRepository visitorJpa;
     private final QrJpaRepository qrJpaRepository;
+    private final JwtSecurity jwtSecurity;
 
-    private static final String SECRET_KEY = "5E8C1D0E9A3F6B5C9D0A7E6B1A3D9E2A6E2A4C1E6B2A8C2D7D8D2C6D6C2A2E5";
     private static final long EXPIRATION_TIME = 172800000;
 
     @Override
@@ -39,10 +40,8 @@ public class ResidentAdapter implements ResidentPort {
     private String generateToken(String documentId, String info) {
         Date now = new Date();
         Date expiration = new Date(now.getTime() + EXPIRATION_TIME);
-
-        return Jwts.builder().subject(documentId).issuedAt(now)
-            .expiration(expiration).signWith(SignatureAlgorithm.HS256, SECRET_KEY)
-            .claim("info", info)
-            .compact();
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("info", info);
+        return jwtSecurity.generateJwt(documentId, claims, expiration, now);
     }
 }
