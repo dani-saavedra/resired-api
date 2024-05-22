@@ -19,20 +19,32 @@ public class UserAdapter implements UserPort {
     @Override
     public User getResidentByCredentials(String email, String password) {
         UserOrm user = userJpaRepository.findByEmailAndPassword(email, password);
-        if (user == null) {
-            return null;
-        }
-        User resident = new User(user.getUserId(), user.getFirstName(), user.getEmail(), user.getLastName(), user.isActive(),
-            user.getUserRols().stream()
-                .filter(UserRolOrm::isActive)
-                .map(UserRolOrm::converToEntity)
-                .toList());
+        User resident = getUser(user);
+        if (resident == null) return null;
         resident.validateMandatoryChangePassword(user.getUpdateDate());
         return resident;
     }
 
     @Override
-    public void changePassword(String userId, String newEncryptPass) {
-        userJpaRepository.updatePassword(userId, newEncryptPass);
+    public void changePassword(String documentId, String newEncryptPass) {
+        userJpaRepository.updatePassword(documentId, newEncryptPass);
+    }
+
+    @Override
+    public User getResidentByDocument(String documentId) {
+        UserOrm userOrm = userJpaRepository.findByDocumentId(documentId);
+        return getUser(userOrm);
+    }
+
+    private User getUser(UserOrm userOrm) {
+        if (userOrm == null) {
+            return null;
+        }
+        return new User(userOrm.getId(), userOrm.getDocumentId(), userOrm.getFirstName(), userOrm.getEmail(),
+            userOrm.getLastName(), userOrm.isActive(),
+            userOrm.getUserRols().stream()
+                .filter(UserRolOrm::isActive)
+                .map(UserRolOrm::converToEntity)
+                .toList());
     }
 }

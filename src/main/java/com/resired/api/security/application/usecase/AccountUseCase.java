@@ -24,6 +24,6 @@ public class AccountUseCase {
             throw new InvalidCredentialException(request.email());
         }
         String newEncryptPass = authService.encrypt(request.newPassword());
-        userPort.changePassword(user.getUserId(),newEncryptPass);
+        userPort.changePassword(user.getDocumentId(), newEncryptPass);
     }
 }

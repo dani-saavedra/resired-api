@@ -88,6 +88,8 @@ CREATE TABLE visitor
     resident_id INTEGER NULL,
     guard_id    INTEGER NULL,
     created_at  TIMESTAMP    NOT NULL,
+    deleted     INTEGER      NOT NULL,
+    telephone   VARCHAR(30) NULL,
     FOREIGN KEY (home_id) REFERENCES home (id),
     FOREIGN KEY (resident_id) REFERENCES user_app (id),
     FOREIGN KEY (guard_id) REFERENCES user_app (id)
@@ -101,7 +103,7 @@ CREATE TABLE qr
     available   tinyint       NOT NULL,
     visitor_id  INTEGER       NOT NULL,
     created_at  TIMESTAMP     NOT NULL,
-    disabled_at TIMESTAMP     NOT NULL,
+    disabled_at TIMESTAMP NULL,
     FOREIGN KEY (visitor_id) REFERENCES visitor (id)
 );
 

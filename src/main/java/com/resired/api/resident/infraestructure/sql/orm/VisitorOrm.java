@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "visitor")
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class VisitorOrm {
 
@@ -24,9 +23,12 @@ public class VisitorOrm {
     @Column
     private String document;
 
+    @Column
+    private String telephone;
+
     //Autorizado siempre por casa, pero no siempre por residente
     //esto permite ver los visitantes registrados por residente de manera discriminada
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "home_id")
     private HomeOrm authorizingHome;
 
@@ -40,4 +42,38 @@ public class VisitorOrm {
 
     @Column
     private LocalDateTime createdAt;
+
+    @Column
+    private Integer deleted;
+
+    public Boolean isDelete() {
+        return deleted == 1;
+    }
+
+    public static VisitorOrm visitorFromResident(Integer userId, Integer homeId, String homeName, String name, String document, String telephone) {
+        HomeOrm authorizingHome = new HomeOrm();
+        authorizingHome.setId(homeId);
+        authorizingHome.setName(homeName);
+        UserOrm authorizingUser = new UserOrm();
+        authorizingUser.setId(userId);
+        VisitorOrm visitorOrm = new VisitorOrm();
+        visitorOrm.name = name;
+        visitorOrm.document = document;
+        visitorOrm.authorizingHome = authorizingHome;
+        visitorOrm.authorizingUser = authorizingUser;
+        visitorOrm.deleted = 0;
+        visitorOrm.createdAt = LocalDateTime.now();
+        visitorOrm.telephone = telephone;
+        return visitorOrm;
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+            "name:'" + name + '\'' +
+            ", document:'" + document + '\'' +
+            ", authorizingHome:" + authorizingHome.getName() +
+            ", createdAt:" + createdAt +
+            '}';
+    }
 }
