@@ -1,23 +1,21 @@
 package com.resired.api.security.application.usecase;
 
+import com.resired.api.security.domain.service.JwtSecurity;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-@Component
+@Service
+@AllArgsConstructor
 public class JwtService {
 
-    public static final String SECRET = "357638792F423F4428472B4B6250655368566D597133743677397A2443264629";
+    private final JwtSecurity jwtSecurity;
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -33,12 +31,7 @@ public class JwtService {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts
-            .parser()
-            .setSigningKey(getSignKey())
-            .build()
-            .parseSignedClaims(token)
-            .getPayload();
+        return jwtSecurity.extractAllClaims(token);
     }
 
     private Boolean isTokenExpired(String token) {
@@ -50,25 +43,14 @@ public class JwtService {
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
-
     public String generateToken(String username) {
         Map<String, Object> claims = new HashMap<>();
         return createToken(claims, username);
     }
 
-
     private String createToken(Map<String, Object> claims, String username) {
-
-        return Jwts.builder()
-            .claims(claims)
-            .subject(username)
-            .issuedAt(new Date(System.currentTimeMillis()))
-            .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 10))
-            .signWith(getSignKey(), SignatureAlgorithm.HS256).compact();
-    }
-
-    private Key getSignKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET);
-        return Keys.hmacShaKeyFor(keyBytes);
+        Date expiration = new Date(System.currentTimeMillis() + 1000 * 60 * 10);
+        Date issuedAt = new Date(System.currentTimeMillis());
+        return jwtSecurity.generateJwt(username, claims, expiration, issuedAt);
     }
 }
