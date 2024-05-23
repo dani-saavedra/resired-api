@@ -33,10 +33,6 @@ public class VisitUseCase {
         //TODO Creacion de QR para enviarlo por wp
     }
 
-    public void validateInfoQR() {
-        //TODO Obtener data del QR desde jwt
-    }
-
 
     public void enableQrAgain() {
 
