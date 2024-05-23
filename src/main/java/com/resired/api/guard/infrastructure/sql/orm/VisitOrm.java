@@ -1,5 +1,6 @@
-package com.resired.api.resident.infraestructure.sql.orm;
+package com.resired.api.guard.infrastructure.sql.orm;
 
+import com.resired.api.resident.infraestructure.sql.orm.QrOrm;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

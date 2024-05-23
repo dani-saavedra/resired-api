@@ -3,11 +3,9 @@ package com.resired.api.guard.infrastructure.rest.controller;
 import com.resired.api.guard.application.usecase.AttendVisitUseCase;
 import com.resired.api.guard.domain.entity.Visitor;
 import com.resired.api.guard.infrastructure.rest.dto.InfoQrRequest;
+import com.resired.api.resident.infraestructure.rest.dto.ResponseData;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/guard")
@@ -16,9 +14,14 @@ public class GuardController {
 
     private final AttendVisitUseCase visitUseCase;
 
-
     @GetMapping("/info-qr")
     public Visitor obtainInfoQr(@RequestBody InfoQrRequest infoQrRequest) {
         return visitUseCase.validateInfoQR(infoQrRequest.qr());
+    }
+
+    @PostMapping("/visit")
+    public ResponseData registerVisit(@RequestBody InfoQrRequest infoQrRequest) {
+        visitUseCase.registerVisit(infoQrRequest.qr());
+        return new ResponseData<String>("Registered visit successfully");
     }
 }

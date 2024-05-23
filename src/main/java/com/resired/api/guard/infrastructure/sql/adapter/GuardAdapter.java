@@ -1,29 +1,29 @@
 package com.resired.api.guard.infrastructure.sql.adapter;
 
-import com.resired.api.guard.domain.entity.Visitor;
 import com.resired.api.guard.domain.repository.GuardPort;
+import com.resired.api.guard.infrastructure.sql.jpa.VisitJpaRepository;
+import com.resired.api.guard.infrastructure.sql.orm.VisitOrm;
 import com.resired.api.resident.infraestructure.sql.jpa.QrJpaRepository;
 import com.resired.api.resident.infraestructure.sql.orm.QrOrm;
-import com.resired.api.security.infraestructure.sql.orm.UserOrm;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
+
+import java.time.LocalDateTime;
 
 @Repository
 @AllArgsConstructor
 public class GuardAdapter implements GuardPort {
 
     private final QrJpaRepository qrJpaRepository;
+    private final VisitJpaRepository visitJpaRepository;
 
     @Override
-    public Visitor obtainInfoQR(String qrStr) {
+    public void registerVisit(String qrStr) {
         QrOrm qr = qrJpaRepository.findByQr(qrStr);
-        UserOrm authorizingUser = qr.getVisitor().getAuthorizingUser();
-        String authorizer = "";
-        if (authorizingUser != null) {
-            authorizer = authorizingUser.getFirstName();
-        }
-        return new Visitor(qr.getVisitor().getName(),
-            qr.getVisitor().getDocument(), qr.getVisitor().getAuthorizingHome().getName(),
-            authorizer,qr.isAvailable());
+
+        VisitOrm visit = new VisitOrm();
+        visit.setQr(qr);
+        visit.setCheckIn(LocalDateTime.now());
+        visitJpaRepository.save(visit);
     }
 }
