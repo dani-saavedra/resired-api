@@ -1,6 +1,6 @@
 package com.resired.api.guard.infrastructure.rest.controller;
 
-import com.resired.api.guard.application.usecase.ValidateVisitUseCase;
+import com.resired.api.guard.application.usecase.AttendVisitUseCase;
 import com.resired.api.guard.domain.entity.Visitor;
 import com.resired.api.guard.infrastructure.rest.dto.InfoQrRequest;
 import lombok.AllArgsConstructor;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class GuardController {
 
-    ValidateVisitUseCase visitUseCase;
+    private final AttendVisitUseCase visitUseCase;
 
 
     @GetMapping("/info-qr")

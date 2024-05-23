@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class ValidateVisitUseCase {
+public class AttendVisitUseCase {
 
     private final GuardPort guardPort;
     private final JwtSecurity jwtSecurity;
