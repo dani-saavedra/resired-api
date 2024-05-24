@@ -9,4 +9,6 @@ public interface UserPort {
     void changePassword(String documentId, String newEncryptPass);
 
     User getResidentByDocument(String documentId);
+
+    User getResidentByEmail(String email);
 }

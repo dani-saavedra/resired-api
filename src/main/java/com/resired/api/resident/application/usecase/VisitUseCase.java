@@ -19,14 +19,14 @@ public class VisitUseCase {
     private final HomePort homePort;
     private final ResidentPort residentPort;
 
-    public String createVisitor(String documentResident, VisitorRequestDTO visitor) {
-        User resident = userPort.getResidentByDocument(documentResident);
+    public String createVisitor(String emailResident, VisitorRequestDTO visitor) {
+        User resident = userPort.getResidentByEmail(emailResident);
         if (resident == null || !resident.isActive()) {
-            throw new InactiveUserException(documentResident);
+            throw new InactiveUserException(emailResident);
         }
         Home home = homePort.getHomeById(visitor.homeId());
         if (home == null) {
-            throw new InvalidHomeException(documentResident);
+            throw new InvalidHomeException(emailResident);
         }
         return residentPort.registerVisit(resident.getId(), home.getId(), home.getName(),
             visitor.name(), visitor.documentId(), visitor.telephone());
