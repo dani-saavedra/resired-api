@@ -20,8 +20,8 @@ public class GuardController {
     }
 
     @PostMapping("/visit")
-    public ResponseData registerVisit(@RequestBody InfoQrRequest infoQrRequest) {
+    public ResponseData<String> registerVisit(@RequestBody InfoQrRequest infoQrRequest) {
         visitUseCase.registerVisit(infoQrRequest.qr());
-        return new ResponseData<String>("Registered visit successfully");
+        return new ResponseData<>("Registered visit successfully");
     }
 }
