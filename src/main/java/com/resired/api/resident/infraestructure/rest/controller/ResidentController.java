@@ -3,6 +3,7 @@ package com.resired.api.resident.infraestructure.rest.controller;
 import com.resired.api.resident.application.dto.VisitorRequestDTO;
 import com.resired.api.resident.application.usecase.VisitUseCase;
 import com.resired.api.resident.infraestructure.rest.dto.ResponseData;
+import com.resired.api.security.application.usecase.JwtService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,10 +13,12 @@ import org.springframework.web.bind.annotation.*;
 public class ResidentController {
 
     private final VisitUseCase visitUseCase;
+    private final JwtService jwtService;
 
-    @PostMapping(path = "/{documentResident}/visitor")
-    public ResponseData<String> createVisitor(@PathVariable String documentResident, @RequestBody VisitorRequestDTO visitor) {
-        String qr = visitUseCase.createVisitor(documentResident, visitor);
+    @PostMapping(path = "/visitor")
+    public ResponseData<String> createVisitor(@RequestHeader(value = "Authorization") String bearer, @RequestBody VisitorRequestDTO visitor) {
+        String email = jwtService.extractUsername(bearer.substring(7));
+        String qr = visitUseCase.createVisitor(email, visitor);
         return new ResponseData<>(qr);
     }
 

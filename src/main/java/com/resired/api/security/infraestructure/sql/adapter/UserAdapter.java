@@ -36,6 +36,12 @@ public class UserAdapter implements UserPort {
         return getUser(userOrm);
     }
 
+    @Override
+    public User getResidentByEmail(String email) {
+        UserOrm user = userJpaRepository.findByEmail(email);
+        return getUser(user);
+    }
+
     private User getUser(UserOrm userOrm) {
         if (userOrm == null) {
             return null;
