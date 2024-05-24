@@ -30,5 +30,4 @@ public class ResidentController {
         //revisando con richard el envio
     }
     //TODO Enviar QR a telefono de wp que diga "presente este QR en porteria"
-    //TODO pendiente desactivar QR una vez leido
 }
