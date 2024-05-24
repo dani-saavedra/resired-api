@@ -3,7 +3,6 @@ package com.resired.api.resident.infraestructure.sql.orm;
 
 import com.resired.api.security.infraestructure.sql.orm.UserOrm;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -51,21 +50,36 @@ public class VisitorOrm {
     }
 
     public static VisitorOrm visitorFromResident(Integer userId, Integer homeId, String homeName, String name, String document, String telephone) {
+        VisitorOrm result = getResult(userId, homeId, homeName, name, document, telephone);
+        UserOrm authorizingUser = new UserOrm();
+        authorizingUser.setId(userId);
+        result.authorizingUser = authorizingUser;
+        return result;
+    }
+
+    public static VisitorOrm visitorFromGuard(Integer userId, Integer homeId, String homeName, String name, String document, String telephone) {
+        VisitorOrm result = getResult(userId, homeId, homeName, name, document, telephone);
+        UserOrm authorizingUser = new UserOrm();
+        authorizingUser.setId(userId);
+        result.authorizingGuard = authorizingUser;
+        return result;
+    }
+
+    private static VisitorOrm getResult(Integer userId, Integer homeId, String homeName, String name, String document, String telephone) {
         HomeOrm authorizingHome = new HomeOrm();
         authorizingHome.setId(homeId);
         authorizingHome.setName(homeName);
-        UserOrm authorizingUser = new UserOrm();
-        authorizingUser.setId(userId);
+
         VisitorOrm visitorOrm = new VisitorOrm();
         visitorOrm.name = name;
         visitorOrm.document = document;
         visitorOrm.authorizingHome = authorizingHome;
-        visitorOrm.authorizingUser = authorizingUser;
         visitorOrm.deleted = 0;
         visitorOrm.createdAt = LocalDateTime.now();
         visitorOrm.telephone = telephone;
         return visitorOrm;
     }
+
 
     @Override
     public String toString() {

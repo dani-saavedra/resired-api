@@ -50,4 +50,8 @@ public class UserRolOrm {
     public Rol converToEntity() {
         return new Rol(rol, neighborhood.getId(), neighborhood.getName(), home.getId(), home.getName());
     }
+
+    public Rol converToEntityGeral() {
+        return new Rol(rol, neighborhood.getId(), neighborhood.getName());
+    }
 }

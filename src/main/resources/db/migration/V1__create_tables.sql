@@ -43,7 +43,7 @@ CREATE TABLE user_rol
     rol             VARCHAR(255),
     active          INTEGER,
     neighborhood_id INTEGER   NOT NULL,
-    home_id         INTEGER   NOT NULL,
+    home_id         INTEGER NULL,
     created_date    TIMESTAMP NOT NULL,
     update_date     TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES user_app (id),

@@ -22,7 +22,7 @@ public class AuthUseCase {
 
     public AuthenticationResponse authUser(AuthenticationRequest auth) throws GeneralSecurityException {
         String encryptPass = authService.encrypt(auth.password());
-        User user = userPort.getResidentByCredentials(auth.email(), encryptPass);
+        User user = userPort.getUserByCredentials(auth.email(), encryptPass);
         if (user == null) {
             throw new InvalidCredentialException(auth.email());
         }

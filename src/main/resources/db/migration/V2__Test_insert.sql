@@ -19,8 +19,8 @@ VALUES ('12345678', 'CC', 'Fulanito', 'De Tal', 'fulanito@gmail.com', 'v73xi9w5t
 INSERT INTO user_rol (user_id, rol, active, neighborhood_id, home_id, created_date)
 VALUES (1, 'RESIDENT', true, 1, 1, '2024-05-11 12:00:00');
 
-INSERT INTO user_rol (user_id, rol, active, neighborhood_id, home_id, created_date)
-VALUES (1, 'GUARD', false, 1, 1, '2024-05-11 12:15:00');
+INSERT INTO user_rol (user_id, rol, active, neighborhood_id, created_date)
+VALUES (2, 'GUARD', true, 1, '2024-05-11 12:15:00');
 
 INSERT INTO news (title, content, category, neighborhood_id, image, created_date)
 VALUES ('Nuevo récord de goles en el campeonato local',

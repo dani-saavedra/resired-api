@@ -3,6 +3,7 @@ package com.resired.api.security.domain.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.resired.api.security.domain.enums.UserType;
 import lombok.Getter;
 
 @Getter
@@ -31,5 +32,14 @@ public class User {
         if (update == null) {
             mandatoryChangePassword = true;
         }
+    }
+
+    public boolean hasRole(UserType rol) {
+        for (Rol role : roles) {
+            if (role.getUserType().equals(rol)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

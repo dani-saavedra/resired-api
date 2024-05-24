@@ -4,17 +4,21 @@ import com.resired.api.guard.application.exception.QrInvalidException;
 import com.resired.api.guard.domain.entity.Visitor;
 import com.resired.api.guard.domain.repository.GuardPort;
 import com.resired.api.guard.domain.repository.QrPort;
+import com.resired.api.guard.domain.service.VisitorService;
+import com.resired.api.guard.domain.vo.HomeVisit;
+import com.resired.api.resident.application.dto.VisitorRequestDTO;
 import com.resired.api.security.domain.service.JwtSecurity;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class AttendVisitUseCase {
+public class GuardVisitUseCase {
 
     private final GuardPort guardPort;
     private final QrPort qrPort;
     private final JwtSecurity jwtSecurity;
+    private final VisitorService visitorService;
 
     public Visitor validateInfoQR(String qr) {
         validateQR(qr);
@@ -25,7 +29,12 @@ public class AttendVisitUseCase {
         validateQR(qr);
         guardPort.registerVisit(qr);
         qrPort.makeQrUnavailable(qr);
+    }
 
+    public void registerVisitor(String emailGuard, VisitorRequestDTO visitor) {
+        HomeVisit residentVisit = new HomeVisit(visitor.name(), visitor.documentId(), visitor.telephone(), visitor.homeId(), emailGuard);
+        String tokenUUID = visitorService.createVisitorToHome(residentVisit);
+        guardPort.registerVisit(tokenUUID);
     }
 
     private void validateQR(String qr) {
