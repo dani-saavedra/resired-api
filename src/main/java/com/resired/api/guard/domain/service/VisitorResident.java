@@ -5,7 +5,7 @@ import com.resired.api.resident.domain.exception.InvalidHomeException;
 import com.resired.api.resident.domain.entity.Home;
 import com.resired.api.resident.domain.repository.HomePort;
 import com.resired.api.resident.domain.repository.ResidentPort;
-import com.resired.api.security.application.exception.InactiveUserException;
+import com.resired.api.security.domain.exception.InactiveUserException;
 import com.resired.api.security.domain.entity.User;
 import com.resired.api.security.domain.repository.UserPort;
 import lombok.AllArgsConstructor;

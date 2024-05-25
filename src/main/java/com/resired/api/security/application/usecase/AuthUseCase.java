@@ -2,7 +2,7 @@ package com.resired.api.security.application.usecase;
 
 import com.resired.api.security.application.dto.AuthenticationRequest;
 import com.resired.api.security.application.dto.AuthenticationResponse;
-import com.resired.api.security.application.exception.InactiveUserException;
+import com.resired.api.security.domain.exception.InactiveUserException;
 import com.resired.api.security.application.exception.InvalidCredentialException;
 import com.resired.api.security.domain.entity.User;
 import com.resired.api.security.domain.repository.UserPort;

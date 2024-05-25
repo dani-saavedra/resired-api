@@ -1,8 +1,8 @@
 package com.resired.api.security.infraestructure.rest.proxy;
 
-import com.resired.api.guard.application.exception.InvalidRolException;
+import com.resired.api.guard.domain.exception.InvalidRolException;
 import com.resired.api.guard.application.exception.QrInvalidException;
-import com.resired.api.security.application.exception.InactiveUserException;
+import com.resired.api.security.domain.exception.InactiveUserException;
 import com.resired.api.security.application.exception.InvalidCredentialException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

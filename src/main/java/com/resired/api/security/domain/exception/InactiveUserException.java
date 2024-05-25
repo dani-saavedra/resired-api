@@ -1,4 +1,4 @@
-package com.resired.api.security.application.exception;
+package com.resired.api.security.domain.exception;
 
 public class InactiveUserException extends RuntimeException {
 

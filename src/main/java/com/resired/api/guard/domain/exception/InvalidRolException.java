@@ -1,4 +1,4 @@
-package com.resired.api.guard.application.exception;
+package com.resired.api.guard.domain.exception;
 
 public class InvalidRolException extends RuntimeException {
     public InvalidRolException(String user) {
