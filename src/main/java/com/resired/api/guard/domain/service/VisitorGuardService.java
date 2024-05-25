@@ -3,7 +3,7 @@ package com.resired.api.guard.domain.service;
 import com.resired.api.guard.application.exception.InvalidRolException;
 import com.resired.api.guard.domain.repository.GuardPort;
 import com.resired.api.guard.domain.vo.Visit;
-import com.resired.api.resident.application.exception.InvalidHomeException;
+import com.resired.api.resident.domain.exception.InvalidHomeException;
 import com.resired.api.resident.domain.entity.Home;
 import com.resired.api.resident.domain.repository.HomePort;
 import com.resired.api.security.application.exception.InactiveUserException;
@@ -31,7 +31,7 @@ public class VisitorGuardService implements ManageVisitor {
         }
         Home home = homePort.getHomeById(homeVisit.homeAuthorizer());
         if (home == null) {
-            throw new InvalidHomeException("" + homeVisit.homeAuthorizer());
+            throw new InvalidHomeException();
         }
         return guardPort.registerVisitFromGuard(guard.getId(), home.getId(), home.getName(),
             homeVisit.nameVisitor(), homeVisit.documentVisitor(), homeVisit.telephoneVisitor());

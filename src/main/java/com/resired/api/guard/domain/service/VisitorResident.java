@@ -1,7 +1,7 @@
 package com.resired.api.guard.domain.service;
 
 import com.resired.api.guard.domain.vo.Visit;
-import com.resired.api.resident.application.exception.InvalidHomeException;
+import com.resired.api.resident.domain.exception.InvalidHomeException;
 import com.resired.api.resident.domain.entity.Home;
 import com.resired.api.resident.domain.repository.HomePort;
 import com.resired.api.resident.domain.repository.ResidentPort;
@@ -26,7 +26,7 @@ public class VisitorResident implements ManageVisitor {
         }
         Home home = homePort.getHomeById(residentVisit.homeAuthorizer());
         if (home == null) {
-            throw new InvalidHomeException(residentVisit.authorizer());
+            throw new InvalidHomeException();
         }
         return residentPort.registerVisit(resident.getId(), home.getId(), home.getName(),
             residentVisit.nameVisitor(), residentVisit.documentVisitor(), residentVisit.telephoneVisitor());
