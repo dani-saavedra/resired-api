@@ -1,6 +1,7 @@
 package com.resired.api.security.infraestructure.sql.adapter;
 
 import com.resired.api.security.domain.entity.User;
+import com.resired.api.security.domain.enums.UserType;
 import com.resired.api.security.domain.repository.UserPort;
 import com.resired.api.security.infraestructure.sql.jpa.UserJpaRepository;
 import com.resired.api.security.infraestructure.sql.orm.UserOrm;
@@ -17,11 +18,18 @@ public class UserAdapter implements UserPort {
     private UserJpaRepository userJpaRepository;
 
     @Override
-    public User getResidentByCredentials(String email, String password) {
-        UserOrm user = userJpaRepository.findByEmailAndPassword(email, password);
-        User resident = getUser(user);
-        if (resident == null) return null;
-        resident.validateMandatoryChangePassword(user.getUpdateDate());
+    public User getUserByCredentials(String email, String password) {
+        UserOrm userOrm = userJpaRepository.findByEmailAndPassword(email, password);
+        if (userOrm == null) {
+            return null;
+        }
+        User resident = new User(userOrm.getId(), userOrm.getDocumentId(), userOrm.getFirstName(), userOrm.getEmail(),
+            userOrm.getLastName(), userOrm.isActive(),
+            userOrm.getUserRols().stream()
+                .filter(UserRolOrm::isActive)
+                .map(UserRolOrm::converToEntityGeral)
+                .toList());
+        resident.validateMandatoryChangePassword(userOrm.getUpdateDate());
         return resident;
     }
 
@@ -30,27 +38,36 @@ public class UserAdapter implements UserPort {
         userJpaRepository.updatePassword(documentId, newEncryptPass);
     }
 
-    @Override
-    public User getResidentByDocument(String documentId) {
-        UserOrm userOrm = userJpaRepository.findByDocumentId(documentId);
-        return getUser(userOrm);
-    }
 
     @Override
     public User getResidentByEmail(String email) {
-        UserOrm user = userJpaRepository.findByEmail(email);
-        return getUser(user);
-    }
-
-    private User getUser(UserOrm userOrm) {
-        if (userOrm == null) {
+        UserOrm residentOrm = userJpaRepository.findByEmail(email);
+        if (residentOrm == null) {
             return null;
         }
-        return new User(userOrm.getId(), userOrm.getDocumentId(), userOrm.getFirstName(), userOrm.getEmail(),
-            userOrm.getLastName(), userOrm.isActive(),
-            userOrm.getUserRols().stream()
+        return new User(residentOrm.getId(), residentOrm.getDocumentId(), residentOrm.getFirstName(), residentOrm.getEmail(),
+            residentOrm.getLastName(), residentOrm.isActive(),
+            residentOrm.getUserRols().stream()
                 .filter(UserRolOrm::isActive)
+                .filter(userRolOrm -> userRolOrm.getRol().equals(UserType.RESIDENT))
                 .map(UserRolOrm::converToEntity)
                 .toList());
     }
+
+    @Override
+    public User getGuardByEmail(String email) {
+        UserOrm guardOrm = userJpaRepository.findByEmail(email);
+        if (guardOrm == null) {
+            return null;
+        }
+        return new User(guardOrm.getId(), guardOrm.getDocumentId(), guardOrm.getFirstName(), guardOrm.getEmail(),
+            guardOrm.getLastName(), guardOrm.isActive(),
+            guardOrm.getUserRols().stream()
+                .filter(UserRolOrm::isActive)
+                .filter(userRolOrm -> userRolOrm.getRol().equals(UserType.GUARD))
+                .map(UserRolOrm::converToEntityGeral)
+                .toList());
+    }
+
+
 }

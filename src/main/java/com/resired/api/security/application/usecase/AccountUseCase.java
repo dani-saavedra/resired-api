@@ -19,7 +19,7 @@ public class AccountUseCase {
 
     public void resetPassword(ResetPasswordRequest request) throws GeneralSecurityException {
         String encryptPass = authService.encrypt(request.oldPassword());
-        User user = userPort.getResidentByCredentials(request.email(), encryptPass);
+        User user = userPort.getUserByCredentials(request.email(), encryptPass);
         if (user == null) {
             throw new InvalidCredentialException(request.email());
         }

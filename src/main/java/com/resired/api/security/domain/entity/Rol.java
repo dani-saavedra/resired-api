@@ -20,4 +20,9 @@ public class Rol {
     @JsonProperty("home_name")
     private String homeName;
 
+    public Rol(UserType userType, Integer neighborhoodId, String neighborhoodName) {
+        this.userType = userType;
+        this.neighborhoodId = neighborhoodId;
+        this.neighborhoodName = neighborhoodName;
+    }
 }

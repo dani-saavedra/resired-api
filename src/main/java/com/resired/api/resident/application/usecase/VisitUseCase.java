@@ -1,13 +1,9 @@
 package com.resired.api.resident.application.usecase;
 
+import com.resired.api.guard.domain.entity.Visitor;
+import com.resired.api.guard.domain.service.VisitorResident;
+import com.resired.api.guard.domain.vo.Visit;
 import com.resired.api.resident.application.dto.VisitorRequestDTO;
-import com.resired.api.resident.application.exception.InvalidHomeException;
-import com.resired.api.resident.domain.entity.Home;
-import com.resired.api.resident.domain.repository.HomePort;
-import com.resired.api.resident.domain.repository.ResidentPort;
-import com.resired.api.security.application.exception.InactiveUserException;
-import com.resired.api.security.domain.entity.User;
-import com.resired.api.security.domain.repository.UserPort;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,22 +11,12 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class VisitUseCase {
 
-    private final UserPort userPort;
-    private final HomePort homePort;
-    private final ResidentPort residentPort;
+    private final Visitor visitor;
+    private final VisitorResident visitorResident;
 
-    public String createVisitor(String emailResident, VisitorRequestDTO visitor) {
-        User resident = userPort.getResidentByEmail(emailResident);
-        if (resident == null || !resident.isActive()) {
-            throw new InactiveUserException(emailResident);
-        }
-        Home home = homePort.getHomeById(visitor.homeId());
-        if (home == null) {
-            throw new InvalidHomeException(emailResident);
-        }
-        return residentPort.registerVisit(resident.getId(), home.getId(), home.getName(),
-            visitor.name(), visitor.documentId(), visitor.telephone());
-        //TODO Creacion de QR para enviarlo por wp
+    public String createVisitor(String emailResident, VisitorRequestDTO visitorDto) {
+        Visit residentVisit = new Visit(visitorDto.name(), visitorDto.documentId(), visitorDto.telephone(), visitorDto.homeId(), emailResident);
+        return visitor.createVisit(residentVisit, visitorResident);
     }
 
 
