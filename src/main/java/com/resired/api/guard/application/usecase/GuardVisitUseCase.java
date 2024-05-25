@@ -47,6 +47,4 @@ public class GuardVisitUseCase {
             throw new QrInvalidException("available");
         }
     }
-
-    //TODO REGISTRAR VISITANTE Y VISITA EN UN MISMO PUNTO, osea sin QR
 }
