@@ -1,6 +1,7 @@
 package com.resired.api.resident.infraestructure.sql.adapter;
 
 import com.resired.api.resident.domain.repository.ResidentPort;
+import com.resired.api.resident.domain.vo.RegisteredVisitor;
 import com.resired.api.resident.infraestructure.sql.jpa.QrJpaRepository;
 import com.resired.api.resident.infraestructure.sql.jpa.VisitorJpaRepository;
 import com.resired.api.resident.infraestructure.sql.orm.QrOrm;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -35,6 +37,14 @@ public class ResidentAdapter implements ResidentPort {
         qr.setQr(token);
         qrJpaRepository.save(qr);
         return token;
+    }
+
+    @Override
+    public List<RegisteredVisitor> obtainVisitors(String emailResident) {
+        return visitorJpa.obtainVisitorByEmailResident(emailResident)
+            .stream()
+            .map(visitorOrm -> new RegisteredVisitor(visitorOrm.getId(), visitorOrm.getName(), visitorOrm.getDocument()))
+            .toList();
     }
 
     private String generateToken(String documentId, String info) {
