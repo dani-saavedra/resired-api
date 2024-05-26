@@ -2,6 +2,7 @@ package com.resired.api.security.infraestructure.rest.proxy;
 
 import com.resired.api.guard.domain.exception.InvalidRolException;
 import com.resired.api.guard.application.exception.QrInvalidException;
+import com.resired.api.resident.domain.exception.InvalidVisitorException;
 import com.resired.api.security.domain.exception.InactiveUserException;
 import com.resired.api.security.application.exception.InvalidCredentialException;
 import lombok.extern.slf4j.Slf4j;
@@ -54,6 +55,7 @@ public class ExceptionHandlerResired {
         return new ResponseEntity<>(new ErrorDTO(ErrorCode.GENERAL.name()
             , ErrorCode.GENERAL.getDescription()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
     @ExceptionHandler(value = NoResourceFoundException.class)
     protected ResponseEntity<ErrorDTO> unMappedResource(Exception ex, WebRequest request) {
         log.error("Invalid url request ", ex);
@@ -61,5 +63,12 @@ public class ExceptionHandlerResired {
             , ErrorCode.GENERAL_RESOURCE.getDescription()), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(value = InvalidVisitorException.class)
+    protected ResponseEntity<ErrorDTO> handleInvalidVisitor(
+        RuntimeException ex, WebRequest request) {
+        log.error("The visitor is invalid ", ex);
+        return new ResponseEntity<>(new ErrorDTO(ErrorCode.VISIT02.name()
+            , ErrorCode.VISIT02.getDescription()), HttpStatus.BAD_REQUEST);
+    }
 
 }
