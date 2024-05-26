@@ -1,23 +1,30 @@
 package com.resired.api.security.infraestructure.sql.orm;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import java.time.LocalDateTime;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Entity
-@Table(name = "USER_APP")
+@Table(name = "user_app")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserOrm {
 
     @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(nullable = false, unique = true)
     private String documentId;
+
+    @OneToMany(mappedBy = "userId", fetch = FetchType.EAGER)
+    private List<UserRolOrm> userRols;
 
     @Column
     private String firstName;
@@ -38,5 +45,9 @@ public class UserOrm {
     private LocalDateTime updateDate;
 
     @Column
-    private boolean active;
+    private Integer active;
+
+    public Boolean isActive() {
+        return active == 1;
+    }
 }

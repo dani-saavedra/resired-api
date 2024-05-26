@@ -1,11 +1,12 @@
 package com.resired.api.resident.infraestructure.sql.orm;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.UUID;
 
 @Entity
 @Table(name = "NEIGHBORHOOD")
@@ -13,8 +14,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class NeighborhoodOrm {
+
     @Id
-    private UUID id;
+    private Integer id;
 
     @Column
     private String name;
@@ -22,8 +24,6 @@ public class NeighborhoodOrm {
     @Column
     private String address;
 
-    @Column(name = "root_id")
-    private UUID rootId;
 }
 
 

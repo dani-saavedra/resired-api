@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 @Table(name = "HOME")
@@ -16,20 +15,21 @@ import java.util.UUID;
 public class HomeOrm {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column
     private String name;
 
-    @Column(name = "home_type")
+    @Column(name = "type")
     private String homeType;
 
     @Column(name = "created_date")
     private LocalDateTime createdDate;
 
     @Column(name = "owner_id")
-    private UUID ownerId;
+    private Integer ownerId;
 
     @Column(name = "neighborhood_id")
-    private UUID neighborhoodId;
+    private Integer neighborhoodId;
+
 }
