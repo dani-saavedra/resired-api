@@ -1,7 +1,7 @@
 package com.resired.api.guard.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.resired.api.guard.domain.service.ManageVisitor;
+import com.resired.api.guard.domain.service.CreateVisitor;
 import com.resired.api.guard.domain.vo.Visit;
 import lombok.Getter;
 import org.springframework.stereotype.Service;
@@ -27,8 +27,8 @@ public class Visitor {
         return visitor;
     }
 
-    public String createVisit(Visit residentVisit, ManageVisitor visitorService) {
-        //TODO Creacion de QR para enviarlo por wp
+    public String createVisit(Visit residentVisit, CreateVisitor visitorService) {
+        //TODO Creacion de QR para enviarlo por wp que diga "presente este QR en porteria"
         return visitorService.createVisitor(residentVisit);
     }
 }

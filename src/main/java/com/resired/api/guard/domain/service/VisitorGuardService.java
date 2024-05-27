@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class VisitorGuardService implements ManageVisitor {
+public class VisitorGuardService implements CreateVisitor {
     private final UserPort userPort;
     private final HomePort homePort;
     private final GuardPort guardPort;

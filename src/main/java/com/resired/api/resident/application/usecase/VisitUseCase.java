@@ -1,10 +1,9 @@
 package com.resired.api.resident.application.usecase;
 
 import com.resired.api.guard.domain.entity.Visitor;
-import com.resired.api.guard.domain.service.VisitorResident;
+import com.resired.api.resident.domain.service.VisitorResidentService;
 import com.resired.api.guard.domain.vo.Visit;
 import com.resired.api.resident.application.dto.VisitorRequestDTO;
-import com.resired.api.resident.domain.repository.ResidentPort;
 import com.resired.api.resident.domain.vo.RegisteredVisitor;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,18 +15,20 @@ import java.util.List;
 public class VisitUseCase {
 
     private final Visitor visitor;
-    private final VisitorResident visitorResident;
-    private final ResidentPort residentPort;
+    private final VisitorResidentService visitorResidentService;
 
     public String createVisitor(String emailResident, VisitorRequestDTO visitorDto) {
         Visit residentVisit = new Visit(visitorDto.name(), visitorDto.documentId(), visitorDto.telephone(), visitorDto.homeId(), emailResident);
-        return visitor.createVisit(residentVisit, visitorResident);
+        return visitor.createVisit(residentVisit, visitorResidentService);
     }
 
     public List<RegisteredVisitor> obtainVisitorByResident(String emailResident) {
-        return residentPort.obtainVisitors(emailResident);
+        return visitorResidentService.obtainVisitors(emailResident);
     }
 
+    public String allowVisitorToEnterAgain(String emailResident, String documentVisitor) {
+        return visitorResidentService.allowVisitorToEnterAgain(emailResident, documentVisitor);
+    }
 
     public void enableQrAgain() {
 

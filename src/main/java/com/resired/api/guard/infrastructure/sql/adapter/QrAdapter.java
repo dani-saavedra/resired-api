@@ -41,4 +41,9 @@ public class QrAdapter implements QrPort {
         qr.setDisabledAt(LocalDateTime.now());
         qrJpaRepository.save(qr);
     }
+
+    @Override
+    public void disableVisitorQrByIdVisitor(Integer idVisitor) {
+        qrJpaRepository.disableVisitorQrByIdVisitor(LocalDateTime.now(), idVisitor);
+    }
 }

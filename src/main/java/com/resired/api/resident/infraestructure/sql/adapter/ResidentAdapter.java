@@ -29,14 +29,7 @@ public class ResidentAdapter implements ResidentPort {
     @Override
     public String registerVisit(Integer userId, Integer homeId, String homeName, String vistorName, String visitorDocument, String telephone) {
         VisitorOrm visitor = visitorJpa.save(VisitorOrm.visitorFromResident(userId, homeId, homeName, vistorName, visitorDocument, telephone));
-        String token = generateToken(visitorDocument, visitor.toString());
-        QrOrm qr = new QrOrm();
-        qr.setVisitor(visitor);
-        qr.setAvailable(true);
-        qr.setCreatedAt(LocalDateTime.now());
-        qr.setQr(token);
-        qrJpaRepository.save(qr);
-        return token;
+        return generateAndSaveQR(visitor);
     }
 
     @Override
@@ -47,11 +40,37 @@ public class ResidentAdapter implements ResidentPort {
             .toList();
     }
 
+    @Override
+    public RegisteredVisitor obtainVisitorByDocumentAndEmailVisitor(String documentVisitor, String emailResident) {
+        VisitorOrm visitorOrm = visitorJpa.obtainVisitorByEmailResidentAndDocument(emailResident, documentVisitor);
+        if (visitorOrm == null) {
+            return null;
+        }
+        return new RegisteredVisitor(visitorOrm.getId(), visitorOrm.getName(), visitorOrm.getDocument());
+    }
+
+    @Override
+    public String reactiveVisitor(String emailResident, String visitorDocument) {
+        VisitorOrm visitorOrm = visitorJpa.obtainVisitorByEmailResidentAndDocument(emailResident, visitorDocument);
+        return generateAndSaveQR(visitorOrm);
+    }
+
     private String generateToken(String documentId, String info) {
         Date now = new Date();
         Date expiration = new Date(now.getTime() + EXPIRATION_TIME);
         Map<String, Object> claims = new HashMap<>();
         claims.put("info", info);
         return jwtSecurity.generateJwt(documentId, claims, expiration, now);
+    }
+
+    private String generateAndSaveQR(VisitorOrm visitor) {
+        String token = generateToken(visitor.getDocument(), visitor.toString());
+        QrOrm qr = new QrOrm();
+        qr.setVisitor(visitor);
+        qr.setAvailable(true);
+        qr.setCreatedAt(LocalDateTime.now());
+        qr.setQr(token);
+        qrJpaRepository.save(qr);
+        return token;
     }
 }
