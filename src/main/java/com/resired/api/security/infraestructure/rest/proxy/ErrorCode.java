@@ -5,6 +5,7 @@ public enum ErrorCode {
     USER02("Invalid credentials"),
     USER03("Invalid role"),
     VISIT01("QR invalid"),
+    HOME01("Home not found"),
     GENERAL("Unknown error");
 
     private final String description;

@@ -1,9 +1,9 @@
 package com.resired.api.guard.domain.service;
 
+import com.resired.api.guard.domain.exception.HomeNotFoundException;
 import com.resired.api.security.domain.enums.UserType;
 import com.resired.api.guard.domain.entity.Package;
 import com.resired.api.security.domain.exception.InactiveUserException;
-import com.resired.api.resident.domain.exception.InvalidHomeException;
 import com.resired.api.guard.domain.exception.InvalidRolException;
 import com.resired.api.guard.domain.repository.GuardPort;
 import com.resired.api.resident.domain.repository.HomePort;
@@ -38,7 +38,7 @@ public class PackageService {
         }
 
         if (homeId == null) {
-            throw new InvalidHomeException();//TODO update exception handler
+            throw new HomeNotFoundException();
         }
 
         Package packet = new Package(

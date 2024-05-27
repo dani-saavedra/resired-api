@@ -1,5 +1,6 @@
 package com.resired.api.security.infraestructure.rest.proxy;
 
+import com.resired.api.guard.domain.exception.HomeNotFoundException;
 import com.resired.api.guard.domain.exception.InvalidRolException;
 import com.resired.api.guard.application.exception.QrInvalidException;
 import com.resired.api.security.domain.exception.InactiveUserException;
@@ -47,12 +48,19 @@ public class ExceptionHandlerResired {
             , ErrorCode.VISIT01.getDescription()), HttpStatus.UNAUTHORIZED);
     }
 
+    @ExceptionHandler(value = HomeNotFoundException.class)
+    protected ResponseEntity<ErrorDTO> handleHomeNotFoundException(
+        RuntimeException ex, WebRequest request) {
+        log.error("Problems with home ", ex);
+        return new ResponseEntity<>(new ErrorDTO(ErrorCode.HOME01.name()
+            , ErrorCode.HOME01.getDescription()), HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(value = Exception.class)
     protected ResponseEntity<ErrorDTO> unexpected(Exception ex, WebRequest request) {
         log.error("unexpected error ", ex);
         return new ResponseEntity<>(new ErrorDTO(ErrorCode.GENERAL.name()
             , ErrorCode.GENERAL.getDescription()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
 
 }
