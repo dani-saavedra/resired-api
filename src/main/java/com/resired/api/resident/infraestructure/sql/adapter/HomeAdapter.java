@@ -30,4 +30,9 @@ public class HomeAdapter implements HomePort {
     public Integer getHomeIdByBlockAndNumber(String block, String number) {
         return jpaRepository.findHomeIdByBlockAndNumber(block, number);
     }
+
+    @Override
+    public Integer getHomeIdByNumberOnly(String homeNumber) {
+        return jpaRepository.findHomeIdByNumber(homeNumber);
+    }
 }

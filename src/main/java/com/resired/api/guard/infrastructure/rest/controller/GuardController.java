@@ -41,7 +41,6 @@ public class GuardController {
     @PostMapping("/package")
     public ResponseData<String> registerPackage(@RequestHeader(value = "Authorization") String bearer, @RequestBody PackageRequestDTO packageRequestDTO) {
         String email = jwtService.extractUsername(bearer.substring(7));
-        System.out.println(email);
         packageUseCase.registerPackage(email, packageRequestDTO.receiver(), packageRequestDTO.trackingNumber(), packageRequestDTO.packageTransporter(), packageRequestDTO.description(), packageRequestDTO.block(), packageRequestDTO.homeNumber());
         return new ResponseData<>("Registered package successfully");
     }

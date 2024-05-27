@@ -1,10 +1,10 @@
 package com.resired.api.guard.infrastructure.sql.adapter;
 
+import com.resired.api.guard.domain.entity.Package;
 import com.resired.api.guard.domain.repository.GuardPort;
 import com.resired.api.guard.infrastructure.sql.jpa.PackageJpaRepository;
 import com.resired.api.guard.infrastructure.sql.jpa.VisitJpaRepository;
 import com.resired.api.guard.infrastructure.sql.orm.VisitOrm;
-import com.resired.api.resident.domain.enums.PackageStatusEnum;
 import com.resired.api.resident.infraestructure.sql.jpa.QrJpaRepository;
 import com.resired.api.resident.infraestructure.sql.jpa.VisitorJpaRepository;
 import com.resired.api.resident.infraestructure.sql.orm.PackageOrm;
@@ -50,16 +50,16 @@ public class GuardAdapter implements GuardPort {
     }
 
     @Override
-    public void registerPackage(Integer guardId, Integer homeId, String receiver, String trackingNumber, String packageTransporter, String description) {
+    public void registerPackage(Package packet) {
         PackageOrm packageOrm = new PackageOrm();
-        packageOrm.setGuardId(guardId);
-        packageOrm.setHome(homeId);
-        packageOrm.setReceiver(receiver);
-        packageOrm.setTrackingNumber(trackingNumber);
-        packageOrm.setPackageTransporter(packageTransporter);
-        packageOrm.setDescription(description);
-        packageOrm.setCreatedDate(LocalDateTime.now());
-        packageOrm.setStatus(PackageStatusEnum.TO_COLLECT);
+        packageOrm.setGuardId(packet.getGuardId());
+        packageOrm.setHome(packet.getHomeId());
+        packageOrm.setReceiver(packet.getReceiver());
+        packageOrm.setTrackingNumber(packet.getTrackingNumber());
+        packageOrm.setPackageTransporter(packet.getPackageTransporter());
+        packageOrm.setDescription(packet.getDescription());
+        packageOrm.setCreatedDate(packet.getCreatedDate());
+        packageOrm.setStatus(packet.getStatus());
 
         packageJpaRepository.save(packageOrm);
     }
