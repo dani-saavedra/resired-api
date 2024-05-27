@@ -10,6 +10,8 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+
 @Repository
 @AllArgsConstructor
 @Transactional
@@ -35,7 +37,7 @@ public class UserAdapter implements UserPort {
 
     @Override
     public void changePassword(String documentId, String newEncryptPass) {
-        userJpaRepository.updatePassword(documentId, newEncryptPass);
+        userJpaRepository.updatePassword(documentId, newEncryptPass, LocalDateTime.now());
     }
 
 

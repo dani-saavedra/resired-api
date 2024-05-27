@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.springframework.stereotype.Service;
 
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.KeyFactory;
@@ -58,9 +59,9 @@ public class JwtSecurity {
     }
 
     private PrivateKey loadPrivateKey() throws Exception {
-
-        String privateKeyContent = new String(Files.readAllBytes(Paths.get(ClassLoader.getSystemResource("private_key.pem").toURI())))
-            .replaceAll("\\n", "")
+        InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream("private_key.pem");
+        String privateKeyContent = new String(resourceAsStream.readAllBytes())
+            .replaceAll("\\R", "")
             .replace("-----BEGIN PRIVATE KEY-----", "")
             .replace("-----END PRIVATE KEY-----", "");
         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(Base64.getDecoder().decode(privateKeyContent));
@@ -70,8 +71,9 @@ public class JwtSecurity {
 
     private PublicKey loadPublicKey() throws Exception {
 
-        String publicKeyContent = new String(Files.readAllBytes(Paths.get(ClassLoader.getSystemResource("public_key.pem").toURI())))
-            .replaceAll("\\n", "")
+        InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream("public_key.pem");
+        String publicKeyContent = new String(resourceAsStream.readAllBytes())
+            .replaceAll("\\R", "")
             .replace("-----BEGIN PUBLIC KEY-----", "")
             .replace("-----END PUBLIC KEY-----", "");
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(Base64.getDecoder().decode(publicKeyContent));

@@ -9,4 +9,8 @@ public interface ResidentPort {
     String registerVisit(Integer userId, Integer homeId, String homeName, String name, String visitorDocument, String telephone);
 
     List<RegisteredVisitor> obtainVisitors(String emailResident);
+
+    RegisteredVisitor obtainVisitorByDocumentAndEmailVisitor(String documentVisitor, String emailResident);
+
+    String reactiveVisitor(String emailResident, String visitorDocument);
 }

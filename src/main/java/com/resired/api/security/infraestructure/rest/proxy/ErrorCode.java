@@ -1,12 +1,17 @@
 package com.resired.api.security.infraestructure.rest.proxy;
 
+import lombok.Getter;
+
+@Getter
 public enum ErrorCode {
     USER01("User inactive"),
     USER02("Invalid credentials"),
     USER03("Invalid role"),
     VISIT01("QR invalid"),
+    VISIT02("Visitor is invalid"),
     HOME01("Home not found"),
-    GENERAL("Unknown error");
+    GENERAL("Unknown error"),
+    GENERAL_RESOURCE("Invalid url");
 
     private final String description;
 
@@ -14,7 +19,4 @@ public enum ErrorCode {
         this.description = description;
     }
 
-    public String getDescription() {
-        return description;
-    }
 }
