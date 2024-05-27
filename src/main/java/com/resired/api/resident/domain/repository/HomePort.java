@@ -7,4 +7,6 @@ public interface HomePort {
     Home getPackages(Integer homeId);
 
     Home getHomeById(Integer homeId);
+
+    Integer getHomeIdByBlockAndNumber(String block, String homeNumber);
 }
