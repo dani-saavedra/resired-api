@@ -28,7 +28,6 @@ public class Visitor {
     }
 
     public String createVisit(Visit residentVisit, CreateVisitor visitorService) {
-        //TODO Creacion de QR para enviarlo por wp que diga "presente este QR en porteria"
         return visitorService.createVisitor(residentVisit);
     }
 }

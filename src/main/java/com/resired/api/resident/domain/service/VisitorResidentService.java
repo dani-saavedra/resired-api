@@ -61,6 +61,5 @@ public class VisitorResidentService implements CreateVisitor, ManageVisitor {
         }
         qrPort.disableVisitorQrByIdVisitor(registeredVisitor.id());
         return residentPort.reactiveVisitor(emailResident, documentVisitor);
-        //TODO Enviar el nuevo QR por whatsapp
     }
 }

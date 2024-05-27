@@ -47,7 +47,6 @@ public class ResidentController {
 
     @PutMapping(path = "/qr/{qrId}")
     public void enableQR(@PathVariable Integer qrId) {
-        //TODO: Enviar QR a telefono registrado sin guardarlo nuevamente el visitante
         //revisando con richard el envio
     }
 
