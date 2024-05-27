@@ -6,16 +6,19 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public interface UserJpaRepository extends JpaRepository<UserOrm, UUID> {
 
     UserOrm findByEmailAndPassword(String email, String password);
+
     UserOrm findByEmail(String email);
 
     @Modifying(clearAutomatically = true)
-    @Query("update UserOrm userApp set userApp.password =:newPassword where userApp.documentId =:documentId")
-    void updatePassword(@Param("documentId") String documentId, @Param("newPassword") String newPassword);
+    @Query("update UserOrm userApp set userApp.password =:newPassword, userApp.updateDate =:updated where userApp.documentId =:documentId")
+    void updatePassword(@Param("documentId") String documentId, @Param("newPassword") String newPassword,
+                        @Param("updated") LocalDateTime updated);
 
     UserOrm findByDocumentId(String documentId);
 }
