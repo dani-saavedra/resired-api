@@ -21,24 +21,8 @@ public class PackageUseCase {
     private final PackageService packageService;
 
     public void registerPackage(String emailGuard, PackageRequestDTO packageRequestDTO) {
-        User guard = userPort.getGuardByEmail(emailGuard);
-        if (guard == null || !guard.isActive()) {
-            throw new InactiveUserException(emailGuard);
-        }
-        if (!guard.hasRole(UserType.GUARD)) {
-            throw new InvalidRolException(guard.getEmail());
-        }
-
-        Integer homeId;
-        if (packageRequestDTO.block().isPresent()) {
-            homeId = homePort.getHomeIdByBlockAndNumber(packageRequestDTO.block().get(), packageRequestDTO.homeNumber());
-        } else {
-            homeId = homePort.getHomeIdByNumberOnly(packageRequestDTO.homeNumber());
-        }
-
-        if (homeId == null) {
-            throw new HomeNotFoundException();
-        }
+        User guard = validateGuard(emailGuard);
+        Integer homeId = findHomeId(packageRequestDTO);
 
         Package packet = new Package(
             guard.getId(),
@@ -50,5 +34,33 @@ public class PackageUseCase {
         );
 
         packageService.registerPackage(packet);
+    }
+
+    private User validateGuard(String emailGuard) {
+        User guard = userPort.getGuardByEmail(emailGuard);
+        if (guard == null || !guard.isActive()) {
+            throw new InactiveUserException(emailGuard);
+        }
+        if (!guard.hasRole(UserType.GUARD)) {
+            throw new InvalidRolException(guard.getEmail());
+        }
+        return guard;
+    }
+
+    private Integer findHomeId(PackageRequestDTO packageRequestDTO) {
+        Integer homeId;
+        if (packageRequestDTO.block().isPresent()) {
+            homeId = homePort.getHomeIdByBlockAndNumber(packageRequestDTO.block().get(), packageRequestDTO.homeNumber());
+        } else {
+            homeId = homePort.getHomeIdByNumberOnly(packageRequestDTO.homeNumber());
+        }
+
+        if (homeId == null) {
+            throw packageRequestDTO.block()
+                .map(block -> new HomeNotFoundException(block, packageRequestDTO.homeNumber()))
+                .orElseGet(() -> new HomeNotFoundException(packageRequestDTO.homeNumber()));
+        }
+
+        return homeId;
     }
 }

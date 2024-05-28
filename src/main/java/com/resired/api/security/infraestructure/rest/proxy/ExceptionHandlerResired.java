@@ -55,7 +55,7 @@ public class ExceptionHandlerResired {
         RuntimeException ex, WebRequest request) {
         log.error("Problems with home ", ex);
         return new ResponseEntity<>(new ErrorDTO(ErrorCode.HOME01.name()
-            , ErrorCode.HOME01.getDescription()), HttpStatus.NOT_FOUND);
+            , ErrorCode.HOME01.getDescription()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(value = Exception.class)
