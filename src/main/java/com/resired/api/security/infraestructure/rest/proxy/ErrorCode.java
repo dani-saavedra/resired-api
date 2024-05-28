@@ -10,7 +10,8 @@ public enum ErrorCode {
     VISIT01("QR invalid"),
     VISIT02("Visitor is invalid"),
     GENERAL("Unknown error"),
-    GENERAL_RESOURCE("Invalid url");
+    GENERAL_RESOURCE("Invalid url"),
+    DEVICE01("Device already exists");
 
     private final String description;
 
