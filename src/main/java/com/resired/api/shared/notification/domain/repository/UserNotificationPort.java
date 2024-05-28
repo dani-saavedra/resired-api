@@ -8,4 +8,6 @@ public interface UserNotificationPort {
     void addDevice(String email, Device device);
 
     List<Device> getAllDevicesByEmail(String email);
+
+    Device getDeviceByIDAndEmail(String deviceID, String email);
 }
