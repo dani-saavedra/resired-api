@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ResidentPort {
 
-    String registerVisit(Integer userId, Integer homeId, String homeName, String name, String visitorDocument, String telephone);
+    String registerVisit(Integer userId, Integer homeId, String homeName, String name, String visitorDocument, String telephone, boolean favorite);
 
     List<RegisteredVisitor> obtainVisitors(String emailResident);
 

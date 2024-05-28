@@ -5,8 +5,11 @@ import com.resired.api.security.infraestructure.sql.orm.UserOrm;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
 
 import java.time.LocalDateTime;
+
+import static java.sql.Types.TINYINT;
 
 @Entity
 @Table(name = "visitor")
@@ -45,15 +48,20 @@ public class VisitorOrm {
     @Column
     private Integer deleted;
 
+    @JdbcTypeCode(TINYINT)
+    private Boolean favorite;
+
     public Boolean isDelete() {
         return deleted == 1;
     }
 
-    public static VisitorOrm visitorFromResident(Integer userId, Integer homeId, String homeName, String name, String document, String telephone) {
+    public static VisitorOrm visitorFromResident(Integer userId, Integer homeId, String homeName, String name, String document,
+                                                 String telephone, boolean isFavorite) {
         VisitorOrm result = getResult(userId, homeId, homeName, name, document, telephone);
         UserOrm authorizingUser = new UserOrm();
         authorizingUser.setId(userId);
         result.authorizingUser = authorizingUser;
+        result.favorite = isFavorite;
         return result;
     }
 

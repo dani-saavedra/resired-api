@@ -44,8 +44,8 @@ public class VisitorResidentService implements CreateVisitor, ManageVisitor {
                 throw new InvalidVisitorException(residentVisit.documentVisitor());
             }
         }
-        return residentPort.registerVisit(resident.getId(), home.getId(), home.getName(),
-            residentVisit.nameVisitor(), residentVisit.documentVisitor(), residentVisit.telephoneVisitor());
+        return residentPort.registerVisit(resident.getId(), home.getId(), home.getName(), residentVisit.nameVisitor(),
+            residentVisit.documentVisitor(), residentVisit.telephoneVisitor(), residentVisit.favorite());
     }
 
     @Override
