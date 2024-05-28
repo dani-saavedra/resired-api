@@ -4,7 +4,7 @@ import com.resired.api.guard.application.usecase.GuardVisitUseCase;
 import com.resired.api.guard.application.usecase.PackageUseCase;
 import com.resired.api.guard.domain.entity.Visitor;
 import com.resired.api.guard.infrastructure.rest.dto.InfoQrRequest;
-import com.resired.api.guard.infrastructure.rest.dto.PackageRequestDTO;
+import com.resired.api.guard.application.dto.PackageRequestDTO;
 import com.resired.api.resident.application.dto.VisitorRequestDTO;
 import com.resired.api.resident.infraestructure.rest.dto.ResponseData;
 import com.resired.api.security.application.usecase.JwtService;
@@ -41,7 +41,7 @@ public class GuardController {
     @PostMapping("/package")
     public ResponseData<String> registerPackage(@RequestHeader(value = "Authorization") String bearer, @RequestBody PackageRequestDTO packageRequestDTO) {
         String email = jwtService.extractUsername(bearer.substring(7));
-        packageUseCase.registerPackage(email, packageRequestDTO.receiver(), packageRequestDTO.trackingNumber(), packageRequestDTO.packageTransporter(), packageRequestDTO.description(), packageRequestDTO.block(), packageRequestDTO.homeNumber());
+        packageUseCase.registerPackage(email, packageRequestDTO);
         return new ResponseData<>("Registered package successfully");
     }
 }

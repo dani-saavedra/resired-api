@@ -1,4 +1,4 @@
-package com.resired.api.guard.infrastructure.rest.dto;
+package com.resired.api.guard.application.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
