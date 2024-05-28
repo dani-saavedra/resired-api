@@ -1,6 +1,5 @@
 package com.resired.api.shared.notification.application.usecase;
 
-import com.resired.api.shared.notification.application.dto.NewDeviceRequest;
 import com.resired.api.shared.notification.domain.entity.Device;
 import com.resired.api.shared.notification.domain.exception.DeviceAlreadyExistsException;
 import com.resired.api.shared.notification.domain.repository.DevicePort;
@@ -14,9 +13,7 @@ public class DeviceUseCase {
     private final UserNotificationPort userPort;
     private final DevicePort devicePort;
 
-    public void registerDevice(NewDeviceRequest deviceDTO, String email) {
-        Device device = new Device(deviceDTO.deviceID(), deviceDTO.allowNotifications());
-
+    public void registerDevice(Device device, String email) {
         if (devicePort.alreadyExists(device.getId())) {
             throw new DeviceAlreadyExistsException(device.getId());
         }
