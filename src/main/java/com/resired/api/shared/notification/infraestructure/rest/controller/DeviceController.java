@@ -34,4 +34,13 @@ public class DeviceController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Device> getDevice(
+        @RequestHeader(value = "Authorization") String bearer,
+        @PathVariable String id) {
+        String email = jwtService.extractUsername(bearer.substring(7));
+        Device device = deviceUseCase.getDevice(id, email);
+        return ResponseEntity.ok(device);
+    }
+
 }

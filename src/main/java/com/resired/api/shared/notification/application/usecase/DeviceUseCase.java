@@ -29,4 +29,12 @@ public class DeviceUseCase {
         }
         devicePort.removeDevice(deviceID);
     }
+
+    public Device getDevice(String deviceID, String email) {
+        Device device = userPort.getDeviceByIDAndEmail(deviceID, email);
+        if (device == null) {
+            throw new DeviceNotFoundException(deviceID, email);
+        }
+        return device;
+    }
 }
