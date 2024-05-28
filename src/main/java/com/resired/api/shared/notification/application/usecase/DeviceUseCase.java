@@ -8,6 +8,8 @@ import com.resired.api.shared.notification.domain.repository.UserNotificationPor
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class DeviceUseCase {
@@ -36,5 +38,9 @@ public class DeviceUseCase {
             throw new DeviceNotFoundException(deviceID, email);
         }
         return device;
+    }
+
+    public List<Device> getDevicesByUser(String email) {
+        return userPort.getAllDevicesByEmail(email);
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/devices")
@@ -48,6 +49,16 @@ public class DeviceController {
         String email = jwtService.extractUsername(bearer.substring(7));
         Device device = deviceUseCase.getDevice(id, email);
         return ResponseEntity.ok(device);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Device>> getDevices(
+        @RequestHeader(value = "Authorization") String bearer
+    ) {
+        String email = jwtService.extractUsername(bearer.substring(7));
+        List<Device> devices = deviceUseCase.getDevicesByUser(email);
+
+        return ResponseEntity.ok(devices);
     }
 
 }
