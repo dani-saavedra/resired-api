@@ -32,6 +32,6 @@ public class DeviceAdapter implements DevicePort {
 
     @Override
     public void removeDevice(String deviceID) {
-        deviceRepository.deleteDeviceOrmById(deviceID);
+        deviceRepository.deleteById(deviceID);
     }
 }
