@@ -6,7 +6,7 @@ import lombok.Getter;
 public class Notification {
     private final Integer id;
     private final String message;
-    private final Boolean received;
+    private Boolean received;
 
     public Notification(Integer id, String message, Boolean received) {
         this.id = id;
