@@ -1,5 +1,6 @@
 package com.resired.api.security.infraestructure.sql.orm;
 
+import com.resired.api.shared.notification.infraestructure.sql.orm.DeviceOrm;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,6 +26,9 @@ public class UserOrm {
 
     @OneToMany(mappedBy = "userId", fetch = FetchType.EAGER)
     private List<UserRolOrm> userRols;
+
+    @OneToMany(mappedBy = "userId", fetch = FetchType.EAGER)
+    private List<DeviceOrm> devices;
 
     @Column
     private String firstName;
