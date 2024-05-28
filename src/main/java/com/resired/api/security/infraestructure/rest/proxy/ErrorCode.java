@@ -11,7 +11,8 @@ public enum ErrorCode {
     VISIT02("Visitor is invalid"),
     HOME01("Home not found"),
     GENERAL("Unknown error"),
-    GENERAL_RESOURCE("Invalid url");
+    GENERAL_RESOURCE("Invalid url"),
+    DEVICE01("Device already exists");
 
     private final String description;
 

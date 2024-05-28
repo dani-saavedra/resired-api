@@ -3,9 +3,11 @@ package com.resired.api.security.infraestructure.rest.proxy;
 import com.resired.api.guard.domain.exception.HomeNotFoundException;
 import com.resired.api.guard.domain.exception.InvalidRolException;
 import com.resired.api.guard.application.exception.QrInvalidException;
+import com.resired.api.guard.domain.exception.InvalidRolException;
 import com.resired.api.resident.domain.exception.InvalidVisitorException;
-import com.resired.api.security.domain.exception.InactiveUserException;
 import com.resired.api.security.application.exception.InvalidCredentialException;
+import com.resired.api.security.domain.exception.InactiveUserException;
+import com.resired.api.shared.notification.domain.exception.DeviceAlreadyExistsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -78,6 +80,14 @@ public class ExceptionHandlerResired {
         log.error("The visitor is invalid ", ex);
         return new ResponseEntity<>(new ErrorDTO(ErrorCode.VISIT02.name()
             , ErrorCode.VISIT02.getDescription()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = DeviceAlreadyExistsException.class)
+    protected ResponseEntity<ErrorDTO> handleAlreadyExistsDevice(
+        RuntimeException ex, WebRequest request) {
+        log.error("The device already exists ", ex);
+        return new ResponseEntity<>(new ErrorDTO(ErrorCode.DEVICE01.name(),
+            ErrorCode.DEVICE01.getDescription()), HttpStatus.CONFLICT);
     }
 
 }

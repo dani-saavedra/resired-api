@@ -33,7 +33,8 @@ public class GuardVisitUseCase {
     }
 
     public void registerVisitor(String emailGuard, VisitorRequestDTO visitorDto) {
-        Visit residentVisit = new Visit(visitorDto.name(), visitorDto.documentId(), visitorDto.telephone(), visitorDto.homeId(), emailGuard);
+        Visit residentVisit = new Visit(visitorDto.name(), visitorDto.documentId(), visitorDto.telephone(),
+            visitorDto.homeId(), emailGuard, false);
         String tokenUUID = visitor.createVisit(residentVisit, visitorGuardService);
         guardPort.registerVisit(tokenUUID);
     }

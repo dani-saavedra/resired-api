@@ -27,8 +27,10 @@ public class ResidentAdapter implements ResidentPort {
     private static final long EXPIRATION_TIME = 172800000;
 
     @Override
-    public String registerVisit(Integer userId, Integer homeId, String homeName, String vistorName, String visitorDocument, String telephone) {
-        VisitorOrm visitor = visitorJpa.save(VisitorOrm.visitorFromResident(userId, homeId, homeName, vistorName, visitorDocument, telephone));
+    public String registerVisit(Integer userId, Integer homeId, String homeName, String vistorName, String visitorDocument,
+                                String telephone, boolean favorite) {
+        VisitorOrm visitor = visitorJpa.save(VisitorOrm.visitorFromResident(userId, homeId, homeName, vistorName,
+            visitorDocument, telephone, favorite));
         return generateAndSaveQR(visitor);
     }
 
