@@ -23,4 +23,15 @@ public class DeviceController {
         deviceUseCase.registerDevice(request, email);
         return ResponseEntity.ok("Device saved successfully");
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteDevice(
+        @RequestHeader(value = "Authorization") String bearer,
+        @PathVariable String id) {
+        String email = jwtService.extractUsername(bearer.substring(7));
+
+        deviceUseCase.removeDevice(id, email);
+        return ResponseEntity.noContent().build();
+    }
+
 }
