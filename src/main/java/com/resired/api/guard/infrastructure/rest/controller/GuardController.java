@@ -32,14 +32,16 @@ public class GuardController {
     }
 
     @PostMapping("/visitor")
-    public ResponseData<String> registerVisitor(@RequestHeader(value = "Authorization") String bearer, @RequestBody VisitorRequestDTO visitorRequestDTO) {
+    public ResponseData<String> registerVisitor(@RequestHeader(value = "Authorization") String bearer,
+                                                @RequestBody VisitorRequestDTO visitorRequestDTO) {
         String email = jwtService.extractUsername(bearer.substring(7));
         visitUseCase.registerVisitor(email, visitorRequestDTO);
         return new ResponseData<>("Registered visit successfully");
     }
 
     @PostMapping("/package")
-    public ResponseData<String> registerPackage(@RequestHeader(value = "Authorization") String bearer, @RequestBody PackageRequestDTO packageRequestDTO) {
+    public ResponseData<String> registerPackage(@RequestHeader(value = "Authorization") String bearer,
+                                                @RequestBody PackageRequestDTO packageRequestDTO) {
         String email = jwtService.extractUsername(bearer.substring(7));
         packageUseCase.registerPackage(email, packageRequestDTO);
         return new ResponseData<>("Registered package successfully");

@@ -17,7 +17,8 @@ public class Visitor {
     String authorizer;
     boolean availableToEnter;
 
-    public static Visitor createVisitor(String visitorName, String visitorDocument, String home, String authorizer, boolean availableToEnter) {
+    public static Visitor createVisitor(String visitorName, String visitorDocument, String home,
+                                        String authorizer, boolean availableToEnter) {
         Visitor visitor = new Visitor();
         visitor.visitorName = visitorName;
         visitor.visitorDocument = visitorDocument;

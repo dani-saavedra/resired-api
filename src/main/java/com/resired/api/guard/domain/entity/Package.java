@@ -16,7 +16,8 @@ public class Package {
     private final PackageStatusEnum status;
     private final LocalDateTime createdDate;
 
-    public Package(Integer guardId, Integer homeId, String receiver, String trackingNumber, String packageTransporter, String description) {
+    public Package(Integer guardId, Integer homeId, String receiver,
+                   String trackingNumber, String packageTransporter, String description) {
         this.guardId = guardId;
         this.homeId = homeId;
         this.receiver = receiver;

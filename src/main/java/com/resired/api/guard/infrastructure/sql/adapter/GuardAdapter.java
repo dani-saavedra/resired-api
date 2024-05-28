@@ -36,9 +36,11 @@ public class GuardAdapter implements GuardPort {
     }
 
     @Override
-    public String registerVisitFromGuard(Integer guardId, Integer homeId, String homeName, String visitorName, String visitorDocument, String visitorTelephone) {
+    public String registerVisitFromGuard(Integer guardId, Integer homeId, String homeName,
+                                         String visitorName, String visitorDocument, String visitorTelephone) {
         String tokenUUID = UUID.randomUUID().toString();
-        VisitorOrm visitor = visitorJpa.save(VisitorOrm.visitorFromGuard(guardId, homeId, homeName, visitorName, visitorDocument, visitorTelephone));
+        VisitorOrm visitor = visitorJpa.save(VisitorOrm.visitorFromGuard(guardId, homeId, homeName,
+            visitorName, visitorDocument, visitorTelephone));
         QrOrm qr = new QrOrm();
         qr.setVisitor(visitor);
         qr.setAvailable(false);
