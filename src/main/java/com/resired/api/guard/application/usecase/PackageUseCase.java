@@ -3,7 +3,7 @@ package com.resired.api.guard.application.usecase;
 import com.resired.api.guard.application.dto.PackageRequestDTO;
 import com.resired.api.guard.domain.exception.HomeNotFoundException;
 import com.resired.api.guard.domain.exception.InvalidRolException;
-import com.resired.api.guard.domain.service.PackageService;
+import com.resired.api.guard.domain.repository.PackagePort;
 import com.resired.api.resident.domain.repository.HomePort;
 import com.resired.api.guard.domain.entity.Package;
 import com.resired.api.security.domain.entity.User;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 public class PackageUseCase {
     private final UserPort userPort;
     private final HomePort homePort;
-    private final PackageService packageService;
+    private final PackagePort packagePort;
 
     public void registerPackage(String emailGuard, PackageRequestDTO packageRequestDTO) {
         User guard = validateGuard(emailGuard);
@@ -33,7 +33,7 @@ public class PackageUseCase {
             packageRequestDTO.description()
         );
 
-        packageService.registerPackage(packet);
+        packagePort.registerPackage(packet);
     }
 
     private User validateGuard(String emailGuard) {
@@ -52,7 +52,7 @@ public class PackageUseCase {
         if (packageRequestDTO.block().isPresent()) {
             homeId = homePort.getHomeIdByBlockAndNumber(packageRequestDTO.block().get(), packageRequestDTO.homeNumber());
         } else {
-            homeId = homePort.getHomeIdByNumberOnly(packageRequestDTO.homeNumber());
+            homeId = homePort.getHomeIdByNumber(packageRequestDTO.homeNumber());
         }
 
         if (homeId == null) {

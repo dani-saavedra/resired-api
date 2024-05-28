@@ -8,6 +8,4 @@ public interface GuardPort {
 
     String registerVisitFromGuard(Integer userId, Integer homeId, String homeName,
                                   String name, String visitorDocument, String telephone);
-
-    void registerPackage(Package packet);
 }

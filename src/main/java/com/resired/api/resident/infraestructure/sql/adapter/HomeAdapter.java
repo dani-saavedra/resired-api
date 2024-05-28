@@ -32,7 +32,7 @@ public class HomeAdapter implements HomePort {
     }
 
     @Override
-    public Integer getHomeIdByNumberOnly(String homeNumber) {
+    public Integer getHomeIdByNumber(String homeNumber) {
         return jpaRepository.findHomeIdByNumber(homeNumber);
     }
 }

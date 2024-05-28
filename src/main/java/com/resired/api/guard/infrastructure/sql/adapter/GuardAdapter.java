@@ -2,6 +2,7 @@ package com.resired.api.guard.infrastructure.sql.adapter;
 
 import com.resired.api.guard.domain.entity.Package;
 import com.resired.api.guard.domain.repository.GuardPort;
+import com.resired.api.guard.domain.repository.PackagePort;
 import com.resired.api.guard.infrastructure.sql.jpa.PackageJpaRepository;
 import com.resired.api.guard.infrastructure.sql.jpa.VisitJpaRepository;
 import com.resired.api.guard.infrastructure.sql.orm.VisitOrm;
@@ -18,7 +19,7 @@ import java.util.UUID;
 
 @Repository
 @AllArgsConstructor
-public class GuardAdapter implements GuardPort {
+public class GuardAdapter implements GuardPort, PackagePort {
 
     private final QrJpaRepository qrJpaRepository;
     private final VisitJpaRepository visitJpaRepository;
