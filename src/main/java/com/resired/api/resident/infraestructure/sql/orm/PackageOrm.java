@@ -17,14 +17,14 @@ import java.time.LocalDateTime;
 public class PackageOrm {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column
     private Integer guardId;
 
-    @JoinColumn(name = "home_id")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private HomeOrm home;
+    @Column(name = "home_id")
+    private Integer home;
 
     @Column
     private String receiver;

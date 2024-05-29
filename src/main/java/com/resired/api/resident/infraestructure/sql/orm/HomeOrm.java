@@ -20,6 +20,12 @@ public class HomeOrm {
     @Column
     private String name;
 
+    @Column
+    private String block;
+
+    @Column(name = "home_number")
+    private String number;
+
     @Column(name = "type")
     private String homeType;
 

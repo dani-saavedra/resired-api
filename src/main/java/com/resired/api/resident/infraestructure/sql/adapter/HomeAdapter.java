@@ -25,4 +25,14 @@ public class HomeAdapter implements HomePort {
             .map(homeOrm -> new Home(homeOrm.getId(), homeOrm.getName()))
             .orElse(null);
     }
+
+    @Override
+    public Integer getHomeIdByBlockAndNumber(String block, String number) {
+        return jpaRepository.findHomeIdByBlockAndNumber(block, number);
+    }
+
+    @Override
+    public Integer getHomeIdByNumber(String homeNumber) {
+        return jpaRepository.findHomeIdByNumber(homeNumber);
+    }
 }

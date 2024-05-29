@@ -1,10 +1,14 @@
 package com.resired.api.guard.infrastructure.sql.adapter;
 
+import com.resired.api.guard.domain.entity.Package;
 import com.resired.api.guard.domain.repository.GuardPort;
+import com.resired.api.guard.domain.repository.PackagePort;
+import com.resired.api.guard.infrastructure.sql.jpa.PackageJpaRepository;
 import com.resired.api.guard.infrastructure.sql.jpa.VisitJpaRepository;
 import com.resired.api.guard.infrastructure.sql.orm.VisitOrm;
 import com.resired.api.resident.infraestructure.sql.jpa.QrJpaRepository;
 import com.resired.api.resident.infraestructure.sql.jpa.VisitorJpaRepository;
+import com.resired.api.resident.infraestructure.sql.orm.PackageOrm;
 import com.resired.api.resident.infraestructure.sql.orm.QrOrm;
 import com.resired.api.resident.infraestructure.sql.orm.VisitorOrm;
 import lombok.AllArgsConstructor;
@@ -15,12 +19,12 @@ import java.util.UUID;
 
 @Repository
 @AllArgsConstructor
-public class GuardAdapter implements GuardPort {
+public class GuardAdapter implements GuardPort, PackagePort {
 
     private final QrJpaRepository qrJpaRepository;
     private final VisitJpaRepository visitJpaRepository;
-
     private final VisitorJpaRepository visitorJpa;
+    private final PackageJpaRepository packageJpaRepository;
 
     @Override
     public void registerVisit(String qrStr) {
@@ -33,9 +37,11 @@ public class GuardAdapter implements GuardPort {
     }
 
     @Override
-    public String registerVisitFromGuard(Integer guardId, Integer homeId, String homeName, String visitorName, String visitorDocument, String visitorTelephone) {
+    public String registerVisitFromGuard(Integer guardId, Integer homeId, String homeName,
+                                         String visitorName, String visitorDocument, String visitorTelephone) {
         String tokenUUID = UUID.randomUUID().toString();
-        VisitorOrm visitor = visitorJpa.save(VisitorOrm.visitorFromGuard(guardId, homeId, homeName, visitorName, visitorDocument, visitorTelephone));
+        VisitorOrm visitor = visitorJpa.save(VisitorOrm.visitorFromGuard(guardId, homeId, homeName,
+            visitorName, visitorDocument, visitorTelephone));
         QrOrm qr = new QrOrm();
         qr.setVisitor(visitor);
         qr.setAvailable(false);
@@ -44,5 +50,20 @@ public class GuardAdapter implements GuardPort {
         qr.setQr(tokenUUID);
         qrJpaRepository.save(qr);
         return tokenUUID;
+    }
+
+    @Override
+    public void registerPackage(Package packet) {
+        PackageOrm packageOrm = new PackageOrm();
+        packageOrm.setGuardId(packet.getGuardId());
+        packageOrm.setHome(packet.getHomeId());
+        packageOrm.setReceiver(packet.getReceiver());
+        packageOrm.setTrackingNumber(packet.getTrackingNumber());
+        packageOrm.setPackageTransporter(packet.getPackageTransporter());
+        packageOrm.setDescription(packet.getDescription());
+        packageOrm.setCreatedDate(packet.getCreatedDate());
+        packageOrm.setStatus(packet.getStatus());
+
+        packageJpaRepository.save(packageOrm);
     }
 }
