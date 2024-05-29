@@ -13,6 +13,8 @@ import com.resired.api.security.domain.repository.UserPort;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class PackageUseCase {
@@ -34,6 +36,11 @@ public class PackageUseCase {
         );
 
         packagePort.registerPackage(packet);
+    }
+
+    public List<Package> getPackagesByNeighborhood(String emailGuard, Integer neighborhoodId){
+        validateGuard(emailGuard);
+        return packagePort.findAllByNeighborhoodId(neighborhoodId);
     }
 
     private User validateGuard(String emailGuard) {

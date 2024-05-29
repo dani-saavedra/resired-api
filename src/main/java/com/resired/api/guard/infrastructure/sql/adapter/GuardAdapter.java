@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Repository
@@ -65,5 +66,23 @@ public class GuardAdapter implements GuardPort, PackagePort {
         packageOrm.setStatus(packet.getStatus());
 
         packageJpaRepository.save(packageOrm);
+    }
+
+    @Override
+    public List<Package> findAllByNeighborhoodId(Integer neighborhoodId) {
+        List<PackageOrm> packageOrms = packageJpaRepository.findAllByNeighborhoodId(neighborhoodId);
+        return packageOrms.stream().map(this::toPackageDomain).toList();
+    }
+
+    private Package toPackageDomain(PackageOrm packageOrm) {
+        // TODO update this method, status and date are wrong
+        return new Package(
+            packageOrm.getGuardId(),
+            packageOrm.getHome(),
+            packageOrm.getReceiver(),
+            packageOrm.getTrackingNumber(),
+            packageOrm.getPackageTransporter(),
+            packageOrm.getDescription()
+        );
     }
 }
