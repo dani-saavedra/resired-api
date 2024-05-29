@@ -7,12 +7,12 @@ import java.time.LocalDateTime;
 
 public record PackageResponseDTO(
     @JsonProperty("guard_id") Integer guardId,
-    String block,
+    @JsonProperty("block") String block,
     @JsonProperty("home_number") String homeNumber,
-    String receiver,
+    @JsonProperty("receiver") String receiver,
     @JsonProperty("tracking_number") String trackingNumber,
     @JsonProperty("package_transporter") String packageTransporter,
-    String description,
-    PackageStatusEnum status,
+    @JsonProperty("description") String description,
+    @JsonProperty("status") PackageStatusEnum status,
     @JsonProperty("created_date") LocalDateTime createdDate) {
 }
