@@ -32,6 +32,15 @@ public class UserNotificationAdapter implements UserNotificationPort {
         return user.getDevices().stream().map(this::convertToDevice).toList();
     }
 
+    @Override
+    public Device getDeviceByIDAndEmail(String deviceID, String email) {
+        Integer userID = userRepository.findByEmail(email).getId();
+        DeviceOrm device = deviceRepository.findDeviceOrmByIdAndUserId(deviceID, userID);
+
+        if (device == null) return null;
+        return convertToDevice(device);
+    }
+
     private Device convertToDevice(DeviceOrm deviceOrm) {
         return new Device(deviceOrm.getId(), deviceOrm.getAllowNotifications());
     }

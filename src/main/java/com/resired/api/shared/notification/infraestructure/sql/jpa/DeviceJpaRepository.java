@@ -6,10 +6,10 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 public interface DeviceJpaRepository extends JpaRepository<DeviceOrm, String> {
-    void deleteDeviceOrmById(String id);
-
     @Modifying
     @Query("update DeviceOrm d set d.allowNotifications = ?2 where d.id = ?1")
     void changeNotificationPermission(String id, Boolean status);
+
+    DeviceOrm findDeviceOrmByIdAndUserId(String deviceID, Integer userID);
 
 }

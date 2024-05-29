@@ -8,6 +8,7 @@ import com.resired.api.resident.domain.exception.InvalidVisitorException;
 import com.resired.api.security.application.exception.InvalidCredentialException;
 import com.resired.api.security.domain.exception.InactiveUserException;
 import com.resired.api.shared.notification.domain.exception.DeviceAlreadyExistsException;
+import com.resired.api.shared.notification.domain.exception.DeviceNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -88,6 +89,14 @@ public class ExceptionHandlerResired {
         log.error("The device already exists ", ex);
         return new ResponseEntity<>(new ErrorDTO(ErrorCode.DEVICE01.name(),
             ErrorCode.DEVICE01.getDescription()), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(value = DeviceNotFoundException.class)
+    protected ResponseEntity<ErrorDTO> handleDeviceForUserNotFound(
+        RuntimeException ex, WebRequest request) {
+        log.error("Device not found ", ex);
+        return new ResponseEntity<>(new ErrorDTO(ErrorCode.DEVICE02.name(),
+            ErrorCode.DEVICE02.getDescription()), HttpStatus.NOT_FOUND);
     }
 
 }

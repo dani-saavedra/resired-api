@@ -12,7 +12,8 @@ public enum ErrorCode {
     HOME01("Home not found"),
     GENERAL("Unknown error"),
     GENERAL_RESOURCE("Invalid url"),
-    DEVICE01("Device already exists");
+    DEVICE01("Device already exists"),
+    DEVICE02("Device for user not found");
 
     private final String description;
 
