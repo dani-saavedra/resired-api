@@ -5,6 +5,7 @@ import com.resired.api.security.application.exception.InvalidCredentialException
 import com.resired.api.security.domain.entity.User;
 import com.resired.api.security.domain.repository.UserPort;
 import com.resired.api.security.domain.service.AuthenticationService;
+import com.resired.api.security.domain.service.RecoveryPasswordService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,8 @@ public class AccountUseCase {
 
     private final UserPort userPort;
     private final AuthenticationService authService;
+    private RecoveryPasswordService recoveryPasswordService;
+
 
     public void resetPassword(ResetPasswordRequest request) throws GeneralSecurityException {
         String encryptPass = authService.encrypt(request.oldPassword());
@@ -25,5 +28,9 @@ public class AccountUseCase {
         }
         String newEncryptPass = authService.encrypt(request.newPassword());
         userPort.changePassword(user.getDocumentId(), newEncryptPass);
+    }
+
+    public void createPasswordResetTokenForUser(String email) {
+        recoveryPasswordService.createPasswordResetTokenForUser(email);
     }
 }
