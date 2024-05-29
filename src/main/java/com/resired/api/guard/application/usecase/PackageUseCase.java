@@ -1,6 +1,7 @@
 package com.resired.api.guard.application.usecase;
 
 import com.resired.api.guard.application.dto.PackageRequestDTO;
+import com.resired.api.guard.application.dto.PackageResponseDTO;
 import com.resired.api.guard.domain.exception.HomeNotFoundException;
 import com.resired.api.guard.domain.exception.InvalidRolException;
 import com.resired.api.guard.domain.repository.PackagePort;
@@ -14,6 +15,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -38,9 +40,13 @@ public class PackageUseCase {
         packagePort.registerPackage(packet);
     }
 
-    public List<Package> getPackagesByNeighborhood(String emailGuard, Integer neighborhoodId){
+    public List<PackageResponseDTO> getPackagesByNeighborhood(String emailGuard, Integer neighborhoodId) {
         validateGuard(emailGuard);
-        return packagePort.findAllByNeighborhoodId(neighborhoodId);
+        List<Package> packages = packagePort.findAllByNeighborhoodId(neighborhoodId);
+
+        return packages.stream()
+            .map(this::toPackageResponseDTO)
+            .collect(Collectors.toList());
     }
 
     private User validateGuard(String emailGuard) {
@@ -69,5 +75,22 @@ public class PackageUseCase {
         }
 
         return homeId;
+    }
+
+    private PackageResponseDTO toPackageResponseDTO(Package pkg) {
+        String block = homePort.getBlockById(pkg.getHomeId());
+        String homeNumber = homePort.getHomeNumberById(pkg.getHomeId());
+
+        return new PackageResponseDTO(
+            pkg.getGuardId(),
+            block,
+            homeNumber,
+            pkg.getReceiver(),
+            pkg.getTrackingNumber(),
+            pkg.getPackageTransporter(),
+            pkg.getDescription(),
+            pkg.getStatus(),
+            pkg.getCreatedDate()
+        );
     }
 }

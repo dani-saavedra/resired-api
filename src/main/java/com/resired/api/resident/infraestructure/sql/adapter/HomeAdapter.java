@@ -3,6 +3,7 @@ package com.resired.api.resident.infraestructure.sql.adapter;
 import com.resired.api.resident.domain.entity.Home;
 import com.resired.api.resident.domain.repository.HomePort;
 import com.resired.api.resident.infraestructure.sql.jpa.HomeJpaRepository;
+import com.resired.api.resident.infraestructure.sql.orm.HomeOrm;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -34,5 +35,17 @@ public class HomeAdapter implements HomePort {
     @Override
     public Integer getHomeIdByNumber(String homeNumber) {
         return jpaRepository.findHomeIdByNumber(homeNumber);
+    }
+
+    @Override
+    public String getBlockById(Integer homeId) {
+        HomeOrm homeOrm = jpaRepository.findById(homeId).orElse(null);
+        return homeOrm != null ? homeOrm.getBlock() : null;
+    }
+
+    @Override
+    public String getHomeNumberById(Integer homeId) {
+        HomeOrm homeOrm = jpaRepository.findById(homeId).orElse(null);
+        return homeOrm != null ? homeOrm.getNumber() : null;
     }
 }

@@ -1,9 +1,9 @@
 package com.resired.api.guard.infrastructure.rest.controller;
 
+import com.resired.api.guard.application.dto.PackageResponseDTO;
 import com.resired.api.guard.application.usecase.GuardVisitUseCase;
 import com.resired.api.guard.application.usecase.PackageUseCase;
 import com.resired.api.guard.domain.entity.Visitor;
-import com.resired.api.guard.domain.entity.Package;
 import com.resired.api.guard.infrastructure.rest.dto.InfoQrRequest;
 import com.resired.api.guard.application.dto.PackageRequestDTO;
 import com.resired.api.resident.application.dto.VisitorRequestDTO;
@@ -51,7 +51,7 @@ public class GuardController {
     }
 
     @GetMapping("/package/{neighborhood_id}")
-    public ResponseData<List<Package>> getPackagesByNeighborhood(
+    public ResponseData<List<PackageResponseDTO>> getPackagesByNeighborhood(
         @RequestHeader(value = "Authorization") String bearer,
         @PathVariable("neighborhood_id") Integer neighborhoodId) {
         String email = jwtService.extractUsername(bearer.substring(7));
