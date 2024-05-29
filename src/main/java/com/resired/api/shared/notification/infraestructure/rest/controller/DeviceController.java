@@ -6,10 +6,9 @@ import com.resired.api.shared.notification.domain.entity.Device;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
+
 
 @RestController
 @RequestMapping(path = "/devices")
@@ -25,11 +24,7 @@ public class DeviceController {
         String email = jwtService.extractUsername(bearer.substring(7));
 
         deviceUseCase.registerDevice(request, email);
-
-        URI uriResource = ServletUriComponentsBuilder.fromCurrentRequest()
-            .path("/{id}").buildAndExpand(request.getId()).toUri();
-
-        return ResponseEntity.created(uriResource).build();
+        return ResponseEntity.ok("Device saved successfully");
     }
 
     @DeleteMapping("/{id}")
