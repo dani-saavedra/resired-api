@@ -75,14 +75,15 @@ public class GuardAdapter implements GuardPort, PackagePort {
     }
 
     private Package toPackageDomain(PackageOrm packageOrm) {
-        // TODO update this method, status and date are wrong
-        return new Package(
+        return Package.fromExistingPackage(
             packageOrm.getGuardId(),
             packageOrm.getHome(),
             packageOrm.getReceiver(),
             packageOrm.getTrackingNumber(),
             packageOrm.getPackageTransporter(),
-            packageOrm.getDescription()
+            packageOrm.getDescription(),
+            packageOrm.getStatus(),
+            packageOrm.getCreatedDate()
         );
     }
 }

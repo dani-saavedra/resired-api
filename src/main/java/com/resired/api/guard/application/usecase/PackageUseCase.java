@@ -26,7 +26,7 @@ public class PackageUseCase {
         User guard = validateGuard(emailGuard);
         Integer homeId = findHomeId(packageRequestDTO);
 
-        Package packet = new Package(
+        Package packet = Package.createNewPackage(
             guard.getId(),
             homeId,
             packageRequestDTO.receiver(),

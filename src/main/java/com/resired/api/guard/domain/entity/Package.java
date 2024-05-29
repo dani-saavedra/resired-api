@@ -16,15 +16,29 @@ public class Package {
     private final PackageStatusEnum status;
     private final LocalDateTime createdDate;
 
-    public Package(Integer guardId, Integer homeId, String receiver,
-                   String trackingNumber, String packageTransporter, String description) {
+    private Package(Integer guardId, Integer homeId, String receiver,
+                    String trackingNumber, String packageTransporter, String description,
+                    PackageStatusEnum status, LocalDateTime createdDate) {
         this.guardId = guardId;
         this.homeId = homeId;
         this.receiver = receiver;
         this.trackingNumber = trackingNumber;
         this.packageTransporter = packageTransporter;
         this.description = description;
-        this.status = PackageStatusEnum.TO_COLLECT;
-        this.createdDate = LocalDateTime.now();
+        this.status = status;
+        this.createdDate = createdDate;
+    }
+
+    public static Package createNewPackage(Integer guardId, Integer homeId, String receiver,
+                                           String trackingNumber, String packageTransporter, String description) {
+        return new Package(guardId, homeId, receiver, trackingNumber,
+            packageTransporter, description, PackageStatusEnum.TO_COLLECT, LocalDateTime.now());
+    }
+
+    public static Package fromExistingPackage(Integer guardId, Integer homeId, String receiver,
+                                              String trackingNumber, String packageTransporter, String description,
+                                              PackageStatusEnum status, LocalDateTime createdDate) {
+        return new Package(guardId, homeId, receiver, trackingNumber,
+            packageTransporter, description, status, createdDate);
     }
 }
