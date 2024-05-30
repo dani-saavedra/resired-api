@@ -8,6 +8,8 @@ public interface UserPort {
 
     void changePassword(String documentId, String newEncryptPass);
 
+    void changePassword(Integer userId, String newEncryptPass);
+
     User getResidentByEmail(String email);
 
     User getGuardByEmail(String email);

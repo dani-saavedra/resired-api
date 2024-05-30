@@ -3,8 +3,11 @@ package com.resired.api.security.infraestructure.sql.orm;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
 
 import java.time.LocalDateTime;
+
+import static java.sql.Types.TINYINT;
 
 @Entity
 @Table(name = "pass_reset_token")
@@ -21,6 +24,8 @@ public class PasswordResetTokenOrm {
     private Integer userId;
     @Column
     private LocalDateTime expiryDate;
+    @JdbcTypeCode(TINYINT)
+    private boolean invalid;
 
     public PasswordResetTokenOrm(Integer userId, String token, LocalDateTime expiryDate) {
         this.token = token;

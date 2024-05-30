@@ -7,6 +7,7 @@ public enum ErrorCode {
     USER01("User inactive"),
     USER02("Invalid credentials"),
     USER03("Invalid role"),
+    USER04("Invalid Token"),
     VISIT01("QR invalid"),
     VISIT02("Visitor is invalid"),
     HOME01("Home not found"),

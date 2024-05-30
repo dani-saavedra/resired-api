@@ -20,5 +20,10 @@ public interface UserJpaRepository extends JpaRepository<UserOrm, UUID> {
     void updatePassword(@Param("documentId") String documentId, @Param("newPassword") String newPassword,
                         @Param("updated") LocalDateTime updated);
 
+    @Modifying(clearAutomatically = true)
+    @Query("update UserOrm userApp set userApp.password =:newPassword, userApp.updateDate =:updated where userApp.id =:userId")
+    void updatePassword(@Param("userId") Integer userId, @Param("newPassword") String newPassword,
+                        @Param("updated") LocalDateTime updated);
+
     UserOrm findByDocumentId(String documentId);
 }

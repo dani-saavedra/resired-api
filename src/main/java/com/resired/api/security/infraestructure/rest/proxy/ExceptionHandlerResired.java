@@ -3,8 +3,8 @@ package com.resired.api.security.infraestructure.rest.proxy;
 import com.resired.api.guard.domain.exception.HomeNotFoundException;
 import com.resired.api.guard.domain.exception.InvalidRolException;
 import com.resired.api.guard.application.exception.QrInvalidException;
-import com.resired.api.guard.domain.exception.InvalidRolException;
 import com.resired.api.resident.domain.exception.InvalidVisitorException;
+import com.resired.api.security.application.exception.ExpiredTokenException;
 import com.resired.api.security.application.exception.InvalidCredentialException;
 import com.resired.api.security.domain.exception.InactiveUserException;
 import com.resired.api.shared.notification.domain.exception.DeviceAlreadyExistsException;
@@ -97,6 +97,14 @@ public class ExceptionHandlerResired {
         log.error("Device not found ", ex);
         return new ResponseEntity<>(new ErrorDTO(ErrorCode.DEVICE02.name(),
             ErrorCode.DEVICE02.getDescription()), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(value = ExpiredTokenException.class)
+    protected ResponseEntity<ErrorDTO> handlerTokExpiredToken(
+        RuntimeException ex, WebRequest request) {
+        log.error("Invalid Token because is Expired", ex);
+        return new ResponseEntity<>(new ErrorDTO(ErrorCode.USER04.name(),
+            ErrorCode.USER04.getDescription()), HttpStatus.BAD_REQUEST);
     }
 
 }

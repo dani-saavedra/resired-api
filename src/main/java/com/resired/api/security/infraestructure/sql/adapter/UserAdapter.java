@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Transactional
 public class UserAdapter implements UserPort {
 
-    private UserJpaRepository userJpaRepository;
+    private final UserJpaRepository userJpaRepository;
 
     @Override
     public User getUserByCredentials(String email, String password) {
@@ -38,6 +38,11 @@ public class UserAdapter implements UserPort {
     @Override
     public void changePassword(String documentId, String newEncryptPass) {
         userJpaRepository.updatePassword(documentId, newEncryptPass, LocalDateTime.now());
+    }
+
+    @Override
+    public void changePassword(Integer userId, String newEncryptPass) {
+        userJpaRepository.updatePassword(userId, newEncryptPass, LocalDateTime.now());
     }
 
 
