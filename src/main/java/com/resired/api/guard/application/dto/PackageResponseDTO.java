@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 
 public record PackageResponseDTO(
     @JsonProperty("guard_name") String guardName,
-    @JsonProperty("block") String block,
     @JsonProperty("home_number") String homeNumber,
     @JsonProperty("receiver") String receiver,
     @JsonProperty("tracking_number") String trackingNumber,

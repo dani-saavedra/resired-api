@@ -80,11 +80,10 @@ public class PackageUseCase {
 
     private PackageResponseDTO toPackageResponseDTO(Package pkg, User guard) {
         String guardName = guard.getUserName() + " " + guard.getUserLastName();
-        String[] blockAndHomeNumber = homePort.getBlockAndHomeNumberById(pkg.getHomeId());
+        String homeNumber = homePort.getHomeNumberById(pkg.getHomeId());
         return new PackageResponseDTO(
             guardName,
-            blockAndHomeNumber[0],
-            blockAndHomeNumber[1],
+            homeNumber,
             pkg.getReceiver(),
             pkg.getTrackingNumber(),
             pkg.getPackageTransporter(),

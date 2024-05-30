@@ -38,12 +38,8 @@ public class HomeAdapter implements HomePort {
     }
 
     @Override
-    public String[] getBlockAndHomeNumberById(Integer homeId) {
+    public String getHomeNumberById(Integer homeId) {
         HomeOrm homeOrm = jpaRepository.findById(homeId).orElse(null);
-        if (homeOrm != null) {
-            return new String[]{homeOrm.getBlock(), homeOrm.getNumber()};
-        } else {
-            return new String[]{null, null};
-        }
+        return homeOrm != null ? homeOrm.getNumber() : null;
     }
 }
