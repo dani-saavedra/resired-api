@@ -12,7 +12,5 @@ public interface HomePort {
 
     Integer getHomeIdByNumber(String homeNumber);
 
-    String getBlockById(Integer homeId);
-
-    String getHomeNumberById(Integer homeId);
+    String[] getBlockAndHomeNumberById(Integer homeId);
 }
