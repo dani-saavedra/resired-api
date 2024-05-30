@@ -41,11 +41,11 @@ public class PackageUseCase {
     }
 
     public List<PackageResponseDTO> getPackagesByNeighborhood(String emailGuard, Integer neighborhoodId) {
-        validateGuard(emailGuard);
+        User guard = validateGuard(emailGuard);
         List<Package> packages = packagePort.findAllByNeighborhoodId(neighborhoodId);
 
         return packages.stream()
-            .map(this::toPackageResponseDTO)
+            .map(pkg -> toPackageResponseDTO(pkg, guard))
             .collect(Collectors.toList());
     }
 
@@ -63,7 +63,8 @@ public class PackageUseCase {
     private Integer findHomeId(PackageRequestDTO packageRequestDTO) {
         Integer homeId;
         if (packageRequestDTO.block().isPresent()) {
-            homeId = homePort.getHomeIdByBlockAndNumber(packageRequestDTO.block().get(), packageRequestDTO.homeNumber());
+            homeId = homePort.getHomeIdByBlockAndNumber(packageRequestDTO.block().get(),
+                packageRequestDTO.homeNumber());
         } else {
             homeId = homePort.getHomeIdByNumber(packageRequestDTO.homeNumber());
         }
@@ -77,10 +78,11 @@ public class PackageUseCase {
         return homeId;
     }
 
-    private PackageResponseDTO toPackageResponseDTO(Package pkg) {
+    private PackageResponseDTO toPackageResponseDTO(Package pkg, User guard) {
+        String guardName = guard.getUserName() + " " + guard.getUserLastName();
         String[] blockAndHomeNumber = homePort.getBlockAndHomeNumberById(pkg.getHomeId());
         return new PackageResponseDTO(
-            pkg.getGuardId(),
+            guardName,
             blockAndHomeNumber[0],
             blockAndHomeNumber[1],
             pkg.getReceiver(),

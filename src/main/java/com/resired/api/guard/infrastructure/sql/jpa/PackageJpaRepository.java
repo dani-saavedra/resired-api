@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface PackageJpaRepository extends JpaRepository<PackageOrm, Integer> {
-    @Query("SELECT p FROM PackageOrm p JOIN HomeOrm h ON p.home = h.id WHERE h.neighborhoodId = :neighborhoodId ORDER BY p.createdDate DESC")
+    @Query("SELECT package FROM PackageOrm package JOIN HomeOrm home ON package.home = home.id WHERE home.neighborhoodId = :neighborhoodId ORDER BY package.createdDate DESC")
     List<PackageOrm> findAllByNeighborhoodId(Integer neighborhoodId);
 }

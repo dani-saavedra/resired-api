@@ -6,7 +6,7 @@ import com.resired.api.resident.domain.enums.PackageStatusEnum;
 import java.time.LocalDateTime;
 
 public record PackageResponseDTO(
-    @JsonProperty("guard_id") Integer guardId,
+    @JsonProperty("guard_name") String guardName,
     @JsonProperty("block") String block,
     @JsonProperty("home_number") String homeNumber,
     @JsonProperty("receiver") String receiver,
