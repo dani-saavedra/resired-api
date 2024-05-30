@@ -1,6 +1,7 @@
 package com.resired.api.security.infraestructure.rest.controller;
 
 
+import com.resired.api.security.application.dto.RecoveryPasswordRequest;
 import com.resired.api.security.application.dto.ResetPasswordRequest;
 import com.resired.api.security.application.usecase.AccountUseCase;
 import lombok.AllArgsConstructor;
@@ -22,9 +23,15 @@ public class AccountController {
         return ResponseEntity.ok("Password changed successfully");
     }
 
-    @PostMapping(path = "/recovery")
+    @PostMapping(path = "/password/recovery")
     public ResponseEntity<String> processForgotPasswordForm(@RequestParam("email") String email) {
         useCase.createPasswordResetTokenForUser(email);
         return ResponseEntity.ok("Email send");
+    }
+
+    @PostMapping(path = "/password/reset")
+    public ResponseEntity<String> processResetPassword(@RequestBody RecoveryPasswordRequest request) throws GeneralSecurityException {
+        useCase.resetPassword(request);
+        return ResponseEntity.ok("Password reset successfully");
     }
 }
