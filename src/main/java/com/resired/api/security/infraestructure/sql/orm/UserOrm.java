@@ -24,7 +24,10 @@ public class UserOrm {
     @Column(nullable = false, unique = true)
     private String documentId;
 
-    @OneToMany(mappedBy = "userId", fetch = FetchType.EAGER)
+    @Column
+    private String documentType;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<UserRolOrm> userRols;
 
     @OneToMany(mappedBy = "userId", fetch = FetchType.EAGER)
@@ -50,6 +53,9 @@ public class UserOrm {
 
     @Column
     private Integer active;
+
+    @Column
+    private String registeredBy;
 
     public Boolean isActive() {
         return active == 1;

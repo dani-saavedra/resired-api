@@ -22,8 +22,9 @@ public class UserRolOrm {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "user_id")
-    private Integer userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private UserOrm user;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "rol", nullable = false, columnDefinition = "VARCHAR(255)")
@@ -46,6 +47,9 @@ public class UserRolOrm {
 
     @Column
     private LocalDateTime updateDate;
+
+    @Column
+    private LocalDateTime createdDate;
 
     public Rol converToEntity() {
         return new Rol(rol, neighborhood.getId(), neighborhood.getName(), home.getId(), home.getName());
