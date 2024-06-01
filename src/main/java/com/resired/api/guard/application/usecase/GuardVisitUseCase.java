@@ -1,5 +1,6 @@
 package com.resired.api.guard.application.usecase;
 
+import com.resired.api.guard.application.dto.VisitResponseDTO;
 import com.resired.api.guard.application.exception.QrInvalidException;
 import com.resired.api.guard.domain.entity.Visitor;
 import com.resired.api.guard.domain.repository.GuardPort;
@@ -10,6 +11,9 @@ import com.resired.api.resident.application.dto.VisitorRequestDTO;
 import com.resired.api.security.domain.service.JwtSecurity;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -47,5 +51,10 @@ public class GuardVisitUseCase {
         if (!qrPort.isAvailableQR(qr)) {
             throw new QrInvalidException("available");
         }
+    }
+
+    public List<VisitResponseDTO> getRecentVisits(Integer neighborhoodId) {
+        LocalDateTime fromDate = LocalDateTime.now().minusDays(1);
+        return guardPort.findVisitsByNeighborhoodIdAndDate(neighborhoodId, fromDate);
     }
 }

@@ -1,6 +1,7 @@
 package com.resired.api.guard.infrastructure.rest.controller;
 
 import com.resired.api.guard.application.dto.PackageResponseDTO;
+import com.resired.api.guard.application.dto.VisitResponseDTO;
 import com.resired.api.guard.application.usecase.GuardVisitUseCase;
 import com.resired.api.guard.application.usecase.PackageUseCase;
 import com.resired.api.guard.domain.entity.Visitor;
@@ -61,4 +62,13 @@ public class GuardController {
         Integer neighborhoodId = jwtService.extractNeighborhood(token);
         return new ResponseData<>(packageUseCase.getPackagesByNeighborhood(email, neighborhoodId));
     }
+
+    @GetMapping("/visits")
+    public ResponseData<List<VisitResponseDTO>> getVisitsFromLast24Hours(
+        @RequestHeader(value = "Authorization") String bearer) {
+        String token = bearer.substring(7);
+        Integer neighborhoodId = jwtService.extractNeighborhood(token);
+        return new ResponseData<>(visitUseCase.getRecentVisits(neighborhoodId));
+    }
+
 }
