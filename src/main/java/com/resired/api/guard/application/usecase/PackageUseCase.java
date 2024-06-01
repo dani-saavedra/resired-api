@@ -22,9 +22,9 @@ public class PackageUseCase {
     private final HomePort homePort;
     private final PackagePort packagePort;
 
-    public void registerPackage(String emailGuard, PackageRequestDTO packageRequestDTO) {
+    public void registerPackage(String emailGuard, PackageRequestDTO packageRequestDTO, Integer neighborhoodId) {
         User guard = validateGuard(emailGuard);
-        Integer homeId = findHomeId(packageRequestDTO);
+        Integer homeId = findHomeId(packageRequestDTO, neighborhoodId);
 
         Package packet = Package.createNewPackage(
             guard.getId(),
@@ -55,13 +55,13 @@ public class PackageUseCase {
         return guard;
     }
 
-    private Integer findHomeId(PackageRequestDTO packageRequestDTO) {
+    private Integer findHomeId(PackageRequestDTO packageRequestDTO, Integer neighborhoodId) {
         Integer homeId;
         if (packageRequestDTO.block().isPresent()) {
-            homeId = homePort.getHomeIdByBlockAndNumber(packageRequestDTO.block().get(),
-                packageRequestDTO.homeNumber());
+            homeId = homePort.getHomeIdByBlockAndNumberAndNeighborhoodId(packageRequestDTO.block().get(),
+                packageRequestDTO.homeNumber(), neighborhoodId);
         } else {
-            homeId = homePort.getHomeIdByNumber(packageRequestDTO.homeNumber());
+            homeId = homePort.getHomeIdByNumberAndNeighborhoodId(packageRequestDTO.homeNumber(), neighborhoodId);
         }
 
         if (homeId == null) {

@@ -44,18 +44,19 @@ public class GuardController {
         return new ResponseData<>("Registered visit successfully");
     }
 
-    @PostMapping("/package")
+    @PostMapping("/package/{neighborhood_id}")
     public ResponseData<String> registerPackage(@RequestHeader(value = "Authorization") String bearer,
-                                                @RequestBody PackageRequestDTO packageRequestDTO) {
+                                                @RequestBody PackageRequestDTO packageRequestDTO,
+                                                @PathVariable("neighborhood_id") Integer neighborhoodId) {
         String email = jwtService.extractUsername(bearer.substring(7));
-        packageUseCase.registerPackage(email, packageRequestDTO);
+        packageUseCase.registerPackage(email, packageRequestDTO, neighborhoodId);//TODO get the neighborhoodId via token
         return new ResponseData<>("Registered package successfully");
     }
 
     @GetMapping("/package/{neighborhood_id}")
     public ResponseData<List<PackageResponseDTO>> getPackagesByNeighborhood(
         @RequestHeader(value = "Authorization") String bearer,
-        @PathVariable("neighborhood_id") Integer neighborhoodId) {
+        @PathVariable("neighborhood_id") Integer neighborhoodId) {//TODO get the neighborhoodId via token
         String email = jwtService.extractUsername(bearer.substring(7));
         return new ResponseData<>(packageUseCase.getPackagesByNeighborhood(email, neighborhoodId));
     }
