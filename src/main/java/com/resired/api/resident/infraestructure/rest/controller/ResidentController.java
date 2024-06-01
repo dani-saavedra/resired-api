@@ -6,6 +6,7 @@ import com.resired.api.resident.domain.vo.RegisteredVisitor;
 import com.resired.api.resident.infraestructure.rest.dto.ResponseData;
 import com.resired.api.security.application.usecase.JwtService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/resident/")
 @AllArgsConstructor
+@PreAuthorize("hasAuthority('RESIDENT')")
 public class ResidentController {
 
     private final VisitUseCase visitUseCase;

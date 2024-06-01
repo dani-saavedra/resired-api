@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(path = "/home")
 @AllArgsConstructor
+@PreAuthorize("hasAuthority('RESIDENT')")
 public class HomeController {
 
     private final HomeUseCase useCase;
 
-    @PreAuthorize("hasAuthority('RESIDENT')")
     @GetMapping("/{id}/packages")
     public PackagesResponse getPackages(@PathVariable(name = "id") Integer homeId) {
         return useCase.getPackages(homeId);

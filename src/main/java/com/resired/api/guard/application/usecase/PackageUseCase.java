@@ -2,13 +2,11 @@ package com.resired.api.guard.application.usecase;
 
 import com.resired.api.guard.application.dto.PackageRequestDTO;
 import com.resired.api.guard.application.dto.PackageResponseDTO;
+import com.resired.api.guard.domain.entity.Package;
 import com.resired.api.guard.domain.exception.HomeNotFoundException;
-import com.resired.api.guard.domain.exception.InvalidRolException;
 import com.resired.api.guard.domain.repository.PackagePort;
 import com.resired.api.resident.domain.repository.HomePort;
-import com.resired.api.guard.domain.entity.Package;
 import com.resired.api.security.domain.entity.User;
-import com.resired.api.security.domain.enums.UserType;
 import com.resired.api.security.domain.exception.InactiveUserException;
 import com.resired.api.security.domain.repository.UserPort;
 import lombok.AllArgsConstructor;
@@ -53,9 +51,6 @@ public class PackageUseCase {
         User guard = userPort.getGuardByEmail(emailGuard);
         if (guard == null || !guard.isActive()) {
             throw new InactiveUserException(emailGuard);
-        }
-        if (!guard.hasRole(UserType.GUARD)) {
-            throw new InvalidRolException(guard.getEmail());
         }
         return guard;
     }
