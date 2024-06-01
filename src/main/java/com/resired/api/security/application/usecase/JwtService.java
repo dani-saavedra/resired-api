@@ -25,6 +25,16 @@ public class JwtService {
         return extractClaim(token, Claims::getExpiration);
     }
 
+    public Integer extractNeighborhood(String token) {
+        final Claims claims = extractAllClaims(token);
+        return (Integer) claims.get("neighborhoodId");
+    }
+
+    public Integer extractHome(String token) {
+        final Claims claims = extractAllClaims(token);
+        return (Integer) claims.get("homeId");
+    }
+
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
@@ -45,6 +55,14 @@ public class JwtService {
 
     public String generateToken(String username) {
         Map<String, Object> claims = new HashMap<>();
+        return createToken(claims, username);
+    }
+
+    public String generateToken(String username, String rol, Integer neighborhood, Integer homeId) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("rol", rol);
+        claims.put("neighborhoodId", neighborhood);
+        claims.put("homeId", homeId);
         return createToken(claims, username);
     }
 

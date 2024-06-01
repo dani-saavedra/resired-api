@@ -2,6 +2,7 @@ package com.resired.api.security.application.usecase;
 
 import com.resired.api.security.application.dto.AuthenticationRequest;
 import com.resired.api.security.application.dto.AuthenticationResponse;
+import com.resired.api.security.domain.entity.Rol;
 import com.resired.api.security.domain.exception.InactiveUserException;
 import com.resired.api.security.application.exception.InvalidCredentialException;
 import com.resired.api.security.domain.entity.User;
@@ -29,8 +30,13 @@ public class AuthUseCase {
         if (!user.isActive()) {
             throw new InactiveUserException(user.getDocumentId());
         }
-
-        String jwt = jwtService.generateToken(user.getEmail());
+        String jwt;
+        if (user.getRoles().size() == 1) {
+            Rol rol = user.getRoles().get(0);
+            jwt = jwtService.generateToken(user.getEmail(), rol.getUserType().name(), rol.getNeighborhoodId(), rol.getHomeId());
+        } else {
+            jwt = jwtService.generateToken(user.getEmail());
+        }
         return new AuthenticationResponse(jwt, user.getRoles(), user.getUserName(),
             user.getDocumentId(), user.isMandatoryChangePassword());
     }
