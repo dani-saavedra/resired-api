@@ -38,7 +38,8 @@ public class ResidentAdapter implements ResidentPort {
     public List<RegisteredVisitor> obtainVisitors(String emailResident) {
         return visitorJpa.obtainVisitorByEmailResident(emailResident)
             .stream()
-            .map(visitorOrm -> new RegisteredVisitor(visitorOrm.getId(), visitorOrm.getName(), visitorOrm.getDocument()))
+            .map(visitorOrm -> new RegisteredVisitor(visitorOrm.getId(), visitorOrm.getName(),
+                visitorOrm.getDocument(), visitorOrm.getFavorite()))
             .toList();
     }
 
@@ -48,7 +49,8 @@ public class ResidentAdapter implements ResidentPort {
         if (visitorOrm == null) {
             return null;
         }
-        return new RegisteredVisitor(visitorOrm.getId(), visitorOrm.getName(), visitorOrm.getDocument());
+        return new RegisteredVisitor(visitorOrm.getId(), visitorOrm.getName(),
+            visitorOrm.getDocument(), visitorOrm.getFavorite());
     }
 
     @Override
