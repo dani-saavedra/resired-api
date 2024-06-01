@@ -6,6 +6,7 @@ import com.resired.api.admin.infraestructure.rest.dto.InfoResidentRequest;
 import com.resired.api.security.application.usecase.JwtService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.GeneralSecurityException;
@@ -13,6 +14,7 @@ import java.security.GeneralSecurityException;
 @RestController
 @RequestMapping(path = "/admin")
 @AllArgsConstructor
+@PreAuthorize("hasAuthority('ADMIN')")
 public class AdmResidentController {
 
     private final JwtService jwtService;
