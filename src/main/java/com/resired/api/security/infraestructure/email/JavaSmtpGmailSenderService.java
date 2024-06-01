@@ -24,4 +24,18 @@ public class JavaSmtpGmailSenderService implements EmailPort {
 
         emailSender.send(message);
     }
+
+    @Override
+    public void sendRegisteredResidentEmail(String email) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        String body = "Bienvenido a Resired, tu cuenta a sido registrada satisfactoriamente y ya podrás ingresas " +
+            "a la app y hacer uso de ella, si aún no la tienes, descargala desde todas las tiendas." +
+            "Ten presente que tu usuario será tu correo electronico y tu clave de acceso por primera vez tu documento";
+
+        message.setTo(email);
+        message.setSubject("Bienvenido a Resired");
+        message.setText(body);
+
+        emailSender.send(message);
+    }
 }

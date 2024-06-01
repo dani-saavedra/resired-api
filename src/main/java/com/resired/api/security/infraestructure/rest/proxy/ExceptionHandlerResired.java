@@ -1,8 +1,8 @@
 package com.resired.api.security.infraestructure.rest.proxy;
 
+import com.resired.api.guard.application.exception.QrInvalidException;
 import com.resired.api.guard.domain.exception.HomeNotFoundException;
 import com.resired.api.guard.domain.exception.InvalidRolException;
-import com.resired.api.guard.application.exception.QrInvalidException;
 import com.resired.api.resident.domain.exception.InvalidVisitorException;
 import com.resired.api.security.application.exception.ExpiredTokenException;
 import com.resired.api.security.application.exception.InvalidCredentialException;
@@ -12,6 +12,7 @@ import com.resired.api.shared.notification.domain.exception.DeviceNotFoundExcept
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
@@ -106,5 +107,14 @@ public class ExceptionHandlerResired {
         return new ResponseEntity<>(new ErrorDTO(ErrorCode.USER04.name(),
             ErrorCode.USER04.getDescription()), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(value = HttpMessageNotReadableException.class)
+    protected ResponseEntity<ErrorDTO> handlerBadRequest(
+        RuntimeException ex, WebRequest request) {
+        log.error("Invalid request", ex);
+        return new ResponseEntity<>(new ErrorDTO(ErrorCode.GENERAL_BAD_REQUEST.name(),
+            ex.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
 
 }
