@@ -17,4 +17,10 @@ public interface HomeJpaRepository extends JpaRepository<HomeOrm, Integer> {
 
     @Query("SELECT home.id FROM HomeOrm home WHERE home.block IS NULL AND home.number = :homeNumber")
     Integer findHomeIdByNumber(String homeNumber);
+
+    @Query("SELECT home.id FROM HomeOrm home WHERE home.block = :block AND home.number = :homeNumber AND home.neighborhoodId = :neighborhoodId")
+    Integer findHomeIdByBlockAndNumberAndNeighborhoodId(String block, String homeNumber, Integer neighborhoodId);
+
+    @Query("SELECT home.id FROM HomeOrm home WHERE home.block IS NULL AND home.number = :homeNumber AND home.neighborhoodId = :neighborhoodId")
+    Integer findHomeIdByNumberAndNeighborhoodId(String homeNumber, Integer neighborhoodId);
 }

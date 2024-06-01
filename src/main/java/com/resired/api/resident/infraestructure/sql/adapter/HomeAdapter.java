@@ -28,13 +28,13 @@ public class HomeAdapter implements HomePort {
     }
 
     @Override
-    public Integer getHomeIdByBlockAndNumber(String block, String number) {
-        return jpaRepository.findHomeIdByBlockAndNumber(block, number);
+    public Integer getHomeIdByBlockAndNumberAndNeighborhoodId(String block, String homeNumber, Integer neighborhoodId) {
+        return jpaRepository.findHomeIdByBlockAndNumberAndNeighborhoodId(block, homeNumber, neighborhoodId);
     }
 
     @Override
-    public Integer getHomeIdByNumber(String homeNumber) {
-        return jpaRepository.findHomeIdByNumber(homeNumber);
+    public Integer getHomeIdByNumberAndNeighborhoodId(String homeNumber, Integer neighborhoodId) {
+        return jpaRepository.findHomeIdByNumberAndNeighborhoodId(homeNumber, neighborhoodId);
     }
 
     @Override
