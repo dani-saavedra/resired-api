@@ -10,6 +10,7 @@ import com.resired.api.resident.application.dto.VisitorRequestDTO;
 import com.resired.api.resident.infraestructure.rest.dto.ResponseData;
 import com.resired.api.security.application.usecase.JwtService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/guard")
 @AllArgsConstructor
+@PreAuthorize("hasAuthority('GUARD')")
 public class GuardController {
 
     private final GuardVisitUseCase visitUseCase;

@@ -2,7 +2,6 @@ package com.resired.api.security.infraestructure.rest.proxy;
 
 import com.resired.api.guard.application.exception.QrInvalidException;
 import com.resired.api.guard.domain.exception.HomeNotFoundException;
-import com.resired.api.guard.domain.exception.InvalidRolException;
 import com.resired.api.resident.domain.exception.InvalidVisitorException;
 import com.resired.api.security.application.exception.ExpiredTokenException;
 import com.resired.api.security.application.exception.InvalidCredentialException;
@@ -13,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
@@ -38,7 +38,7 @@ public class ExceptionHandlerResired {
             , ErrorCode.USER02.getDescription()), HttpStatus.UNAUTHORIZED);
     }
 
-    @ExceptionHandler(value = InvalidRolException.class)
+    @ExceptionHandler(value = AuthorizationDeniedException.class)
     protected ResponseEntity<ErrorDTO> handleInvalidRol(
         RuntimeException ex, WebRequest request) {
         log.error("Problems with role ", ex);
