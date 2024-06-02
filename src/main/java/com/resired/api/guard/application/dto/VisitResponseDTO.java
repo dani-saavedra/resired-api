@@ -7,6 +7,6 @@ import java.time.LocalDateTime;
 public record VisitResponseDTO(Integer id,
                                @JsonProperty("visitor_name") String visitorName,
                                @JsonProperty("visitor_document") String visitorDocument,
-                               @JsonProperty("home_id") Integer homeId,
+                               @JsonProperty("home_number") String homeNumber,
                                @JsonProperty("check_in") LocalDateTime checkIn) {
 }

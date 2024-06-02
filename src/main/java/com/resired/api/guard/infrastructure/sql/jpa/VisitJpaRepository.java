@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface VisitJpaRepository extends JpaRepository<VisitOrm, Integer> {
     @Query("SELECT new com.resired.api.guard.application.dto.VisitResponseDTO(" +
-        "visit.id, qr.visitor.name, qr.visitor.document, home.id, visit.checkIn) " +
+        "visit.id, qr.visitor.name, qr.visitor.document, home.number, visit.checkIn) " +
         "FROM VisitOrm visit " +
         "JOIN visit.qr qr " +
         "JOIN qr.visitor visitor " +

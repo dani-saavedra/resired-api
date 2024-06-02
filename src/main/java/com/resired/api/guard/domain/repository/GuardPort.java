@@ -1,7 +1,6 @@
 package com.resired.api.guard.domain.repository;
 
 import com.resired.api.guard.application.dto.VisitResponseDTO;
-import com.resired.api.guard.domain.vo.Visit;
 
 import java.time.LocalDateTime;
 import java.util.List;
