@@ -40,4 +40,6 @@ public interface UserJpaRepository extends JpaRepository<UserOrm, Integer> {
         " AND rol.rol = 'RESIDENT'" +
         " AND rol.active = 1")
     List<UserOrm> findResidentsByHomeId(Integer homeId);
+    
+    UserOrm findByDocumentId(String documentId);
 }

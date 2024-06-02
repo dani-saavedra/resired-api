@@ -1,5 +1,7 @@
 package com.resired.api.shared.notification.infraestructure.sql.adapter;
 
+import com.resired.api.resident.infraestructure.sql.jpa.HomeJpaRepository;
+import com.resired.api.resident.infraestructure.sql.orm.HomeOrm;
 import com.resired.api.security.infraestructure.sql.jpa.UserJpaRepository;
 import com.resired.api.security.infraestructure.sql.orm.UserOrm;
 import com.resired.api.shared.notification.domain.entity.Device;
@@ -16,6 +18,7 @@ import java.util.List;
 public class UserNotificationAdapter implements UserNotificationPort {
     private final DeviceJpaRepository deviceRepository;
     private final UserJpaRepository userRepository;
+    private final HomeJpaRepository homeRepository;
 
     @Override
     public void addDevice(String email, Device device) {
@@ -39,6 +42,19 @@ public class UserNotificationAdapter implements UserNotificationPort {
 
         if (device == null) return null;
         return convertToDevice(device);
+    }
+
+    @Override
+    public List<Integer> getNeighborhoodIdsByEmail(String email) {
+        UserOrm user = userRepository.findByEmail(email);
+        List<HomeOrm> homes = homeRepository.findAllByOwnerId(user.getId());
+
+        List<Integer> neighborhoodIds = homes.stream()
+            .map(HomeOrm::getNeighborhoodId)
+            .distinct()
+            .toList();
+
+        return neighborhoodIds;
     }
 
     private Device convertToDevice(DeviceOrm deviceOrm) {

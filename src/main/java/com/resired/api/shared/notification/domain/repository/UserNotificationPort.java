@@ -10,4 +10,6 @@ public interface UserNotificationPort {
     List<Device> getAllDevicesByEmail(String email);
 
     Device getDeviceByIDAndEmail(String deviceID, String email);
+
+    List<Integer> getNeighborhoodIdsByEmail(String email);
 }
