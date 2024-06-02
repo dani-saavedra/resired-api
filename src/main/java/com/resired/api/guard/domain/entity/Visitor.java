@@ -15,16 +15,16 @@ public class Visitor {
     String visitorDocument;
     String home;
     String authorizer;
-    boolean availableToEnter;
+    boolean available;
 
     public static Visitor createVisitor(String visitorName, String visitorDocument, String home,
-                                        String authorizer, boolean availableToEnter) {
+                                        String authorizer, boolean availableQR, boolean visitorDeleted) {
         Visitor visitor = new Visitor();
         visitor.visitorName = visitorName;
         visitor.visitorDocument = visitorDocument;
         visitor.home = home;
         visitor.authorizer = authorizer;
-        visitor.availableToEnter = availableToEnter;
+        visitor.available = (availableQR && !visitorDeleted);
         return visitor;
     }
 
