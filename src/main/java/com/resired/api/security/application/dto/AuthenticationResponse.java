@@ -5,7 +5,10 @@ import com.resired.api.security.domain.entity.Rol;
 
 import java.util.List;
 
-public record AuthenticationResponse(@JsonProperty("access_token") String accessToken, List<Rol> roles, @JsonProperty("user_name") String userName,
-                                     @JsonProperty("document_id") String documentId, @JsonProperty("mandatory_change") Boolean mandatoryChange) {
+public record AuthenticationResponse(@JsonProperty("access_token") String accessToken, List<Rol> roles,
+                                     @JsonProperty("user_name") String userName,
+                                     @JsonProperty("user_email") String userEmail,
+                                     @JsonProperty("document_id") String documentId,
+                                     @JsonProperty("mandatory_change") Boolean mandatoryChange) {
 
 }

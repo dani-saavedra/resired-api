@@ -37,7 +37,7 @@ public class AuthUseCase {
         } else {
             jwt = jwtService.generateToken(user.getEmail());
         }
-        return new AuthenticationResponse(jwt, user.getRoles(), user.getUserName(),
+        return new AuthenticationResponse(jwt, user.getRoles(), user.getUserName(), user.getEmail(),
             user.getDocumentId(), user.isMandatoryChangePassword());
     }
 
