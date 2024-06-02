@@ -4,6 +4,7 @@ import com.resired.api.resident.application.dto.PackagesResponse;
 import com.resired.api.resident.application.usecase.HomeUseCase;
 import com.resired.api.security.application.usecase.JwtService;
 import lombok.AllArgsConstructor;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +19,7 @@ public class HomeController {
     private final JwtService jwtService;
 
     @GetMapping("/packages")
+    @Operation(summary = "Get all packages for the resident's home")
     public PackagesResponse getPackages(@RequestHeader(value = "Authorization") String bearer) {
         String token = bearer.substring(7);
         Integer homeId = jwtService.extractHome(token);

@@ -4,6 +4,7 @@ import com.resired.api.resident.application.dto.NewsResponse;
 import com.resired.api.resident.application.usecase.NeighborhoodUseCase;
 import com.resired.api.security.application.usecase.JwtService;
 import lombok.AllArgsConstructor;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +19,7 @@ public class NeighborhoodController {
     private final NeighborhoodUseCase useCase;
 
     @GetMapping("/news")
+    @Operation(summary = "Get news from the neighborhood")
     public NewsResponse getNews(@RequestHeader(value = "Authorization") String bearer) {
         String token = bearer.substring(7);
         Integer neighborhoodId = jwtService.extractNeighborhood(token);
