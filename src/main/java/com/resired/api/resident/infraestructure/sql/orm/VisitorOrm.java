@@ -45,15 +45,11 @@ public class VisitorOrm {
     @Column
     private LocalDateTime createdAt;
 
-    @Column
-    private Integer deleted;
+    @JdbcTypeCode(TINYINT)
+    private boolean deleted;
 
     @JdbcTypeCode(TINYINT)
     private Boolean favorite;
-
-    public Boolean isDelete() {
-        return deleted == 1;
-    }
 
     public static VisitorOrm visitorFromResident(Integer userId, Integer homeId, String homeName, String name, String document,
                                                  String telephone, boolean isFavorite) {
@@ -82,7 +78,7 @@ public class VisitorOrm {
         visitorOrm.name = name;
         visitorOrm.document = document;
         visitorOrm.authorizingHome = authorizingHome;
-        visitorOrm.deleted = 0;
+        visitorOrm.deleted = false;
         visitorOrm.createdAt = LocalDateTime.now();
         visitorOrm.telephone = telephone;
         return visitorOrm;
