@@ -5,6 +5,7 @@ import com.resired.api.shared.notification.domain.exception.DeviceAlreadyExistsE
 import com.resired.api.shared.notification.domain.exception.DeviceNotFoundException;
 import com.resired.api.shared.notification.domain.repository.DevicePort;
 import com.resired.api.shared.notification.domain.repository.UserNotificationPort;
+import com.resired.api.shared.notification.domain.service.NotificationSender;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,7 @@ import java.util.List;
 public class DeviceUseCase {
     private final UserNotificationPort userPort;
     private final DevicePort devicePort;
+    private final NotificationSender notificationSenderService;
 
     public void registerDevice(Device device, String email) {
         if (devicePort.alreadyExists(device.getId())) {
@@ -30,6 +32,14 @@ public class DeviceUseCase {
             throw new DeviceNotFoundException(deviceID, email);
         }
         devicePort.removeDevice(deviceID);
+
+        List<Integer> neighborhoodIds = userPort.getNeighborhoodIdsByEmail(email);
+
+        neighborhoodIds.forEach((neigh) -> {
+            String topic = "/topics/neighborhoods/" + neigh;
+            notificationSenderService.unsubscribeDeviceToTopic(device, topic);
+        });
+
     }
 
     public Device getDevice(String deviceID, String email) {
