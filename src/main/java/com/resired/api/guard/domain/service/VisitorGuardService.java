@@ -1,7 +1,7 @@
 package com.resired.api.guard.domain.service;
 
 import com.resired.api.guard.domain.repository.GuardPort;
-import com.resired.api.guard.domain.vo.Visit;
+import com.resired.api.guard.domain.vo.VisitVO;
 import com.resired.api.resident.domain.entity.Home;
 import com.resired.api.resident.domain.exception.InvalidHomeException;
 import com.resired.api.resident.domain.repository.HomePort;
@@ -19,7 +19,7 @@ public class VisitorGuardService implements CreateVisitor {
     private final GuardPort guardPort;
 
     @Override
-    public String createVisitor(Visit homeVisit) {
+    public String createVisitor(VisitVO homeVisit) {
         User guard = userPort.getGuardByEmail(homeVisit.authorizer());
         if (guard == null || !guard.isActive()) {
             throw new InactiveUserException(homeVisit.authorizer());

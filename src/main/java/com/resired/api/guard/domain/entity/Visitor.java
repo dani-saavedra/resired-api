@@ -2,7 +2,7 @@ package com.resired.api.guard.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.resired.api.guard.domain.service.CreateVisitor;
-import com.resired.api.guard.domain.vo.Visit;
+import com.resired.api.guard.domain.vo.VisitVO;
 import lombok.Getter;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +28,7 @@ public class Visitor {
         return visitor;
     }
 
-    public String createVisit(Visit residentVisit, CreateVisitor visitorService) {
+    public String createVisit(VisitVO residentVisit, CreateVisitor visitorService) {
         return visitorService.createVisitor(residentVisit);
     }
 }
