@@ -2,7 +2,7 @@ package com.resired.api.resident.application.usecase;
 
 import com.resired.api.guard.domain.entity.Visitor;
 import com.resired.api.resident.domain.service.VisitorResidentService;
-import com.resired.api.guard.domain.vo.Visit;
+import com.resired.api.guard.domain.vo.VisitVO;
 import com.resired.api.resident.application.dto.VisitorRequestDTO;
 import com.resired.api.resident.domain.vo.RegisteredVisitor;
 import lombok.AllArgsConstructor;
@@ -18,7 +18,7 @@ public class VisitUseCase {
     private final VisitorResidentService visitorResidentService;
 
     public String createVisitor(String emailResident, VisitorRequestDTO visitorDto) {
-        Visit residentVisit = new Visit(visitorDto.name(), visitorDto.documentId(), visitorDto.telephone(),
+        VisitVO residentVisit = new VisitVO(visitorDto.name(), visitorDto.documentId(), visitorDto.telephone(),
             visitorDto.homeId(), emailResident, visitorDto.favorite());
         return visitor.createVisit(residentVisit, visitorResidentService);
     }

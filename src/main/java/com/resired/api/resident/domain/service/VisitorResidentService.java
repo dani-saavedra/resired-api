@@ -3,7 +3,7 @@ package com.resired.api.resident.domain.service;
 import com.resired.api.guard.domain.repository.QrPort;
 import com.resired.api.guard.domain.service.CreateVisitor;
 import com.resired.api.guard.domain.service.ManageVisitor;
-import com.resired.api.guard.domain.vo.Visit;
+import com.resired.api.guard.domain.vo.VisitVO;
 import com.resired.api.resident.domain.exception.InvalidHomeException;
 import com.resired.api.resident.domain.entity.Home;
 import com.resired.api.resident.domain.exception.InvalidVisitorException;
@@ -29,7 +29,7 @@ public class VisitorResidentService implements CreateVisitor, ManageVisitor {
     private final QrPort qrPort;
 
     @Override
-    public String createVisitor(Visit residentVisit) {
+    public String createVisitor(VisitVO residentVisit) {
         User resident = userPort.getResidentByEmail(residentVisit.authorizer());
         if (resident == null || !resident.isActive()) {
             throw new InactiveUserException(residentVisit.authorizer());

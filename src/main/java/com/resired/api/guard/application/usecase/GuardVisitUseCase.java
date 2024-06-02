@@ -2,11 +2,12 @@ package com.resired.api.guard.application.usecase;
 
 import com.resired.api.guard.application.dto.VisitResponseDTO;
 import com.resired.api.guard.application.exception.QrInvalidException;
+import com.resired.api.guard.domain.entity.Visit;
 import com.resired.api.guard.domain.entity.Visitor;
 import com.resired.api.guard.domain.repository.GuardPort;
 import com.resired.api.guard.domain.repository.QrPort;
 import com.resired.api.guard.domain.service.VisitorGuardService;
-import com.resired.api.guard.domain.vo.Visit;
+import com.resired.api.guard.domain.vo.VisitVO;
 import com.resired.api.resident.application.dto.VisitorRequestDTO;
 import com.resired.api.security.domain.service.JwtSecurity;
 import lombok.AllArgsConstructor;
@@ -16,6 +17,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -39,7 +41,7 @@ public class GuardVisitUseCase {
     }
 
     public void registerVisitor(String emailGuard, VisitorRequestDTO visitorDto) {
-        Visit residentVisit = new Visit(visitorDto.name(), visitorDto.documentId(), visitorDto.telephone(),
+        VisitVO residentVisit = new VisitVO(visitorDto.name(), visitorDto.documentId(), visitorDto.telephone(),
             visitorDto.homeId(), emailGuard, false);
         String tokenUUID = visitor.createVisit(residentVisit, visitorGuardService);
         guardPort.registerVisit(tokenUUID);
@@ -58,12 +60,27 @@ public class GuardVisitUseCase {
     public List<VisitResponseDTO> getRecentVisits(Integer neighborhoodId) {
         LocalDateTime endDate = LocalDateTime.now();
         LocalDateTime startDate = endDate.minusDays(1);
-        return guardPort.findVisitsByNeighborhoodIdAndDateRange(neighborhoodId, startDate, endDate);
+        List<Visit> visits = guardPort.findVisitsByNeighborhoodIdAndDateRange(neighborhoodId, startDate, endDate);
+
+        return visits.stream().map(visit -> new VisitResponseDTO(
+            visit.getId(),
+            visit.getVisitorName(),
+            visit.getVisitorDocument(),
+            visit.getHomeNumber(),
+            visit.getCheckIn()
+        )).collect(Collectors.toList());
     }
 
     public List<VisitResponseDTO> getVisitsByDate(Integer neighborhoodId, LocalDate date) {
         LocalDateTime startDate = date.atStartOfDay();
         LocalDateTime endDate = date.atTime(LocalTime.MAX);
-        return guardPort.findVisitsByNeighborhoodIdAndDateRange(neighborhoodId, startDate, endDate);
+        List<Visit> visits = guardPort.findVisitsByNeighborhoodIdAndDateRange(neighborhoodId, startDate, endDate);
+        return visits.stream().map(visit -> new VisitResponseDTO(
+            visit.getId(),
+            visit.getVisitorName(),
+            visit.getVisitorDocument(),
+            visit.getHomeNumber(),
+            visit.getCheckIn()
+        )).collect(Collectors.toList());
     }
 }

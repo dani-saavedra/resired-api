@@ -1,8 +1,8 @@
 package com.resired.api.guard.domain.service;
 
-import com.resired.api.guard.domain.vo.Visit;
+import com.resired.api.guard.domain.vo.VisitVO;
 
 public interface CreateVisitor {
 
-    String createVisitor(Visit visit);
+    String createVisitor(VisitVO visit);
 }
