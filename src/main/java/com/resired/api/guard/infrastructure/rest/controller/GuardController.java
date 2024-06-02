@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/guard")
@@ -65,19 +66,19 @@ public class GuardController {
     }
 
     @GetMapping("/visits")
-    public ResponseData<List<VisitResponseDTO>> getRecentVisits(
-        @RequestHeader(value = "Authorization") String bearer) {
-        String token = bearer.substring(7);
-        Integer neighborhoodId = jwtService.extractNeighborhood(token);
-        return new ResponseData<>(visitUseCase.getRecentVisits(neighborhoodId));
-    }
-
-    @GetMapping("/visits-by-date")
-    public ResponseData<List<VisitResponseDTO>> getVisitsByDate(
+    public ResponseData<List<VisitResponseDTO>> getVisits(
         @RequestHeader(value = "Authorization") String bearer,
-        @RequestParam(value = "date") String date) {
+        @RequestParam(value = "date") Optional<String> date) {
         String token = bearer.substring(7);
         Integer neighborhoodId = jwtService.extractNeighborhood(token);
-        return new ResponseData<>(visitUseCase.getVisitsByDate(neighborhoodId, LocalDate.parse(date)));
+        List<VisitResponseDTO> visits;
+
+        if (date.isEmpty()) {
+            visits = visitUseCase.getVisits(neighborhoodId);
+        } else {
+            visits = visitUseCase.getVisits(neighborhoodId, LocalDate.parse(date.get()));
+        }
+
+        return new ResponseData<>(visits);
     }
 }
