@@ -56,8 +56,9 @@ public class GuardVisitUseCase {
     }
 
     public List<VisitResponseDTO> getRecentVisits(Integer neighborhoodId) {
-        LocalDateTime fromDate = LocalDateTime.now().minusDays(1);
-        return guardPort.findVisitsByNeighborhoodIdAndDate(neighborhoodId, fromDate);
+        LocalDateTime endDate = LocalDateTime.now();
+        LocalDateTime startDate = endDate.minusDays(1);
+        return guardPort.findVisitsByNeighborhoodIdAndDateRange(neighborhoodId, startDate, endDate);
     }
 
     public List<VisitResponseDTO> getVisitsByDate(Integer neighborhoodId, LocalDate date) {

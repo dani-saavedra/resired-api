@@ -65,7 +65,7 @@ public class GuardController {
     }
 
     @GetMapping("/visits")
-    public ResponseData<List<VisitResponseDTO>> getVisitsFromLast24Hours(
+    public ResponseData<List<VisitResponseDTO>> getRecentVisits(
         @RequestHeader(value = "Authorization") String bearer) {
         String token = bearer.substring(7);
         Integer neighborhoodId = jwtService.extractNeighborhood(token);

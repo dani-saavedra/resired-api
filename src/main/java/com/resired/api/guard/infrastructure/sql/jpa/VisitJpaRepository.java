@@ -16,17 +16,6 @@ public interface VisitJpaRepository extends JpaRepository<VisitOrm, Integer> {
         "JOIN qr.visitor visitor " +
         "JOIN visitor.authorizingHome home " +
         "WHERE home.neighborhoodId = :neighborhoodId " +
-        "AND visit.checkIn >= :fromDate " +
-        "ORDER BY visit.checkIn DESC")
-    List<VisitResponseDTO> findVisitsByNeighborhoodIdAndFromDate(Integer neighborhoodId, LocalDateTime fromDate);
-
-    @Query("SELECT new com.resired.api.guard.application.dto.VisitResponseDTO(" +
-        "visit.id, qr.visitor.name, qr.visitor.document, home.id, visit.checkIn) " +
-        "FROM VisitOrm visit " +
-        "JOIN visit.qr qr " +
-        "JOIN qr.visitor visitor " +
-        "JOIN visitor.authorizingHome home " +
-        "WHERE home.neighborhoodId = :neighborhoodId " +
         "AND visit.checkIn BETWEEN :startDate AND :endDate " +
         "ORDER BY visit.checkIn DESC")
     List<VisitResponseDTO> findVisitsByNeighborhoodIdAndDateRange(Integer neighborhoodId,

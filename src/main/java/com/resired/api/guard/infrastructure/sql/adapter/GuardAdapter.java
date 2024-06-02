@@ -55,11 +55,6 @@ public class GuardAdapter implements GuardPort, PackagePort {
     }
 
     @Override
-    public List<VisitResponseDTO> findVisitsByNeighborhoodIdAndDate(Integer neighborhoodId, LocalDateTime fromDate) {
-        return visitJpaRepository.findVisitsByNeighborhoodIdAndFromDate(neighborhoodId, fromDate);
-    }
-
-    @Override
     public List<VisitResponseDTO> findVisitsByNeighborhoodIdAndDateRange(Integer neighborhoodId,
                                                                          LocalDateTime startDate,
                                                                          LocalDateTime endDate) {
