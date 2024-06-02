@@ -4,6 +4,8 @@ import com.resired.api.security.application.dto.AuthenticationRequest;
 import com.resired.api.security.application.dto.AuthenticationResponse;
 import com.resired.api.security.application.usecase.AuthUseCase;
 import java.security.GeneralSecurityException;
+
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +21,7 @@ public class AuthenticationController {
 
 
     @PostMapping(path = "/login")
+    @Operation(summary = "Authenticate a user")
     public AuthenticationResponse authenticate(@RequestBody AuthenticationRequest auth) throws GeneralSecurityException {
         return authService.authUser(auth);
     }
