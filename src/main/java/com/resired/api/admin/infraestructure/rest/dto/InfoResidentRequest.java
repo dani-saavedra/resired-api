@@ -6,5 +6,6 @@ public record InfoResidentRequest(@JsonProperty(value = "document_id", required 
                                   @JsonProperty(value = "document_type", required = true) String documentType,
                                   @JsonProperty(value = "first_name", required = true) String firstName,
                                   @JsonProperty(value = "last_name", required = true) String lastName,
+                                  @JsonProperty(value = "home_id", required = true) Integer homeId,
                                   String email) {
 }

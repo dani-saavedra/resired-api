@@ -26,7 +26,9 @@ public class AdmResidentController {
                                                    @RequestBody InfoResidentRequest request) throws GeneralSecurityException {
         UserApp userApp = jwtService.extractUser(bearer);
         RegisterResidentVO registerResidentVO = new RegisterResidentVO(request.documentId(), request.documentType(),
-            request.firstName(), request.lastName(), request.email(), userApp.email());
+            request.firstName(), request.lastName(), request.email(),
+            request.homeId(), userApp.neighborhoodId(), userApp.email());
+
         useCase.registerResident(registerResidentVO, userApp.email());
         return ResponseEntity.ok("User registered successfully");
     }

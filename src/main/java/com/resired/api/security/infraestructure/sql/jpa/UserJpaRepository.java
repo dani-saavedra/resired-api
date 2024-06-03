@@ -7,9 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
-public interface UserJpaRepository extends JpaRepository<UserOrm, UUID> {
+public interface UserJpaRepository extends JpaRepository<UserOrm, Integer> {
 
     UserOrm findByEmailAndPassword(String email, String password);
 

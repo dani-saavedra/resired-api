@@ -38,4 +38,16 @@ public class JavaSmtpGmailSenderService implements EmailPort {
 
         emailSender.send(message);
     }
+
+    @Override
+    public void sendAssociateNewResidentToResidentEmail(String email) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        String body = "Tu cuenta en resired ha sido vinculada a una nueva residencia, podrás ingresar con tus mismas credenciales";
+
+        message.setTo(email);
+        message.setSubject("Registrado a nueva residencia");
+        message.setText(body);
+
+        emailSender.send(message);
+    }
 }
