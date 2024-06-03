@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Repository
 @AllArgsConstructor
@@ -23,19 +24,8 @@ public class AdmResidentAdapter implements ResidentPort {
 
     @Override
     public void registerResident(RegisterResidentVO resident, String registeredBy, String password) {
-
-        NeighborhoodOrm neighborhood = new NeighborhoodOrm();
-        neighborhood.setId(resident.neighborhoodId());
-        HomeOrm home = new HomeOrm();
-        home.setId(resident.homeId());
         ArrayList<UserRolOrm> userRols = new ArrayList<>();
-        UserRolOrm rolOrm = new UserRolOrm();
-        rolOrm.setRol(UserType.RESIDENT);
-        rolOrm.setActive(ACTIVE);
-        rolOrm.setCreatedDate(LocalDateTime.now());
-        rolOrm.setNeighborhood(neighborhood);
-        rolOrm.setHome(home);
-
+        UserRolOrm rolOrm = getUserRolOrm(resident);
 
         UserOrm entity = new UserOrm();
         entity.setActive(ACTIVE);
@@ -51,5 +41,41 @@ public class AdmResidentAdapter implements ResidentPort {
         rolOrm.setUser(entity);
         userRols.add(rolOrm);
         jpaRepository.saveAndFlush(entity);
+    }
+
+    @Override
+    public void associateNewResidence(RegisterResidentVO resident, Integer userId) {
+        UserRolOrm rolOrm = getUserRolOrm(resident);
+        Optional<UserOrm> userOrm = jpaRepository.findById(userId);
+        if (userOrm.isPresent()) {
+            rolOrm.setUser(userOrm.get());
+            userOrm.get().getUserRols().add(rolOrm);
+            jpaRepository.save(userOrm.get());
+        }
+    }
+
+    private static UserRolOrm getUserRolOrm(RegisterResidentVO resident) {
+        NeighborhoodOrm neighborhood = new NeighborhoodOrm();
+        neighborhood.setId(resident.neighborhoodId());
+        HomeOrm home = new HomeOrm();
+        home.setId(resident.homeId());
+
+        UserRolOrm rolOrm = new UserRolOrm();
+        rolOrm.setRol(UserType.RESIDENT);
+        rolOrm.setActive(ACTIVE);
+        rolOrm.setCreatedDate(LocalDateTime.now());
+        rolOrm.setNeighborhood(neighborhood);
+        rolOrm.setHome(home);
+        return rolOrm;
+    }
+
+    @Override
+    public Integer getResidentIdByEmail(String email) {
+        UserOrm user = jpaRepository.findByEmail(email);
+        if (user != null) {
+            return user.getId();
+        } else {
+            return null;
+        }
     }
 }

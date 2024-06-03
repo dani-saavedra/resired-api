@@ -19,8 +19,13 @@ public class ResidentUseCase {
 
     public void registerResident(RegisterResidentVO residentVO, String registeredBy) throws GeneralSecurityException {
         String password = authService.encrypt(residentVO.documentId());
-        residentPort.registerResident(residentVO, registeredBy, password);
-        //TODO que va pasar cuando ya exista el usuario, se debe asociar al otro conjunto
-        emailPort.sendRegisteredResidentEmail(residentVO.email());
+        Integer userId = residentPort.getResidentIdByEmail(residentVO.email());
+        if (userId == null) {
+            residentPort.registerResident(residentVO, registeredBy, password);
+            emailPort.sendRegisteredResidentEmail(residentVO.email());
+        } else {
+            residentPort.associateNewResidence(residentVO, userId);
+            emailPort.sendAssociateNewResidentToResidentEmail(residentVO.email());
+        }
     }
 }
