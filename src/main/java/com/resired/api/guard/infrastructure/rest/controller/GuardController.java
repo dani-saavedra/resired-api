@@ -10,6 +10,9 @@ import com.resired.api.guard.application.dto.PackageRequestDTO;
 import com.resired.api.resident.application.dto.VisitorRequestDTO;
 import com.resired.api.resident.infraestructure.rest.dto.ResponseData;
 import com.resired.api.security.application.usecase.JwtService;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -29,17 +32,20 @@ public class GuardController {
     private final JwtService jwtService;
 
     @GetMapping("/info-qr")
+    @Operation(summary = "Obtain information from QR code")
     public Visitor obtainInfoQr(@RequestBody InfoQrRequest infoQrRequest) {
         return visitUseCase.validateInfoQR(infoQrRequest.qr());
     }
 
     @PostMapping("/visit")
+    @Operation(summary = "Register a new visit using QR code")
     public ResponseData<String> registerVisit(@RequestBody InfoQrRequest infoQrRequest) {
         visitUseCase.registerVisit(infoQrRequest.qr());
         return new ResponseData<>("Registered visit successfully");
     }
 
     @PostMapping("/visitor")
+    @Operation(summary = "Register a new visit by obtaining the visitor's data from the guard")
     public ResponseData<String> registerVisitor(@RequestHeader(value = "Authorization") String bearer,
                                                 @RequestBody VisitorRequestDTO visitorRequestDTO) {
         String email = jwtService.extractUsername(bearer.substring(7));
@@ -48,6 +54,7 @@ public class GuardController {
     }
 
     @PostMapping("/package")
+    @Operation(summary = "Register a new package")
     public ResponseData<String> registerPackage(@RequestHeader(value = "Authorization") String bearer,
                                                 @RequestBody PackageRequestDTO packageRequestDTO) {
         String token = bearer.substring(7);
@@ -58,6 +65,7 @@ public class GuardController {
     }
 
     @GetMapping("/package")
+    @Operation(summary = "Get all the packages by neighborhood")
     public ResponseData<List<PackageResponseDTO>> getPackagesByNeighborhood(@RequestHeader(value = "Authorization") String bearer) {
         String token = bearer.substring(7);
         String email = jwtService.extractUsername(token);
@@ -66,8 +74,10 @@ public class GuardController {
     }
 
     @GetMapping("/visits")
+    @Operation(summary = "Get visits from last 24 hours or visits by date")
     public ResponseData<List<VisitResponseDTO>> getVisits(
         @RequestHeader(value = "Authorization") String bearer,
+        @Parameter(description = "Date as a String in format YYYY-MM-DD", schema = @Schema(type = "string", format = "date"))
         @RequestParam(value = "date") Optional<String> date) {
         String token = bearer.substring(7);
         Integer neighborhoodId = jwtService.extractNeighborhood(token);

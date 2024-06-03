@@ -6,6 +6,7 @@ import com.resired.api.resident.domain.vo.RegisteredVisitor;
 import com.resired.api.resident.infraestructure.rest.dto.ResponseData;
 import com.resired.api.security.application.usecase.JwtService;
 import lombok.AllArgsConstructor;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +22,7 @@ public class ResidentController {
     private final JwtService jwtService;
 
     @PostMapping(path = "/visitor")
+    @Operation(summary = "Create a qr for a new visitor")
     public ResponseData<String> createVisitor(@RequestHeader(value = "Authorization") String bearer,
                                               @RequestBody VisitorRequestDTO visitor) {
         String email = jwtService.extractUsername(bearer.substring(7));
@@ -29,12 +31,14 @@ public class ResidentController {
     }
 
     @GetMapping(path = "/visitors")
+    @Operation(summary = "Obtain visitors by resident")
     public List<RegisteredVisitor> obtainVisitor(@RequestHeader(value = "Authorization") String bearer) {
         String email = jwtService.extractUsername(bearer.substring(7));
         return visitUseCase.obtainVisitorByResident(email);
     }
 
     @PutMapping(path = "/visitor/{document}/enable")
+    @Operation(summary = "Enable a visitor to enter again")
     public ResponseData<String> allowVisitorToEnter(@RequestHeader(value = "Authorization") String bearer,
                                                     @PathVariable String document) {
         String email = jwtService.extractUsername(bearer.substring(7));
