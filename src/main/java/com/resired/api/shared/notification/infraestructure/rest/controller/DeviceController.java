@@ -1,6 +1,7 @@
 package com.resired.api.shared.notification.infraestructure.rest.controller;
 
 import com.resired.api.security.application.usecase.JwtService;
+import com.resired.api.security.domain.entity.UserApp;
 import com.resired.api.shared.notification.application.usecase.DeviceUseCase;
 import com.resired.api.shared.notification.domain.entity.Device;
 import lombok.AllArgsConstructor;
@@ -21,9 +22,9 @@ public class DeviceController {
     public ResponseEntity<String> saveDevice(
         @RequestHeader(value = "Authorization") String bearer,
         @RequestBody Device request) {
-        String email = jwtService.extractUsername(bearer.substring(7));
+        UserApp userApp = jwtService.extractUser(bearer);
 
-        deviceUseCase.registerDevice(request, email);
+        deviceUseCase.registerDevice(request, userApp.email());
         return ResponseEntity.ok("Device saved successfully");
     }
 
@@ -31,9 +32,8 @@ public class DeviceController {
     public ResponseEntity<Void> deleteDevice(
         @RequestHeader(value = "Authorization") String bearer,
         @PathVariable String id) {
-        String email = jwtService.extractUsername(bearer.substring(7));
-
-        deviceUseCase.removeDevice(id, email);
+        UserApp userApp = jwtService.extractUser(bearer);
+        deviceUseCase.removeDevice(id, userApp.email());
         return ResponseEntity.noContent().build();
     }
 
@@ -41,8 +41,8 @@ public class DeviceController {
     public ResponseEntity<Device> getDevice(
         @RequestHeader(value = "Authorization") String bearer,
         @PathVariable String id) {
-        String email = jwtService.extractUsername(bearer.substring(7));
-        Device device = deviceUseCase.getDevice(id, email);
+        UserApp userApp = jwtService.extractUser(bearer);
+        Device device = deviceUseCase.getDevice(id, userApp.email());
         return ResponseEntity.ok(device);
     }
 
@@ -50,8 +50,8 @@ public class DeviceController {
     public ResponseEntity<List<Device>> getDevices(
         @RequestHeader(value = "Authorization") String bearer
     ) {
-        String email = jwtService.extractUsername(bearer.substring(7));
-        List<Device> devices = deviceUseCase.getDevicesByUser(email);
+        UserApp userApp = jwtService.extractUser(bearer);
+        List<Device> devices = deviceUseCase.getDevicesByUser(userApp.email());
 
         return ResponseEntity.ok(devices);
     }

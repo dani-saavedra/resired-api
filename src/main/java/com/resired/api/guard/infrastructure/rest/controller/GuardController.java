@@ -9,6 +9,7 @@ import com.resired.api.guard.application.dto.PackageRequestDTO;
 import com.resired.api.resident.application.dto.VisitorRequestDTO;
 import com.resired.api.resident.infraestructure.rest.dto.ResponseData;
 import com.resired.api.security.application.usecase.JwtService;
+import com.resired.api.security.domain.entity.UserApp;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -39,26 +40,22 @@ public class GuardController {
     @PostMapping("/visitor")
     public ResponseData<String> registerVisitor(@RequestHeader(value = "Authorization") String bearer,
                                                 @RequestBody VisitorRequestDTO visitorRequestDTO) {
-        String email = jwtService.extractUsername(bearer.substring(7));
-        visitUseCase.registerVisitor(email, visitorRequestDTO);
+        UserApp userApp = jwtService.extractUser(bearer);
+        visitUseCase.registerVisitor(userApp.email(), visitorRequestDTO);
         return new ResponseData<>("Registered visit successfully");
     }
 
     @PostMapping("/package")
     public ResponseData<String> registerPackage(@RequestHeader(value = "Authorization") String bearer,
                                                 @RequestBody PackageRequestDTO packageRequestDTO) {
-        String token = bearer.substring(7);
-        String email = jwtService.extractUsername(token);
-        Integer neighborhoodId = jwtService.extractNeighborhood(token);
-        packageUseCase.registerPackage(email, packageRequestDTO, neighborhoodId);
+        UserApp userApp = jwtService.extractUser(bearer);
+        packageUseCase.registerPackage(userApp.email(), packageRequestDTO, userApp.neighborhoodId());
         return new ResponseData<>("Registered package successfully");
     }
 
     @GetMapping("/package")
     public ResponseData<List<PackageResponseDTO>> getPackagesByNeighborhood(@RequestHeader(value = "Authorization") String bearer) {
-        String token = bearer.substring(7);
-        String email = jwtService.extractUsername(token);
-        Integer neighborhoodId = jwtService.extractNeighborhood(token);
-        return new ResponseData<>(packageUseCase.getPackagesByNeighborhood(email, neighborhoodId));
+        UserApp userApp = jwtService.extractUser(bearer);
+        return new ResponseData<>(packageUseCase.getPackagesByNeighborhood(userApp.email(), userApp.neighborhoodId()));
     }
 }
