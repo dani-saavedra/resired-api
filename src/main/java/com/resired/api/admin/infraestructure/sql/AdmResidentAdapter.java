@@ -2,6 +2,7 @@ package com.resired.api.admin.infraestructure.sql;
 
 import com.resired.api.admin.domain.vo.RegisterResidentVO;
 import com.resired.api.admin.domain.repository.ResidentPort;
+import com.resired.api.resident.infraestructure.sql.orm.HomeOrm;
 import com.resired.api.resident.infraestructure.sql.orm.NeighborhoodOrm;
 import com.resired.api.security.domain.enums.UserType;
 import com.resired.api.security.infraestructure.sql.jpa.UserJpaRepository;
@@ -24,13 +25,16 @@ public class AdmResidentAdapter implements ResidentPort {
     public void registerResident(RegisterResidentVO resident, String registeredBy, String password) {
 
         NeighborhoodOrm neighborhood = new NeighborhoodOrm();
-        neighborhood.setId(1);//TODO NeighborhoodOrm
+        neighborhood.setId(resident.neighborhoodId());
+        HomeOrm home = new HomeOrm();
+        home.setId(resident.homeId());
         ArrayList<UserRolOrm> userRols = new ArrayList<>();
         UserRolOrm rolOrm = new UserRolOrm();
         rolOrm.setRol(UserType.RESIDENT);
         rolOrm.setActive(ACTIVE);
         rolOrm.setCreatedDate(LocalDateTime.now());
         rolOrm.setNeighborhood(neighborhood);
+        rolOrm.setHome(home);
 
 
         UserOrm entity = new UserOrm();
