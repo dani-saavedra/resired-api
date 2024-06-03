@@ -19,12 +19,11 @@ public class CustomUserDetails extends UserOrm implements UserDetails {
     public CustomUserDetails(UserOrm user) {
         this.email = user.getEmail();
         this.password = user.getPassword();
-        List<GrantedAuthority> auths = new ArrayList<>();
-
-        for (UserRolOrm role : user.getUserRols()) {
-            auths.add(new SimpleGrantedAuthority(role.getRol().name()));
-        }
-        this.authorities = auths;
+        this.authorities = user.getUserRols()
+            .stream()
+            .filter(UserRolOrm::isActive)
+            .map(userRolOrm -> new SimpleGrantedAuthority(userRolOrm.getRol().name()))
+            .toList();
     }
 
     @Override
