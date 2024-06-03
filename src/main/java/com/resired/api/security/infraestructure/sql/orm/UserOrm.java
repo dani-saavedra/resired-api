@@ -30,7 +30,7 @@ public class UserOrm {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<UserRolOrm> userRols;
 
-    @OneToMany(mappedBy = "userId", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "userId", fetch = FetchType.LAZY)
     private List<DeviceOrm> devices;
 
     @Column

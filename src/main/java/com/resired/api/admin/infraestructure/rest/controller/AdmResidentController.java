@@ -4,6 +4,7 @@ import com.resired.api.admin.application.usecase.ResidentUseCase;
 import com.resired.api.admin.domain.vo.RegisterResidentVO;
 import com.resired.api.admin.infraestructure.rest.dto.InfoResidentRequest;
 import com.resired.api.security.application.usecase.JwtService;
+import com.resired.api.security.domain.entity.UserApp;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,10 +24,10 @@ public class AdmResidentController {
     @PostMapping(path = "/resident")
     public ResponseEntity<String> registerResident(@RequestHeader(value = "Authorization") String bearer,
                                                    @RequestBody InfoResidentRequest request) throws GeneralSecurityException {
-        String email = jwtService.extractUsername(bearer.substring(7));
+        UserApp userApp = jwtService.extractUser(bearer);
         RegisterResidentVO registerResidentVO = new RegisterResidentVO(request.documentId(), request.documentType(),
-            request.firstName(), request.lastName(), request.email(), email);
-        useCase.registerResident(registerResidentVO, email);
+            request.firstName(), request.lastName(), request.email(), userApp.email());
+        useCase.registerResident(registerResidentVO, userApp.email());
         return ResponseEntity.ok("User registered successfully");
     }
 }

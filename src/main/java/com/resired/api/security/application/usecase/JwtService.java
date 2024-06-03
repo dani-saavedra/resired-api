@@ -1,5 +1,6 @@
 package com.resired.api.security.application.usecase;
 
+import com.resired.api.security.domain.entity.UserApp;
 import com.resired.api.security.domain.service.JwtSecurity;
 import io.jsonwebtoken.Claims;
 import lombok.AllArgsConstructor;
@@ -25,14 +26,10 @@ public class JwtService {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    public Integer extractNeighborhood(String token) {
-        final Claims claims = extractAllClaims(token);
-        return (Integer) claims.get("neighborhoodId");
-    }
-
-    public Integer extractHome(String token) {
-        final Claims claims = extractAllClaims(token);
-        return (Integer) claims.get("homeId");
+    public UserApp extractUser(String bearer) {
+        String token = bearer.substring(7);
+        Claims claims = extractAllClaims(token);
+        return UserApp.generateUserAppFromClaims(claims);
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
@@ -58,16 +55,17 @@ public class JwtService {
         return createToken(claims, username);
     }
 
-    public String generateToken(String username, String rol, Integer neighborhood, Integer homeId) {
+    public String generateToken(String username, String rol, Integer neighborhood, Integer homeId, Integer userId) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("rol", rol);
         claims.put("neighborhoodId", neighborhood);
         claims.put("homeId", homeId);
+        claims.put("userId", userId);
         return createToken(claims, username);
     }
 
     private String createToken(Map<String, Object> claims, String username) {
-        Date expiration = new Date(System.currentTimeMillis() + 1000 * 60 * 10);
+        Date expiration = new Date(System.currentTimeMillis() + 1000 * 60 * 20);
         Date issuedAt = new Date(System.currentTimeMillis());
         return jwtSecurity.generateJwt(username, claims, expiration, issuedAt);
     }
