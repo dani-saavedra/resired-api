@@ -5,6 +5,7 @@ import com.resired.api.admin.domain.vo.RegisterResidentVO;
 import com.resired.api.admin.infraestructure.rest.dto.InfoResidentRequest;
 import com.resired.api.security.application.usecase.JwtService;
 import com.resired.api.security.domain.entity.UserApp;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,6 +23,7 @@ public class AdmResidentController {
     private final ResidentUseCase useCase;
 
     @PostMapping(path = "/resident")
+    @Operation(summary = "Register/associate resident to an apartment")
     public ResponseEntity<String> registerResident(@RequestHeader(value = "Authorization") String bearer,
                                                    @RequestBody InfoResidentRequest request) throws GeneralSecurityException {
         UserApp userApp = jwtService.extractUser(bearer);

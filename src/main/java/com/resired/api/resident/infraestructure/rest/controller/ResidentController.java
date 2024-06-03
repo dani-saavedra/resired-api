@@ -48,6 +48,7 @@ public class ResidentController {
     }
 
     @PutMapping(path = "/visitor/{document}/delete")
+    @Operation(summary = "Delete a visitor registered by a resident")
     public void deleteVisitor(@RequestHeader(value = "Authorization") String bearer,
                               @PathVariable(value = "document") String documentVisitor) {
         UserApp userApp = jwtService.extractUser(bearer);
