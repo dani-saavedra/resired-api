@@ -55,11 +55,12 @@ public class JwtService {
         return createToken(claims, username);
     }
 
-    public String generateToken(String username, String rol, Integer neighborhood, Integer homeId) {
+    public String generateToken(String username, String rol, Integer neighborhood, Integer homeId, Integer userId) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("rol", rol);
         claims.put("neighborhoodId", neighborhood);
         claims.put("homeId", homeId);
+        claims.put("userId", homeId);
         return createToken(claims, username);
     }
 
