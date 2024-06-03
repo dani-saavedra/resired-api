@@ -3,6 +3,7 @@ package com.resired.api.shared.notification.infraestructure.rest.controller;
 import com.resired.api.security.application.usecase.JwtService;
 import com.resired.api.shared.notification.application.usecase.DeviceUseCase;
 import com.resired.api.shared.notification.domain.entity.Device;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ public class DeviceController {
     private final JwtService jwtService;
 
     @PostMapping
+    @Operation(summary = "Save a new device for the user")
     public ResponseEntity<String> saveDevice(
         @RequestHeader(value = "Authorization") String bearer,
         @RequestBody Device request) {
@@ -28,6 +30,7 @@ public class DeviceController {
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Delete a device of a user")
     public ResponseEntity<Void> deleteDevice(
         @RequestHeader(value = "Authorization") String bearer,
         @PathVariable String id) {
@@ -38,6 +41,7 @@ public class DeviceController {
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Get a device details")
     public ResponseEntity<Device> getDevice(
         @RequestHeader(value = "Authorization") String bearer,
         @PathVariable String id) {
@@ -47,9 +51,9 @@ public class DeviceController {
     }
 
     @GetMapping
+    @Operation(summary = "Get all devices for the user")
     public ResponseEntity<List<Device>> getDevices(
-        @RequestHeader(value = "Authorization") String bearer
-    ) {
+        @RequestHeader(value = "Authorization") String bearer) {
         String email = jwtService.extractUsername(bearer.substring(7));
         List<Device> devices = deviceUseCase.getDevicesByUser(email);
 
