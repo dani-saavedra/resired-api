@@ -33,7 +33,8 @@ public class AuthUseCase {
         String jwt;
         if (user.getRoles().size() == 1) {
             Rol rol = user.getRoles().get(0);
-            jwt = jwtService.generateToken(user.getEmail(), rol.getUserType().name(), rol.getNeighborhoodId(), rol.getHomeId());
+            jwt = jwtService.generateToken(user.getEmail(), rol.getUserType().name(), rol.getNeighborhoodId(),
+                rol.getHomeId(), user.getId());
         } else {
             jwt = jwtService.generateToken(user.getEmail());
         }

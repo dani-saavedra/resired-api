@@ -28,8 +28,6 @@ public class VisitorOrm {
     @Column
     private String telephone;
 
-    //Autorizado siempre por casa, pero no siempre por residente
-    //esto permite ver los visitantes registrados por residente de manera discriminada
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "home_id")
     private HomeOrm authorizingHome;

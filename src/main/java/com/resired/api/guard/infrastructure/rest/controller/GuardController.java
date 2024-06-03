@@ -1,18 +1,19 @@
 package com.resired.api.guard.infrastructure.rest.controller;
 
+import com.resired.api.guard.application.dto.PackageRequestDTO;
 import com.resired.api.guard.application.dto.PackageResponseDTO;
 import com.resired.api.guard.application.dto.VisitResponseDTO;
 import com.resired.api.guard.application.usecase.GuardVisitUseCase;
 import com.resired.api.guard.application.usecase.PackageUseCase;
 import com.resired.api.guard.domain.entity.Visitor;
 import com.resired.api.guard.infrastructure.rest.dto.InfoQrRequest;
-import com.resired.api.guard.application.dto.PackageRequestDTO;
 import com.resired.api.resident.application.dto.VisitorRequestDTO;
 import com.resired.api.resident.infraestructure.rest.dto.ResponseData;
 import com.resired.api.security.application.usecase.JwtService;
+import com.resired.api.security.domain.entity.UserApp;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -48,8 +49,8 @@ public class GuardController {
     @Operation(summary = "Register a new visit by obtaining the visitor's data from the guard")
     public ResponseData<String> registerVisitor(@RequestHeader(value = "Authorization") String bearer,
                                                 @RequestBody VisitorRequestDTO visitorRequestDTO) {
-        String email = jwtService.extractUsername(bearer.substring(7));
-        visitUseCase.registerVisitor(email, visitorRequestDTO);
+        UserApp userApp = jwtService.extractUser(bearer);
+        visitUseCase.registerVisitor(userApp.email(), visitorRequestDTO);
         return new ResponseData<>("Registered visit successfully");
     }
 
@@ -57,20 +58,16 @@ public class GuardController {
     @Operation(summary = "Register a new package")
     public ResponseData<String> registerPackage(@RequestHeader(value = "Authorization") String bearer,
                                                 @RequestBody PackageRequestDTO packageRequestDTO) {
-        String token = bearer.substring(7);
-        String email = jwtService.extractUsername(token);
-        Integer neighborhoodId = jwtService.extractNeighborhood(token);
-        packageUseCase.registerPackage(email, packageRequestDTO, neighborhoodId);
+        UserApp userApp = jwtService.extractUser(bearer);
+        packageUseCase.registerPackage(userApp.email(), packageRequestDTO, userApp.neighborhoodId());
         return new ResponseData<>("Registered package successfully");
     }
 
     @GetMapping("/package")
     @Operation(summary = "Get all the packages by neighborhood")
     public ResponseData<List<PackageResponseDTO>> getPackagesByNeighborhood(@RequestHeader(value = "Authorization") String bearer) {
-        String token = bearer.substring(7);
-        String email = jwtService.extractUsername(token);
-        Integer neighborhoodId = jwtService.extractNeighborhood(token);
-        return new ResponseData<>(packageUseCase.getPackagesByNeighborhood(email, neighborhoodId));
+        UserApp userApp = jwtService.extractUser(bearer);
+        return new ResponseData<>(packageUseCase.getPackagesByNeighborhood(userApp.email(), userApp.neighborhoodId()));
     }
 
     @GetMapping("/visits")
@@ -79,14 +76,13 @@ public class GuardController {
         @RequestHeader(value = "Authorization") String bearer,
         @Parameter(description = "Date as a String in format YYYY-MM-DD", schema = @Schema(type = "string", format = "date"))
         @RequestParam(value = "date") Optional<String> date) {
-        String token = bearer.substring(7);
-        Integer neighborhoodId = jwtService.extractNeighborhood(token);
+        UserApp userApp = jwtService.extractUser(bearer);
         List<VisitResponseDTO> visits;
 
         if (date.isEmpty()) {
-            visits = visitUseCase.getVisits(neighborhoodId);
+            visits = visitUseCase.getVisits(userApp.neighborhoodId());
         } else {
-            visits = visitUseCase.getVisits(neighborhoodId, LocalDate.parse(date.get()));
+            visits = visitUseCase.getVisits(userApp.neighborhoodId(), LocalDate.parse(date.get()));
         }
 
         return new ResponseData<>(visits);
