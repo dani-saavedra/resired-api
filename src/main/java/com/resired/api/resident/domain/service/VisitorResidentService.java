@@ -36,7 +36,7 @@ public class VisitorResidentService implements CreateVisitor, ManageVisitor {
         }
         Home home = homePort.getHomeById(residentVisit.homeAuthorizer());
         if (home == null) {
-            throw new InvalidHomeException();
+            throw new InvalidHomeException(residentVisit.homeAuthorizer());
         }
         List<RegisteredVisitor> registeredVisitors = residentPort.obtainVisitors(resident.getEmail());
         for (RegisteredVisitor registeredVisitor : registeredVisitors) {

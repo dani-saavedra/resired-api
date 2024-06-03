@@ -11,7 +11,7 @@ public interface QrJpaRepository extends JpaRepository<QrOrm, Integer> {
 
     QrOrm findByQr(String qr);
 
-    @Modifying(clearAutomatically = true)
+    @Modifying
     @Query("update QrOrm qr set qr.available = false, qr.disabledAt = ?1  where qr.visitor.id =?2 and qr.available=true ")
     void disableVisitorQrByIdVisitor(LocalDateTime disabledAt, Integer idVisitor);
 }

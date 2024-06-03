@@ -8,5 +8,9 @@ public interface ResidentPort {
 
     void associateNewResidence(RegisterResidentVO resident, Integer userId);
 
+    void removeResidentByHome(Integer homeId);
+
+    void removeResidentByUserId(Integer neighborhoodId, Integer userId);
+
     Integer getResidentIdByEmail(String email);
 }

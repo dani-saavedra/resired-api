@@ -34,4 +34,24 @@ public class AdmResidentController {
         useCase.registerResident(registerResidentVO, userApp.email());
         return ResponseEntity.ok("User registered successfully");
     }
+
+    @DeleteMapping(path = "/home/{id_home}/residents")
+    @Operation(summary = "Remove all resident registered to a home")
+    public ResponseEntity<String> removeHomeResidents(@RequestHeader(value = "Authorization") String bearer,
+                                                      @PathVariable(value = "id_home") Integer idHome) {
+        UserApp userApp = jwtService.extractUser(bearer);
+
+        useCase.removeResidentsByHome(userApp.neighborhoodId(), idHome);
+        return ResponseEntity.ok("Residents removed successfully");
+    }
+
+    @DeleteMapping(path = "/residents/{id_user}")
+    @Operation(summary = "Remove a registered resident from a home")
+    public ResponseEntity<String> removeHomeResident(@RequestHeader(value = "Authorization") String bearer,
+                                                     @PathVariable(value = "id_user") Integer idUser) {
+        UserApp userApp = jwtService.extractUser(bearer);
+
+        useCase.removeResidentByUserId(userApp.neighborhoodId(), idUser);
+        return ResponseEntity.ok("Resident removed successfully");
+    }
 }
