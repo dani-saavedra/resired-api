@@ -60,7 +60,7 @@ public class JwtService {
         claims.put("rol", rol);
         claims.put("neighborhoodId", neighborhood);
         claims.put("homeId", homeId);
-        claims.put("userId", homeId);
+        claims.put("userId", userId);
         return createToken(claims, username);
     }
 
