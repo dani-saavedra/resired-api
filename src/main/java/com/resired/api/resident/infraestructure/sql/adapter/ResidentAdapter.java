@@ -24,8 +24,6 @@ public class ResidentAdapter implements ResidentPort {
     private final QrJpaRepository qrJpaRepository;
     private final JwtSecurity jwtSecurity;
 
-    private static final long EXPIRATION_TIME = 172800000;
-
     @Override
     public String registerVisit(Integer userId, Integer homeId, String homeName, String vistorName, String visitorDocument,
                                 String telephone, boolean favorite) {
@@ -61,10 +59,9 @@ public class ResidentAdapter implements ResidentPort {
 
     private String generateToken(String documentId, String info) {
         Date now = new Date();
-        Date expiration = new Date(now.getTime() + EXPIRATION_TIME);
         Map<String, Object> claims = new HashMap<>();
         claims.put("info", info);
-        return jwtSecurity.generateJwt(documentId, claims, expiration, now);
+        return jwtSecurity.generateJwt(documentId, claims, now);
     }
 
     private String generateAndSaveQR(VisitorOrm visitor) {

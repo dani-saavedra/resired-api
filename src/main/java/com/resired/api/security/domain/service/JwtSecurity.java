@@ -5,8 +5,6 @@ import io.jsonwebtoken.Jwts;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -26,12 +24,11 @@ public class JwtSecurity {
 
     }
 
-    public String generateJwt(String username, Map<String, Object> claims, Date expiration, Date issuedAt) {
+    public String generateJwt(String username, Map<String, Object> claims, Date issuedAt) {
         return Jwts.builder()
             .claims(claims)
             .subject(username)
             .issuedAt(issuedAt)
-            .expiration(expiration)
             .signWith(privateKey)
             .compact();
 
