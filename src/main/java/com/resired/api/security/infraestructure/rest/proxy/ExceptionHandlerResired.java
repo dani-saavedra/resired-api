@@ -66,7 +66,7 @@ public class ExceptionHandlerResired {
     protected ResponseEntity<ErrorDTO> unexpected(Exception ex, WebRequest request) {
         log.error("unexpected error ", ex);
         return new ResponseEntity<>(new ErrorDTO(ErrorCode.GENERAL.name()
-            , ErrorCode.GENERAL.getDescription()), HttpStatus.INTERNAL_SERVER_ERROR);
+            , ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(value = NoResourceFoundException.class)

@@ -26,7 +26,7 @@ public class VisitorGuardService implements CreateVisitor {
         }
         Home home = homePort.getHomeById(homeVisit.homeAuthorizer());
         if (home == null) {
-            throw new InvalidHomeException();
+            throw new InvalidHomeException(homeVisit.homeAuthorizer());
         }
         return guardPort.registerVisitFromGuard(guard.getId(), home.getId(), home.getName(),
             homeVisit.nameVisitor(), homeVisit.documentVisitor(), homeVisit.telephoneVisitor());

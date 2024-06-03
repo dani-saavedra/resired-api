@@ -54,6 +54,16 @@ public class AdmResidentAdapter implements ResidentPort {
         }
     }
 
+    @Override
+    public void removeResidentByHome(Integer homeId) {
+        jpaRepository.removeResidentByHome(homeId, LocalDateTime.now());
+    }
+
+    @Override
+    public void removeResidentByUserId(Integer neighborhoodId, Integer userId) {
+        jpaRepository.removeResidentByUserId(neighborhoodId, userId, LocalDateTime.now());
+    }
+
     private static UserRolOrm getUserRolOrm(RegisterResidentVO resident) {
         NeighborhoodOrm neighborhood = new NeighborhoodOrm();
         neighborhood.setId(resident.neighborhoodId());

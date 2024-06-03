@@ -9,7 +9,7 @@ public interface PasswordResetTokenJpa extends JpaRepository<PasswordResetTokenO
 
     PasswordResetTokenOrm findByToken(String token);
 
-    @Modifying(clearAutomatically = true)
+    @Modifying
     @Query("update PasswordResetTokenOrm passToken set passToken.invalid = true where passToken.token =?1")
     void updateToken(String token);
 }
