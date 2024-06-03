@@ -7,14 +7,9 @@ assignees: ''
 
 ---
 
-# Descripción
+**Please fill out the following information**
 
-**Yo como** XXX
-**Requiero** YYY
-**Para** ZZZ
-
-# Criterios de Aceptación
-
-* A
-* B
-* C
+* Impact: High / Medium / Low
+* Urgency: High / Medium / Low
+* Category: APP / BACK / RESIRED
+* Scenery: Please describe the scenario
