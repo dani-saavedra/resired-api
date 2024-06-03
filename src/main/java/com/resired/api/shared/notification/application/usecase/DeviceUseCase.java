@@ -24,6 +24,13 @@ public class DeviceUseCase {
         }
 
         userPort.addDevice(email, device);
+
+        List<Integer> neighborhoodIds = userPort.getNeighborhoodIdsByEmail(email);
+
+        neighborhoodIds.forEach((neigh) -> {
+            String topic = "/topics/neighborhoods/" + neigh;
+            notificationSenderService.subscribeDeviceToTopic(device, topic);
+        });
     }
 
     public void removeDevice(String deviceID, String email) {
