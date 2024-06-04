@@ -77,6 +77,7 @@ public class PackageUseCase {
         String guardName = guard.getUserName() + " " + guard.getUserLastName();
         String homeNumber = homePort.getHomeNumberById(pkg.getHomeId());
         return new PackageResponseDTO(
+            pkg.getId(),
             guardName,
             homeNumber,
             pkg.getReceiver(),

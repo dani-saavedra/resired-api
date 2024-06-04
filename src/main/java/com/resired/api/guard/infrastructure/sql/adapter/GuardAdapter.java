@@ -1,6 +1,5 @@
 package com.resired.api.guard.infrastructure.sql.adapter;
 
-import com.resired.api.guard.application.dto.VisitResponseDTO;
 import com.resired.api.guard.domain.entity.Package;
 import com.resired.api.guard.domain.entity.Visit;
 import com.resired.api.guard.domain.repository.GuardPort;
@@ -85,6 +84,7 @@ public class GuardAdapter implements GuardPort, PackagePort {
 
     private Package toPackageDomain(PackageOrm packageOrm) {
         return Package.fromExistingPackage(
+            packageOrm.getId(),
             packageOrm.getGuardId(),
             packageOrm.getHome(),
             packageOrm.getReceiver(),
