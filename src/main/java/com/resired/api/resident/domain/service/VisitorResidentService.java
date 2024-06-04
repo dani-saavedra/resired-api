@@ -4,19 +4,21 @@ import com.resired.api.guard.domain.repository.QrPort;
 import com.resired.api.guard.domain.service.CreateVisitor;
 import com.resired.api.guard.domain.service.ManageVisitor;
 import com.resired.api.guard.domain.vo.VisitVO;
-import com.resired.api.resident.domain.exception.InvalidHomeException;
 import com.resired.api.resident.domain.entity.Home;
+import com.resired.api.resident.domain.exception.InvalidHomeException;
 import com.resired.api.resident.domain.exception.InvalidVisitorException;
 import com.resired.api.resident.domain.repository.HomePort;
 import com.resired.api.resident.domain.repository.ResidentPort;
 import com.resired.api.resident.domain.vo.RegisteredVisitor;
-import com.resired.api.security.domain.exception.InactiveUserException;
 import com.resired.api.security.domain.entity.User;
+import com.resired.api.security.domain.exception.InactiveUserException;
 import com.resired.api.security.domain.repository.UserPort;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -44,8 +46,9 @@ public class VisitorResidentService implements CreateVisitor, ManageVisitor {
                 throw new InvalidVisitorException(residentVisit.documentVisitor());
             }
         }
+        Date expirationQr = getQRValidityTime(residentVisit.favorite());
         return residentPort.registerVisit(resident.getId(), home.getId(), home.getName(), residentVisit.nameVisitor(),
-            residentVisit.documentVisitor(), residentVisit.telephoneVisitor(), residentVisit.favorite());
+            residentVisit.documentVisitor(), residentVisit.telephoneVisitor(), residentVisit.favorite(), expirationQr);
     }
 
     @Override
@@ -60,6 +63,19 @@ public class VisitorResidentService implements CreateVisitor, ManageVisitor {
             throw new InvalidVisitorException(documentVisitor);
         }
         qrPort.disableVisitorQrByIdVisitor(registeredVisitor.id());
-        return residentPort.reactiveVisitor(emailResident, documentVisitor);
+        Date expiration = getQRValidityTime(false);
+        return residentPort.reactiveVisitor(emailResident, documentVisitor, expiration);
+    }
+
+    private static Date getQRValidityTime(boolean favorite) {
+        Date expirationQr;
+        Calendar instance = Calendar.getInstance();
+        if (favorite) {
+            instance.add(Calendar.YEAR, 1);
+        } else {
+            instance.add(Calendar.DAY_OF_YEAR, 1);
+        }
+        expirationQr = instance.getTime();
+        return expirationQr;
     }
 }

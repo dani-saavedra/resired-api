@@ -31,7 +31,8 @@ public class QrAdapter implements QrPort {
 
     @Override
     public boolean isAvailableQR(String qr) {
-        return qrJpaRepository.findByQr(qr).isAvailable();
+        QrOrm qrOrm = qrJpaRepository.findByQr(qr);
+        return qrOrm.isAvailable() || qrOrm.getVisitor().isFavorite();
     }
 
     @Override

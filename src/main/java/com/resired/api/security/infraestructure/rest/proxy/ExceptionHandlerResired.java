@@ -50,8 +50,7 @@ public class ExceptionHandlerResired {
     protected ResponseEntity<ErrorDTO> handleQRInvalidException(
         RuntimeException ex, WebRequest request) {
         log.error("Problems with qr ", ex);
-        return new ResponseEntity<>(new ErrorDTO(ErrorCode.VISIT01.name()
-            , ErrorCode.VISIT01.getDescription()), HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(new ErrorDTO(ErrorCode.VISIT01.name(), ex.getMessage()), HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(value = HomeNotFoundException.class)

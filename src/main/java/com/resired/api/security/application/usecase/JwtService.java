@@ -58,6 +58,6 @@ public class JwtService {
 
     private String createToken(Map<String, Object> claims, String username) {
         Date issuedAt = new Date(System.currentTimeMillis());
-        return jwtSecurity.generateJwt(username, claims, issuedAt);
+        return jwtSecurity.generateToken(username, claims, issuedAt);
     }
 }
