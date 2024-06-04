@@ -26,7 +26,7 @@ public class JavaSmtpGmailSenderService implements EmailPort {
     }
 
     @Override
-    public void sendRegisteredResidentEmail(String email) {
+    public void sendRegisteredUserEmail(String email) {
         SimpleMailMessage message = new SimpleMailMessage();
         String body = "Bienvenido a Resired, tu cuenta a sido registrada satisfactoriamente y ya podrás ingresas " +
             "a la app y hacer uso de ella, si aún no la tienes, descargala desde todas las tiendas." +
@@ -40,7 +40,7 @@ public class JavaSmtpGmailSenderService implements EmailPort {
     }
 
     @Override
-    public void sendAssociateNewResidentToResidentEmail(String email) {
+    public void sendAssociateNewUserToNeighborhood(String email) {
         SimpleMailMessage message = new SimpleMailMessage();
         String body = "Tu cuenta en resired ha sido vinculada a una nueva residencia, podrás ingresar con tus mismas credenciales";
 

@@ -1,10 +1,10 @@
 package com.resired.api.admin.infraestructure.sql;
 
-import com.resired.api.admin.domain.vo.RegisterResidentVO;
-import com.resired.api.admin.domain.repository.ResidentPort;
+import com.resired.api.admin.domain.repository.AdminResidentPort;
+import com.resired.api.admin.domain.repository.AdminUserPort;
+import com.resired.api.admin.domain.vo.RegisterUserVO;
 import com.resired.api.resident.infraestructure.sql.orm.HomeOrm;
 import com.resired.api.resident.infraestructure.sql.orm.NeighborhoodOrm;
-import com.resired.api.security.domain.enums.UserType;
 import com.resired.api.security.infraestructure.sql.jpa.UserJpaRepository;
 import com.resired.api.security.infraestructure.sql.orm.UserOrm;
 import com.resired.api.security.infraestructure.sql.orm.UserRolOrm;
@@ -17,26 +17,26 @@ import java.util.Optional;
 
 @Repository
 @AllArgsConstructor
-public class AdmResidentAdapter implements ResidentPort {
+public class AdmAdminUserAdapter implements AdminUserPort, AdminResidentPort {
 
     public static final int ACTIVE = 1;
     private final UserJpaRepository jpaRepository;
 
     @Override
-    public void registerResident(RegisterResidentVO resident, String registeredBy, String password) {
+    public void registerUserToNeighborhood(RegisterUserVO user, String registeredBy, String password) {
         ArrayList<UserRolOrm> userRols = new ArrayList<>();
-        UserRolOrm rolOrm = getUserRolOrm(resident);
+        UserRolOrm rolOrm = getUserRolOrm(user);
 
         UserOrm entity = new UserOrm();
         entity.setActive(ACTIVE);
         entity.setRegisteredBy(registeredBy);
         entity.setCreatedDate(LocalDateTime.now());
-        entity.setDocumentId(resident.documentId());
-        entity.setDocumentType(resident.documentType());
-        entity.setEmail(resident.email());
+        entity.setDocumentId(user.documentId());
+        entity.setDocumentType(user.documentType());
+        entity.setEmail(user.email());
         entity.setPassword(password);
-        entity.setFirstName(resident.firstName());
-        entity.setLastName(resident.lastName());
+        entity.setFirstName(user.firstName());
+        entity.setLastName(user.lastName());
         entity.setUserRols(userRols);
         rolOrm.setUser(entity);
         userRols.add(rolOrm);
@@ -44,7 +44,7 @@ public class AdmResidentAdapter implements ResidentPort {
     }
 
     @Override
-    public void associateNewResidence(RegisterResidentVO resident, Integer userId) {
+    public void associateNewUserToNeighborhood(RegisterUserVO resident, Integer userId) {
         UserRolOrm rolOrm = getUserRolOrm(resident);
         Optional<UserOrm> userOrm = jpaRepository.findById(userId);
         if (userOrm.isPresent()) {
@@ -55,37 +55,38 @@ public class AdmResidentAdapter implements ResidentPort {
     }
 
     @Override
-    public void removeResidentByHome(Integer homeId) {
+    public void removeUserByHome(Integer homeId) {
         jpaRepository.removeResidentByHome(homeId, LocalDateTime.now());
     }
 
     @Override
-    public void removeResidentByUserId(Integer neighborhoodId, Integer userId) {
+    public void removeUserById(Integer neighborhoodId, Integer userId) {
         jpaRepository.removeResidentByUserId(neighborhoodId, userId, LocalDateTime.now());
     }
 
-    private static UserRolOrm getUserRolOrm(RegisterResidentVO resident) {
-        NeighborhoodOrm neighborhood = new NeighborhoodOrm();
-        neighborhood.setId(resident.neighborhoodId());
-        HomeOrm home = new HomeOrm();
-        home.setId(resident.homeId());
-
-        UserRolOrm rolOrm = new UserRolOrm();
-        rolOrm.setRol(UserType.RESIDENT);
-        rolOrm.setActive(ACTIVE);
-        rolOrm.setCreatedDate(LocalDateTime.now());
-        rolOrm.setNeighborhood(neighborhood);
-        rolOrm.setHome(home);
-        return rolOrm;
-    }
-
     @Override
-    public Integer getResidentIdByEmail(String email) {
+    public Integer getUserByEmail(String email) {
         UserOrm user = jpaRepository.findByEmail(email);
         if (user != null) {
             return user.getId();
         } else {
             return null;
         }
+    }
+
+    private static UserRolOrm getUserRolOrm(RegisterUserVO user) {
+        UserRolOrm rolOrm = new UserRolOrm();
+        NeighborhoodOrm neighborhood = new NeighborhoodOrm();
+        neighborhood.setId(user.neighborhoodId());
+        if (user.homeId() != null) {
+            HomeOrm home = new HomeOrm();
+            home.setId(user.homeId());
+            rolOrm.setHome(home);
+        }
+        rolOrm.setRol(user.userType());
+        rolOrm.setActive(ACTIVE);
+        rolOrm.setCreatedDate(LocalDateTime.now());
+        rolOrm.setNeighborhood(neighborhood);
+        return rolOrm;
     }
 }
