@@ -24,26 +24,31 @@ public class JwtSecurity {
 
     }
 
-    public String generateJwt(String username, Map<String, Object> claims, Date issuedAt) {
+    public String generateToken(String username, Map<String, Object> claims, Date issuedAt) {
         return Jwts.builder()
             .claims(claims)
             .subject(username)
             .issuedAt(issuedAt)
             .signWith(privateKey)
             .compact();
-
     }
 
-    public boolean validateJwt(String jwt) {
-        try {
-            Jwts.parser()
-                .verifyWith(publicKey)
-                .build()
-                .parseSignedClaims(jwt);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+    public String generateToken(String username, Map<String, Object> claims, Date issuedAt, Date expiration) {
+        return Jwts.builder()
+            .claims(claims)
+            .subject(username)
+            .issuedAt(issuedAt)
+            .expiration(expiration)
+            .signWith(privateKey)
+            .compact();
+    }
+
+
+    public void validateJwt(String jwt) {
+        Jwts.parser()
+            .verifyWith(publicKey)
+            .build()
+            .parseSignedClaims(jwt);
     }
 
     public Claims extractAllClaims(String token) {

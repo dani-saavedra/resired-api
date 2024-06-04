@@ -10,7 +10,9 @@ import com.resired.api.guard.domain.service.VisitorGuardService;
 import com.resired.api.guard.domain.vo.VisitVO;
 import com.resired.api.resident.application.dto.VisitorRequestDTO;
 import com.resired.api.security.domain.service.JwtSecurity;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class GuardVisitUseCase {
 
     private final GuardPort guardPort;
@@ -36,6 +39,9 @@ public class GuardVisitUseCase {
 
     public void registerVisit(String qr) {
         validateQR(qr);
+        if (!qrPort.isAvailableQR(qr)) {
+            throw new QrInvalidException("Unavailable");
+        }
         guardPort.registerVisit(qr);
         qrPort.makeQrUnavailable(qr);
     }
@@ -48,12 +54,13 @@ public class GuardVisitUseCase {
     }
 
     private void validateQR(String qr) {
-        boolean valid = jwtSecurity.validateJwt(qr);
-        if (!valid) {
-            throw new QrInvalidException("Signature");
-        }
-        if (!qrPort.isAvailableQR(qr)) {
-            throw new QrInvalidException("available");
+        try {
+            jwtSecurity.validateJwt(qr);
+        } catch (ExpiredJwtException e) {
+            throw new QrInvalidException("Expired");
+        } catch (Exception e) {
+            log.error("QR presented has problems {}", e.getMessage());
+            throw new QrInvalidException("Invalid");
         }
     }
 

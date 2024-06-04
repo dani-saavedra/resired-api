@@ -11,9 +11,13 @@ import com.resired.api.resident.application.dto.VisitorRequestDTO;
 import com.resired.api.resident.infraestructure.rest.dto.ResponseData;
 import com.resired.api.security.application.usecase.JwtService;
 import com.resired.api.security.domain.entity.UserApp;
+import com.resired.api.security.infraestructure.rest.proxy.ErrorDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -34,12 +38,20 @@ public class GuardController {
 
     @GetMapping("/info-qr")
     @Operation(summary = "Obtain information from QR code")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "OK QR"),
+        @ApiResponse(responseCode = "409", description = "Problems with QR", content =
+        @Content(schema = @Schema(implementation = ErrorDTO.class)))})
     public Visitor obtainInfoQr(@RequestBody InfoQrRequest infoQrRequest) {
         return visitUseCase.validateInfoQR(infoQrRequest.qr());
     }
 
     @PostMapping("/visit")
     @Operation(summary = "Register a new visit using QR code")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Registered visit successfully"),
+        @ApiResponse(responseCode = "409", description = "Problems with QR", content =
+        @Content(schema = @Schema(implementation = ErrorDTO.class)))})
     public ResponseData<String> registerVisit(@RequestBody InfoQrRequest infoQrRequest) {
         visitUseCase.registerVisit(infoQrRequest.qr());
         return new ResponseData<>("Registered visit successfully");

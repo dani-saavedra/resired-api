@@ -26,10 +26,10 @@ public class ResidentAdapter implements ResidentPort {
 
     @Override
     public String registerVisit(Integer userId, Integer homeId, String homeName, String vistorName, String visitorDocument,
-                                String telephone, boolean favorite) {
+                                String telephone, boolean favorite, Date expirationDate) {
         VisitorOrm visitor = visitorJpa.save(VisitorOrm.visitorFromResident(userId, homeId, homeName, vistorName,
             visitorDocument, telephone, favorite));
-        return generateAndSaveQR(visitor);
+        return generateAndSaveQR(visitor, expirationDate);
     }
 
     @Override
@@ -37,7 +37,7 @@ public class ResidentAdapter implements ResidentPort {
         return visitorJpa.obtainVisitorByEmailResident(emailResident)
             .stream()
             .map(visitorOrm -> new RegisteredVisitor(visitorOrm.getId(), visitorOrm.getName(),
-                visitorOrm.getDocument(), visitorOrm.getFavorite()))
+                visitorOrm.getDocument(), visitorOrm.isFavorite()))
             .toList();
     }
 
@@ -48,24 +48,17 @@ public class ResidentAdapter implements ResidentPort {
             return null;
         }
         return new RegisteredVisitor(visitorOrm.getId(), visitorOrm.getName(),
-            visitorOrm.getDocument(), visitorOrm.getFavorite());
+            visitorOrm.getDocument(), visitorOrm.isFavorite());
     }
 
     @Override
-    public String reactiveVisitor(String emailResident, String visitorDocument) {
+    public String reactiveVisitor(String emailResident, String visitorDocument, Date expirationDate) {
         VisitorOrm visitorOrm = visitorJpa.obtainVisitorByEmailResidentAndDocument(emailResident, visitorDocument);
-        return generateAndSaveQR(visitorOrm);
+        return generateAndSaveQR(visitorOrm, expirationDate);
     }
 
-    private String generateToken(String documentId, String info) {
-        Date now = new Date();
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("info", info);
-        return jwtSecurity.generateJwt(documentId, claims, now);
-    }
-
-    private String generateAndSaveQR(VisitorOrm visitor) {
-        String token = generateToken(visitor.getDocument(), visitor.toString());
+    private String generateAndSaveQR(VisitorOrm visitor, Date expirationDate) {
+        String token = generateToken(visitor.getDocument(), visitor.toString(), expirationDate);
         QrOrm qr = new QrOrm();
         qr.setVisitor(visitor);
         qr.setAvailable(true);
@@ -73,5 +66,12 @@ public class ResidentAdapter implements ResidentPort {
         qr.setQr(token);
         qrJpaRepository.save(qr);
         return token;
+    }
+
+    private String generateToken(String documentId, String info, Date expirationDate) {
+        Date now = new Date();
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("info", info);
+        return jwtSecurity.generateToken(documentId, claims, now, expirationDate);
     }
 }

@@ -47,7 +47,7 @@ public class VisitorOrm {
     private boolean deleted;
 
     @JdbcTypeCode(TINYINT)
-    private Boolean favorite;
+    private boolean favorite;
 
     public static VisitorOrm visitorFromResident(Integer userId, Integer homeId, String homeName, String name, String document,
                                                  String telephone, boolean isFavorite) {
