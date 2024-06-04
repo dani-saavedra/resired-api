@@ -27,7 +27,7 @@ public class AuthUseCase {
         if (user == null) {
             throw new InvalidCredentialException(auth.email());
         }
-        if (!user.isActive()) {
+        if (!user.isActive() || user.getRoles().isEmpty()) {
             throw new InactiveUserException(user.getDocumentId());
         }
         String jwt;
