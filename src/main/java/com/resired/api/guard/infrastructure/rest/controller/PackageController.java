@@ -37,4 +37,11 @@ public class PackageController {
         UserApp userApp = jwtService.extractUser(bearer);
         return new ResponseData<>(packageUseCase.getPackagesByNeighborhood(userApp.email(), userApp.neighborhoodId()));
     }
+
+    @PutMapping("/package/{packageId}/deliver")
+    @Operation(summary = "Deliver a package by verifying the last 4 digits of a resident's document")
+    public ResponseData<String> deliverPackage(@PathVariable Integer packageId, @RequestParam String lastFourDigits) {
+        packageUseCase.deliverPackage(packageId, lastFourDigits);
+        return new ResponseData<>("Package delivered successfully");
+    }
 }

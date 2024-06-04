@@ -82,6 +82,18 @@ public class GuardAdapter implements GuardPort, PackagePort {
         return packageOrms.stream().map(this::toPackageDomain).toList();
     }
 
+    @Override
+    public Package findPackageById(Integer packageId) {
+        return packageJpaRepository.findById(packageId)
+            .map(this::toPackageDomain)
+            .orElse(null);
+    }
+
+    @Override
+    public void updatePackage(Package packet) {
+        packageJpaRepository.save(fromEntity(packet));
+    }
+
     private Package toPackageDomain(PackageOrm packageOrm) {
         return Package.fromExistingPackage(
             packageOrm.getId(),
@@ -92,7 +104,23 @@ public class GuardAdapter implements GuardPort, PackagePort {
             packageOrm.getPackageTransporter(),
             packageOrm.getDescription(),
             packageOrm.getStatus(),
-            packageOrm.getCreatedDate()
+            packageOrm.getCreatedDate(),
+            packageOrm.getUpdateDate()
+        );
+    }
+
+    public PackageOrm fromEntity(Package packet) {
+        return new PackageOrm(
+            packet.getId(),
+            packet.getGuardId(),
+            packet.getHomeId(),
+            packet.getReceiver(),
+            packet.getTrackingNumber(),
+            packet.getPackageTransporter(),
+            packet.getDescription(),
+            packet.getStatus(),
+            packet.getCreatedDate(),
+            packet.getUpdateDate()
         );
     }
 }

@@ -2,9 +2,11 @@ package com.resired.api.guard.application.usecase;
 
 import com.resired.api.guard.application.dto.PackageRequestDTO;
 import com.resired.api.guard.application.dto.PackageResponseDTO;
+import com.resired.api.guard.application.exception.PackageNotFoundException;
 import com.resired.api.guard.domain.entity.Package;
 import com.resired.api.guard.domain.exception.HomeNotFoundException;
 import com.resired.api.guard.domain.repository.PackagePort;
+import com.resired.api.resident.domain.enums.PackageStatusEnum;
 import com.resired.api.resident.domain.repository.HomePort;
 import com.resired.api.security.domain.entity.User;
 import com.resired.api.security.domain.exception.InactiveUserException;
@@ -45,6 +47,17 @@ public class PackageUseCase {
         return packages.stream()
             .map(pkg -> toPackageResponseDTO(pkg, guard))
             .collect(Collectors.toList());
+    }
+
+    public void deliverPackage(Integer packageId, String lastFourDigits) {
+        Package packageToDeliver = packagePort.findPackageById(packageId);
+        // TODO confirm last four digits of the users
+        if (packageToDeliver != null) {
+            packageToDeliver.deliverPackage();
+            packagePort.updatePackage(packageToDeliver);
+        } else {
+            throw new PackageNotFoundException(packageId);
+        }
     }
 
     private User validateGuard(String emailGuard) {

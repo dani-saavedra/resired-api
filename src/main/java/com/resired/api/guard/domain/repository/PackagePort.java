@@ -9,4 +9,8 @@ public interface PackagePort {
     void registerPackage(Package packet);
 
     List<Package> findAllByNeighborhoodId(Integer neighborhoodId);
+
+    Package findPackageById(Integer packageId);
+
+    void updatePackage(Package packet);
 }
