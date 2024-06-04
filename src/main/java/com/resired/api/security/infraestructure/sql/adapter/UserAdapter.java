@@ -80,7 +80,9 @@ public class UserAdapter implements UserPort {
     @Override
     public List<User> findResidentsByHomeId(Integer homeId) {
         List<UserOrm> residents = userJpaRepository.findResidentsByHomeId(homeId);
-        return residents.stream().map(UserOrm::toEntity).toList();
+        return residents.stream()
+            .map(UserOrm::toEntity)
+            .toList();
     }
 
 

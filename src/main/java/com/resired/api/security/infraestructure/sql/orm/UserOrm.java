@@ -74,7 +74,7 @@ public class UserOrm {
             this.userRols.stream()
                 .filter(UserRolOrm::isActive)
                 .map(UserRolOrm::converToEntity)
-                .collect(Collectors.toList())
+                .toList()
         );
     }
 }
