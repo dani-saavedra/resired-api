@@ -5,8 +5,8 @@ import com.resired.api.guard.application.dto.PackageResponseDTO;
 import com.resired.api.guard.application.exception.PackageNotFoundException;
 import com.resired.api.guard.domain.entity.Package;
 import com.resired.api.guard.domain.exception.HomeNotFoundException;
+import com.resired.api.guard.domain.exception.ResidentNotFoundOnHomeException;
 import com.resired.api.guard.domain.repository.PackagePort;
-import com.resired.api.resident.domain.enums.PackageStatusEnum;
 import com.resired.api.resident.domain.repository.HomePort;
 import com.resired.api.security.domain.entity.User;
 import com.resired.api.security.domain.exception.InactiveUserException;
@@ -51,13 +51,14 @@ public class PackageUseCase {
 
     public void deliverPackage(Integer packageId, String lastFourDigits) {
         Package packageToDeliver = packagePort.findPackageById(packageId);
-        // TODO confirm last four digits of the users
-        if (packageToDeliver != null) {
-            packageToDeliver.deliverPackage();
-            packagePort.updatePackage(packageToDeliver);
-        } else {
+        if (packageToDeliver == null) {
             throw new PackageNotFoundException(packageId);
         }
+
+        validateLastFourDigits(lastFourDigits, packageToDeliver.getHomeId());
+
+        packageToDeliver.deliverPackage();
+        packagePort.updatePackage(packageToDeliver);
     }
 
     private User validateGuard(String emailGuard) {
@@ -100,5 +101,15 @@ public class PackageUseCase {
             pkg.getStatus(),
             pkg.getCreatedDate()
         );
+    }
+
+    private void validateLastFourDigits(String lastFourDigits, Integer homeId) {
+        List<User> residents = userPort.findResidentsByHomeId(homeId);
+        boolean isValid = residents.stream()
+            .anyMatch(resident -> resident.getDocumentId().endsWith(lastFourDigits));
+
+        if (!isValid) {
+            throw new ResidentNotFoundOnHomeException(lastFourDigits, homeId);
+        }
     }
 }

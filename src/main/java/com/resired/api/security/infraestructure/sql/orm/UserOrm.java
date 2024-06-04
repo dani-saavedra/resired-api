@@ -1,5 +1,6 @@
 package com.resired.api.security.infraestructure.sql.orm;
 
+import com.resired.api.security.domain.entity.User;
 import com.resired.api.shared.notification.infraestructure.sql.orm.DeviceOrm;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "user_app")
@@ -59,5 +61,20 @@ public class UserOrm {
 
     public Boolean isActive() {
         return active == 1;
+    }
+
+    public User toEntity() {
+        return new User(
+            this.id,
+            this.documentId,
+            this.firstName,
+            this.email,
+            this.lastName,
+            this.isActive(),
+            this.userRols.stream()
+                .filter(UserRolOrm::isActive)
+                .map(UserRolOrm::converToEntity)
+                .collect(Collectors.toList())
+        );
     }
 }

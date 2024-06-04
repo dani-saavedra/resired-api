@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public interface UserJpaRepository extends JpaRepository<UserOrm, Integer> {
 
@@ -33,4 +34,10 @@ public interface UserJpaRepository extends JpaRepository<UserOrm, Integer> {
         " and userRol.neighborhood.id =:neighborhood")
     void removeResidentByUserId(Integer neighborhood, Integer userId, LocalDateTime now);
 
+    @Query("SELECT user FROM UserOrm user " +
+        " JOIN UserRolOrm rol ON user.id = rol.user.id " +
+        " WHERE rol.home.id = :homeId" +
+        " AND user.active = 1" +
+        " AND rol.rol = 'RESIDENT'")
+    List<UserOrm> findResidentsByHomeId(Integer homeId);
 }
