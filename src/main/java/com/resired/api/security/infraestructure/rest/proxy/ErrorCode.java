@@ -8,6 +8,7 @@ public enum ErrorCode {
     USER02("Invalid credentials"),
     USER03("Invalid role"),
     USER04("Invalid Token"),
+    USER05("Resident not found on home"),
     VISIT01("QR invalid"),
     VISIT02("Visitor is invalid"),
     HOME01("Home not found"),
@@ -15,7 +16,8 @@ public enum ErrorCode {
     GENERAL_BAD_REQUEST("Bad request"),
     GENERAL_RESOURCE("Invalid url"),
     DEVICE01("Device already exists"),
-    DEVICE02("Device for user not found");
+    DEVICE02("Device for user not found"),
+    PACKAGE01("Package not found");
 
     private final String description;
 
