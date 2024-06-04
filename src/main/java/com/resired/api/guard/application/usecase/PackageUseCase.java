@@ -49,10 +49,10 @@ public class PackageUseCase {
             .collect(Collectors.toList());
     }
 
-    public void deliverPackage(Integer packageId, String lastFourDigits) {
-        Package packageToDeliver = packagePort.findPackageById(packageId);
+    public void deliverPackage(Integer packageId, Integer neighborhoodId, String lastFourDigits) {
+        Package packageToDeliver = packagePort.findPackageByIdAndByNeighborhoodId(packageId, neighborhoodId);
         if (packageToDeliver == null) {
-            throw new PackageNotFoundException(packageId);
+            throw new PackageNotFoundException(packageId, neighborhoodId);
         }
 
         validateLastFourDigits(lastFourDigits, packageToDeliver.getHomeId());

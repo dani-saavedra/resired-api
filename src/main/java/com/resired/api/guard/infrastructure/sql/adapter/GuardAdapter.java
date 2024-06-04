@@ -83,10 +83,12 @@ public class GuardAdapter implements GuardPort, PackagePort {
     }
 
     @Override
-    public Package findPackageById(Integer packageId) {
-        return packageJpaRepository.findById(packageId)
-            .map(this::toPackageDomain)
-            .orElse(null);
+    public Package findPackageByIdAndByNeighborhoodId(Integer packageId, Integer neighborhoodId) {
+        PackageOrm packetOrm = packageJpaRepository.findByIdAndNeighborhoodId(packageId, neighborhoodId);
+        if(packetOrm != null){
+            return toPackageDomain(packetOrm);
+        }
+        return null;
     }
 
     @Override

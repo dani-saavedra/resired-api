@@ -10,7 +10,7 @@ public interface PackagePort {
 
     List<Package> findAllByNeighborhoodId(Integer neighborhoodId);
 
-    Package findPackageById(Integer packageId);
+    Package findPackageByIdAndByNeighborhoodId(Integer packageId, Integer neighborhoodId);
 
     void updatePackage(Package packet);
 }

@@ -40,8 +40,10 @@ public class PackageController {
 
     @PutMapping("/package/{packageId}/deliver")
     @Operation(summary = "Deliver a package by verifying the last 4 digits of a resident's document")
-    public ResponseData<String> deliverPackage(@PathVariable Integer packageId, @RequestParam String lastFourDigits) {
-        packageUseCase.deliverPackage(packageId, lastFourDigits);
+    public ResponseData<String> deliverPackage(@RequestHeader(value = "Authorization") String bearer,
+                                               @PathVariable Integer packageId, @RequestParam String lastFourDigits) {
+        UserApp userApp = jwtService.extractUser(bearer);
+        packageUseCase.deliverPackage(packageId, userApp.neighborhoodId(), lastFourDigits);
         return new ResponseData<>("Package delivered successfully");
     }
 }
