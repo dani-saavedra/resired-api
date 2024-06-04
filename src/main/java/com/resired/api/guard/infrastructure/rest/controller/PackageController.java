@@ -7,6 +7,7 @@ import com.resired.api.resident.infraestructure.rest.dto.ResponseData;
 import com.resired.api.security.application.usecase.JwtService;
 import com.resired.api.security.domain.entity.UserApp;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +42,9 @@ public class PackageController {
     @PutMapping("/package/{packageId}/deliver")
     @Operation(summary = "Deliver a package by verifying the last 4 digits of a resident's document")
     public ResponseData<String> deliverPackage(@RequestHeader(value = "Authorization") String bearer,
-                                               @PathVariable Integer packageId, @RequestParam String lastFourDigits) {
+                                               @PathVariable Integer packageId,
+                                               @Parameter(description = "Last four digit's of a resident document as a String")
+                                               @RequestParam String lastFourDigits) {
         UserApp userApp = jwtService.extractUser(bearer);
         packageUseCase.deliverPackage(packageId, userApp.neighborhoodId(), lastFourDigits);
         return new ResponseData<>("Package delivered successfully");
