@@ -54,10 +54,4 @@ public class ResidentController {
         UserApp userApp = jwtService.extractUser(bearer);
         visitUseCase.removeVisitor();
     }
-
-    @PutMapping(path = "/qr/{qrId}")
-    public void enableQR(@PathVariable Integer qrId) {
-        //revisando con richard el envio
-    }
-
 }
