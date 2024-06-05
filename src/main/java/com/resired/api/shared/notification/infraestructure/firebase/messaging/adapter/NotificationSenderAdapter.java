@@ -107,7 +107,7 @@ public class NotificationSenderAdapter implements NotificationSender {
         List<String> devicesID = Collections.singletonList(device.getId());
 
         try {
-            TopicManagementResponse response = firebaseMessaging.subscribeToTopic(devicesID, topic);
+            TopicManagementResponse response = firebaseMessaging.unsubscribeFromTopic(devicesID, topic);
             log.info(response.getSuccessCount() + " tokens were unsubscribed successfully");
         } catch (FirebaseMessagingException ex) {
             log.error("Problem unsubscribing devices to topic ", ex);
