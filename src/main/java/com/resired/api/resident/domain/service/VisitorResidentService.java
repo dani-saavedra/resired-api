@@ -67,6 +67,11 @@ public class VisitorResidentService implements CreateVisitor, ManageVisitor {
         return residentPort.reactiveVisitor(emailResident, documentVisitor, expiration);
     }
 
+    @Override
+    public void deleteVisitor(Integer userId, String documentVisitor) {
+        residentPort.deactivateVisitor(userId, documentVisitor);
+    }
+
     private static Date getQRValidityTime(boolean favorite) {
         Date expirationQr;
         Calendar instance = Calendar.getInstance();

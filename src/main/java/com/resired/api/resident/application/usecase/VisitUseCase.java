@@ -31,11 +31,7 @@ public class VisitUseCase {
         return visitorResidentService.allowVisitorToEnterAgain(emailResident, documentVisitor);
     }
 
-    public void enableQrAgain() {
-
-    }
-
-    public void removeVisitor() {
-
+    public void removeVisitor(Integer userId, String documentVisitor) {
+        visitorResidentService.deleteVisitor(userId, documentVisitor);
     }
 }
