@@ -31,6 +31,9 @@ public class NotificationUserOrm {
     @Column(name = "viewed_at")
     private LocalDateTime viewedAt;
 
+    @Column
+    private Boolean deleted;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "notification_id", insertable = false, updatable = false)
     private NotificationOrm notification;
