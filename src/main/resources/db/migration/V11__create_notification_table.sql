@@ -13,6 +13,7 @@ CREATE TABLE notification_user
     notification_id INTEGER              NOT NULL,
     viewed          TINYINT(1) DEFAULT 0 NOT NULL,
     viewed_at       TIMESTAMP            NULL,
+    deleted         TINYINT(1) DEFAULT 0 NOT NULL,
     FOREIGN KEY (user_id) REFERENCES user_app (id),
     FOREIGN KEY (notification_id) REFERENCES notification (id)
 );
