@@ -31,6 +31,7 @@ public class NotificationUseCase {
 
         if (devices.size() > 1) {
             notificationSenderService.sendToDeviceList(notificationMessage, devices);
+            notificationRepository.saveNotificationForHomeResidents(notificationMessage, requestDTO.homeID());
             return;
         }
 
@@ -43,7 +44,7 @@ public class NotificationUseCase {
     }
 
     public void notifyNeighborhood(NotificationNeighborhoodRequest requestDTO) {
-        String topic = "/topics/neighborhoods/" + requestDTO.neighborhoodID();
+        String topic = "/topics/neighborhoods-" + requestDTO.neighborhoodID();
 
         NotificationMessage notificationMessage = new NotificationMessage(requestDTO.title(),
             requestDTO.message(), false);
