@@ -1,6 +1,7 @@
 package com.resired.api.shared.notification.infraestructure.sql.adapter;
 
 import com.resired.api.security.infraestructure.sql.jpa.UserJpaRepository;
+import com.resired.api.security.infraestructure.sql.orm.UserOrm;
 import com.resired.api.shared.notification.domain.repository.NotificationMessagePort;
 import com.resired.api.shared.notification.domain.vo.NotificationMessage;
 import com.resired.api.shared.notification.infraestructure.sql.jpa.NotificationJpaRepository;
@@ -26,7 +27,7 @@ public class NotificationMessageAdapter implements NotificationMessagePort {
         Integer userId = userRepository.findByEmail(email).getId();
         return notificationUserRepository.findNotificationsByUserIdOrderByCreatedDateDesc(userId)
             .stream()
-            .map((notificationOrm -> new NotificationMessage(notificationOrm.getTitle(),
+            .map((notificationOrm -> new NotificationMessage(notificationOrm.getId(), notificationOrm.getTitle(),
                 notificationOrm.getMessage(), true)))
             .toList();
     }
@@ -50,18 +51,39 @@ public class NotificationMessageAdapter implements NotificationMessagePort {
     }
 
     @Override
-    public void saveNotificationForHome(NotificationMessage notificationMessage, Integer homeId) {
+    public void saveNotificationForHomeResidents(NotificationMessage notificationMessage, Integer homeId) {
         NotificationOrm notificationOrm = new NotificationOrm();
         notificationOrm.setTitle(notificationMessage.title());
         notificationOrm.setMessage(notificationMessage.message());
         notificationOrm.setCreatedDate(LocalDateTime.now());
         notificationRepository.save(notificationOrm);
 
-        // TODO add notification to user in table notification_user
+        List<UserOrm> residents = userRepository.findResidentsByHomeId(homeId);
+
+        saveNotificationForResidents(notificationOrm, residents);
     }
 
     @Override
-    public void saveNotificationForNeighborhood(NotificationMessage notificationMessage, Integer neighborhoodId) {
-        // TODO finish implementation
+    public void saveNotificationForNeighborhoodResidents(NotificationMessage notificationMessage, Integer neighborhoodId) {
+        NotificationOrm notificationOrm = new NotificationOrm();
+        notificationOrm.setTitle(notificationMessage.title());
+        notificationOrm.setMessage(notificationMessage.message());
+        notificationOrm.setCreatedDate(LocalDateTime.now());
+        notificationRepository.save(notificationOrm);
+
+        List<UserOrm> residents = userRepository.findResidentsByNeighborhoodId(neighborhoodId);
+
+        saveNotificationForResidents(notificationOrm, residents);
+    }
+
+    private void saveNotificationForResidents(NotificationOrm notificationOrm, List<UserOrm> residents) {
+        residents.forEach(resident -> {
+            NotificationUserOrm notificationUserOrm = new NotificationUserOrm();
+            notificationUserOrm.setUserId(resident.getId());
+            notificationUserOrm.setNotificationId(notificationOrm.getId());
+            notificationUserOrm.setViewed(false);
+            notificationUserOrm.setViewedAt(null);
+            notificationUserRepository.save(notificationUserOrm);
+        });
     }
 }
