@@ -11,5 +11,7 @@ public interface UserNotificationPort {
 
     Device getDeviceByIDAndEmail(String deviceID, String email);
 
-    List<Integer> getNeighborhoodIdsByEmail(String email);
+    List<Integer> getNeighborhoodIdsForResidentByEmail(String email);
+
+    void deleteNotificationByID(String email, Integer notificationId);
 }
