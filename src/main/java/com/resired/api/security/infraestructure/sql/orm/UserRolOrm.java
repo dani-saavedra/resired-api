@@ -52,10 +52,10 @@ public class UserRolOrm {
     private LocalDateTime createdDate;
 
     public Rol converToEntity() {
-        return new Rol(rol, neighborhood.getId(), neighborhood.getName(), home.getId(), home.getName());
-    }
-
-    public Rol converToEntityGeral() {
-        return new Rol(rol, neighborhood.getId(), neighborhood.getName());
+        if (home != null) {
+            return new Rol(rol, neighborhood.getId(), neighborhood.getName(), home.getId(), home.getName());
+        } else {
+            return new Rol(rol, neighborhood.getId(), neighborhood.getName());
+        }
     }
 }
