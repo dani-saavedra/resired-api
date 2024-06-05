@@ -40,11 +40,11 @@ public class PackageUseCase {
     }
 
     public List<PackageResponseDTO> getPackagesByNeighborhood(String emailGuard, Integer neighborhoodId) {
-        User guard = validateGuard(emailGuard);
+        validateGuard(emailGuard);
         List<Package> packages = packagePort.findAllByNeighborhoodId(neighborhoodId);
 
         return packages.stream()
-            .map(pkg -> toPackageResponseDTO(pkg, guard))
+            .map(this::toPackageResponseDTO)
             .toList();
     }
 
@@ -88,12 +88,10 @@ public class PackageUseCase {
         return homeId;
     }
 
-    private PackageResponseDTO toPackageResponseDTO(Package pkg, User guard) {
-        String guardName = guard.getUserName() + " " + guard.getUserLastName();
+    private PackageResponseDTO toPackageResponseDTO(Package pkg) {
         String homeNumber = homePort.getHomeNumberById(pkg.getHomeId());
         return new PackageResponseDTO(
             pkg.getId(),
-            guardName, //TODO fix guardName, takes the one is consulting
             homeNumber,
             pkg.getReceiver(),
             pkg.getTrackingNumber(),
