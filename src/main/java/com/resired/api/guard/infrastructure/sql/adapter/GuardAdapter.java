@@ -85,7 +85,7 @@ public class GuardAdapter implements GuardPort, PackagePort {
     @Override
     public Package findPackageByIdAndByNeighborhoodId(Integer packageId, Integer neighborhoodId) {
         PackageOrm packetOrm = packageJpaRepository.findByIdAndNeighborhoodId(packageId, neighborhoodId);
-        if(packetOrm != null){
+        if (packetOrm != null) {
             return toPackageDomain(packetOrm);
         }
         return null;

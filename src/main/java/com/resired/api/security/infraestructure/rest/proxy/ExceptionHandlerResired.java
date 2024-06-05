@@ -131,7 +131,7 @@ public class ExceptionHandlerResired {
         RuntimeException ex, WebRequest request) {
         log.error("Resident not found", ex);
         return new ResponseEntity<>(new ErrorDTO(ErrorCode.USER05.name(),
-            ex.getMessage()), HttpStatus.BAD_REQUEST);
+            ex.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
 }
