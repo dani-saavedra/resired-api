@@ -59,7 +59,6 @@ public class NotificationMessageAdapter implements NotificationMessagePort {
         notificationRepository.save(notificationOrm);
 
         List<UserOrm> residents = userRepository.findResidentsByHomeId(homeId);
-
         saveNotificationForResidents(notificationOrm, residents);
     }
 
@@ -82,6 +81,7 @@ public class NotificationMessageAdapter implements NotificationMessagePort {
             notificationUserOrm.setUserId(resident.getId());
             notificationUserOrm.setNotificationId(notificationOrm.getId());
             notificationUserOrm.setViewed(false);
+            notificationUserOrm.setDeleted(false);
             notificationUserOrm.setViewedAt(null);
             notificationUserRepository.save(notificationUserOrm);
         });
