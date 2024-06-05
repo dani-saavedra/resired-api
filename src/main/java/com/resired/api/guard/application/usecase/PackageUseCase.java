@@ -104,6 +104,10 @@ public class PackageUseCase {
 
     private void validateLastFourDigits(String lastFourDigits, Integer homeId) {
         List<User> residents = userPort.findResidentsByHomeId(homeId);
+        if (residents.isEmpty()) {
+            return;
+        }
+
         boolean isValid = residents.stream()
             .anyMatch(resident -> resident.getDocumentId().endsWith(lastFourDigits));
 
