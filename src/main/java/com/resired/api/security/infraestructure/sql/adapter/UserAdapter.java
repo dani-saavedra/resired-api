@@ -29,7 +29,7 @@ public class UserAdapter implements UserPort {
             userOrm.getLastName(), userOrm.isActive(),
             userOrm.getUserRols().stream()
                 .filter(UserRolOrm::isActive)
-                .map(UserRolOrm::converToEntityGeral)
+                .map(UserRolOrm::converToEntity)
                 .toList());
         resident.validateMandatoryChangePassword(userOrm.getUpdateDate());
         return resident;
@@ -72,7 +72,7 @@ public class UserAdapter implements UserPort {
             guardOrm.getUserRols().stream()
                 .filter(UserRolOrm::isActive)
                 .filter(userRolOrm -> userRolOrm.getRol().equals(UserType.GUARD))
-                .map(UserRolOrm::converToEntityGeral)
+                .map(UserRolOrm::converToEntity)
                 .toList());
     }
 
