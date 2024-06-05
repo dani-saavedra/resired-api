@@ -47,17 +47,12 @@ public class ResidentController {
         return new ResponseData<>(qr);
     }
 
-    @PutMapping(path = "/visitor/{document}/delete")
+    @DeleteMapping(path = "/visitor/{document}")
     @Operation(summary = "Delete a visitor registered by a resident")
-    public void deleteVisitor(@RequestHeader(value = "Authorization") String bearer,
+    public ResponseData<String> deleteVisitor(@RequestHeader(value = "Authorization") String bearer,
                               @PathVariable(value = "document") String documentVisitor) {
         UserApp userApp = jwtService.extractUser(bearer);
-        visitUseCase.removeVisitor();
+        visitUseCase.removeVisitor(userApp.userId(), documentVisitor);
+        return new ResponseData<>("Successfully deleted visitor");
     }
-
-    @PutMapping(path = "/qr/{qrId}")
-    public void enableQR(@PathVariable Integer qrId) {
-        //revisando con richard el envio
-    }
-
 }

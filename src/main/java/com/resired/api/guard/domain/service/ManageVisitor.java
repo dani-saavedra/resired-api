@@ -9,4 +9,6 @@ public interface ManageVisitor {
     List<RegisteredVisitor> obtainVisitors(String emailResident);
 
     String allowVisitorToEnterAgain(String emailResident, String documentVisitor);
+
+    void deleteVisitor(Integer userId, String documentVisitor);
 }

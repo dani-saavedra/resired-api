@@ -18,13 +18,13 @@ public class Visitor {
     boolean available;
 
     public static Visitor createVisitor(String visitorName, String visitorDocument, String home,
-                                        String authorizer, boolean availableQR, boolean visitorDeleted) {
+                                        String authorizer, boolean availableQR, boolean favorite, boolean visitorDeleted) {
         Visitor visitor = new Visitor();
         visitor.visitorName = visitorName;
         visitor.visitorDocument = visitorDocument;
         visitor.home = home;
         visitor.authorizer = authorizer;
-        visitor.available = (availableQR && !visitorDeleted);
+        visitor.available = (availableQR || favorite) && !visitorDeleted;
         return visitor;
     }
 

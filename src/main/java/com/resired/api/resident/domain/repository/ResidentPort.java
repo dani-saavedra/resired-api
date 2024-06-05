@@ -15,4 +15,6 @@ public interface ResidentPort {
     RegisteredVisitor obtainVisitorByDocumentAndEmailVisitor(String documentVisitor, String emailResident);
 
     String reactiveVisitor(String emailResident, String visitorDocument, Date expirationDate);
+
+    void deactivateVisitor(Integer userId, String visitorDocument);
 }

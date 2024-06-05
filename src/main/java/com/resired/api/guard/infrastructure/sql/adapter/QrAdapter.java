@@ -26,13 +26,13 @@ public class QrAdapter implements QrPort {
         }
         return Visitor.createVisitor(qr.getVisitor().getName(),
             qr.getVisitor().getDocument(), qr.getVisitor().getAuthorizingHome().getName(),
-            authorizer, qr.isAvailable(), qr.getVisitor().isDeleted());
+            authorizer, qr.isAvailable(), qr.getVisitor().isFavorite(), qr.getVisitor().isDeleted());
     }
 
     @Override
     public boolean isAvailableQR(String qr) {
         QrOrm qrOrm = qrJpaRepository.findByQr(qr);
-        return qrOrm.isAvailable() || qrOrm.getVisitor().isFavorite();
+        return (qrOrm.isAvailable() || qrOrm.getVisitor().isFavorite()) && !qrOrm.getVisitor().isDeleted();
     }
 
     @Override

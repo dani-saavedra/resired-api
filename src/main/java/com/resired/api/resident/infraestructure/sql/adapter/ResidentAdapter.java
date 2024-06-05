@@ -57,6 +57,11 @@ public class ResidentAdapter implements ResidentPort {
         return generateAndSaveQR(visitorOrm, expirationDate);
     }
 
+    @Override
+    public void deactivateVisitor(Integer userId, String visitorDocument) {
+        visitorJpa.deleteVisitorByUserId(userId, visitorDocument);
+    }
+
     private String generateAndSaveQR(VisitorOrm visitor, Date expirationDate) {
         String token = generateToken(visitor.getDocument(), visitor.toString(), expirationDate);
         QrOrm qr = new QrOrm();
