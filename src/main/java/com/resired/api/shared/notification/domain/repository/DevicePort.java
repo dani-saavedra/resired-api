@@ -13,6 +13,6 @@ public interface DevicePort {
 
     void removeDevice(String deviceID);
 
-    List<Device> getDevicesFromHomeOwner(Integer homeID);
+    List<Device> getDevicesForHomeResident(Integer homeID);
 
 }
