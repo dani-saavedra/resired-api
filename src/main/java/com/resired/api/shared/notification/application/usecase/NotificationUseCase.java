@@ -6,6 +6,7 @@ import com.resired.api.shared.notification.application.dto.NotificationNeighborh
 import com.resired.api.shared.notification.domain.entity.Device;
 import com.resired.api.shared.notification.domain.repository.DevicePort;
 import com.resired.api.shared.notification.domain.repository.NotificationMessagePort;
+import com.resired.api.shared.notification.domain.repository.UserNotificationPort;
 import com.resired.api.shared.notification.domain.service.NotificationSender;
 import com.resired.api.shared.notification.domain.vo.NotificationMessage;
 import lombok.AllArgsConstructor;
@@ -19,22 +20,26 @@ public class NotificationUseCase {
     private final NotificationSender notificationSenderService;
     private final DevicePort deviceRepository;
     private final NotificationMessagePort notificationRepository;
+    private final UserNotificationPort userNotificationRepository;
 
     public void notifyHome(NotificationHomeRequest requestDTO) {
         NotificationMessage notificationMessage = new NotificationMessage(requestDTO.title(),
             requestDTO.message(), false);
 
-        List<Device> devices = deviceRepository.getDevicesFromHomeOwner(requestDTO.homeID());
+        List<Device> devices = deviceRepository.getDevicesForHomeResident(requestDTO.homeID())
+            .stream().filter(Device::getAllowNotifications).toList();
 
         if (devices.size() > 1) {
             notificationSenderService.sendToDeviceList(notificationMessage, devices);
             return;
         }
 
+        if (devices.isEmpty()) return;
+
         notificationSenderService.sendToDevice(notificationMessage,
             devices.get(0));
 
-        notificationRepository.saveNotificationForHome(notificationMessage, requestDTO.homeID());
+        notificationRepository.saveNotificationForHomeResidents(notificationMessage, requestDTO.homeID());
     }
 
     public void notifyNeighborhood(NotificationNeighborhoodRequest requestDTO) {
@@ -45,7 +50,7 @@ public class NotificationUseCase {
 
         notificationSenderService.sendToTopic(notificationMessage, topic);
 
-        notificationRepository.saveNotificationForNeighborhood(notificationMessage,
+        notificationRepository.saveNotificationForNeighborhoodResidents(notificationMessage,
             requestDTO.neighborhoodID());
     }
 
@@ -65,5 +70,9 @@ public class NotificationUseCase {
         }
 
         return new NewNotificationsResponse(newNotification);
+    }
+
+    public void deleteNotificationForUser(Integer notificationId, String email) {
+        userNotificationRepository.deleteNotificationByID(email, notificationId);
     }
 }

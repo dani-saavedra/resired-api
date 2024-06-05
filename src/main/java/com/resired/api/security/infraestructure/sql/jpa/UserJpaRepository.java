@@ -1,5 +1,7 @@
 package com.resired.api.security.infraestructure.sql.jpa;
 
+import com.resired.api.resident.infraestructure.sql.orm.NeighborhoodOrm;
+import com.resired.api.security.domain.enums.UserType;
 import com.resired.api.security.infraestructure.sql.orm.UserOrm;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -34,12 +36,18 @@ public interface UserJpaRepository extends JpaRepository<UserOrm, Integer> {
         " and userRol.neighborhood.id =:neighborhood")
     void removeResidentByUserId(Integer neighborhood, Integer userId, LocalDateTime now);
 
-    @Query("SELECT user FROM UserOrm user " +
-        " JOIN UserRolOrm rol ON user.id = rol.user.id " +
-        " WHERE rol.home.id = :homeId" +
-        " AND rol.rol = 'RESIDENT'" +
-        " AND rol.active = 1")
-    List<UserOrm> findResidentsByHomeId(Integer homeId);
-    
     UserOrm findByDocumentId(String documentId);
+
+    @Query("SELECT ur.neighborhood FROM UserRolOrm ur " +
+        "JOIN ur.user u " +
+        "WHERE u.email = :email " +
+        "AND ur.rol = :rol " +
+        "AND ur.active = 1")
+    List<NeighborhoodOrm> findNeighborhoodsByUserEmailAndUserRole(@Param("email") String email, @Param("rol") UserType rol);
+
+    @Query("SELECT ur.user FROM UserRolOrm ur WHERE ur.home.id = :homeId AND ur.rol = 'RESIDENT' AND ur.active = 1")
+    List<UserOrm> findResidentsByHomeId(@Param("homeId") Integer homeId);
+
+    @Query("SELECT ur.user FROM UserRolOrm ur WHERE ur.neighborhood.id = :neighborhoodId AND ur.rol = 'RESIDENT' AND ur.active = 1")
+    List<UserOrm> findResidentsByNeighborhoodId(@Param("neighborhoodId") Integer neighborhoodId);
 }

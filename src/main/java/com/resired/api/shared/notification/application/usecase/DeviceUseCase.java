@@ -25,7 +25,7 @@ public class DeviceUseCase {
 
         userPort.addDevice(email, device);
 
-        List<Integer> neighborhoodIds = userPort.getNeighborhoodIdsByEmail(email);
+        List<Integer> neighborhoodIds = userPort.getNeighborhoodIdsForResidentByEmail(email);
 
         neighborhoodIds.forEach((neigh) -> {
             String topic = "/topics/neighborhoods/" + neigh;
@@ -40,7 +40,7 @@ public class DeviceUseCase {
         }
         devicePort.removeDevice(deviceID);
 
-        List<Integer> neighborhoodIds = userPort.getNeighborhoodIdsByEmail(email);
+        List<Integer> neighborhoodIds = userPort.getNeighborhoodIdsForResidentByEmail(email);
 
         neighborhoodIds.forEach((neigh) -> {
             String topic = "/topics/neighborhoods/" + neigh;
