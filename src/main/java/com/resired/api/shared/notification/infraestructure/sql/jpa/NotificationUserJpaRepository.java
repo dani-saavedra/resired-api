@@ -11,10 +11,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface NotificationUserJpaRepository extends JpaRepository<NotificationUserOrm, Integer> {
-    @Query("SELECT nu.notification FROM NotificationUserOrm nu WHERE nu.userId = :userId AND nu.deleted = true ORDER BY nu.notification.createdDate DESC")
+    @Query("SELECT nu.notification FROM NotificationUserOrm nu WHERE nu.userId = :userId AND nu.deleted = false ORDER BY nu.notification.createdDate DESC")
     List<NotificationOrm> findNotificationsByUserIdOrderByCreatedDateDesc(Integer userId);
 
-    @Query("SELECT nu FROM NotificationUserOrm nu WHERE nu.userId = :userId AND nu.deleted = false ORDER BY nu.notification.createdDate DESC")
+    @Query("SELECT nu FROM NotificationUserOrm nu WHERE nu.userId = :userId AND nu.deleted = false ORDER BY nu.notification.createdDate DESC LIMIT 1")
     NotificationUserOrm findTopByUserIdOrderByCreatedDateDesc(Integer userId);
 
     @Modifying
