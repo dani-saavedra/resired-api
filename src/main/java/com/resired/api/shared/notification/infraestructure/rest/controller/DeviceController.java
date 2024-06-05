@@ -30,13 +30,13 @@ public class DeviceController {
         return ResponseEntity.ok("Device saved successfully");
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping
     @Operation(summary = "Delete a device of a user")
     public ResponseEntity<Void> deleteDevice(
         @RequestHeader(value = "Authorization") String bearer,
-        @PathVariable String id) {
+        @RequestParam("deviceId") String deviceId) {
         UserApp userApp = jwtService.extractUser(bearer);
-        deviceUseCase.removeDevice(id, userApp.email());
+        deviceUseCase.removeDevice(deviceId, userApp.email());
         return ResponseEntity.noContent().build();
     }
 
