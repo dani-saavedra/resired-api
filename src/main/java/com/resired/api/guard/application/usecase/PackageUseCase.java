@@ -15,7 +15,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -46,10 +45,12 @@ public class PackageUseCase {
 
         return packages.stream()
             .map(pkg -> toPackageResponseDTO(pkg, guard))
-            .collect(Collectors.toList());
+            .toList();
     }
 
-    public void deliverPackage(Integer packageId, Integer neighborhoodId, String lastFourDigits) {
+    public void deliverPackage(Integer packageId, Integer neighborhoodId,
+                               String lastFourDigits, Integer deliveredGuardId) {
+
         Package packageToDeliver = packagePort.findPackageByIdAndByNeighborhoodId(packageId, neighborhoodId);
         if (packageToDeliver == null) {
             throw new PackageNotFoundException(packageId, neighborhoodId);
@@ -57,7 +58,7 @@ public class PackageUseCase {
 
         validateLastFourDigits(lastFourDigits, packageToDeliver.getHomeId());
 
-        packageToDeliver.deliverPackage();
+        packageToDeliver.deliverPackage(deliveredGuardId, lastFourDigits);
         packagePort.updatePackage(packageToDeliver);
     }
 
@@ -92,7 +93,7 @@ public class PackageUseCase {
         String homeNumber = homePort.getHomeNumberById(pkg.getHomeId());
         return new PackageResponseDTO(
             pkg.getId(),
-            guardName,
+            guardName, //TODO fix guardName, takes the one is consulting
             homeNumber,
             pkg.getReceiver(),
             pkg.getTrackingNumber(),

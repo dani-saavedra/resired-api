@@ -64,7 +64,7 @@ public class GuardAdapter implements GuardPort, PackagePort {
     @Override
     public void registerPackage(Package packet) {
         PackageOrm packageOrm = new PackageOrm();
-        packageOrm.setGuardId(packet.getGuardId());
+        packageOrm.setGuardReceivedId(packet.getReceivedGuardId());
         packageOrm.setHome(packet.getHomeId());
         packageOrm.setReceiver(packet.getReceiver());
         packageOrm.setTrackingNumber(packet.getTrackingNumber());
@@ -99,7 +99,7 @@ public class GuardAdapter implements GuardPort, PackagePort {
     private Package toPackageDomain(PackageOrm packageOrm) {
         return Package.fromExistingPackage(
             packageOrm.getId(),
-            packageOrm.getGuardId(),
+            packageOrm.getGuardReceivedId(),
             packageOrm.getHome(),
             packageOrm.getReceiver(),
             packageOrm.getTrackingNumber(),
@@ -107,14 +107,16 @@ public class GuardAdapter implements GuardPort, PackagePort {
             packageOrm.getDescription(),
             packageOrm.getStatus(),
             packageOrm.getCreatedDate(),
-            packageOrm.getUpdateDate()
+            packageOrm.getUpdateDate(),
+            packageOrm.getDeliveredGuardId(),
+            packageOrm.getReceiverLastFourDigits()
         );
     }
 
     public PackageOrm fromEntity(Package packet) {
         return new PackageOrm(
             packet.getId(),
-            packet.getGuardId(),
+            packet.getReceivedGuardId(),
             packet.getHomeId(),
             packet.getReceiver(),
             packet.getTrackingNumber(),
@@ -122,7 +124,9 @@ public class GuardAdapter implements GuardPort, PackagePort {
             packet.getDescription(),
             packet.getStatus(),
             packet.getCreatedDate(),
-            packet.getUpdateDate()
+            packet.getUpdateDate(),
+            packet.getDeliveredGuardId(),
+            packet.getReceiverLastFourDigits()
         );
     }
 }

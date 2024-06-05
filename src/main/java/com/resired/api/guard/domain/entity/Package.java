@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Package {
     private Integer id;
-    private final Integer guardId;
+    private final Integer receivedGuardId;
     private final Integer homeId;
     private final String receiver;
     private final String trackingNumber;
@@ -19,9 +19,12 @@ public class Package {
     private PackageStatusEnum status;
     private final LocalDateTime createdDate;
     private LocalDateTime updateDate;
-    public Package(Integer guardId, Integer homeId, String receiver,
+    private Integer deliveredGuardId;
+    private String receiverLastFourDigits;
+
+    public Package(Integer receivedGuardId, Integer homeId, String receiver,
                    String trackingNumber, String packageTransporter, String description) {
-        this.guardId = guardId;
+        this.receivedGuardId = receivedGuardId;
         this.homeId = homeId;
         this.receiver = receiver;
         this.trackingNumber = trackingNumber;
@@ -32,20 +35,24 @@ public class Package {
     }
 
 
-    public static Package createNewPackage(Integer guardId, Integer homeId, String receiver,
+    public static Package createNewPackage(Integer receivedGuardId, Integer homeId, String receiver,
                                            String trackingNumber, String packageTransporter, String description) {
-        return new Package(guardId, homeId, receiver, trackingNumber, packageTransporter, description);
+        return new Package(receivedGuardId, homeId, receiver, trackingNumber, packageTransporter, description);
     }
 
-    public static Package fromExistingPackage(Integer id, Integer guardId, Integer homeId, String receiver,
+    public static Package fromExistingPackage(Integer id, Integer receivedGuardId, Integer homeId, String receiver,
                                               String trackingNumber, String packageTransporter, String description,
                                               PackageStatusEnum status, LocalDateTime createdDate,
-                                              LocalDateTime updateDate) {
-        return new Package(id, guardId, homeId, receiver, trackingNumber, packageTransporter, description, status, createdDate, updateDate);
+                                              LocalDateTime updateDate, Integer deliveredGuardId,
+                                              String receiverLastFourDigits) {
+        return new Package(id, receivedGuardId, homeId, receiver, trackingNumber, packageTransporter,
+            description, status, createdDate, updateDate, deliveredGuardId, receiverLastFourDigits);
     }
 
-    public void deliverPackage() {
+    public void deliverPackage(Integer deliveredGuardId, String receiverLastFourDigits) {
         this.status = PackageStatusEnum.DELIVERED;
         this.updateDate = LocalDateTime.now();
+        this.deliveredGuardId = deliveredGuardId;
+        this.receiverLastFourDigits = receiverLastFourDigits;
     }
 }

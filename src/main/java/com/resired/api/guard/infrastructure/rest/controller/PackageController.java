@@ -46,7 +46,7 @@ public class PackageController {
                                                @Parameter(description = "Last four digit's of a resident document as a String")
                                                @RequestParam String lastFourDigits) {
         UserApp userApp = jwtService.extractUser(bearer);
-        packageUseCase.deliverPackage(packageId, userApp.neighborhoodId(), lastFourDigits);
+        packageUseCase.deliverPackage(packageId, userApp.neighborhoodId(), lastFourDigits, userApp.userId());
         return new ResponseData<>("Package delivered successfully");
     }
 }
