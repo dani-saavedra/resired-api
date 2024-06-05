@@ -37,7 +37,6 @@ public interface UserJpaRepository extends JpaRepository<UserOrm, Integer> {
     @Query("SELECT user FROM UserOrm user " +
         " JOIN UserRolOrm rol ON user.id = rol.user.id " +
         " WHERE rol.home.id = :homeId" +
-        " AND user.active = 1" +
         " AND rol.rol = 'RESIDENT'" +
         " AND rol.active = 1")
     List<UserOrm> findResidentsByHomeId(Integer homeId);
