@@ -1,9 +1,8 @@
 package com.resired.api.shared.notification.infraestructure.sql.adapter;
 
 import com.resired.api.resident.infraestructure.sql.jpa.HomeJpaRepository;
-import com.resired.api.resident.infraestructure.sql.orm.HomeOrm;
+import com.resired.api.security.domain.enums.UserType;
 import com.resired.api.security.infraestructure.sql.jpa.UserJpaRepository;
-import com.resired.api.security.infraestructure.sql.orm.UserOrm;
 import com.resired.api.shared.notification.domain.entity.Device;
 import com.resired.api.shared.notification.domain.repository.DevicePort;
 import com.resired.api.shared.notification.infraestructure.sql.jpa.DeviceJpaRepository;
@@ -11,7 +10,6 @@ import com.resired.api.shared.notification.infraestructure.sql.orm.DeviceOrm;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,18 +43,12 @@ public class DeviceAdapter implements DevicePort {
     }
 
     @Override
-    public List<Device> getDevicesFromHomeOwner(Integer homeID) {
-        Optional<HomeOrm> home = homeRepository.findById(homeID);
-        if (home.isEmpty()) return Collections.emptyList();
-
-        Integer ownerID = home.get().getOwnerId();
-        Optional<UserOrm> user = userRepository.findById(ownerID);
-
-        return user.map(userOrm -> userOrm.getDevices()
+    public List<Device> getDevicesForHomeResident(Integer homeID) {
+        return deviceRepository.findDevicesByHomeIdAndUserRole(homeID, UserType.RESIDENT)
             .stream()
-            .filter(DeviceOrm::getAllowNotifications)
-            .map((dev) -> new Device(dev.getId(), true))
-            .toList()).orElse(Collections.emptyList());
+            .map(deviceOrm -> new Device(deviceOrm.getId(),
+                deviceOrm.getAllowNotifications()))
+            .toList();
 
     }
 }
