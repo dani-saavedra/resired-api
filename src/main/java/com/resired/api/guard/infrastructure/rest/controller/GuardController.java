@@ -1,10 +1,7 @@
 package com.resired.api.guard.infrastructure.rest.controller;
 
-import com.resired.api.guard.application.dto.PackageRequestDTO;
-import com.resired.api.guard.application.dto.PackageResponseDTO;
 import com.resired.api.guard.application.dto.VisitResponseDTO;
 import com.resired.api.guard.application.usecase.GuardVisitUseCase;
-import com.resired.api.guard.application.usecase.PackageUseCase;
 import com.resired.api.guard.domain.entity.Visitor;
 import com.resired.api.guard.infrastructure.rest.dto.InfoQrRequest;
 import com.resired.api.resident.application.dto.VisitorRequestDTO;
@@ -33,7 +30,6 @@ import java.util.Optional;
 public class GuardController {
 
     private final GuardVisitUseCase visitUseCase;
-    private final PackageUseCase packageUseCase;
     private final JwtService jwtService;
 
     @GetMapping("/info-qr")
@@ -64,22 +60,6 @@ public class GuardController {
         UserApp userApp = jwtService.extractUser(bearer);
         visitUseCase.registerVisitor(userApp.email(), visitorRequestDTO);
         return new ResponseData<>("Registered visit successfully");
-    }
-
-    @PostMapping("/package")
-    @Operation(summary = "Register a new package")
-    public ResponseData<String> registerPackage(@RequestHeader(value = "Authorization") String bearer,
-                                                @RequestBody PackageRequestDTO packageRequestDTO) {
-        UserApp userApp = jwtService.extractUser(bearer);
-        packageUseCase.registerPackage(userApp.email(), packageRequestDTO, userApp.neighborhoodId());
-        return new ResponseData<>("Registered package successfully");
-    }
-
-    @GetMapping("/package")
-    @Operation(summary = "Get all the packages by neighborhood")
-    public ResponseData<List<PackageResponseDTO>> getPackagesByNeighborhood(@RequestHeader(value = "Authorization") String bearer) {
-        UserApp userApp = jwtService.extractUser(bearer);
-        return new ResponseData<>(packageUseCase.getPackagesByNeighborhood(userApp.email(), userApp.neighborhoodId()));
     }
 
     @GetMapping("/visits")

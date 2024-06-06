@@ -1,6 +1,5 @@
 package com.resired.api.guard.infrastructure.sql.adapter;
 
-import com.resired.api.guard.application.dto.VisitResponseDTO;
 import com.resired.api.guard.domain.entity.Package;
 import com.resired.api.guard.domain.entity.Visit;
 import com.resired.api.guard.domain.repository.GuardPort;
@@ -65,7 +64,7 @@ public class GuardAdapter implements GuardPort, PackagePort {
     @Override
     public void registerPackage(Package packet) {
         PackageOrm packageOrm = new PackageOrm();
-        packageOrm.setGuardId(packet.getGuardId());
+        packageOrm.setGuardReceivedId(packet.getReceivedGuardId());
         packageOrm.setHome(packet.getHomeId());
         packageOrm.setReceiver(packet.getReceiver());
         packageOrm.setTrackingNumber(packet.getTrackingNumber());
@@ -78,21 +77,56 @@ public class GuardAdapter implements GuardPort, PackagePort {
     }
 
     @Override
-    public List<Package> findAllByNeighborhoodId(Integer neighborhoodId) {
-        List<PackageOrm> packageOrms = packageJpaRepository.findAllByNeighborhoodId(neighborhoodId);
+    public List<Package> findAllByNeighborhoodIdAndStartDate(Integer neighborhoodId, LocalDateTime date) {
+        List<PackageOrm> packageOrms = packageJpaRepository.findAllByNeighborhoodIdAndStartDate(neighborhoodId, date);
         return packageOrms.stream().map(this::toPackageDomain).toList();
+    }
+
+    @Override
+    public Package findPackageByIdAndByNeighborhoodId(Integer packageId, Integer neighborhoodId) {
+        PackageOrm packetOrm = packageJpaRepository.findByIdAndNeighborhoodId(packageId, neighborhoodId);
+        if (packetOrm != null) {
+            return toPackageDomain(packetOrm);
+        }
+        return null;
+    }
+
+    @Override
+    public void updatePackage(Package packet) {
+        packageJpaRepository.save(fromEntity(packet));
     }
 
     private Package toPackageDomain(PackageOrm packageOrm) {
         return Package.fromExistingPackage(
-            packageOrm.getGuardId(),
+            packageOrm.getId(),
+            packageOrm.getGuardReceivedId(),
             packageOrm.getHome(),
             packageOrm.getReceiver(),
             packageOrm.getTrackingNumber(),
             packageOrm.getPackageTransporter(),
             packageOrm.getDescription(),
             packageOrm.getStatus(),
-            packageOrm.getCreatedDate()
+            packageOrm.getCreatedDate(),
+            packageOrm.getUpdateDate(),
+            packageOrm.getDeliveredGuardId(),
+            packageOrm.getReceiverLastFourDigits()
+        );
+    }
+
+    public PackageOrm fromEntity(Package packet) {
+        return new PackageOrm(
+            packet.getId(),
+            packet.getReceivedGuardId(),
+            packet.getHomeId(),
+            packet.getReceiver(),
+            packet.getTrackingNumber(),
+            packet.getPackageTransporter(),
+            packet.getDescription(),
+            packet.getStatus(),
+            packet.getCreatedDate(),
+            packet.getUpdateDate(),
+            packet.getDeliveredGuardId(),
+            packet.getReceiverLastFourDigits()
         );
     }
 }

@@ -21,7 +21,7 @@ public class PackageOrm {
     private Integer id;
 
     @Column
-    private Integer guardId;
+    private Integer guardReceivedId;
 
     @Column(name = "home_id")
     private Integer home;
@@ -47,6 +47,12 @@ public class PackageOrm {
 
     @Column(name = "update_date")
     private LocalDateTime updateDate;
+
+    @Column(name = "guard_delivered_id")
+    private Integer deliveredGuardId;
+
+    @Column(name = "receiver_last_four_digits")
+    private String receiverLastFourDigits;
 
     public Package toEntity() {
         return new Package(this.id, this.receiver, this.trackingNumber, this.packageTransporter,

@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository
 @AllArgsConstructor
@@ -74,6 +75,14 @@ public class UserAdapter implements UserPort {
                 .filter(userRolOrm -> userRolOrm.getRol().equals(UserType.GUARD))
                 .map(UserRolOrm::converToEntity)
                 .toList());
+    }
+
+    @Override
+    public List<User> findResidentsByHomeId(Integer homeId) {
+        List<UserOrm> residents = userJpaRepository.findResidentsByHomeId(homeId);
+        return residents.stream()
+            .map(UserOrm::toEntity)
+            .toList();
     }
 
 

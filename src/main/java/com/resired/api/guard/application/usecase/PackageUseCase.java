@@ -2,8 +2,10 @@ package com.resired.api.guard.application.usecase;
 
 import com.resired.api.guard.application.dto.PackageRequestDTO;
 import com.resired.api.guard.application.dto.PackageResponseDTO;
+import com.resired.api.guard.application.exception.PackageNotFoundException;
 import com.resired.api.guard.domain.entity.Package;
 import com.resired.api.guard.domain.exception.HomeNotFoundException;
+import com.resired.api.guard.domain.exception.ResidentNotFoundOnHomeException;
 import com.resired.api.guard.domain.repository.PackagePort;
 import com.resired.api.resident.domain.repository.HomePort;
 import com.resired.api.security.domain.entity.User;
@@ -12,8 +14,8 @@ import com.resired.api.security.domain.repository.UserPort;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -39,12 +41,27 @@ public class PackageUseCase {
     }
 
     public List<PackageResponseDTO> getPackagesByNeighborhood(String emailGuard, Integer neighborhoodId) {
-        User guard = validateGuard(emailGuard);
-        List<Package> packages = packagePort.findAllByNeighborhoodId(neighborhoodId);
+        validateGuard(emailGuard);
+        LocalDateTime fiveDaysAgo = LocalDateTime.now().minusDays(5);;
+        List<Package> packages = packagePort.findAllByNeighborhoodIdAndStartDate(neighborhoodId, fiveDaysAgo);
 
         return packages.stream()
-            .map(pkg -> toPackageResponseDTO(pkg, guard))
-            .collect(Collectors.toList());
+            .map(this::toPackageResponseDTO)
+            .toList();
+    }
+
+    public void deliverPackage(Integer packageId, Integer neighborhoodId,
+                               String lastFourDigits, Integer deliveredGuardId) {
+
+        Package packageToDeliver = packagePort.findPackageByIdAndByNeighborhoodId(packageId, neighborhoodId);
+        if (packageToDeliver == null) {
+            throw new PackageNotFoundException(packageId, neighborhoodId);
+        }
+
+        validateLastFourDigits(lastFourDigits, packageToDeliver.getHomeId());
+
+        packageToDeliver.deliverPackage(deliveredGuardId, lastFourDigits);
+        packagePort.updatePackage(packageToDeliver);
     }
 
     private User validateGuard(String emailGuard) {
@@ -73,11 +90,10 @@ public class PackageUseCase {
         return homeId;
     }
 
-    private PackageResponseDTO toPackageResponseDTO(Package pkg, User guard) {
-        String guardName = guard.getUserName() + " " + guard.getUserLastName();
+    private PackageResponseDTO toPackageResponseDTO(Package pkg) {
         String homeNumber = homePort.getHomeNumberById(pkg.getHomeId());
         return new PackageResponseDTO(
-            guardName,
+            pkg.getId(),
             homeNumber,
             pkg.getReceiver(),
             pkg.getTrackingNumber(),
@@ -86,5 +102,19 @@ public class PackageUseCase {
             pkg.getStatus(),
             pkg.getCreatedDate()
         );
+    }
+
+    private void validateLastFourDigits(String lastFourDigits, Integer homeId) {
+        List<User> residents = userPort.findResidentsByHomeId(homeId);
+        if (residents.isEmpty()) {
+            return;
+        }
+
+        boolean isValid = residents.stream()
+            .anyMatch(resident -> resident.getDocumentId().endsWith(lastFourDigits));
+
+        if (!isValid) {
+            throw new ResidentNotFoundOnHomeException(lastFourDigits, homeId);
+        }
     }
 }

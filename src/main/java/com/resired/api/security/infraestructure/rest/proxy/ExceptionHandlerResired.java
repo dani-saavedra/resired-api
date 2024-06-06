@@ -1,7 +1,9 @@
 package com.resired.api.security.infraestructure.rest.proxy;
 
+import com.resired.api.guard.application.exception.PackageNotFoundException;
 import com.resired.api.guard.application.exception.QrInvalidException;
 import com.resired.api.guard.domain.exception.HomeNotFoundException;
+import com.resired.api.guard.domain.exception.ResidentNotFoundOnHomeException;
 import com.resired.api.resident.domain.exception.InvalidVisitorException;
 import com.resired.api.security.application.exception.ExpiredTokenException;
 import com.resired.api.security.application.exception.InvalidCredentialException;
@@ -115,5 +117,20 @@ public class ExceptionHandlerResired {
             ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(value = PackageNotFoundException.class)
+    protected ResponseEntity<ErrorDTO> handlePackageNotFoundException(
+        RuntimeException ex, WebRequest request) {
+        log.error("Package not found", ex);
+        return new ResponseEntity<>(new ErrorDTO(ErrorCode.PACKAGE01.name(),
+            ex.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = ResidentNotFoundOnHomeException.class)
+    protected ResponseEntity<ErrorDTO> handleResidentNotFoundOnHomeException(
+        RuntimeException ex, WebRequest request) {
+        log.error("Resident not found", ex);
+        return new ResponseEntity<>(new ErrorDTO(ErrorCode.USER05.name(),
+            ex.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
+    }
 
 }
