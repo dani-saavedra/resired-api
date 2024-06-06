@@ -1,8 +1,6 @@
 package com.resired.api.shared.notification.infraestructure.sql.adapter;
 
-import com.resired.api.resident.infraestructure.sql.jpa.HomeJpaRepository;
 import com.resired.api.security.domain.enums.UserType;
-import com.resired.api.security.infraestructure.sql.jpa.UserJpaRepository;
 import com.resired.api.shared.notification.domain.entity.Device;
 import com.resired.api.shared.notification.domain.repository.DevicePort;
 import com.resired.api.shared.notification.infraestructure.sql.jpa.DeviceJpaRepository;
@@ -17,8 +15,6 @@ import java.util.Optional;
 @AllArgsConstructor
 public class DeviceAdapter implements DevicePort {
     private final DeviceJpaRepository deviceRepository;
-    private final HomeJpaRepository homeRepository;
-    private final UserJpaRepository userRepository;
 
     @Override
     public Boolean alreadyExists(String deviceID) {
