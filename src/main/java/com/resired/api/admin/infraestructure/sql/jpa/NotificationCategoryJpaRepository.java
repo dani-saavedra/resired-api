@@ -1,0 +1,15 @@
+package com.resired.api.admin.infraestructure.sql.jpa;
+
+import com.resired.api.admin.infraestructure.sql.orm.NotificationCategoryOrm;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+
+public interface NotificationCategoryJpaRepository extends JpaRepository<NotificationCategoryOrm, Integer> {
+
+    //void createCategory(Integer neighborhoodId, String categoryName);
+
+    @Modifying
+    @Query("update NotificationCategoryOrm nc set nc.active = false where nc.neighborhoodId =:neighborhoodId and nc.name =:name ")
+    void deactivateNotificationCategory(Integer neighborhoodId, String name);
+}

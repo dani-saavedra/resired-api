@@ -1,9 +1,6 @@
 package com.resired.api.resident.infraestructure.sql.orm;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,6 +13,7 @@ import lombok.NoArgsConstructor;
 public class NeighborhoodOrm {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column
@@ -24,6 +22,14 @@ public class NeighborhoodOrm {
     @Column
     private String address;
 
+    @Column
+    private String city;
+
+    public NeighborhoodOrm(String name, String address, String city) {
+        this.name = name;
+        this.address = address;
+        this.city = city;
+    }
 }
 
 

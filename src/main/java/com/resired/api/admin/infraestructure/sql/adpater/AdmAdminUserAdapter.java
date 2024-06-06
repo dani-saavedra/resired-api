@@ -1,4 +1,4 @@
-package com.resired.api.admin.infraestructure.sql;
+package com.resired.api.admin.infraestructure.sql.adpater;
 
 import com.resired.api.admin.domain.repository.AdminResidentPort;
 import com.resired.api.admin.domain.repository.AdminUserPort;

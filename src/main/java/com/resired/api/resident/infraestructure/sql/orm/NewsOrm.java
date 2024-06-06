@@ -1,7 +1,9 @@
 package com.resired.api.resident.infraestructure.sql.orm;
 
-import com.resired.api.resident.domain.enums.NewsCategoryEnum;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,9 +26,8 @@ public class NewsOrm {
     @Column
     private String content;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "category", nullable = false, columnDefinition = "VARCHAR(35)")
-    private NewsCategoryEnum category;
+    @Column
+    private String category;
 
     @Column(name = "neighborhood_id")
     private Integer neighborhoodId;

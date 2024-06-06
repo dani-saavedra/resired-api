@@ -1,7 +1,6 @@
 package com.resired.api.resident.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.resired.api.resident.domain.enums.NewsCategoryEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -15,7 +14,7 @@ public class News {
     private String title;
     private String description;
     private String image;
-    private NewsCategoryEnum category;
+    private String category;
     @JsonProperty("creation_date")
     private LocalDateTime creationDate;
 }
