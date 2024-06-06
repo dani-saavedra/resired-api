@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface HomeJpaRepository extends JpaRepository<HomeOrm, Integer> {
 
-    @Query(value = "SELECT pac FROM PackageOrm  pac WHERE pac.home = ?1 order by pac.createdDate asc")
+    @Query(value = "SELECT pac FROM PackageOrm  pac WHERE pac.home = ?1 order by pac.createdDate desc")
     List<PackageOrm> getPackages(Integer homeId);
 
     @Query("SELECT home.id FROM HomeOrm home WHERE home.block = :block AND home.number = :homeNumber AND home.neighborhoodId = :neighborhoodId")
