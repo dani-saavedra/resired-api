@@ -4,7 +4,4 @@ public record NotificationMessage(Integer id, String title, String message, Bool
     public NotificationMessage(String title, String message, Boolean viewed) {
         this(0, title, message, viewed);
     }
-
-    ;
-
 }
