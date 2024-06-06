@@ -1,5 +1,6 @@
 package com.resired.api.resident.domain.repository;
 
+import com.resired.api.resident.domain.vo.QrVisitor;
 import com.resired.api.resident.domain.vo.RegisteredVisitor;
 
 import java.util.Date;
@@ -11,6 +12,8 @@ public interface ResidentPort {
                          String telephone, boolean favorite, Date expirationDate);
 
     List<RegisteredVisitor> obtainVisitors(String emailResident);
+
+    QrVisitor obtainVisitor(String emailResident, String documentVisitor);
 
     RegisteredVisitor obtainVisitorByDocumentAndEmailVisitor(String documentVisitor, String emailResident);
 

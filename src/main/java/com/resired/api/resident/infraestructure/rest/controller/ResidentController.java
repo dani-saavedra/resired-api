@@ -2,6 +2,7 @@ package com.resired.api.resident.infraestructure.rest.controller;
 
 import com.resired.api.resident.application.dto.VisitorRequestDTO;
 import com.resired.api.resident.application.usecase.VisitUseCase;
+import com.resired.api.resident.domain.vo.QrVisitor;
 import com.resired.api.resident.domain.vo.RegisteredVisitor;
 import com.resired.api.resident.infraestructure.rest.dto.ResponseData;
 import com.resired.api.security.application.usecase.JwtService;
@@ -35,7 +36,7 @@ public class ResidentController {
     @Operation(summary = "Obtain visitors by resident")
     public List<RegisteredVisitor> obtainVisitor(@RequestHeader(value = "Authorization") String bearer) {
         UserApp userApp = jwtService.extractUser(bearer);
-        return visitUseCase.obtainVisitorByResident(userApp.email());
+        return visitUseCase.obtainVisitorsByResident(userApp.email());
     }
 
     @PutMapping(path = "/visitor/{document}/enable")
@@ -50,9 +51,17 @@ public class ResidentController {
     @DeleteMapping(path = "/visitor/{document}")
     @Operation(summary = "Delete a visitor registered by a resident")
     public ResponseData<String> deleteVisitor(@RequestHeader(value = "Authorization") String bearer,
-                              @PathVariable(value = "document") String documentVisitor) {
+                                              @PathVariable(value = "document") String documentVisitor) {
         UserApp userApp = jwtService.extractUser(bearer);
         visitUseCase.removeVisitor(userApp.userId(), documentVisitor);
         return new ResponseData<>("Successfully deleted visitor");
+    }
+
+    @GetMapping(path = "/visitors/{document}")
+    @Operation(summary = "Obtain QR info by document visitor")
+    public QrVisitor obtainVisitor(@RequestHeader(value = "Authorization") String bearer,
+                                   @PathVariable(value = "document") String documentVisitor) {
+        UserApp userApp = jwtService.extractUser(bearer);
+        return visitUseCase.obtainVisitorByDocument(userApp.email(), documentVisitor);
     }
 }
