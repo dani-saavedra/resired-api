@@ -23,17 +23,6 @@ public class DeviceAdapter implements DevicePort {
     }
 
     @Override
-    public Boolean hasNotificationsAllowed(String deviceID) {
-        Optional<DeviceOrm> device = deviceRepository.findById(deviceID);
-        return device.isPresent() ? device.get().getAllowNotifications() : false;
-    }
-
-    @Override
-    public void updateNotificationPermission(String deviceID, Boolean status) {
-        deviceRepository.changeNotificationPermission(deviceID, status);
-    }
-
-    @Override
     public void removeDevice(String deviceID) {
         deviceRepository.deleteById(deviceID);
     }
