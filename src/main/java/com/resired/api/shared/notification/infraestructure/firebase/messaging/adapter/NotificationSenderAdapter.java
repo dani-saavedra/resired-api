@@ -8,9 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.IntStream;
 
 @Slf4j
 @Service
@@ -30,7 +30,7 @@ public class NotificationSenderAdapter implements NotificationSender {
 
         try {
             String response = firebaseMessaging.send(message);
-            log.info("Firebase notification sent successfully: " + response);
+            log.debug("Firebase notification sent successfully: {}", response);
         } catch (FirebaseMessagingException ex) {
             log.error("Problem sending message to firebase messaging ", ex);
         }
@@ -53,18 +53,14 @@ public class NotificationSenderAdapter implements NotificationSender {
             BatchResponse response = firebaseMessaging.sendEachForMulticast(message);
             if (response.getFailureCount() > 0) {
                 List<SendResponse> responses = response.getResponses();
-                List<String> failedTokens = new ArrayList<>();
-                for (int i = 0; i < responses.size(); i++) {
-                    if (!responses.get(i).isSuccessful()) {
-                        // The order of responses corresponds to the order of the device IDs.
-                        failedTokens.add(devicesIDs.get(i));
-                    }
-                }
+                List<String> failedTokens = IntStream.range(0, responses.size())
+                    .filter(i -> !responses.get(i).isSuccessful())
+                    .mapToObj(devicesIDs::get).toList();
 
-                log.error("List of tokens that caused failures: " + failedTokens);
+                log.error("List of tokens that caused failures: {}", failedTokens);
             }
 
-            log.info(response.getSuccessCount() + " messages were sent successfully by multicast");
+            log.debug("{} messages were sent successfully by multicast", response.getSuccessCount());
 
         } catch (FirebaseMessagingException ex) {
             log.error("Problem sending message to firebase messaging multicast ", ex);
@@ -84,7 +80,7 @@ public class NotificationSenderAdapter implements NotificationSender {
 
         try {
             String response = firebaseMessaging.send(message);
-            log.info("Firebase notification sent successfully by topic: " + response);
+            log.debug("Firebase notification sent successfully by topic: {}", response);
         } catch (FirebaseMessagingException ex) {
             log.error("Problem sending message to firebase messaging topic ", ex);
         }
