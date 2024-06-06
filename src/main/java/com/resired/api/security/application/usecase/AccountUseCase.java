@@ -42,7 +42,7 @@ public class AccountUseCase {
         String token = UUID.randomUUID().toString();
         User user = userPort.getResidentByEmail(email);
         if (user == null) {
-            throw new InactiveUserException(email);
+            return;
         }
         passResetTokenPort.savePassResetToken(user.getId(), token, LocalDateTime.now().plusDays(1));
         emailPort.sendEmailToRecoverPass(email, token);
