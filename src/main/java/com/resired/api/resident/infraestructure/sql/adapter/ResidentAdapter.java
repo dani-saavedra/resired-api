@@ -34,10 +34,15 @@ public class ResidentAdapter implements ResidentPort {
 
     @Override
     public List<RegisteredVisitor> obtainVisitors(String emailResident) {
-        return visitorJpa.obtainVisitorByEmailResident(emailResident)
+        List<VisitorOrm> visitorOrms = visitorJpa.obtainVisitorByEmailResident(emailResident);
+        return visitorOrms
             .stream()
-            .map(visitorOrm -> new RegisteredVisitor(visitorOrm.getId(), visitorOrm.getName(),
-                visitorOrm.getDocument(), visitorOrm.isFavorite()))
+            .map(visitorOrm -> {
+                QrOrm lastQR = visitorOrm.getQrs().get(visitorOrm.getQrs().size() - 1);
+                return new RegisteredVisitor(visitorOrm.getId(), visitorOrm.getName(),
+                    visitorOrm.getDocument(), visitorOrm.isFavorite(),
+                    (lastQR.isAvailable() && lastQR.getCreatedAt().plusDays(1).isAfter(LocalDateTime.now())));
+            })
             .toList();
     }
 
@@ -48,7 +53,7 @@ public class ResidentAdapter implements ResidentPort {
             return null;
         }
         return new RegisteredVisitor(visitorOrm.getId(), visitorOrm.getName(),
-            visitorOrm.getDocument(), visitorOrm.isFavorite());
+            visitorOrm.getDocument(), visitorOrm.isFavorite(), true);
     }
 
     @Override
