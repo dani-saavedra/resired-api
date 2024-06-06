@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.JdbcTypeCode;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static java.sql.Types.TINYINT;
 
@@ -48,6 +49,9 @@ public class VisitorOrm {
 
     @JdbcTypeCode(TINYINT)
     private boolean favorite;
+
+    @OneToMany(mappedBy = "visitor")
+    private List<QrOrm> qrs;
 
     public static VisitorOrm visitorFromResident(Integer userId, Integer homeId, String homeName, String name, String document,
                                                  String telephone, boolean isFavorite) {
