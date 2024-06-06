@@ -9,6 +9,7 @@ import com.resired.api.resident.domain.exception.InvalidHomeException;
 import com.resired.api.resident.domain.exception.InvalidVisitorException;
 import com.resired.api.resident.domain.repository.HomePort;
 import com.resired.api.resident.domain.repository.ResidentPort;
+import com.resired.api.resident.domain.vo.QrVisitor;
 import com.resired.api.resident.domain.vo.RegisteredVisitor;
 import com.resired.api.security.domain.entity.User;
 import com.resired.api.security.domain.exception.InactiveUserException;
@@ -71,6 +72,12 @@ public class VisitorResidentService implements CreateVisitor, ManageVisitor {
     public void deleteVisitor(Integer userId, String documentVisitor) {
         residentPort.deactivateVisitor(userId, documentVisitor);
     }
+
+    @Override
+    public QrVisitor obtainVisitorByDocument(String emailResident, String documentVisitor) {
+        return residentPort.obtainVisitor(emailResident, documentVisitor);
+    }
+
 
     private static Date getQRValidityTime(boolean favorite) {
         Date expirationQr;

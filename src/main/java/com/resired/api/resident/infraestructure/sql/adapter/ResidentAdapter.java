@@ -1,6 +1,7 @@
 package com.resired.api.resident.infraestructure.sql.adapter;
 
 import com.resired.api.resident.domain.repository.ResidentPort;
+import com.resired.api.resident.domain.vo.QrVisitor;
 import com.resired.api.resident.domain.vo.RegisteredVisitor;
 import com.resired.api.resident.infraestructure.sql.jpa.QrJpaRepository;
 import com.resired.api.resident.infraestructure.sql.jpa.VisitorJpaRepository;
@@ -44,6 +45,15 @@ public class ResidentAdapter implements ResidentPort {
                     (lastQR.isAvailable() && lastQR.getCreatedAt().plusDays(1).isAfter(LocalDateTime.now())));
             })
             .toList();
+    }
+
+    @Override
+    public QrVisitor obtainVisitor(String emailResident, String documentVisitor) {
+        QrOrm qrOrm = visitorJpa.obtainQRByEmailResidentAndDocumentVisitor(emailResident, documentVisitor);
+        if (qrOrm == null) {
+            return null;
+        }
+        return new QrVisitor(qrOrm.getQr(), qrOrm.getVisitor().getName());
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.resired.api.guard.domain.entity.Visitor;
 import com.resired.api.resident.domain.service.VisitorResidentService;
 import com.resired.api.guard.domain.vo.VisitVO;
 import com.resired.api.resident.application.dto.VisitorRequestDTO;
+import com.resired.api.resident.domain.vo.QrVisitor;
 import com.resired.api.resident.domain.vo.RegisteredVisitor;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ public class VisitUseCase {
         return visitor.createVisit(residentVisit, visitorResidentService);
     }
 
-    public List<RegisteredVisitor> obtainVisitorByResident(String emailResident) {
+    public List<RegisteredVisitor> obtainVisitorsByResident(String emailResident) {
         return visitorResidentService.obtainVisitors(emailResident);
     }
 
@@ -33,5 +34,9 @@ public class VisitUseCase {
 
     public void removeVisitor(Integer userId, String documentVisitor) {
         visitorResidentService.deleteVisitor(userId, documentVisitor);
+    }
+
+    public QrVisitor obtainVisitorByDocument(String emailResident, String documentVisitor) {
+        return visitorResidentService.obtainVisitorByDocument(emailResident, documentVisitor);
     }
 }
