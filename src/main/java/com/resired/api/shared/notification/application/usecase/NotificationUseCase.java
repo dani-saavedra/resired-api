@@ -32,18 +32,10 @@ public class NotificationUseCase {
         List<Device> devices = deviceRepository.getDevicesForHomeResident(requestDTO.homeID())
             .stream().filter(Device::getAllowNotifications).toList();
 
-        if (devices.size() > 1) {
+        if (!devices.isEmpty()) {
             notificationSenderService.sendToDeviceList(notificationMessage, devices);
             notificationRepository.saveNotificationForHomeResidents(notificationMessage, requestDTO.homeID());
-            return;
         }
-
-        if (devices.isEmpty()) return;
-
-        notificationSenderService.sendToDevice(notificationMessage,
-            devices.get(0));
-
-        notificationRepository.saveNotificationForHomeResidents(notificationMessage, requestDTO.homeID());
     }
 
     public void notifyNeighborhood(NotificationNeighborhoodRequest requestDTO) {
