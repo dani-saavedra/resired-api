@@ -92,7 +92,7 @@ public class NotificationSenderAdapter implements NotificationSender {
 
         try {
             TopicManagementResponse response = firebaseMessaging.subscribeToTopic(devicesID, topic);
-            log.info(response.getSuccessCount() + " devices were subscribed successfully");
+            log.debug("{} devices were subscribed successfully", response.getSuccessCount());
         } catch (FirebaseMessagingException ex) {
             log.error("Problem subscribing devices to topic ", ex);
         }
@@ -104,7 +104,7 @@ public class NotificationSenderAdapter implements NotificationSender {
 
         try {
             TopicManagementResponse response = firebaseMessaging.unsubscribeFromTopic(devicesID, topic);
-            log.info(response.getSuccessCount() + " tokens were unsubscribed successfully");
+            log.debug("{} tokens were unsubscribed successfully", response.getSuccessCount());
         } catch (FirebaseMessagingException ex) {
             log.error("Problem unsubscribing devices to topic ", ex);
         }
