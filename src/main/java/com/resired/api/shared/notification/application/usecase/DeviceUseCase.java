@@ -5,16 +5,21 @@ import com.resired.api.shared.notification.domain.exception.DeviceAlreadyExistsE
 import com.resired.api.shared.notification.domain.exception.DeviceNotFoundException;
 import com.resired.api.shared.notification.domain.repository.DevicePort;
 import com.resired.api.shared.notification.domain.repository.UserNotificationPort;
-import lombok.AllArgsConstructor;
+import com.resired.api.shared.notification.domain.service.NotificationSender;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class DeviceUseCase {
     private final UserNotificationPort userPort;
     private final DevicePort devicePort;
+    private final NotificationSender notificationSenderService;
+    @Value("${topic.neighborhood}")
+    private String NEIGHBORHOOD_TOPIC;
 
     public void registerDevice(Device device, String email) {
         if (devicePort.alreadyExists(device.getId())) {
@@ -22,6 +27,13 @@ public class DeviceUseCase {
         }
 
         userPort.addDevice(email, device);
+
+        List<Integer> neighborhoodIds = userPort.getNeighborhoodIdsForResidentByEmail(email);
+
+        neighborhoodIds.forEach((neigh) -> {
+            String topic = NEIGHBORHOOD_TOPIC + neigh;
+            notificationSenderService.subscribeDeviceToTopic(device, topic);
+        });
     }
 
     public void removeDevice(String deviceID, String email) {
@@ -30,6 +42,13 @@ public class DeviceUseCase {
             throw new DeviceNotFoundException(deviceID, email);
         }
         devicePort.removeDevice(deviceID);
+
+        List<Integer> neighborhoodIds = userPort.getNeighborhoodIdsForResidentByEmail(email);
+        neighborhoodIds.forEach((neigh) -> {
+            String topic = NEIGHBORHOOD_TOPIC + neigh;
+            notificationSenderService.unsubscribeDeviceToTopic(device, topic);
+        });
+
     }
 
     public Device getDevice(String deviceID, String email) {
