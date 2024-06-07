@@ -17,5 +17,5 @@ public class Package {
     private String description;
     private PackageStatusEnum status;
     private LocalDateTime createdDate;
-    private LocalDateTime updateDate;
+    private LocalDateTime deliverDate;
 }
