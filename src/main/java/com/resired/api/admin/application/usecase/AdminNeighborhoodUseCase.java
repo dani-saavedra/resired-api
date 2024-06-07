@@ -29,8 +29,6 @@ public class AdminNeighborhoodUseCase {
     }
 
     private void associateInitialCategories(Integer idNewNeigh) {
-        defaultCategories.forEach(category -> {
-            notificationCategoryPort.createNewNotificationCategory(idNewNeigh, category);
-        });
+        defaultCategories.forEach(category -> notificationCategoryPort.createNewNotificationCategory(idNewNeigh, category));
     }
 }

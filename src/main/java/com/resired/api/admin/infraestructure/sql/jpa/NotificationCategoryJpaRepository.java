@@ -7,8 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface NotificationCategoryJpaRepository extends JpaRepository<NotificationCategoryOrm, Integer> {
 
-    //void createCategory(Integer neighborhoodId, String categoryName);
-
     @Modifying
     @Query("update NotificationCategoryOrm nc set nc.active = false where nc.neighborhoodId =:neighborhoodId and nc.name =:name ")
     void deactivateNotificationCategory(Integer neighborhoodId, String name);
