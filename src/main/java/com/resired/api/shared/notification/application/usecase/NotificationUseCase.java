@@ -9,18 +9,21 @@ import com.resired.api.shared.notification.domain.repository.NotificationMessage
 import com.resired.api.shared.notification.domain.repository.UserNotificationPort;
 import com.resired.api.shared.notification.domain.service.NotificationSender;
 import com.resired.api.shared.notification.domain.vo.NotificationMessage;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class NotificationUseCase {
     private final NotificationSender notificationSenderService;
     private final DevicePort deviceRepository;
     private final NotificationMessagePort notificationRepository;
     private final UserNotificationPort userNotificationRepository;
+    @Value("${topic.neighborhood}")
+    private String NEIGHBORHOOD_TOPIC;
 
     public void notifyHome(NotificationHomeRequest requestDTO) {
         NotificationMessage notificationMessage = new NotificationMessage(requestDTO.title(),
@@ -44,7 +47,7 @@ public class NotificationUseCase {
     }
 
     public void notifyNeighborhood(NotificationNeighborhoodRequest requestDTO) {
-        String topic = "/topics/neighborhoods-" + requestDTO.neighborhoodID();
+        String topic = NEIGHBORHOOD_TOPIC + requestDTO.neighborhoodID();
 
         NotificationMessage notificationMessage = new NotificationMessage(requestDTO.title(),
             requestDTO.message(), false);

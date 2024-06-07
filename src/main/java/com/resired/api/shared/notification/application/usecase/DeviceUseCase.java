@@ -6,17 +6,20 @@ import com.resired.api.shared.notification.domain.exception.DeviceNotFoundExcept
 import com.resired.api.shared.notification.domain.repository.DevicePort;
 import com.resired.api.shared.notification.domain.repository.UserNotificationPort;
 import com.resired.api.shared.notification.domain.service.NotificationSender;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class DeviceUseCase {
     private final UserNotificationPort userPort;
     private final DevicePort devicePort;
     private final NotificationSender notificationSenderService;
+    @Value("${topic.neighborhood}")
+    private String NEIGHBORHOOD_TOPIC;
 
     public void registerDevice(Device device, String email) {
         if (devicePort.alreadyExists(device.getId())) {
@@ -28,7 +31,7 @@ public class DeviceUseCase {
         List<Integer> neighborhoodIds = userPort.getNeighborhoodIdsForResidentByEmail(email);
 
         neighborhoodIds.forEach((neigh) -> {
-            String topic = "/topics/neighborhoods-" + neigh;
+            String topic = NEIGHBORHOOD_TOPIC + neigh;
             notificationSenderService.subscribeDeviceToTopic(device, topic);
         });
     }
@@ -42,7 +45,7 @@ public class DeviceUseCase {
 
         List<Integer> neighborhoodIds = userPort.getNeighborhoodIdsForResidentByEmail(email);
         neighborhoodIds.forEach((neigh) -> {
-            String topic = "/topics/neighborhoods-" + neigh;
+            String topic = NEIGHBORHOOD_TOPIC + neigh;
             notificationSenderService.unsubscribeDeviceToTopic(device, topic);
         });
 
