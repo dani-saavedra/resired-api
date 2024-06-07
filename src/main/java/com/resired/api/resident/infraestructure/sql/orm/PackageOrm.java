@@ -56,6 +56,6 @@ public class PackageOrm {
 
     public Package toEntity() {
         return new Package(this.id, this.receiver, this.trackingNumber, this.packageTransporter,
-            this.description, this.status, this.createdDate);
+            this.description, this.status, this.createdDate,this.updateDate);
     }
 }
