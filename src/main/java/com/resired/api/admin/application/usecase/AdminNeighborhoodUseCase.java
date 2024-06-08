@@ -18,7 +18,8 @@ public class AdminNeighborhoodUseCase {
 
 
     public void createNewNeighborhood(CreateNeighborhood createNeighborhood) {
-        Integer idNewNeigh = adminNeighborhoodPort.createNeighborHood(createNeighborhood.name(), createNeighborhood.city(), createNeighborhood.address());
+        Integer idNewNeigh = adminNeighborhoodPort.createNeighborHood(createNeighborhood.name(), createNeighborhood.city(),
+            createNeighborhood.address(), createNeighborhood.stratum());
         notificationCategoryPort.createNewNotificationCategory
             (idNewNeigh, DEFAULT_NOTIFICATION, LevelNotificationEnum.MEDIUM);
     }

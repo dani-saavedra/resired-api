@@ -10,6 +10,9 @@ import com.resired.api.resident.infraestructure.sql.orm.NeighborhoodOrm;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+
 @Repository
 @AllArgsConstructor
 public class AdminNeighborhoodAdapterSQL implements NotificationCategoryPort, AdminNeighborhoodPort {
@@ -32,8 +35,9 @@ public class AdminNeighborhoodAdapterSQL implements NotificationCategoryPort, Ad
     }
 
     @Override
-    public Integer createNeighborHood(String name, String city, String address) {
-        NeighborhoodOrm neighborhoodOrm = neighborhoodRepository.save(new NeighborhoodOrm(name, address, city));
+    public Integer createNeighborHood(String name, String city, String address, Integer stratum) {
+        NeighborhoodOrm entity = new NeighborhoodOrm(name, address, city, stratum, LocalDateTime.now(ZoneOffset.UTC));
+        NeighborhoodOrm neighborhoodOrm = neighborhoodRepository.save(entity);
         return neighborhoodOrm.getId();
     }
 }
