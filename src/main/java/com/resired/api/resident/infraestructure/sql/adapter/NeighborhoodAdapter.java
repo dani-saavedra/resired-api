@@ -3,6 +3,7 @@ package com.resired.api.resident.infraestructure.sql.adapter;
 import com.resired.api.resident.domain.entity.News;
 import com.resired.api.resident.domain.repository.NeighborhoodPort;
 import com.resired.api.resident.infraestructure.sql.jpa.NeighborhoodJpaRepository;
+import com.resired.api.utils.FormatDate;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -18,6 +19,6 @@ public class NeighborhoodAdapter implements NeighborhoodPort {
     public List<News> getNews(Integer neighborhoodId) {
         return jpaRepository.getNewsByNeighborhood(neighborhoodId).stream().map(orm ->
             new News(orm.getId(), orm.getTitle(), orm.getContent(), orm.getImage(),
-                orm.getCategory(), orm.getCreatedDate())).toList();
+                orm.getCategory(), FormatDate.formatDate(orm.getCreatedDate()))).toList();
     }
 }

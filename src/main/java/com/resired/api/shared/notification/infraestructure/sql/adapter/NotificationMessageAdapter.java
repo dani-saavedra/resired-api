@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 @Repository
@@ -46,7 +47,7 @@ public class NotificationMessageAdapter implements NotificationMessagePort {
     @Override
     public void markAllNotificationsAsRead(String email) {
         Integer userId = userRepository.findByEmail(email).getId();
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now(ZoneOffset.UTC);
         notificationUserRepository.markAllNotificationsAsReadByUserId(userId, now);
     }
 
@@ -55,7 +56,7 @@ public class NotificationMessageAdapter implements NotificationMessagePort {
         NotificationOrm notificationOrm = new NotificationOrm();
         notificationOrm.setTitle(notificationMessage.title());
         notificationOrm.setMessage(notificationMessage.message());
-        notificationOrm.setCreatedDate(LocalDateTime.now());
+        notificationOrm.setCreatedDate(LocalDateTime.now(ZoneOffset.UTC));
         notificationRepository.save(notificationOrm);
 
         List<UserOrm> residents = userRepository.findResidentsByHomeId(homeId);
@@ -67,7 +68,7 @@ public class NotificationMessageAdapter implements NotificationMessagePort {
         NotificationOrm notificationOrm = new NotificationOrm();
         notificationOrm.setTitle(notificationMessage.title());
         notificationOrm.setMessage(notificationMessage.message());
-        notificationOrm.setCreatedDate(LocalDateTime.now());
+        notificationOrm.setCreatedDate(LocalDateTime.now(ZoneOffset.UTC));
         notificationRepository.save(notificationOrm);
 
         List<UserOrm> residents = userRepository.findResidentsByNeighborhoodId(neighborhoodId);

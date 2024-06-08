@@ -16,6 +16,6 @@ public class Package {
     private String packageTransporter;
     private String description;
     private PackageStatusEnum status;
-    private LocalDateTime createdDate;
-    private LocalDateTime deliverDate;
+    private String createdDate;
+    private String deliverDate;
 }

@@ -8,5 +8,5 @@ public record VisitResponseDTO(Integer id,
                                @JsonProperty("visitor_name") String visitorName,
                                @JsonProperty("visitor_document") String visitorDocument,
                                @JsonProperty("home_number") String homeNumber,
-                               @JsonProperty("check_in") LocalDateTime checkIn) {
+                               @JsonProperty("check_in") String checkIn) {
 }

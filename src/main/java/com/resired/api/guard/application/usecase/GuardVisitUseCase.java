@@ -10,6 +10,7 @@ import com.resired.api.guard.domain.service.VisitorGuardService;
 import com.resired.api.guard.domain.vo.VisitVO;
 import com.resired.api.resident.application.dto.VisitorRequestDTO;
 import com.resired.api.security.domain.service.JwtSecurity;
+import com.resired.api.utils.FormatDate;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -65,29 +67,27 @@ public class GuardVisitUseCase {
     }
 
     public List<VisitResponseDTO> getVisits(Integer neighborhoodId) {
-        LocalDateTime endDate = LocalDateTime.now();
+        LocalDateTime endDate = LocalDateTime.now(ZoneOffset.UTC);
         LocalDateTime startDate = endDate.minusDays(1);
         List<Visit> visits = guardPort.findVisitsByNeighborhoodIdAndDateRange(neighborhoodId, startDate, endDate);
 
-        return visits.stream().map(visit -> new VisitResponseDTO(
-            visit.getId(),
-            visit.getVisitorName(),
-            visit.getVisitorDocument(),
-            visit.getHomeNumber(),
-            visit.getCheckIn()
-        )).collect(Collectors.toList());
+        return getVisitResponseDTOs(visits);
     }
 
     public List<VisitResponseDTO> getVisits(Integer neighborhoodId, LocalDate date) {
         LocalDateTime startDate = date.atStartOfDay();
         LocalDateTime endDate = date.atTime(LocalTime.MAX);
         List<Visit> visits = guardPort.findVisitsByNeighborhoodIdAndDateRange(neighborhoodId, startDate, endDate);
+        return getVisitResponseDTOs(visits);
+    }
+
+    private static List<VisitResponseDTO> getVisitResponseDTOs(List<Visit> visits) {
         return visits.stream().map(visit -> new VisitResponseDTO(
             visit.getId(),
             visit.getVisitorName(),
             visit.getVisitorDocument(),
             visit.getHomeNumber(),
-            visit.getCheckIn()
-        )).collect(Collectors.toList());
+            FormatDate.formatDate(visit.getCheckIn())
+        )).toList();
     }
 }

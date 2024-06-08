@@ -2,6 +2,7 @@ package com.resired.api.resident.infraestructure.sql.orm;
 
 import com.resired.api.resident.domain.entity.Package;
 import com.resired.api.resident.domain.enums.PackageStatusEnum;
+import com.resired.api.utils.FormatDate;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -56,6 +57,6 @@ public class PackageOrm {
 
     public Package toEntity() {
         return new Package(this.id, this.receiver, this.trackingNumber, this.packageTransporter,
-            this.description, this.status, this.createdDate,this.updateDate);
+            this.description, this.status, FormatDate.formatDate(this.createdDate), FormatDate.formatDate(this.updateDate));
     }
 }

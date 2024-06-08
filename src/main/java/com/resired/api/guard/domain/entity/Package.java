@@ -52,7 +52,7 @@ public class Package {
 
     public void deliverPackage(Integer deliveredGuardId, String receiverLastFourDigits) {
         this.status = PackageStatusEnum.DELIVERED;
-        this.updateDate = LocalDateTime.now();
+        this.updateDate = LocalDateTime.now(ZoneOffset.UTC);
         this.deliveredGuardId = deliveredGuardId;
         this.receiverLastFourDigits = receiverLastFourDigits;
     }

@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 @Repository
 @AllArgsConstructor
@@ -39,12 +40,12 @@ public class QrAdapter implements QrPort {
     public void makeQrUnavailable(String qrStr) {
         QrOrm qr = qrJpaRepository.findByQr(qrStr);
         qr.setAvailable(false);
-        qr.setDisabledAt(LocalDateTime.now());
+        qr.setDisabledAt(LocalDateTime.now(ZoneOffset.UTC));
         qrJpaRepository.save(qr);
     }
 
     @Override
     public void disableVisitorQrByIdVisitor(Integer idVisitor) {
-        qrJpaRepository.disableVisitorQrByIdVisitor(LocalDateTime.now(), idVisitor);
+        qrJpaRepository.disableVisitorQrByIdVisitor(LocalDateTime.now(ZoneOffset.UTC), idVisitor);
     }
 }

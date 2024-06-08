@@ -16,5 +16,5 @@ public class News {
     private String image;
     private String category;
     @JsonProperty("creation_date")
-    private LocalDateTime creationDate;
+    private String creationDate;
 }

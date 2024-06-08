@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.JdbcTypeCode;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 import static java.sql.Types.TINYINT;
@@ -81,7 +82,7 @@ public class VisitorOrm {
         visitorOrm.document = document;
         visitorOrm.authorizingHome = authorizingHome;
         visitorOrm.deleted = false;
-        visitorOrm.createdAt = LocalDateTime.now();
+        visitorOrm.createdAt = LocalDateTime.now(ZoneOffset.UTC);
         visitorOrm.telephone = telephone;
         return visitorOrm;
     }
