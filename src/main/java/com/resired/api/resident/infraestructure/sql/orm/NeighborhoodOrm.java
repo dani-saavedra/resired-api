@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "NEIGHBORHOOD")
 @Data
@@ -25,10 +27,18 @@ public class NeighborhoodOrm {
     @Column
     private String city;
 
-    public NeighborhoodOrm(String name, String address, String city) {
+    @Column
+    private Integer socioeconomicLevel;
+
+    @Column
+    private LocalDateTime creationDate;
+
+    public NeighborhoodOrm(String name, String address, String city, Integer socioeconomicLevel, LocalDateTime creationDate) {
         this.name = name;
         this.address = address;
         this.city = city;
+        this.socioeconomicLevel = socioeconomicLevel;
+        this.creationDate = creationDate;
     }
 }
 
