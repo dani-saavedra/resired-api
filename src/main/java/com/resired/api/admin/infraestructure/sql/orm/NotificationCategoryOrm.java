@@ -1,5 +1,6 @@
 package com.resired.api.admin.infraestructure.sql.orm;
 
+import com.resired.api.admin.domain.vo.LevelNotificationEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,4 +26,8 @@ public class NotificationCategoryOrm {
 
     @JdbcTypeCode(TINYINT)
     private boolean active;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "level", columnDefinition = "VARCHAR(20)")
+    private LevelNotificationEnum notificationCategory;
 }

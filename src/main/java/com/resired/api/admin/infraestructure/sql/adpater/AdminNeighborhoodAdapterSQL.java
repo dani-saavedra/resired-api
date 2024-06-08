@@ -2,6 +2,7 @@ package com.resired.api.admin.infraestructure.sql.adpater;
 
 import com.resired.api.admin.domain.repository.AdminNeighborhoodPort;
 import com.resired.api.admin.domain.repository.NotificationCategoryPort;
+import com.resired.api.admin.domain.vo.LevelNotificationEnum;
 import com.resired.api.admin.infraestructure.sql.jpa.NeighborhoodAdmJpaRepository;
 import com.resired.api.admin.infraestructure.sql.jpa.NotificationCategoryJpaRepository;
 import com.resired.api.admin.infraestructure.sql.orm.NotificationCategoryOrm;
@@ -17,10 +18,11 @@ public class AdminNeighborhoodAdapterSQL implements NotificationCategoryPort, Ad
     private final NeighborhoodAdmJpaRepository neighborhoodRepository;
 
     @Override
-    public void createNewNotificationCategory(Integer neighborhoodId, String name) {
+    public void createNewNotificationCategory(Integer neighborhoodId, String name, LevelNotificationEnum levelNotification) {
         NotificationCategoryOrm notificationCategoryOrm = new NotificationCategoryOrm();
         notificationCategoryOrm.setName(name);
         notificationCategoryOrm.setActive(true);
+        notificationCategoryOrm.setNotificationCategory(levelNotification);
         notificationCategoryOrm.setNeighborhoodId(neighborhoodId);
         notificationCategoryRepository.save(notificationCategoryOrm);
     }
