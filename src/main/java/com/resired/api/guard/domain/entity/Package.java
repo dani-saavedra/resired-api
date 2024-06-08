@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 @Getter
 @AllArgsConstructor
@@ -31,7 +32,7 @@ public class Package {
         this.packageTransporter = packageTransporter;
         this.description = description;
         this.status = PackageStatusEnum.TO_COLLECT;
-        this.createdDate = LocalDateTime.now();
+        this.createdDate = LocalDateTime.now(ZoneOffset.UTC);
     }
 
 
