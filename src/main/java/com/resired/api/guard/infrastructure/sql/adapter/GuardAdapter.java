@@ -16,6 +16,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,7 +35,7 @@ public class GuardAdapter implements GuardPort, PackagePort {
 
         VisitOrm visit = new VisitOrm();
         visit.setQr(qr);
-        visit.setCheckIn(LocalDateTime.now());
+        visit.setCheckIn(LocalDateTime.now(ZoneOffset.UTC));
         visitJpaRepository.save(visit);
     }
 
@@ -47,8 +48,8 @@ public class GuardAdapter implements GuardPort, PackagePort {
         QrOrm qr = new QrOrm();
         qr.setVisitor(visitor);
         qr.setAvailable(false);
-        qr.setCreatedAt(LocalDateTime.now());
-        qr.setDisabledAt(LocalDateTime.now());
+        qr.setCreatedAt(LocalDateTime.now(ZoneOffset.UTC));
+        qr.setDisabledAt(LocalDateTime.now(ZoneOffset.UTC));
         qr.setQr(tokenUUID);
         qrJpaRepository.save(qr);
         return tokenUUID;

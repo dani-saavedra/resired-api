@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 @Repository
@@ -38,12 +39,12 @@ public class UserAdapter implements UserPort {
 
     @Override
     public void changePassword(String documentId, String newEncryptPass) {
-        userJpaRepository.updatePassword(documentId, newEncryptPass, LocalDateTime.now());
+        userJpaRepository.updatePassword(documentId, newEncryptPass, LocalDateTime.now(ZoneOffset.UTC));
     }
 
     @Override
     public void changePassword(Integer userId, String newEncryptPass) {
-        userJpaRepository.updatePassword(userId, newEncryptPass, LocalDateTime.now());
+        userJpaRepository.updatePassword(userId, newEncryptPass, LocalDateTime.now(ZoneOffset.UTC));
     }
 
 

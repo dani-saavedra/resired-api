@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -30,7 +31,7 @@ public class AdmAdminUserAdapter implements AdminUserPort, AdminResidentPort {
         UserOrm entity = new UserOrm();
         entity.setActive(ACTIVE);
         entity.setRegisteredBy(registeredBy);
-        entity.setCreatedDate(LocalDateTime.now());
+        entity.setCreatedDate(LocalDateTime.now(ZoneOffset.UTC));
         entity.setDocumentId(user.documentId());
         entity.setDocumentType(user.documentType());
         entity.setEmail(user.email());
@@ -56,12 +57,12 @@ public class AdmAdminUserAdapter implements AdminUserPort, AdminResidentPort {
 
     @Override
     public void removeUserByHome(Integer homeId) {
-        jpaRepository.removeResidentByHome(homeId, LocalDateTime.now());
+        jpaRepository.removeResidentByHome(homeId, LocalDateTime.now(ZoneOffset.UTC));
     }
 
     @Override
     public void removeUserById(Integer neighborhoodId, Integer userId) {
-        jpaRepository.removeResidentByUserId(neighborhoodId, userId, LocalDateTime.now());
+        jpaRepository.removeResidentByUserId(neighborhoodId, userId, LocalDateTime.now(ZoneOffset.UTC));
     }
 
     @Override
@@ -85,7 +86,7 @@ public class AdmAdminUserAdapter implements AdminUserPort, AdminResidentPort {
         }
         rolOrm.setRol(user.userType());
         rolOrm.setActive(ACTIVE);
-        rolOrm.setCreatedDate(LocalDateTime.now());
+        rolOrm.setCreatedDate(LocalDateTime.now(ZoneOffset.UTC));
         rolOrm.setNeighborhood(neighborhood);
         return rolOrm;
     }

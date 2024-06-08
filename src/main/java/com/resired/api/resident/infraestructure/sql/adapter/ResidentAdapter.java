@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -26,9 +27,9 @@ public class ResidentAdapter implements ResidentPort {
     private final JwtSecurity jwtSecurity;
 
     @Override
-    public String registerVisit(Integer userId, Integer homeId, String homeName, String vistorName, String visitorDocument,
+    public String registerVisit(Integer userId, Integer homeId, String homeName, String visitorName, String visitorDocument,
                                 String telephone, boolean favorite, Date expirationDate) {
-        VisitorOrm visitor = visitorJpa.save(VisitorOrm.visitorFromResident(userId, homeId, homeName, vistorName,
+        VisitorOrm visitor = visitorJpa.save(VisitorOrm.visitorFromResident(userId, homeId, homeName, visitorName,
             visitorDocument, telephone, favorite));
         return generateAndSaveQR(visitor, expirationDate);
     }
@@ -42,7 +43,7 @@ public class ResidentAdapter implements ResidentPort {
                 QrOrm lastQR = visitorOrm.getQrs().get(visitorOrm.getQrs().size() - 1);
                 return new RegisteredVisitor(visitorOrm.getId(), visitorOrm.getName(),
                     visitorOrm.getDocument(), visitorOrm.isFavorite(),
-                    (lastQR.isAvailable() && lastQR.getCreatedAt().plusDays(1).isAfter(LocalDateTime.now())));
+                    (lastQR.isAvailable() && lastQR.getCreatedAt().plusDays(1).isAfter(LocalDateTime.now(ZoneOffset.UTC))));
             })
             .toList();
     }
@@ -82,7 +83,7 @@ public class ResidentAdapter implements ResidentPort {
         QrOrm qr = new QrOrm();
         qr.setVisitor(visitor);
         qr.setAvailable(true);
-        qr.setCreatedAt(LocalDateTime.now());
+        qr.setCreatedAt(LocalDateTime.now(ZoneOffset.UTC));
         qr.setQr(token);
         qrJpaRepository.save(qr);
         return token;

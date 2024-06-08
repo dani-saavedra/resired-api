@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.GeneralSecurityException;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.UUID;
 
 @Service
@@ -44,7 +45,7 @@ public class AccountUseCase {
         if (user == null) {
             return;
         }
-        passResetTokenPort.savePassResetToken(user.getId(), token, LocalDateTime.now().plusDays(1));
+        passResetTokenPort.savePassResetToken(user.getId(), token, LocalDateTime.now(ZoneOffset.UTC).plusDays(1));
         emailPort.sendEmailToRecoverPass(email, token);
     }
 
@@ -52,7 +53,7 @@ public class AccountUseCase {
 
         PassResetTokenVo passResetTokenVo = passResetTokenPort.findExpirationTimeByToken(request.token());
         if (passResetTokenVo == null
-            || passResetTokenVo.expirationDate().isBefore(LocalDateTime.now())
+            || passResetTokenVo.expirationDate().isBefore(LocalDateTime.now(ZoneOffset.UTC))
             || passResetTokenVo.invalid()) {
             throw new ExpiredTokenException();
         }

@@ -11,10 +11,12 @@ import com.resired.api.resident.domain.repository.HomePort;
 import com.resired.api.security.domain.entity.User;
 import com.resired.api.security.domain.exception.InactiveUserException;
 import com.resired.api.security.domain.repository.UserPort;
+import com.resired.api.utils.FormatDate;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 @Service
@@ -42,7 +44,7 @@ public class PackageUseCase {
 
     public List<PackageResponseDTO> getPackagesByNeighborhood(String emailGuard, Integer neighborhoodId) {
         validateGuard(emailGuard);
-        LocalDateTime fiveDaysAgo = LocalDateTime.now().minusDays(5);;
+        LocalDateTime fiveDaysAgo = LocalDateTime.now(ZoneOffset.UTC).minusDays(5);;
         List<Package> packages = packagePort.findAllByNeighborhoodIdAndStartDate(neighborhoodId, fiveDaysAgo);
 
         return packages.stream()
@@ -100,7 +102,8 @@ public class PackageUseCase {
             pkg.getPackageTransporter(),
             pkg.getDescription(),
             pkg.getStatus(),
-            pkg.getCreatedDate()
+            FormatDate.formatDate(pkg.getCreatedDate()),
+            FormatDate.formatDate(pkg.getUpdateDate())
         );
     }
 
