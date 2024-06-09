@@ -5,6 +5,7 @@ import com.resired.api.admin.domain.repository.AdminUserPort;
 import com.resired.api.admin.domain.vo.RegisterUserVO;
 import com.resired.api.resident.infraestructure.sql.orm.HomeOrm;
 import com.resired.api.resident.infraestructure.sql.orm.NeighborhoodOrm;
+import com.resired.api.security.domain.enums.UserType;
 import com.resired.api.security.infraestructure.sql.jpa.UserJpaRepository;
 import com.resired.api.security.infraestructure.sql.orm.UserOrm;
 import com.resired.api.security.infraestructure.sql.orm.UserRolOrm;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -73,6 +75,16 @@ public class AdmAdminUserAdapter implements AdminUserPort, AdminResidentPort {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public List<RegisterUserVO> getAllGuards(Integer neighborhoodId) {
+        List<UserOrm> guards = jpaRepository.findAllByNeighborhoodIdAndRole(neighborhoodId, UserType.GUARD);
+        return guards.stream()
+            .map(userOrm -> new RegisterUserVO(
+                userOrm.getDocumentId(), userOrm.getDocumentType(), userOrm.getFirstName(),
+                userOrm.getLastName(), userOrm.getEmail(), neighborhoodId, null, UserType.GUARD, userOrm.getRegisteredBy()))
+            .toList();
     }
 
     private static UserRolOrm getUserRolOrm(RegisterUserVO user) {

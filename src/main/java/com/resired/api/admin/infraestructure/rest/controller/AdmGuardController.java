@@ -1,5 +1,6 @@
 package com.resired.api.admin.infraestructure.rest.controller;
 
+import com.resired.api.admin.application.dto.GuardResponseDto;
 import com.resired.api.admin.application.usecase.AdminUserUseCase;
 import com.resired.api.admin.domain.vo.RegisterUserVO;
 import com.resired.api.admin.infraestructure.rest.dto.InfoUserRequest;
@@ -13,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.GeneralSecurityException;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/admin")
@@ -44,5 +46,12 @@ public class AdmGuardController {
 
         userUseCase.removeResidentByUserId(userApp.neighborhoodId(), idUser);
         return ResponseEntity.ok("Guard removed successfully");
+    }
+
+    @GetMapping(path = "/guards")
+    @Operation(summary = "Get all guards in the neighborhood")
+    public List<GuardResponseDto> getAllGuards(@RequestHeader(value = "Authorization") String bearer) {
+        UserApp userApp = jwtService.extractUser(bearer);
+        return userUseCase.getAllGuards(userApp.neighborhoodId());
     }
 }

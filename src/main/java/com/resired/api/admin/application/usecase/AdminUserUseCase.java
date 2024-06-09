@@ -1,5 +1,6 @@
 package com.resired.api.admin.application.usecase;
 
+import com.resired.api.admin.application.dto.GuardResponseDto;
 import com.resired.api.admin.domain.repository.AdminUserPort;
 import com.resired.api.admin.domain.vo.RegisterUserVO;
 import com.resired.api.security.domain.repository.EmailPort;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.GeneralSecurityException;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -33,5 +35,16 @@ public class AdminUserUseCase {
 
     public void removeResidentByUserId(Integer neighborhoodId, Integer userId) {
         adminUserPort.removeUserById(neighborhoodId, userId);
+    }
+
+    public List<GuardResponseDto> getAllGuards(Integer neighborhoodId) {
+        List<RegisterUserVO> guards = adminUserPort.getAllGuards(neighborhoodId);
+        return guards.stream()
+            .map(guard -> new GuardResponseDto(
+                guard.documentId(),
+                guard.documentType(),
+                guard.firstName() + " " + guard.lastName(),
+                guard.email()))
+            .toList();
     }
 }
