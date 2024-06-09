@@ -50,4 +50,8 @@ public interface UserJpaRepository extends JpaRepository<UserOrm, Integer> {
 
     @Query("SELECT ur.user FROM UserRolOrm ur WHERE ur.neighborhood.id = :neighborhoodId AND ur.rol = 'RESIDENT' AND ur.active = 1")
     List<UserOrm> findResidentsByNeighborhoodId(@Param("neighborhoodId") Integer neighborhoodId);
+
+    @Query("SELECT user FROM UserOrm user JOIN user.userRols rol" +
+        " WHERE rol.neighborhood.id = :neighborhoodId AND rol.rol = :role AND rol.active = :active")
+    List<UserOrm> findAllByNeighborhoodIdAndRolAndActive(@Param("neighborhoodId") Integer neighborhoodId, @Param("role") UserType role, @Param("active") int active);
 }

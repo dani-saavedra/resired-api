@@ -1,10 +1,13 @@
 package com.resired.api.admin.infraestructure.sql.adpater;
 
+import com.resired.api.admin.application.dto.GuardDto;
+import com.resired.api.admin.application.repository.AdminGuardPort;
 import com.resired.api.admin.domain.repository.AdminResidentPort;
 import com.resired.api.admin.domain.repository.AdminUserPort;
 import com.resired.api.admin.domain.vo.RegisterUserVO;
 import com.resired.api.resident.infraestructure.sql.orm.HomeOrm;
 import com.resired.api.resident.infraestructure.sql.orm.NeighborhoodOrm;
+import com.resired.api.security.domain.enums.UserType;
 import com.resired.api.security.infraestructure.sql.jpa.UserJpaRepository;
 import com.resired.api.security.infraestructure.sql.orm.UserOrm;
 import com.resired.api.security.infraestructure.sql.orm.UserRolOrm;
@@ -14,11 +17,12 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 @AllArgsConstructor
-public class AdmAdminUserAdapter implements AdminUserPort, AdminResidentPort {
+public class AdmAdminUserAdapter implements AdminUserPort, AdminResidentPort, AdminGuardPort {
 
     public static final int ACTIVE = 1;
     private final UserJpaRepository jpaRepository;
@@ -73,6 +77,18 @@ public class AdmAdminUserAdapter implements AdminUserPort, AdminResidentPort {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public List<GuardDto> getAllGuards(Integer neighborhoodId, int active) {
+        List<UserOrm> guards = jpaRepository.findAllByNeighborhoodIdAndRolAndActive(neighborhoodId, UserType.GUARD, active);
+        return guards.stream().map(guard -> new GuardDto(
+                guard.getDocumentId(),
+                guard.getDocumentType(),
+                guard.getLastName(),
+                guard.getFirstName(),
+                guard.getEmail()))
+            .toList();
     }
 
     private static UserRolOrm getUserRolOrm(RegisterUserVO user) {

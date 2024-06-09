@@ -11,4 +11,5 @@ public interface AdminUserPort {
     void removeUserById(Integer neighborhoodId, Integer userId);
 
     Integer getUserByEmail(String email);
+
 }
