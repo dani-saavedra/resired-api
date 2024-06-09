@@ -77,8 +77,8 @@ public class GuardAdapter implements GuardPort, PackagePort {
     }
 
     @Override
-    public List<Package> findAllByNeighborhoodId(Integer neighborhoodId) {
-        List<PackageOrm> packageOrms = packageJpaRepository.findAllByNeighborhoodId(neighborhoodId);
+    public List<Package> findAllByNeighborhoodIdAndStartDate(Integer neighborhoodId, LocalDateTime date) {
+        List<PackageOrm> packageOrms = packageJpaRepository.findAllByNeighborhoodIdAndStartDate(neighborhoodId, date);
         return packageOrms.stream().map(this::toPackageDomain).toList();
     }
 

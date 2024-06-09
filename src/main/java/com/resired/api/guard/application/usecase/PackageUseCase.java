@@ -14,6 +14,7 @@ import com.resired.api.security.domain.repository.UserPort;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -41,7 +42,8 @@ public class PackageUseCase {
 
     public List<PackageResponseDTO> getPackagesByNeighborhood(String emailGuard, Integer neighborhoodId) {
         validateGuard(emailGuard);
-        List<Package> packages = packagePort.findAllByNeighborhoodId(neighborhoodId);
+        LocalDateTime fiveDaysAgo = LocalDateTime.now().minusDays(5);;
+        List<Package> packages = packagePort.findAllByNeighborhoodIdAndStartDate(neighborhoodId, fiveDaysAgo);
 
         return packages.stream()
             .map(this::toPackageResponseDTO)
