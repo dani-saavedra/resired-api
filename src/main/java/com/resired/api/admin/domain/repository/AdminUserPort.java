@@ -2,8 +2,6 @@ package com.resired.api.admin.domain.repository;
 
 import com.resired.api.admin.domain.vo.RegisterUserVO;
 
-import java.util.List;
-
 public interface AdminUserPort {
 
     void registerUserToNeighborhood(RegisterUserVO resident, String password, String registeredBy);
@@ -14,5 +12,4 @@ public interface AdminUserPort {
 
     Integer getUserByEmail(String email);
 
-    List<RegisterUserVO> getAllGuards(Integer neighborhoodId, int active);
 }

@@ -1,5 +1,7 @@
 package com.resired.api.admin.infraestructure.sql.adpater;
 
+import com.resired.api.admin.application.dto.GuardDto;
+import com.resired.api.admin.application.repository.AdminGuardPort;
 import com.resired.api.admin.domain.repository.AdminResidentPort;
 import com.resired.api.admin.domain.repository.AdminUserPort;
 import com.resired.api.admin.domain.vo.RegisterUserVO;
@@ -20,7 +22,7 @@ import java.util.Optional;
 
 @Repository
 @AllArgsConstructor
-public class AdmAdminUserAdapter implements AdminUserPort, AdminResidentPort {
+public class AdmAdminUserAdapter implements AdminUserPort, AdminResidentPort, AdminGuardPort {
 
     public static final int ACTIVE = 1;
     private final UserJpaRepository jpaRepository;
@@ -78,12 +80,14 @@ public class AdmAdminUserAdapter implements AdminUserPort, AdminResidentPort {
     }
 
     @Override
-    public List<RegisterUserVO> getAllGuards(Integer neighborhoodId, int active) {
-        List<UserOrm> users = jpaRepository.findAllByNeighborhoodIdAndRolAndActive(neighborhoodId, UserType.GUARD, active);
-        return users.stream()
-            .map(user -> new RegisterUserVO(
-                user.getDocumentId(), user.getDocumentType(), user.getFirstName(), user.getLastName(), user.getEmail(),
-                neighborhoodId, null, UserType.GUARD, user.getRegisteredBy()))
+    public List<GuardDto> getAllGuards(Integer neighborhoodId, int active) {
+        List<UserOrm> guards = jpaRepository.findAllByNeighborhoodIdAndRolAndActive(neighborhoodId, UserType.GUARD, active);
+        return guards.stream().map(guard -> new GuardDto(
+                guard.getDocumentId(),
+                guard.getDocumentType(),
+                guard.getLastName(),
+                guard.getFirstName(),
+                guard.getEmail()))
             .toList();
     }
 

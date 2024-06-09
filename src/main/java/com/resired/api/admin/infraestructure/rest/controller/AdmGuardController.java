@@ -1,6 +1,6 @@
 package com.resired.api.admin.infraestructure.rest.controller;
 
-import com.resired.api.admin.application.dto.GuardResponseDto;
+import com.resired.api.admin.application.dto.GuardDto;
 import com.resired.api.admin.application.usecase.AdminUserUseCase;
 import com.resired.api.admin.domain.vo.RegisterUserVO;
 import com.resired.api.admin.infraestructure.rest.dto.InfoUserRequest;
@@ -51,8 +51,8 @@ public class AdmGuardController {
 
     @GetMapping(path = "/guards")
     @Operation(summary = "Get all guards in the neighborhood")
-    public List<GuardResponseDto> getAllGuards(@RequestHeader(value = "Authorization") String bearer,
-                                               @Parameter(description = "Active guards as a String in format true or false")
+    public List<GuardDto> getAllGuards(@RequestHeader(value = "Authorization") String bearer,
+                                       @Parameter(description = "Active guards as a String in format true or false")
                                                @RequestParam(value = "active", defaultValue = "true") boolean active) {
         UserApp userApp = jwtService.extractUser(bearer);
         return userUseCase.getAllGuards(userApp.neighborhoodId(), active);
