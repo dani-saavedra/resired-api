@@ -37,8 +37,8 @@ public class AdminUserUseCase {
         adminUserPort.removeUserById(neighborhoodId, userId);
     }
 
-    public List<GuardResponseDto> getAllGuards(Integer neighborhoodId) {
-        List<RegisterUserVO> guards = adminUserPort.getAllGuards(neighborhoodId);
+    public List<GuardResponseDto> getAllGuards(Integer neighborhoodId, boolean active) {
+        List<RegisterUserVO> guards = adminUserPort.getAllGuards(neighborhoodId, active ? 1 : 0);
         return guards.stream()
             .map(guard -> new GuardResponseDto(
                 guard.documentId(),

@@ -14,5 +14,5 @@ public interface AdminUserPort {
 
     Integer getUserByEmail(String email);
 
-    List<RegisterUserVO> getAllGuards(Integer neighborhoodId);
+    List<RegisterUserVO> getAllGuards(Integer neighborhoodId, int active);
 }

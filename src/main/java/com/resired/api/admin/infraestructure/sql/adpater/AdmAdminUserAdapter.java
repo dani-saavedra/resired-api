@@ -78,12 +78,12 @@ public class AdmAdminUserAdapter implements AdminUserPort, AdminResidentPort {
     }
 
     @Override
-    public List<RegisterUserVO> getAllGuards(Integer neighborhoodId) {
-        List<UserOrm> guards = jpaRepository.findAllByNeighborhoodIdAndRole(neighborhoodId, UserType.GUARD);
-        return guards.stream()
-            .map(userOrm -> new RegisterUserVO(
-                userOrm.getDocumentId(), userOrm.getDocumentType(), userOrm.getFirstName(),
-                userOrm.getLastName(), userOrm.getEmail(), neighborhoodId, null, UserType.GUARD, userOrm.getRegisteredBy()))
+    public List<RegisterUserVO> getAllGuards(Integer neighborhoodId, int active) {
+        List<UserOrm> users = jpaRepository.findAllByNeighborhoodIdAndRolAndActive(neighborhoodId, UserType.GUARD, active);
+        return users.stream()
+            .map(user -> new RegisterUserVO(
+                user.getDocumentId(), user.getDocumentType(), user.getFirstName(), user.getLastName(), user.getEmail(),
+                neighborhoodId, null, UserType.GUARD, user.getRegisteredBy()))
             .toList();
     }
 

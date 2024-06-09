@@ -8,6 +8,7 @@ import com.resired.api.security.application.usecase.JwtService;
 import com.resired.api.security.domain.entity.UserApp;
 import com.resired.api.security.domain.enums.UserType;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -50,8 +51,10 @@ public class AdmGuardController {
 
     @GetMapping(path = "/guards")
     @Operation(summary = "Get all guards in the neighborhood")
-    public List<GuardResponseDto> getAllGuards(@RequestHeader(value = "Authorization") String bearer) {
+    public List<GuardResponseDto> getAllGuards(@RequestHeader(value = "Authorization") String bearer,
+                                               @Parameter(description = "Active guards as a String in format true or false")
+                                               @RequestParam(value = "active", defaultValue = "true") boolean active) {
         UserApp userApp = jwtService.extractUser(bearer);
-        return userUseCase.getAllGuards(userApp.neighborhoodId());
+        return userUseCase.getAllGuards(userApp.neighborhoodId(), active);
     }
 }
