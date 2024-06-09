@@ -33,12 +33,17 @@ public class NeighborhoodOrm {
     @Column
     private LocalDateTime creationDate;
 
-    public NeighborhoodOrm(String name, String address, String city, Integer socioeconomicLevel, LocalDateTime creationDate) {
+    @Column
+    private String securityCompany;
+
+    public NeighborhoodOrm(String name, String address, String city,
+                           Integer socioeconomicLevel, LocalDateTime creationDate, String securityCompany) {
         this.name = name;
         this.address = address;
         this.city = city;
         this.socioeconomicLevel = socioeconomicLevel;
         this.creationDate = creationDate;
+        this.securityCompany = securityCompany;
     }
 }
 

@@ -35,8 +35,9 @@ public class AdminNeighborhoodAdapterSQL implements NotificationCategoryPort, Ad
     }
 
     @Override
-    public Integer createNeighborHood(String name, String city, String address, Integer stratum) {
-        NeighborhoodOrm entity = new NeighborhoodOrm(name, address, city, stratum, LocalDateTime.now(ZoneOffset.UTC));
+    public Integer createNeighborHood(String name, String city, String address, Integer stratum, String securityCompany) {
+        NeighborhoodOrm entity = new NeighborhoodOrm(name, address, city, stratum,
+            LocalDateTime.now(ZoneOffset.UTC), securityCompany);
         NeighborhoodOrm neighborhoodOrm = neighborhoodRepository.save(entity);
         return neighborhoodOrm.getId();
     }
