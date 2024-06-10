@@ -32,7 +32,7 @@ public class AdmResidentController {
         UserApp userApp = jwtService.extractUser(bearer);
         RegisterUserVO registerUserVO = new RegisterUserVO(request.documentId(), request.documentType(),
             request.firstName(), request.lastName(), request.email(),
-            userApp.neighborhoodId(), request.homeId(), UserType.RESIDENT, userApp.email());
+            userApp.neighborhoodId(), request.homeId(), UserType.RESIDENT);
 
         userUseCase.registerUserToNeighborhood(registerUserVO, userApp.email());
         return ResponseEntity.ok("Resident registered successfully");

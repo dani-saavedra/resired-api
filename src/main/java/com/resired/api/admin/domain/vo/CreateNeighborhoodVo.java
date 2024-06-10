@@ -1,0 +1,13 @@
+package com.resired.api.admin.domain.vo;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public record CreateNeighborhoodVo(String name, String city, String address, Integer stratum,
+                                   @JsonProperty("community_type") String communityType,
+                                   @JsonProperty(value = "security_company") String securityCompany,
+                                   NeighborhoodCategory category, AdminUser admin) {
+
+    public record AdminUser(String email, @JsonProperty("document_type") String documentType, String document) {
+
+    }
+}
