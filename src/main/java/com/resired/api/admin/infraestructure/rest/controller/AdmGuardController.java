@@ -33,7 +33,7 @@ public class AdmGuardController {
         UserApp userApp = jwtService.extractUser(bearer);
         RegisterUserVO registerGuardVO = new RegisterUserVO(request.documentId(), request.documentType(),
             request.firstName(), request.lastName(), request.email(), userApp.neighborhoodId(), null,
-            UserType.GUARD, userApp.email());
+            UserType.GUARD);
 
         userUseCase.registerUserToNeighborhood(registerGuardVO, userApp.email());
         return ResponseEntity.ok("Guard registered successfully");
