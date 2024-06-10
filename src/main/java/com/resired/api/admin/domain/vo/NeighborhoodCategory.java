@@ -12,7 +12,7 @@ public enum NeighborhoodCategory {
         this.limitHomes = limitHomes;
     }
 
-    public boolean validateQuantity(Integer homes) {
-        return homes <= this.limitHomes;
+    public boolean isInvalidQuantity(Integer homes) {
+        return homes >= this.limitHomes;
     }
 }

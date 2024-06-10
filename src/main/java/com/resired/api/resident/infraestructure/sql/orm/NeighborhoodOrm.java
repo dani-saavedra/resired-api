@@ -1,5 +1,6 @@
 package com.resired.api.resident.infraestructure.sql.orm;
 
+import com.resired.api.admin.domain.entity.Neighborhood;
 import com.resired.api.admin.domain.vo.GroupingType;
 import com.resired.api.admin.domain.vo.NeighborhoodCategory;
 import com.resired.api.admin.domain.vo.ResidenceType;
@@ -49,6 +50,7 @@ public class NeighborhoodOrm {
     @Column
     private String preferredName;
 
+    //Vecindario, comunidad, conjunto, cambia de acuerdo a la region
     @Column
     private String communityType;
 
@@ -82,6 +84,14 @@ public class NeighborhoodOrm {
         this.communityType = communityType;
         this.category = category;
         this.securityCompany = securityCompany;
+    }
+
+
+    public Neighborhood convertToEntity() {
+        return new Neighborhood(this.id, this.name, this.document, this.address,
+            this.city, this.socioeconomicLevel, this.residenceType, this.groupingType, this.preferredName,
+            this.communityType, this.category, this.securityCompany, this.towers, this.homes);
+
     }
 }
 

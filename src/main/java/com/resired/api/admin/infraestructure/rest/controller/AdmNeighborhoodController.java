@@ -3,6 +3,7 @@ package com.resired.api.admin.infraestructure.rest.controller;
 import com.resired.api.admin.application.dto.CreateNewsDto;
 import com.resired.api.admin.application.usecase.AdminNeighborhoodUseCase;
 import com.resired.api.admin.domain.vo.CreateNeighborhoodVo;
+import com.resired.api.admin.domain.vo.NeighConfig;
 import com.resired.api.resident.infraestructure.rest.dto.ResponseData;
 import com.resired.api.security.application.usecase.JwtService;
 import com.resired.api.security.domain.entity.UserApp;
@@ -30,8 +31,8 @@ public class AdmNeighborhoodController {
     }
 
     @PutMapping(path = "/neigborhood")
-    public ResponseEntity<String> configureNeighborhood(@RequestBody CreateNeighborhoodVo createNeighborhoodVo) {
-        //adminNeighborhoodUseCase.createNewNeighborhood(createNeighborhood);
+    public ResponseEntity<String> configureNeighborhood(@RequestBody NeighConfig neighConfig) {
+        adminNeighborhoodUseCase.configNeighborhood(neighConfig);
         return ResponseEntity.ok("Success");
     }
 

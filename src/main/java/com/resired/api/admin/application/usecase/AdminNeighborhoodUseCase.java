@@ -1,7 +1,10 @@
 package com.resired.api.admin.application.usecase;
 
 import com.resired.api.admin.application.dto.CreateNewsDto;
+import com.resired.api.admin.application.exception.BusinessException;
+import com.resired.api.admin.application.exception.InvalidConfigurationException;
 import com.resired.api.admin.application.repository.AdminNewsPort;
+import com.resired.api.admin.domain.entity.Neighborhood;
 import com.resired.api.admin.domain.repository.AdminNeighborhoodPort;
 import com.resired.api.admin.domain.repository.NotificationCategoryPort;
 import com.resired.api.admin.domain.vo.CreateNeighborhoodVo;
@@ -40,11 +43,15 @@ public class AdminNeighborhoodUseCase {
     }
 
     public void configNeighborhood(NeighConfig neighConfig) {
-        boolean validNumberHomes = neighConfig.category().validateQuantity(neighConfig.homes());
-        if (!validNumberHomes) {
-            throw new RuntimeException("Cantidad no valida de casas para esta categoria");//Pendiente crear Excepcion
+        Neighborhood neighborhood = adminNeighborhoodPort.findNeighborhoodById(neighConfig.id());
+        if (neighborhood == null) {
+            throw new BusinessException("Neighborhood not found", "GENERAL_BAD_REQUEST");
         }
-        adminNeighborhoodPort.configNeighborhood(neighConfig);
+
+        if (neighborhood.getCategory().isInvalidQuantity(neighConfig.homes())) {
+            throw new InvalidConfigurationException("NEIGHBORHOOD01");
+        }
+        //adminNeighborhoodPort.configNeighborhood(neighConfig);
     }
 
     public void createNews(CreateNewsDto newsRequest, Integer neighborhoodId) {
