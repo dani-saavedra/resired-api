@@ -68,7 +68,7 @@ public class AdminNeighborhoodAdapterSQL implements NotificationCategoryPort, Ad
         newsOrm.setContent(createNews.content());
         newsOrm.setCategory(createNews.category());
         newsOrm.setNeighborhoodId(neighborhoodId);
-        newsOrm.setImage(createNews.image());
+        newsOrm.setImage(createNews.image().orElse(null));
         newsOrm.setCreatedDate(LocalDateTime.now(ZoneOffset.UTC));
 
         newsJpaRepository.save(newsOrm);

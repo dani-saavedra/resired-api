@@ -35,11 +35,11 @@ public class AdmNeighborhoodController {
         return ResponseEntity.ok("Success");
     }
 
-    @PostMapping(path = "/new")
+    @PostMapping(path = "/news")
     public ResponseData<String> createNews(@RequestHeader(value = "Authorization") String bearer,
                                            @RequestBody CreateNewsDto newsRequest) {
         UserApp userApp = jwtService.extractUser(bearer);
         adminNeighborhoodUseCase.createNews(newsRequest, userApp.neighborhoodId());
-        return new ResponseData<>("New created successfully");
+        return new ResponseData<>("News created successfully");
     }
 }
