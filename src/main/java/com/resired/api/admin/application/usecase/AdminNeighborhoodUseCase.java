@@ -1,5 +1,7 @@
 package com.resired.api.admin.application.usecase;
 
+import com.resired.api.admin.application.dto.CreateNewsDto;
+import com.resired.api.admin.application.repository.AdminNewsPort;
 import com.resired.api.admin.domain.repository.AdminNeighborhoodPort;
 import com.resired.api.admin.domain.repository.NotificationCategoryPort;
 import com.resired.api.admin.domain.vo.CreateNeighborhoodVo;
@@ -20,6 +22,7 @@ public class AdminNeighborhoodUseCase {
 
     private final NotificationCategoryPort notificationCategoryPort;
     private final AdminNeighborhoodPort adminNeighborhoodPort;
+    private final AdminNewsPort adminNewsPort;
     private final AdminUserUseCase adminUserUseCase;
 
 
@@ -42,5 +45,9 @@ public class AdminNeighborhoodUseCase {
             throw new RuntimeException("Cantidad no valida de casas para esta categoria");//Pendiente crear Excepcion
         }
         adminNeighborhoodPort.configNeighborhood(neighConfig);
+    }
+
+    public void createNews(CreateNewsDto newsRequest, Integer neighborhoodId) {
+        adminNewsPort.createNews(newsRequest, neighborhoodId);
     }
 }
