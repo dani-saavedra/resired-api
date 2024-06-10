@@ -57,6 +57,9 @@ public class NeighborhoodOrm {
     private NeighborhoodCategory category;
 
     @Column
+    private String securityCompany;
+
+    @Column
     private Integer towers;
 
     @Column
@@ -69,7 +72,7 @@ public class NeighborhoodOrm {
     private LocalDate updateDate;
 
     public NeighborhoodOrm(String name, String address, String city, Integer socioeconomicLevel, String communityType,
-                           NeighborhoodCategory category) {
+                           NeighborhoodCategory category, String securityCompany) {
         this.name = name;
         this.preferredName = name;
         this.address = address;
@@ -78,6 +81,7 @@ public class NeighborhoodOrm {
         this.creationDate = LocalDateTime.now(ZoneOffset.UTC);
         this.communityType = communityType;
         this.category = category;
+        this.securityCompany = securityCompany;
     }
 }
 

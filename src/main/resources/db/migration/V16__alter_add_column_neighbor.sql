@@ -6,5 +6,6 @@ ALTER TABLE neighborhood
     ADD COLUMN preferred_name VARCHAR(50),
     ADD COLUMN category VARCHAR(50),
     ADD COLUMN community_type VARCHAR(100),
+    ADD COLUMN security_company VARCHAR(75),
     ADD COLUMN towers INTEGER default 0,
     ADD COLUMN homes INTEGER default 0;
