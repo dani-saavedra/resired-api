@@ -14,6 +14,8 @@ ALTER TABLE home
     ADD CONSTRAINT home_block FOREIGN KEY (block)
         REFERENCES block (id);
 
+ALTER TABLE home MODIFY owner_id INTEGER NULL;
+
 
 
 
