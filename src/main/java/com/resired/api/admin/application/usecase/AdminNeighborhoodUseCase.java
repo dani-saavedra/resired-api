@@ -16,6 +16,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.security.GeneralSecurityException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 @AllArgsConstructor
@@ -34,7 +35,6 @@ public class AdminNeighborhoodUseCase {
         notificationCategoryPort.createNewNotificationCategory
             (idNewNeigh, DEFAULT_NOTIFICATION, LevelNotificationEnum.MEDIUM);
 
-
         CreateNeighborhoodVo.AdminUser admin = createNeighborhoodVo.admin();
         RegisterUserVO registerUserVO = new RegisterUserVO(admin.document(), admin.documentType(), "Admin", null,
             admin.email(), idNewNeigh, null, UserType.ADMIN);
@@ -47,11 +47,13 @@ public class AdminNeighborhoodUseCase {
         if (neighborhood == null) {
             throw new BusinessException("Neighborhood not found", "GENERAL_BAD_REQUEST");
         }
+        AtomicInteger totalNumberHouses = new AtomicInteger();
+        neighConfig.groupingHomes().forEach(groupingHomes -> totalNumberHouses.addAndGet(groupingHomes.homes()));
 
-        if (neighborhood.getCategory().isInvalidQuantity(neighConfig.homes())) {
+        if (neighborhood.getCategory().isInvalidQuantity(totalNumberHouses.intValue())) {
             throw new InvalidConfigurationException("NEIGHBORHOOD01");
         }
-        //adminNeighborhoodPort.configNeighborhood(neighConfig);
+        adminNeighborhoodPort.configNeighborhood(neighConfig, totalNumberHouses.intValue());
     }
 
     public void createNews(CreateNewsDto newsRequest, Integer neighborhoodId) {
