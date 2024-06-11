@@ -2,6 +2,7 @@ package com.resired.api.admin.infraestructure.sql.adpater;
 
 import com.resired.api.admin.application.dto.CreateNewsDto;
 import com.resired.api.admin.application.repository.AdminNewsPort;
+import com.resired.api.admin.domain.entity.Neighborhood;
 import com.resired.api.admin.domain.repository.AdminNeighborhoodPort;
 import com.resired.api.admin.domain.repository.NotificationCategoryPort;
 import com.resired.api.admin.domain.vo.CreateNeighborhoodVo;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Optional;
 
 @Repository
 @AllArgsConstructor
@@ -39,13 +41,15 @@ public class AdminNeighborhoodAdapterSQL implements NotificationCategoryPort, Ad
     }
 
     @Override
-    public void configNeighborhood(NeighConfig neighConfig) {
-        NeighborhoodOrm neighborhoodOrm = new NeighborhoodOrm();
+    public void configNeighborhood(NeighConfig neighConfig, int towers, int homes) {
+        NeighborhoodOrm neighborhoodOrm = neighborhoodRepository.findById(neighConfig.id()).get();
         neighborhoodOrm.setId(neighConfig.id());
         neighborhoodOrm.setCategory(neighborhoodOrm.getCategory());
         neighborhoodOrm.setUpdateDate(LocalDate.now(ZoneOffset.UTC));
-        neighborhoodOrm.setHomes(neighConfig.homes());
-        neighborhoodOrm.setTowers(neighConfig.towers());
+        neighborhoodOrm.setGroupingType(neighConfig.groupingType());
+        neighborhoodOrm.setResidenceType(neighConfig.residenceType());
+        neighborhoodOrm.setHomes(homes);
+        neighborhoodOrm.setTowers(towers);
         neighborhoodRepository.save(neighborhoodOrm);
     }
 
@@ -72,5 +76,11 @@ public class AdminNeighborhoodAdapterSQL implements NotificationCategoryPort, Ad
         newsOrm.setCreatedDate(LocalDateTime.now(ZoneOffset.UTC));
 
         newsJpaRepository.save(newsOrm);
+    }
+
+    @Override
+    public Neighborhood findNeighborhoodById(Integer id) {
+        Optional<NeighborhoodOrm> optNeigh = neighborhoodRepository.findById(id);
+        return optNeigh.map(NeighborhoodOrm::convertToEntity).orElse(null);
     }
 }

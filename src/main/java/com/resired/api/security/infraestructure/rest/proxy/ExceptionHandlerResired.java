@@ -1,5 +1,6 @@
 package com.resired.api.security.infraestructure.rest.proxy;
 
+import com.resired.api.admin.application.exception.BusinessException;
 import com.resired.api.guard.application.exception.PackageNotFoundException;
 import com.resired.api.guard.application.exception.QrInvalidException;
 import com.resired.api.guard.domain.exception.HomeNotFoundException;
@@ -133,4 +134,12 @@ public class ExceptionHandlerResired {
             ex.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
+
+    @ExceptionHandler(value = BusinessException.class)
+    protected ResponseEntity<ErrorDTO> handleBusinessException(
+        BusinessException ex, WebRequest request) {
+        log.error("Business Exception", ex);
+        return new ResponseEntity<>(new ErrorDTO(ex.getCode(),
+            ex.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
+    }
 }
