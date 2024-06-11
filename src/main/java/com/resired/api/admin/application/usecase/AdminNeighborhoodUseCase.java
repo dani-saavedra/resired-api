@@ -7,10 +7,7 @@ import com.resired.api.admin.application.repository.AdminNewsPort;
 import com.resired.api.admin.domain.entity.Neighborhood;
 import com.resired.api.admin.domain.repository.AdminNeighborhoodPort;
 import com.resired.api.admin.domain.repository.NotificationCategoryPort;
-import com.resired.api.admin.domain.vo.CreateNeighborhoodVo;
-import com.resired.api.admin.domain.vo.LevelNotificationEnum;
-import com.resired.api.admin.domain.vo.NeighConfig;
-import com.resired.api.admin.domain.vo.RegisterUserVO;
+import com.resired.api.admin.domain.vo.*;
 import com.resired.api.security.domain.enums.UserType;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -53,7 +50,11 @@ public class AdminNeighborhoodUseCase {
         if (neighborhood.getCategory().isInvalidQuantity(totalNumberHouses.intValue())) {
             throw new InvalidConfigurationException("NEIGHBORHOOD01");
         }
-        adminNeighborhoodPort.configNeighborhood(neighConfig, totalNumberHouses.intValue());
+        int towers = neighConfig.groupingHomes().size();
+        if (GroupingType.NINGUNA.equals(neighConfig.groupingType())) {
+            towers = 0;
+        }
+        adminNeighborhoodPort.configNeighborhood(neighConfig, towers, totalNumberHouses.intValue());
     }
 
     public void createNews(CreateNewsDto newsRequest, Integer neighborhoodId) {

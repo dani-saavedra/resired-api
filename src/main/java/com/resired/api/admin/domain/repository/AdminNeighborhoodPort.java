@@ -10,5 +10,5 @@ public interface AdminNeighborhoodPort {
 
     Neighborhood findNeighborhoodById(Integer id);
 
-    void configNeighborhood(NeighConfig neighConfig, int homes);
+    void configNeighborhood(NeighConfig neighConfig, int towers, int homes);
 }

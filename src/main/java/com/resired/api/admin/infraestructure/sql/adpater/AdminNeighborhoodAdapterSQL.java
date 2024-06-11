@@ -41,7 +41,7 @@ public class AdminNeighborhoodAdapterSQL implements NotificationCategoryPort, Ad
     }
 
     @Override
-    public void configNeighborhood(NeighConfig neighConfig, int homes) {
+    public void configNeighborhood(NeighConfig neighConfig, int towers, int homes) {
         NeighborhoodOrm neighborhoodOrm = neighborhoodRepository.findById(neighConfig.id()).get();
         neighborhoodOrm.setId(neighConfig.id());
         neighborhoodOrm.setCategory(neighborhoodOrm.getCategory());
@@ -49,7 +49,7 @@ public class AdminNeighborhoodAdapterSQL implements NotificationCategoryPort, Ad
         neighborhoodOrm.setGroupingType(neighConfig.groupingType());
         neighborhoodOrm.setResidenceType(neighConfig.residenceType());
         neighborhoodOrm.setHomes(homes);
-        neighborhoodOrm.setTowers(neighConfig.groupingHomes().size());
+        neighborhoodOrm.setTowers(towers);
         neighborhoodRepository.save(neighborhoodOrm);
     }
 
