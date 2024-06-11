@@ -26,7 +26,7 @@ public class QrAdapter implements QrPort {
             authorizer = authorizingUser.getFirstName();
         }
         return Visitor.createVisitor(qr.getVisitor().getName(),
-            qr.getVisitor().getDocument(), qr.getVisitor().getAuthorizingHome().getName(),
+            qr.getVisitor().getDocument(), qr.getVisitor().getAuthorizingHome().getNumber(),
             authorizer, qr.isAvailable(), qr.getVisitor().isFavorite(), qr.getVisitor().isDeleted());
     }
 

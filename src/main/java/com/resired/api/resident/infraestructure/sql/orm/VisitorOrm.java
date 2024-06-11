@@ -75,7 +75,7 @@ public class VisitorOrm {
     private static VisitorOrm getResult(Integer userId, Integer homeId, String homeName, String name, String document, String telephone) {
         HomeOrm authorizingHome = new HomeOrm();
         authorizingHome.setId(homeId);
-        authorizingHome.setName(homeName);
+        authorizingHome.setNumber(homeName); //TODO revisar q los cambios no se esten borrando
 
         VisitorOrm visitorOrm = new VisitorOrm();
         visitorOrm.name = name;
@@ -93,7 +93,7 @@ public class VisitorOrm {
         return "{" +
             "name:'" + name + '\'' +
             ", document:'" + document + '\'' +
-            ", authorizingHome:" + authorizingHome.getName() +
+            ", authorizingHome:" + authorizingHome.getNumber() +
             ", createdAt:" + createdAt +
             '}';
     }
