@@ -24,9 +24,6 @@ public class HomeOrm {
     @Column(name = "home_number")
     private String number;
 
-    @Column(name = "type")
-    private String homeType;
-
     @Column(name = "created_date")
     private LocalDateTime createdDate;
 

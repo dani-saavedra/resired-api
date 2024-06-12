@@ -46,6 +46,9 @@ public class AdminNeighborhoodUseCase {
         if (neighborhood == null) {
             throw new BusinessException("Neighborhood not found", "GENERAL_BAD_REQUEST");
         }
+        if (neighborhood.getTowers() > 0) {
+            throw new BusinessException("Pre-configured neighborhood", "GENERAL_BAD_REQUEST");
+        }
         AtomicInteger totalNumberHouses = new AtomicInteger();
         neighConfig.groupingHomes().forEach(groupingHomes -> totalNumberHouses.addAndGet(groupingHomes.homes()));
 
@@ -58,7 +61,8 @@ public class AdminNeighborhoodUseCase {
         }
         adminNeighborhoodPort.configNeighborhood(neighConfig, towers, totalNumberHouses.intValue());
         for (NeighConfig.GroupingHomes groupingHome : neighConfig.groupingHomes()) {
-            blockPort.createBlock(neighborhood.getId(), neighConfig.groupingType(), groupingHome.tower(), groupingHome.homes());
+            blockPort.createBlock(neighborhood.getId(), neighConfig.groupingType(),
+                groupingHome.tower(), groupingHome.homes());
         }
     }
 

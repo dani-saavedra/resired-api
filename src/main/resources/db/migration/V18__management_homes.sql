@@ -8,6 +8,7 @@ CREATE TABLE block
 );
 ALTER TABLE home DROP FOREIGN KEY home_ibfk_1;
 ALTER TABLE home DROP COLUMN neighborhood_id,  drop column name;
+ALTER TABLE home DROP COLUMN type;
 ALTER TABLE home DROP COLUMN block;
 ALTER TABLE home ADD COLUMN block INTEGER;
 ALTER TABLE home

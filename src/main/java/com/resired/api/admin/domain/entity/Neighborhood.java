@@ -31,8 +31,8 @@ public class Neighborhood {
     @Setter
     private String securityCompany;
     @Setter
-    private Integer towers;
+    private int towers;
     @Setter
-    private Integer homes;
+    private int homes;
 
 }
