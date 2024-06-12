@@ -44,7 +44,7 @@ public class PackageUseCase {
 
     public List<PackageResponseDTO> getPackagesByNeighborhood(String emailGuard, Integer neighborhoodId) {
         validateGuard(emailGuard);
-        LocalDateTime fiveDaysAgo = LocalDateTime.now(ZoneOffset.UTC).minusDays(5);;
+        LocalDateTime fiveDaysAgo = LocalDateTime.now(ZoneOffset.UTC).minusDays(5);
         List<Package> packages = packagePort.findAllByNeighborhoodIdAndStartDate(neighborhoodId, fiveDaysAgo);
 
         return packages.stream()
@@ -76,19 +76,15 @@ public class PackageUseCase {
 
     private Integer findHomeId(PackageRequestDTO packageRequestDTO, Integer neighborhoodId) {
         Integer homeId;
-        if (packageRequestDTO.block().isPresent()) {
-            homeId = homePort.getHomeIdByBlockAndNumberAndNeighborhoodId(packageRequestDTO.block().get(),
+        if (packageRequestDTO.block() != null) {
+            homeId = homePort.getHomeIdByBlockAndNumberAndNeighborhoodId(packageRequestDTO.block(),
                 packageRequestDTO.homeNumber(), neighborhoodId);
         } else {
             homeId = homePort.getHomeIdByNumberAndNeighborhoodId(packageRequestDTO.homeNumber(), neighborhoodId);
         }
-
         if (homeId == null) {
-            throw packageRequestDTO.block()
-                .map(block -> new HomeNotFoundException(block, packageRequestDTO.homeNumber()))
-                .orElseGet(() -> new HomeNotFoundException(packageRequestDTO.homeNumber()));
+            throw new HomeNotFoundException(packageRequestDTO.homeNumber());
         }
-
         return homeId;
     }
 
