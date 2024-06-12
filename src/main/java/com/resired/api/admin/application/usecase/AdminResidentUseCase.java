@@ -20,7 +20,7 @@ public class AdminResidentUseCase {
 
     public void removeResidentsByHome(Integer neighborhoodId, Integer idHome) {
         Home home = homePort.getHomeById(idHome);
-        if(home == null || !Objects.equals(home.getNeighborhoodId(), neighborhoodId)){
+        if (home == null || !Objects.equals(home.getNeighborhood(), neighborhoodId)) {
             throw new InvalidHomeException(idHome);
         }
         adminResidentPort.removeUserByHome(idHome);

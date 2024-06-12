@@ -17,25 +17,17 @@ public class HomeOrm {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column
-    private String name;
-
-    @Column
-    private String block;
+    @JoinColumn(name = "block")
+    @ManyToOne
+    private BlockOrm block;
 
     @Column(name = "home_number")
     private String number;
-
-    @Column(name = "type")
-    private String homeType;
 
     @Column(name = "created_date")
     private LocalDateTime createdDate;
 
     @Column(name = "owner_id")
     private Integer ownerId;
-
-    @Column(name = "neighborhood_id")
-    private Integer neighborhoodId;
 
 }

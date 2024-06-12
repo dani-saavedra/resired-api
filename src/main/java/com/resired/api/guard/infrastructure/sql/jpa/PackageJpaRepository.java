@@ -10,14 +10,14 @@ import java.util.List;
 public interface PackageJpaRepository extends JpaRepository<PackageOrm, Integer> {
     @Query("SELECT package FROM PackageOrm package " +
         " JOIN HomeOrm home ON package.home = home.id" +
-        " WHERE home.neighborhoodId = :neighborhoodId" +
+        " WHERE home.block.neighborhoodOrm.id = :neighborhoodId" +
         " AND package.createdDate >= :startDate" +
         " ORDER BY package.createdDate DESC")
     List<PackageOrm> findAllByNeighborhoodIdAndStartDate(Integer neighborhoodId,
                                                          LocalDateTime startDate);
     @Query("SELECT package FROM PackageOrm package " +
         " JOIN HomeOrm home ON package.home = home.id" +
-        " WHERE home.neighborhoodId = :neighborhoodId " +
+        " WHERE home.block.neighborhoodOrm.id = :neighborhoodId " +
         " AND package.id = :packageId")
     PackageOrm findByIdAndNeighborhoodId(Integer packageId, Integer neighborhoodId);
 }

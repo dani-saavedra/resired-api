@@ -53,7 +53,7 @@ public class UserRolOrm {
 
     public Rol converToEntity() {
         if (home != null) {
-            return new Rol(rol, neighborhood.getId(), neighborhood.getName(), home.getId(), home.getName());
+            return new Rol(rol, neighborhood.getId(), neighborhood.getName(), home.getId(), home.getNumber());
         } else {
             return new Rol(rol, neighborhood.getId(), neighborhood.getName());
         }

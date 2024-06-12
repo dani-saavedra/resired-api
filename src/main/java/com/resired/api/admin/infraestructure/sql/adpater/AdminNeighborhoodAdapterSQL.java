@@ -47,6 +47,7 @@ public class AdminNeighborhoodAdapterSQL implements NotificationCategoryPort, Ad
         neighborhoodOrm.setCategory(neighborhoodOrm.getCategory());
         neighborhoodOrm.setUpdateDate(LocalDate.now(ZoneOffset.UTC));
         neighborhoodOrm.setGroupingType(neighConfig.groupingType());
+        neighborhoodOrm.setPreferredName(neighConfig.preferredName());
         neighborhoodOrm.setResidenceType(neighConfig.residenceType());
         neighborhoodOrm.setHomes(homes);
         neighborhoodOrm.setTowers(towers);

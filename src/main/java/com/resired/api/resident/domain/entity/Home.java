@@ -10,7 +10,7 @@ public class Home {
 
     private final Integer id;
     private String name;
-    private Integer neighborhoodId;
+    private Integer neighborhood;
     private List<Package> packages;
 
     public Home(Integer id) {
@@ -18,10 +18,10 @@ public class Home {
         packages = new ArrayList<>();
     }
 
-    public Home(Integer id, String name, Integer neighborhoodId) {
+    public Home(Integer id, String name, Integer neighborhood) {
         this.id = id;
         this.name = name;
-        this.neighborhoodId = neighborhoodId;
+        this.neighborhood = neighborhood;
         packages = new ArrayList<>();
     }
 

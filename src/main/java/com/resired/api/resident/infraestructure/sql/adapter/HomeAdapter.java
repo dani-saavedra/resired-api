@@ -23,7 +23,7 @@ public class HomeAdapter implements HomePort {
     @Override
     public Home getHomeById(Integer homeId) {
         return jpaRepository.findById(homeId)
-            .map(homeOrm -> new Home(homeOrm.getId(), homeOrm.getName(), homeOrm.getNeighborhoodId()))
+            .map(homeOrm -> new Home(homeOrm.getId(), homeOrm.getNumber(), homeOrm.getBlock().getNeighborhoodOrm().getId()))
             .orElse(null);
     }
 
