@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -30,4 +31,6 @@ public class HomeOrm {
     @Column(name = "owner_id")
     private Integer ownerId;
 
+    @Column(name = "square_meter", precision = 10, scale = 1)
+    private BigDecimal squareMeter;
 }
