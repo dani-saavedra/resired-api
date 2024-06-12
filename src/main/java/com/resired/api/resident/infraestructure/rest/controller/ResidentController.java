@@ -28,7 +28,7 @@ public class ResidentController {
     public ResponseData<String> createVisitor(@RequestHeader(value = "Authorization") String bearer,
                                               @RequestBody VisitorRequestDTO visitor) {
         UserApp userApp = jwtService.extractUser(bearer);
-        String qr = visitUseCase.createVisitor(userApp.email(), visitor);
+        String qr = visitUseCase.createVisitor(userApp.email(), userApp.homeId(), visitor);
         return new ResponseData<>(qr);
     }
 
