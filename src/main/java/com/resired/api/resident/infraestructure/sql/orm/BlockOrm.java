@@ -30,6 +30,6 @@ public class BlockOrm {
     @ManyToOne
     private NeighborhoodOrm neighborhoodOrm;
 
-    @OneToMany(mappedBy = "block")
+    @OneToMany(mappedBy = "block", cascade = CascadeType.ALL)
     private List<HomeOrm> homes;
 }
