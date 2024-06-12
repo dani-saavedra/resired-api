@@ -46,7 +46,7 @@ public class AdminNeighborhoodUseCase {
         if (neighborhood == null) {
             throw new BusinessException("Neighborhood not found", "GENERAL_BAD_REQUEST");
         }
-        if (neighborhood.getTowers() > 0) {
+        if (neighborhood.getHomes() != null && neighborhood.getHomes() > 0) {
             throw new BusinessException("Pre-configured neighborhood", "GENERAL_BAD_REQUEST");
         }
         AtomicInteger totalNumberHouses = new AtomicInteger();
