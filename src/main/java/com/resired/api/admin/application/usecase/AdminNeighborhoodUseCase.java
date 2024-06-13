@@ -50,7 +50,7 @@ public class AdminNeighborhoodUseCase {
             throw new BusinessException("Pre-configured neighborhood", "GENERAL_BAD_REQUEST");
         }
         AtomicInteger totalNumberHouses = new AtomicInteger();
-        neighConfig.groupingHomes().forEach(groupingHomes -> totalNumberHouses.addAndGet(groupingHomes.homes()));
+        neighConfig.groupingHomes().forEach(groupingHomes -> totalNumberHouses.addAndGet(groupingHomes.homes().size()));
 
         if (neighborhood.getCategory().isInvalidQuantity(totalNumberHouses.intValue())) {
             throw new InvalidConfigurationException("NEIGHBORHOOD01");

@@ -21,11 +21,12 @@ public class BlockAdapterSQL implements BlockPort {
     private BlockJpaRepository blockJpa;
 
     @Override
-    public void createBlock(Integer neighborhoodId, GroupingType type, String name, Integer homes) {
+    public void createBlock(Integer neighborhoodId, GroupingType type, String name, List<String> homes) {
         List<HomeOrm> listHomes = new ArrayList<>();
         BlockOrm entity = new BlockOrm();
-        for (int i = 0; i < homes; i++) {
+        for (String home : homes) {
             HomeOrm homeOrm = new HomeOrm();
+            homeOrm.setNumber(home);
             homeOrm.setBlock(entity);
             homeOrm.setCreatedDate(LocalDateTime.now(ZoneOffset.UTC));
             listHomes.add(homeOrm);

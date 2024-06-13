@@ -10,7 +10,7 @@ public record NeighConfig(@JsonProperty(required = true) Integer id,
                           @JsonProperty(value = "preferred_name", required = true) String preferredName,
                           @JsonProperty(value = "grouping_homes", required = true) List<GroupingHomes> groupingHomes,
                           @JsonProperty(value = "security_company") String securityCompany) {
-    public record GroupingHomes(String tower, Integer homes) {
+    public record GroupingHomes(String tower, List<String> homes) {
 
     }
 }
