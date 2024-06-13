@@ -21,7 +21,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneOffset;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -51,7 +50,7 @@ public class GuardVisitUseCase {
     public void registerVisitor(String emailGuard, VisitorRequestDTO visitorDto) {
         VisitVO residentVisit = new VisitVO(visitorDto.name(), visitorDto.documentId(), visitorDto.telephone(),
             visitorDto.homeId(), emailGuard, false);
-        String tokenUUID = visitor.createVisit(residentVisit, visitorGuardService);
+        String tokenUUID = visitor.createVisitor(residentVisit, visitorGuardService);
         guardPort.registerVisit(tokenUUID);
     }
 

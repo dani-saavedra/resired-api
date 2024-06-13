@@ -21,7 +21,7 @@ public class VisitUseCase {
     public String createVisitor(String emailResident, Integer homeId, VisitorRequestDTO visitorDto) {
         VisitVO residentVisit = new VisitVO(visitorDto.name(), visitorDto.documentId(), visitorDto.telephone(),
             homeId, emailResident, visitorDto.favorite());
-        return visitor.createVisit(residentVisit, visitorResidentService);
+        return visitor.createVisitor(residentVisit, visitorResidentService);
     }
 
     public List<RegisteredVisitor> obtainVisitorsByResident(String emailResident) {

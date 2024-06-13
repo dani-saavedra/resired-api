@@ -28,7 +28,7 @@ public class Visitor {
         return visitor;
     }
 
-    public String createVisit(VisitVO residentVisit, CreateVisitor visitorService) {
+    public String createVisitor(VisitVO residentVisit, CreateVisitor visitorService) {
         return visitorService.createVisitor(residentVisit);
     }
 }
