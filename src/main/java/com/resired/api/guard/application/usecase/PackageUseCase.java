@@ -4,7 +4,6 @@ import com.resired.api.guard.application.dto.PackageRequestDTO;
 import com.resired.api.guard.application.dto.PackageResponseDTO;
 import com.resired.api.guard.application.exception.PackageNotFoundException;
 import com.resired.api.guard.domain.entity.Package;
-import com.resired.api.guard.domain.exception.HomeNotFoundException;
 import com.resired.api.guard.domain.exception.ResidentNotFoundOnHomeException;
 import com.resired.api.guard.domain.repository.PackagePort;
 import com.resired.api.resident.domain.repository.HomePort;
@@ -26,13 +25,11 @@ public class PackageUseCase {
     private final HomePort homePort;
     private final PackagePort packagePort;
 
-    public void registerPackage(String emailGuard, PackageRequestDTO packageRequestDTO, Integer neighborhoodId) {
+    public void registerPackage(String emailGuard, PackageRequestDTO packageRequestDTO) {
         User guard = validateGuard(emailGuard);
-        Integer homeId = findHomeId(packageRequestDTO, neighborhoodId);
-
         Package packet = Package.createNewPackage(
             guard.getId(),
-            homeId,
+            packageRequestDTO.homeId(),
             packageRequestDTO.receiver(),
             packageRequestDTO.trackingNumber(),
             packageRequestDTO.packageTransporter(),
@@ -72,20 +69,6 @@ public class PackageUseCase {
             throw new InactiveUserException(emailGuard);
         }
         return guard;
-    }
-
-    private Integer findHomeId(PackageRequestDTO packageRequestDTO, Integer neighborhoodId) {
-        Integer homeId;
-        if (packageRequestDTO.block() != null) {
-            homeId = homePort.getHomeIdByBlockAndNumberAndNeighborhoodId(packageRequestDTO.block(),
-                packageRequestDTO.homeNumber(), neighborhoodId);
-        } else {
-            homeId = homePort.getHomeIdByNumberAndNeighborhoodId(packageRequestDTO.homeNumber(), neighborhoodId);
-        }
-        if (homeId == null) {
-            throw new HomeNotFoundException(packageRequestDTO.homeNumber());
-        }
-        return homeId;
     }
 
     private PackageResponseDTO toPackageResponseDTO(Package pkg) {
