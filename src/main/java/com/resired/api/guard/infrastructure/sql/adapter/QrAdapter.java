@@ -20,11 +20,6 @@ public class QrAdapter implements QrPort {
     @Override
     public Visitor obtainInfoQR(String qrStr) {
         QrOrm qr = qrJpaRepository.findByQr(qrStr);
-        UserOrm authorizingUser = qr.getVisitor().getAuthorizingUser();
-        String authorizer = "";
-        if (authorizingUser != null) {
-            authorizer = authorizingUser.getFirstName();
-        }
         return Visitor.createVisitor(qr.getVisitor().getName(),
             qr.getVisitor().getDocument(), qr.getVisitor().getAuthorizingHome().getNumber(),
             qr.isAvailable(), qr.getVisitor().isFavorite(), qr.getVisitor().isDeleted());

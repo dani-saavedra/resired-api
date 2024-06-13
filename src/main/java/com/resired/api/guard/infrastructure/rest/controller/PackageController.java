@@ -28,7 +28,7 @@ public class PackageController {
     public ResponseData<String> registerPackage(@RequestHeader(value = "Authorization") String bearer,
                                                 @RequestBody PackageRequestDTO packageRequestDTO) {
         UserApp userApp = jwtService.extractUser(bearer);
-        packageUseCase.registerPackage(userApp.email(), packageRequestDTO, userApp.neighborhoodId());
+        packageUseCase.registerPackage(userApp.email(), packageRequestDTO);
         return new ResponseData<>("Registered package successfully");
     }
 

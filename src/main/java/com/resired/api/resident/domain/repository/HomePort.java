@@ -8,9 +8,5 @@ public interface HomePort {
 
     Home getHomeById(Integer homeId);
 
-    Integer getHomeIdByBlockAndNumberAndNeighborhoodId(Integer block, String homeNumber, Integer neighborhoodId);
-
-    Integer getHomeIdByNumberAndNeighborhoodId(String homeNumber, Integer neighborhoodId);
-
     String getHomeNumberById(Integer homeId);
 }
