@@ -25,4 +25,7 @@ public class VisitOrm {
 
     @Column
     private LocalDateTime checkIn;
+
+    @Column(name = "scanned_by")
+    private Integer authorizingGuardId;
 }
