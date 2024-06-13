@@ -51,6 +51,7 @@ public class AdminNeighborhoodAdapterSQL implements NotificationCategoryPort, Ad
         neighborhoodOrm.setResidenceType(neighConfig.residenceType());
         neighborhoodOrm.setHomes(homes);
         neighborhoodOrm.setTowers(towers);
+        neighborhoodOrm.setSecurityCompany(neighConfig.securityCompany());
         neighborhoodRepository.save(neighborhoodOrm);
     }
 
@@ -60,8 +61,8 @@ public class AdminNeighborhoodAdapterSQL implements NotificationCategoryPort, Ad
 
     @Override
     public Integer createNeighborHood(CreateNeighborhoodVo neighbor) {
-        NeighborhoodOrm entity = new NeighborhoodOrm(neighbor.name(), neighbor.address(), neighbor.city(), neighbor.stratum(), neighbor
-            .communityType(), neighbor.category(), neighbor.securityCompany());
+        NeighborhoodOrm entity = new NeighborhoodOrm(neighbor.name(), neighbor.address(), neighbor.city(),
+            neighbor.stratum(), neighbor.communityType(), neighbor.category());
         NeighborhoodOrm neighborhoodOrm = neighborhoodRepository.save(entity);
         return neighborhoodOrm.getId();
     }
