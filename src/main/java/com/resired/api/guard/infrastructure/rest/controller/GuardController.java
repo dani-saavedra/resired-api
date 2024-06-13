@@ -48,8 +48,10 @@ public class GuardController {
         @ApiResponse(responseCode = "200", description = "Registered visit successfully"),
         @ApiResponse(responseCode = "409", description = "Problems with QR", content =
         @Content(schema = @Schema(implementation = ErrorDTO.class)))})
-    public ResponseData<String> registerVisit(@RequestBody InfoQrRequest infoQrRequest) {
-        visitUseCase.registerVisit(infoQrRequest.qr());
+    public ResponseData<String> registerVisit(@RequestHeader(value = "Authorization") String bearer,
+                                              @RequestBody InfoQrRequest infoQrRequest) {
+        UserApp userApp = jwtService.extractUser(bearer);
+        visitUseCase.registerVisit(infoQrRequest.qr(), userApp.userId());
         return new ResponseData<>("Registered visit successfully");
     }
 
@@ -58,7 +60,7 @@ public class GuardController {
     public ResponseData<String> registerVisitor(@RequestHeader(value = "Authorization") String bearer,
                                                 @RequestBody VisitorRequestDTO visitorRequestDTO) {
         UserApp userApp = jwtService.extractUser(bearer);
-        visitUseCase.registerVisitor(userApp.email(), visitorRequestDTO);
+        visitUseCase.registerVisitor(userApp.email(), visitorRequestDTO, userApp.userId());
         return new ResponseData<>("Registered visit successfully");
     }
 

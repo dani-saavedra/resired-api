@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface GuardPort {
 
-    void registerVisit(String qr);
+    void registerVisit(String qr, Integer guardId);
 
     String registerVisitFromGuard(Integer userId, Integer homeId, String homeName,
                                   String name, String visitorDocument, String telephone);

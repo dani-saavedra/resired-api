@@ -38,20 +38,20 @@ public class GuardVisitUseCase {
         return qrPort.obtainInfoQR(qr);
     }
 
-    public void registerVisit(String qr) {
+    public void registerVisit(String qr, Integer guardId) {
         validateQR(qr);
         if (!qrPort.isAvailableQR(qr)) {
             throw new QrInvalidException("Unavailable");
         }
-        guardPort.registerVisit(qr);
+        guardPort.registerVisit(qr, guardId);
         qrPort.makeQrUnavailable(qr);
     }
 
-    public void registerVisitor(String emailGuard, VisitorRequestDTO visitorDto) {
+    public void registerVisitor(String emailGuard, VisitorRequestDTO visitorDto, Integer guardId) {
         VisitVO residentVisit = new VisitVO(visitorDto.name(), visitorDto.documentId(), visitorDto.telephone(),
             visitorDto.homeId(), emailGuard, false);
         String tokenUUID = visitor.createVisitor(residentVisit, visitorGuardService);
-        guardPort.registerVisit(tokenUUID);
+        guardPort.registerVisit(tokenUUID, guardId);
     }
 
     private void validateQR(String qr) {
