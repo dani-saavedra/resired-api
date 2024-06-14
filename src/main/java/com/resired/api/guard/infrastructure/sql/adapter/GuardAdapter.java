@@ -137,7 +137,7 @@ public class GuardAdapter implements GuardPort, PackagePort {
     }
 
     private Visit toVisitDomain(VisitOrm visitOrm) {
-        String guardFullName = visitOrm.getAuthorizingGuard().getFirstName() + " " + visitOrm.getAuthorizingGuard().getLastName();
+        String guardFullName = visitOrm.getAuthorizingGuard().getLastName() + " " + visitOrm.getAuthorizingGuard().getFirstName();
         return new Visit(
             visitOrm.getId(),
             visitOrm.getQr().getVisitor().getName(),
