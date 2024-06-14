@@ -1,0 +1,1 @@
+ALTER TABLE visitor MODIFY document VARCHAR(255) NULL;
