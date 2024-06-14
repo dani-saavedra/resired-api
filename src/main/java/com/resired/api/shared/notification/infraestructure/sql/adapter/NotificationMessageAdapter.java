@@ -8,6 +8,7 @@ import com.resired.api.shared.notification.infraestructure.sql.jpa.NotificationJ
 import com.resired.api.shared.notification.infraestructure.sql.jpa.NotificationUserJpaRepository;
 import com.resired.api.shared.notification.infraestructure.sql.orm.NotificationOrm;
 import com.resired.api.shared.notification.infraestructure.sql.orm.NotificationUserOrm;
+import com.resired.api.utils.FormatDate;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +30,7 @@ public class NotificationMessageAdapter implements NotificationMessagePort {
         return notificationUserRepository.findNotificationsByUserIdOrderByCreatedDateDesc(userId)
             .stream()
             .map((notificationOrm -> new NotificationMessage(notificationOrm.getId(), notificationOrm.getTitle(),
-                notificationOrm.getMessage(), true)))
+                notificationOrm.getMessage(), true, FormatDate.formatDate(notificationOrm.getCreatedDate()))))
             .toList();
     }
 
@@ -40,7 +41,7 @@ public class NotificationMessageAdapter implements NotificationMessagePort {
         if (notificationUserOrm == null) return null;
         return new NotificationMessage(notificationUserOrm.getNotification().getTitle(),
             notificationUserOrm.getNotification().getMessage(),
-            notificationUserOrm.getViewed());
+            notificationUserOrm.getViewed(), FormatDate.formatDate(notificationUserOrm.getViewedAt()));
     }
 
     @Transactional

@@ -27,7 +27,7 @@ public class NotificationUseCase {
 
     public void notifyHome(NotificationHomeRequest requestDTO) {
         NotificationMessage notificationMessage = new NotificationMessage(requestDTO.title(),
-            requestDTO.message(), false);
+            requestDTO.message(), false, "");
 
         List<Device> devices = deviceRepository.getDevicesForHomeResident(requestDTO.homeID())
             .stream().filter(Device::getAllowNotifications).toList();
@@ -42,7 +42,7 @@ public class NotificationUseCase {
         String topic = NEIGHBORHOOD_TOPIC + requestDTO.neighborhoodID();
 
         NotificationMessage notificationMessage = new NotificationMessage(requestDTO.title(),
-            requestDTO.message(), false);
+            requestDTO.message(), false, "");
 
         notificationSenderService.sendToTopic(notificationMessage, topic);
 
