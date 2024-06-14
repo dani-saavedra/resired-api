@@ -42,6 +42,7 @@ public class AdminNeighborhoodUseCase {
     }
 
     public void configNeighborhood(NeighConfig neighConfig) {
+        //TODO q sea con el usuario, no como un parametro.
         Neighborhood neighborhood = adminNeighborhoodPort.findNeighborhoodById(neighConfig.id());
         if (neighborhood == null) {
             throw new BusinessException("Neighborhood not found", "GENERAL_BAD_REQUEST");
