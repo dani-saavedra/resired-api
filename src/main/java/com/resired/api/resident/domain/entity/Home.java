@@ -1,6 +1,7 @@
 package com.resired.api.resident.domain.entity;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,10 +10,13 @@ import java.util.List;
 public class Home {
 
     private final Integer id;
+    @Setter
     private String name;
     private String block;
     private Integer neighborhood;
     private List<Package> packages;
+    @Setter
+    private Double squareMeter;
 
     public Home(Integer id) {
         this.id = id;

@@ -9,6 +9,7 @@ public enum ErrorCode {
     USER03("Invalid role"),
     USER04("Invalid Token"),
     USER05("Resident not found on home"),
+    USER06("Invalid User"),
     VISIT01("QR invalid"),
     VISIT02("Visitor is invalid"),
     HOME01("Home not found"),
