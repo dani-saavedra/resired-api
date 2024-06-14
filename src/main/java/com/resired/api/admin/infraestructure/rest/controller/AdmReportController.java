@@ -32,9 +32,7 @@ public class AdmReportController {
         UserApp userApp = jwtService.extractUser(bearer);
         List<VisitReportDto> visitsReport;
         if (date.isEmpty()) {
-//            TODO: Add the overload for the default (last five days)
-//            visitsReport = adminReportUseCase.getVisitsReport(userApp.neighborhoodId());
-            return null;
+            visitsReport = adminReportUseCase.getVisitsReport(userApp.neighborhoodId());
         } else {
             visitsReport = adminReportUseCase.getVisitsReport(userApp.neighborhoodId(), LocalDate.parse(date.get()));
         }
