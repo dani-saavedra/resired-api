@@ -1,7 +1,7 @@
 package com.resired.api.admin.infraestructure.rest.controller;
 
+import com.resired.api.admin.application.dto.HomeDTO;
 import com.resired.api.admin.application.usecase.AdminHomesUseCase;
-import com.resired.api.resident.domain.entity.Home;
 import com.resired.api.security.application.usecase.JwtService;
 import com.resired.api.security.domain.entity.UserApp;
 import lombok.AllArgsConstructor;
@@ -20,13 +20,13 @@ public class AdmHomeController {
     private final JwtService jwtService;
 
     @GetMapping(path = "/homes")
-    public List<Home> getHomesByNeighborhood(@RequestHeader(value = "Authorization") String bearer) {
+    public List<HomeDTO> getHomesByNeighborhood(@RequestHeader(value = "Authorization") String bearer) {
         UserApp userApp = jwtService.extractUser(bearer);
         return adminHomesUseCase.getHomesByNeighborhood(userApp.neighborhoodId());
     }
 
     @GetMapping(path = "/block/{id}/homes")
-    public List<Home> getHomesByBlock(@PathVariable(value = "id") Integer blockId) {
+    public List<HomeDTO> getHomesByBlock(@PathVariable(value = "id") Integer blockId) {
         return adminHomesUseCase.getHomesByBlock(blockId);
     }
 }
