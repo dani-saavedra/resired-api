@@ -39,7 +39,7 @@ public class AdminReportUseCase {
         return visits.stream()
             .map(visit -> new VisitReportDto(
                 visit.getVisitorName(),
-                visit.getHomeNumber(),
+                visit.getDestinationHome(),
                 visit.getVisitorDocument(),
                 visit.getCheckIn().toString(),
                 visit.getAuthorizingGuardName()))

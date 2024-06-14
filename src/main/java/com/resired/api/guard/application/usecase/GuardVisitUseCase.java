@@ -85,7 +85,7 @@ public class GuardVisitUseCase {
             visit.getId(),
             visit.getVisitorName(),
             visit.getVisitorDocument(),
-            visit.getHomeNumber(),
+            visit.getDestinationHome(),
             FormatDate.formatDate(visit.getCheckIn())
         )).toList();
     }

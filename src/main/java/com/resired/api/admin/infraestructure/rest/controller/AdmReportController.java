@@ -25,10 +25,10 @@ public class AdmReportController {
 
     @GetMapping("/visits")
     @Operation(summary = "Get visits report by date, last five days as default")
-    public List<VisitReportDto> getVisitsReport(
-        @RequestHeader(value = "Authorization") String bearer,
-        @Parameter(description = "Date as a String in format YYYY-MM-DD", schema = @Schema(type = "string", format = "date"))
-        @RequestParam(value = "date") Optional<String> date) {
+    public List<VisitReportDto> getVisitsReport(@RequestHeader(value = "Authorization") String bearer,
+                                                @Parameter(description = "Date as a String in format YYYY-MM-DD",
+                                                    schema = @Schema(type = "string", format = "date"))
+                                                @RequestParam(value = "date") Optional<String> date) {
         UserApp userApp = jwtService.extractUser(bearer);
         List<VisitReportDto> visitsReport;
         if (date.isEmpty()) {

@@ -63,7 +63,8 @@ public class GuardAdapter implements GuardPort, PackagePort {
     public List<Visit> findVisitsByNeighborhoodIdAndDateRange(Integer neighborhoodId,
                                                               LocalDateTime startDate,
                                                               LocalDateTime endDate) {
-        List<VisitOrm> visitOrms = visitJpaRepository.findVisitsByNeighborhoodIdAndDateRange(neighborhoodId, startDate, endDate);
+        List<VisitOrm> visitOrms = visitJpaRepository.findVisitsByNeighborhoodIdAndDateRange(neighborhoodId,
+            startDate, endDate);
         return visitOrms.stream().map(this::toVisitDomain).toList();
     }
 
@@ -137,12 +138,17 @@ public class GuardAdapter implements GuardPort, PackagePort {
     }
 
     private Visit toVisitDomain(VisitOrm visitOrm) {
-        String guardFullName = visitOrm.getAuthorizingGuard().getLastName() + " " + visitOrm.getAuthorizingGuard().getFirstName();
+        String guardFullName = visitOrm.getAuthorizingGuard().getLastName() + " "
+            + visitOrm.getAuthorizingGuard().getFirstName();
+        String homeNumber = visitOrm.getQr().getVisitor().getAuthorizingHome().getNumber();
+        String blockName = visitOrm.getQr().getVisitor().getAuthorizingHome().getBlock().getName();
+        String destination = blockName + ", " + homeNumber;
+
         return new Visit(
             visitOrm.getId(),
             visitOrm.getQr().getVisitor().getName(),
             visitOrm.getQr().getVisitor().getDocument(),
-            visitOrm.getQr().getVisitor().getAuthorizingHome().getNumber(),
+            destination,
             visitOrm.getCheckIn(),
             guardFullName
         );

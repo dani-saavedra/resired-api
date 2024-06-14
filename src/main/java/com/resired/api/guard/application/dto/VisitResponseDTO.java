@@ -5,6 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public record VisitResponseDTO(Integer id,
                                @JsonProperty("visitor_name") String visitorName,
                                @JsonProperty("visitor_document") String visitorDocument,
-                               @JsonProperty("home_number") String homeNumber,
+                               @JsonProperty("destination_home") String destinationHome,
                                @JsonProperty("check_in") String checkIn) {
 }
