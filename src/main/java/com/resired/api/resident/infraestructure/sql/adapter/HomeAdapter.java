@@ -7,6 +7,9 @@ import com.resired.api.resident.infraestructure.sql.orm.HomeOrm;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 @Repository
 @AllArgsConstructor
 public class HomeAdapter implements HomePort {
@@ -31,5 +34,24 @@ public class HomeAdapter implements HomePort {
     public String getHomeNumberById(Integer homeId) {
         HomeOrm homeOrm = jpaRepository.findById(homeId).orElse(null);
         return homeOrm != null ? homeOrm.getNumber() : null;
+    }
+
+    @Override
+    public List<Home> getHomesByNeighborhood(Integer neighborhoodId) {
+        return jpaRepository.findByBlockNeighborhoodOrmId(neighborhoodId)
+            .stream()
+            .map(orm -> new Home(orm.getId(), orm.getNumber(), orm.getBlock().getName())).toList();
+    }
+
+    @Override
+    public List<Home> getHomesByBlocks(Integer blockId) {
+        return jpaRepository.findByBlockId(blockId)
+            .stream()
+            .map(orm -> new Home(orm.getId(), orm.getNumber(), orm.getBlock().getName())).toList();
+    }
+
+    @Override
+    public void updateHome(Integer homeId, String number, double squareMeter) {
+        jpaRepository.updateHome(number, BigDecimal.valueOf(squareMeter), homeId);
     }
 }
