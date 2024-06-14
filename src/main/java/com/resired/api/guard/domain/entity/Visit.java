@@ -13,4 +13,5 @@ public class Visit {
     String visitorDocument;
     String homeNumber;
     LocalDateTime checkIn;
+    String authorizingGuardName;
 }

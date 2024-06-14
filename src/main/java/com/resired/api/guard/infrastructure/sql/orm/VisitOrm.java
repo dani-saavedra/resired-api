@@ -1,6 +1,7 @@
 package com.resired.api.guard.infrastructure.sql.orm;
 
 import com.resired.api.resident.infraestructure.sql.orm.QrOrm;
+import com.resired.api.security.infraestructure.sql.orm.UserOrm;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,6 +27,7 @@ public class VisitOrm {
     @Column
     private LocalDateTime checkIn;
 
-    @Column(name = "scanned_by")
-    private Integer authorizingGuardId;
+    @ManyToOne
+    @JoinColumn(name = "scanned_by")
+    private UserOrm authorizingGuard;
 }
