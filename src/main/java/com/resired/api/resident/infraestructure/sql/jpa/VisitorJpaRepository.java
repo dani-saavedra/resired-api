@@ -18,11 +18,11 @@ public interface VisitorJpaRepository extends JpaRepository<VisitorOrm, Integer>
         " order by visi.createdAt desc")
     VisitorOrm obtainVisitorByEmailResidentAndDocument(String emailResident, String document);
 
-    @Query(value = "SELECT qr FROM QrOrm  qr WHERE qr.visitor.authorizingUser.email = :emailResident and qr.available=true and" +
-        " qr.visitor.deleted=false and qr.visitor.document=:document")
-    QrOrm obtainQRByEmailResidentAndDocumentVisitor(String emailResident, String document);
+    @Query(value = "SELECT qr FROM QrOrm  qr WHERE qr.visitor.id = :idVisitor and qr.available=true and" +
+            " qr.visitor.deleted=false")
+    QrOrm obtainQRByIdVisitor(Integer idVisitor);
 
     @Modifying
-    @Query("update VisitorOrm visitor set visitor.deleted = true where visitor.authorizingUser.id =:userId and visitor.document =:visitorDocument")
-    void deleteVisitorByUserId(Integer userId, String visitorDocument);
+    @Query("update VisitorOrm visitor set visitor.deleted = true where visitor.id =:idVisitor")
+    void deleteVisitorById(Integer idVisitor);
 }

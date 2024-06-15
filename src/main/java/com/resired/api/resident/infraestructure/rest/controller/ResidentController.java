@@ -7,8 +7,8 @@ import com.resired.api.resident.domain.vo.RegisteredVisitor;
 import com.resired.api.resident.infraestructure.rest.dto.ResponseData;
 import com.resired.api.security.application.usecase.JwtService;
 import com.resired.api.security.domain.entity.UserApp;
-import lombok.AllArgsConstructor;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,29 +39,24 @@ public class ResidentController {
         return visitUseCase.obtainVisitorsByResident(userApp.email());
     }
 
-    @PutMapping(path = "/visitor/{document}/enable")
+    @PutMapping(path = "/visitor/{id}/enable")
     @Operation(summary = "Enable a visitor to enter again")
-    public ResponseData<String> allowVisitorToEnter(@RequestHeader(value = "Authorization") String bearer,
-                                                    @PathVariable String document) {
-        UserApp userApp = jwtService.extractUser(bearer);
-        String qr = visitUseCase.allowVisitorToEnterAgain(userApp.email(), document);
+    public ResponseData<String> allowVisitorToEnter(@PathVariable(value = "id") Integer idVisitor) {
+        String qr = visitUseCase.allowVisitorToEnterAgain(idVisitor);
         return new ResponseData<>(qr);
     }
 
-    @DeleteMapping(path = "/visitor/{document}")
+    @DeleteMapping(path = "/visitor/{id}")
     @Operation(summary = "Delete a visitor registered by a resident")
     public ResponseData<String> deleteVisitor(@RequestHeader(value = "Authorization") String bearer,
-                                              @PathVariable(value = "document") String documentVisitor) {
-        UserApp userApp = jwtService.extractUser(bearer);
-        visitUseCase.removeVisitor(userApp.userId(), documentVisitor);
+                                              @PathVariable(value = "id") Integer idVisitor) {
+        visitUseCase.removeVisitor(idVisitor);
         return new ResponseData<>("Successfully deleted visitor");
     }
 
-    @GetMapping(path = "/visitors/{document}")
-    @Operation(summary = "Obtain QR info by document visitor")
-    public QrVisitor obtainVisitor(@RequestHeader(value = "Authorization") String bearer,
-                                   @PathVariable(value = "document") String documentVisitor) {
-        UserApp userApp = jwtService.extractUser(bearer);
-        return visitUseCase.obtainVisitorByDocument(userApp.email(), documentVisitor);
+    @GetMapping(path = "/visitors/{id}")
+    @Operation(summary = "Obtain QR info by ID visitor")
+    public QrVisitor obtainVisitor(@PathVariable(value = "id") Integer idVisitor) {
+        return visitUseCase.obtainVisitorById(idVisitor);
     }
 }

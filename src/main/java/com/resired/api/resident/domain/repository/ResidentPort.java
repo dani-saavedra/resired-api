@@ -13,11 +13,11 @@ public interface ResidentPort {
 
     List<RegisteredVisitor> obtainVisitors(String emailResident);
 
-    QrVisitor obtainVisitor(String emailResident, String documentVisitor);
+    QrVisitor obtainQRVisitor(Integer idVisitor);
 
-    RegisteredVisitor obtainVisitorByDocumentAndEmailVisitor(String documentVisitor, String emailResident);
+    RegisteredVisitor obtainVisitorById(Integer idVisitor);
 
-    String reactiveVisitor(String emailResident, String visitorDocument, Date expirationDate);
+    String reactiveVisitor(Integer idVisitor, Date expirationDate);
 
-    void deactivateVisitor(Integer userId, String visitorDocument);
+    void deactivateVisitor(Integer idVisitor);
 }
