@@ -12,6 +12,7 @@ import com.resired.api.resident.infraestructure.sql.jpa.VisitorJpaRepository;
 import com.resired.api.resident.infraestructure.sql.orm.PackageOrm;
 import com.resired.api.resident.infraestructure.sql.orm.QrOrm;
 import com.resired.api.resident.infraestructure.sql.orm.VisitorOrm;
+import com.resired.api.security.infraestructure.sql.orm.UserOrm;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -36,7 +37,9 @@ public class GuardAdapter implements GuardPort, PackagePort {
         VisitOrm visit = new VisitOrm();
         visit.setQr(qr);
         visit.setCheckIn(LocalDateTime.now(ZoneOffset.UTC));
-        visit.setAuthorizingGuardId(guardId);
+        UserOrm guard = new UserOrm();
+        guard.setId(guardId);
+        visit.setAuthorizingGuard(guard);
         visitJpaRepository.save(visit);
     }
 
@@ -60,7 +63,9 @@ public class GuardAdapter implements GuardPort, PackagePort {
     public List<Visit> findVisitsByNeighborhoodIdAndDateRange(Integer neighborhoodId,
                                                               LocalDateTime startDate,
                                                               LocalDateTime endDate) {
-        return visitJpaRepository.findVisitsByNeighborhoodIdAndDateRange(neighborhoodId, startDate, endDate);
+        List<VisitOrm> visitOrms = visitJpaRepository.findVisitsByNeighborhoodIdAndDateRange(neighborhoodId,
+            startDate, endDate);
+        return visitOrms.stream().map(this::toVisitDomain).toList();
     }
 
     @Override
@@ -129,6 +134,20 @@ public class GuardAdapter implements GuardPort, PackagePort {
             packet.getUpdateDate(),
             packet.getDeliveredGuardId(),
             packet.getReceiverLastFourDigits()
+        );
+    }
+
+    private Visit toVisitDomain(VisitOrm visitOrm) {
+        String guardFullName = visitOrm.getAuthorizingGuard().toEntity().getFullNameLastOneFirst();
+        String destination = visitOrm.getQr().getVisitor().getAuthorizingHome().toBasicInfoHome().getFullHomeName();
+
+        return new Visit(
+            visitOrm.getId(),
+            visitOrm.getQr().getVisitor().getName(),
+            visitOrm.getQr().getVisitor().getDocument(),
+            destination,
+            visitOrm.getCheckIn(),
+            guardFullName
         );
     }
 }

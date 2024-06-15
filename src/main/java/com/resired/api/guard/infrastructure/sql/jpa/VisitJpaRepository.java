@@ -9,15 +9,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface VisitJpaRepository extends JpaRepository<VisitOrm, Integer> {
-    @Query("SELECT new com.resired.api.guard.domain.entity.Visit(" +
-        "visit.id, qr.visitor.name, qr.visitor.document, home.number, visit.checkIn) " +
-        "FROM VisitOrm visit " +
+    @Query("SELECT visit FROM VisitOrm visit " +
         "JOIN visit.qr qr " +
         "JOIN qr.visitor visitor " +
         "JOIN visitor.authorizingHome home " +
         "WHERE home.block.neighborhoodOrm.id = :neighborhoodId " +
         "AND visit.checkIn BETWEEN :startDate AND :endDate " +
         "ORDER BY visit.checkIn DESC")
-    List<Visit> findVisitsByNeighborhoodIdAndDateRange(Integer neighborhoodId,
+    List<VisitOrm> findVisitsByNeighborhoodIdAndDateRange(Integer neighborhoodId,
                                                        LocalDateTime startDate, LocalDateTime endDate);
 }

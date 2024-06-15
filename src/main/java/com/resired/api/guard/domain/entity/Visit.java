@@ -11,6 +11,7 @@ public class Visit {
     Integer id;
     String visitorName;
     String visitorDocument;
-    String homeNumber;
+    String destinationHome;
     LocalDateTime checkIn;
+    String authorizingGuardName;
 }
