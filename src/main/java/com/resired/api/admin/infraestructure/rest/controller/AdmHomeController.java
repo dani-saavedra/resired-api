@@ -5,6 +5,7 @@ import com.resired.api.admin.infraestructure.rest.dto.UpdateHomeDTO;
 import com.resired.api.admin.application.usecase.AdminHomesUseCase;
 import com.resired.api.security.application.usecase.JwtService;
 import com.resired.api.security.domain.entity.UserApp;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,17 +23,20 @@ public class AdmHomeController {
     private final JwtService jwtService;
 
     @GetMapping(path = "/homes")
+    @Operation(summary = "Obtain homes by Neighborhood")
     public List<HomeDTO> getHomesByNeighborhood(@RequestHeader(value = "Authorization") String bearer) {
         UserApp userApp = jwtService.extractUser(bearer);
         return adminHomesUseCase.getHomesByNeighborhood(userApp.neighborhoodId());
     }
 
     @GetMapping(path = "/block/{id}/homes")
+    @Operation(summary = "Obtain homes by Block")
     public List<HomeDTO> getHomesByBlock(@PathVariable(value = "id") Integer blockId) {
         return adminHomesUseCase.getHomesByBlock(blockId);
     }
 
     @PutMapping(path = "/home")
+    @Operation(summary = "Update information home")
     public ResponseEntity<String> updateHomeName(@RequestHeader(value = "Authorization") String bearer,
                                                  @RequestBody UpdateHomeDTO updateHomeDTO) {
         UserApp userApp = jwtService.extractUser(bearer);

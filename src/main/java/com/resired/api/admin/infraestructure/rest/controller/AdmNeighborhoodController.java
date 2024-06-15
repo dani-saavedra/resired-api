@@ -7,6 +7,7 @@ import com.resired.api.admin.domain.vo.NeighConfig;
 import com.resired.api.resident.infraestructure.rest.dto.ResponseData;
 import com.resired.api.security.application.usecase.JwtService;
 import com.resired.api.security.domain.entity.UserApp;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,12 +32,14 @@ public class AdmNeighborhoodController {
     }
 
     @PutMapping(path = "/neigborhood")
+    @Operation(summary = "Set up a neighborhood after onboarding")
     public ResponseEntity<String> configureNeighborhood(@RequestBody NeighConfig neighConfig) {
         adminNeighborhoodUseCase.configNeighborhood(neighConfig);
         return ResponseEntity.ok("Success");
     }
 
     @PostMapping(path = "/news")
+    @Operation(summary = "Create a news for the neighborhood")
     public ResponseData<String> createNews(@RequestHeader(value = "Authorization") String bearer,
                                            @RequestBody CreateNewsDto newsRequest) {
         UserApp userApp = jwtService.extractUser(bearer);
