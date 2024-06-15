@@ -44,7 +44,7 @@ public class VisitorResidentService implements CreateVisitor, ManageVisitor {
         List<RegisteredVisitor> registeredVisitors = residentPort.obtainVisitors(resident.getEmail());
         for (RegisteredVisitor registeredVisitor : registeredVisitors) {
             if (registeredVisitor.document().equals(residentVisit.documentVisitor())) {
-                throw new InvalidVisitorException(residentVisit.documentVisitor());
+                throw new InvalidVisitorException(registeredVisitor.id());
             }
         }
         Date expirationQr = getQRValidityTime(residentVisit.favorite());
@@ -58,24 +58,24 @@ public class VisitorResidentService implements CreateVisitor, ManageVisitor {
     }
 
     @Override
-    public String allowVisitorToEnterAgain(String emailResident, String documentVisitor) {
-        RegisteredVisitor registeredVisitor = residentPort.obtainVisitorByDocumentAndEmailVisitor(documentVisitor, emailResident);
+    public String allowVisitorToEnterAgain(Integer idVisitor) {
+        RegisteredVisitor registeredVisitor = residentPort.obtainVisitorById(idVisitor);
         if (registeredVisitor == null) {
-            throw new InvalidVisitorException(documentVisitor);
+            throw new InvalidVisitorException(idVisitor);
         }
         qrPort.disableVisitorQrByIdVisitor(registeredVisitor.id());
         Date expiration = getQRValidityTime(false);
-        return residentPort.reactiveVisitor(emailResident, documentVisitor, expiration);
+        return residentPort.reactiveVisitor(idVisitor, expiration);
     }
 
     @Override
-    public void deleteVisitor(Integer userId, String documentVisitor) {
-        residentPort.deactivateVisitor(userId, documentVisitor);
+    public void deleteVisitor(Integer idVisitor) {
+        residentPort.deactivateVisitor(idVisitor);
     }
 
     @Override
-    public QrVisitor obtainVisitorByDocument(String emailResident, String documentVisitor) {
-        return residentPort.obtainVisitor(emailResident, documentVisitor);
+    public QrVisitor obtainVisitorById(Integer idVisitor) {
+        return residentPort.obtainQRVisitor(idVisitor);
     }
 
 

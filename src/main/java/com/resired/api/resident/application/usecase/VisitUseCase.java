@@ -28,15 +28,15 @@ public class VisitUseCase {
         return visitorResidentService.obtainVisitors(emailResident);
     }
 
-    public String allowVisitorToEnterAgain(String emailResident, String documentVisitor) {
-        return visitorResidentService.allowVisitorToEnterAgain(emailResident, documentVisitor);
+    public String allowVisitorToEnterAgain(Integer idVisitor) {
+        return visitorResidentService.allowVisitorToEnterAgain(idVisitor);
     }
 
-    public void removeVisitor(Integer userId, String documentVisitor) {
-        visitorResidentService.deleteVisitor(userId, documentVisitor);
+    public void removeVisitor(Integer idVisitor) {
+        visitorResidentService.deleteVisitor(idVisitor);
     }
 
-    public QrVisitor obtainVisitorByDocument(String emailResident, String documentVisitor) {
-        return visitorResidentService.obtainVisitorByDocument(emailResident, documentVisitor);
+    public QrVisitor obtainVisitorById(Integer idVisitor) {
+        return visitorResidentService.obtainVisitorById(idVisitor);
     }
 }

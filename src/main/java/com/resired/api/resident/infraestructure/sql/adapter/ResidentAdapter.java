@@ -13,10 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 @AllArgsConstructor
@@ -49,8 +46,8 @@ public class ResidentAdapter implements ResidentPort {
     }
 
     @Override
-    public QrVisitor obtainVisitor(String emailResident, String documentVisitor) {
-        QrOrm qrOrm = visitorJpa.obtainQRByEmailResidentAndDocumentVisitor(emailResident, documentVisitor);
+    public QrVisitor obtainQRVisitor(Integer idVisitor) {
+        QrOrm qrOrm = visitorJpa.obtainQRByIdVisitor(idVisitor);
         if (qrOrm == null) {
             return null;
         }
@@ -58,24 +55,25 @@ public class ResidentAdapter implements ResidentPort {
     }
 
     @Override
-    public RegisteredVisitor obtainVisitorByDocumentAndEmailVisitor(String documentVisitor, String emailResident) {
-        VisitorOrm visitorOrm = visitorJpa.obtainVisitorByEmailResidentAndDocument(emailResident, documentVisitor);
-        if (visitorOrm == null) {
-            return null;
+    public RegisteredVisitor obtainVisitorById(Integer idVisitor) {
+        Optional<VisitorOrm> visitorOrm = visitorJpa.findById(idVisitor);
+        if (visitorOrm.isPresent() && !visitorOrm.get().isDeleted()) {
+            return new RegisteredVisitor(visitorOrm.get().getId(), visitorOrm.get().getName(),
+                visitorOrm.get().getDocument(), visitorOrm.get().isFavorite(), true);
         }
-        return new RegisteredVisitor(visitorOrm.getId(), visitorOrm.getName(),
-            visitorOrm.getDocument(), visitorOrm.isFavorite(), true);
+        return null;
     }
 
+
     @Override
-    public String reactiveVisitor(String emailResident, String visitorDocument, Date expirationDate) {
-        VisitorOrm visitorOrm = visitorJpa.obtainVisitorByEmailResidentAndDocument(emailResident, visitorDocument);
+    public String reactiveVisitor(Integer idVisitor, Date expirationDate) {
+        VisitorOrm visitorOrm = visitorJpa.findById(idVisitor).get();
         return generateAndSaveQR(visitorOrm, expirationDate);
     }
 
     @Override
-    public void deactivateVisitor(Integer userId, String visitorDocument) {
-        visitorJpa.deleteVisitorByUserId(userId, visitorDocument);
+    public void deactivateVisitor(Integer idVisitor) {
+        visitorJpa.deleteVisitorById(idVisitor);
     }
 
     private String generateAndSaveQR(VisitorOrm visitor, Date expirationDate) {

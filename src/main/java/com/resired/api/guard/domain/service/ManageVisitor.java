@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface ManageVisitor {
 
-    QrVisitor obtainVisitorByDocument(String emailResident, String documentVisitor);
+    QrVisitor obtainVisitorById(Integer idVisitor);
 
     List<RegisteredVisitor> obtainVisitors(String emailResident);
 
-    String allowVisitorToEnterAgain(String emailResident, String documentVisitor);
+    String allowVisitorToEnterAgain(Integer idVisitor);
 
-    void deleteVisitor(Integer userId, String documentVisitor);
+    void deleteVisitor(Integer idVisitor);
 }
