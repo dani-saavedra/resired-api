@@ -1,5 +1,6 @@
 package com.resired.api.admin.infraestructure.rest.controller;
 
+import com.resired.api.admin.domain.entity.Resident;
 import com.resired.api.admin.application.usecase.AdminResidentUseCase;
 import com.resired.api.admin.application.usecase.AdminUserUseCase;
 import com.resired.api.admin.domain.vo.RegisterUserVO;
@@ -14,6 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.GeneralSecurityException;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/admin")
@@ -31,8 +33,7 @@ public class AdmResidentController {
                                                    @RequestBody InfoUserRequest request) throws GeneralSecurityException {
         UserApp userApp = jwtService.extractUser(bearer);
         RegisterUserVO registerUserVO = new RegisterUserVO(request.documentId(), request.documentType(),
-            request.firstName(), request.lastName(), request.email(),
-            userApp.neighborhoodId(), request.homeId(), UserType.RESIDENT);
+            request.firstName(), request.lastName(), request.email(), userApp.neighborhoodId(), request.homeId(), UserType.RESIDENT);
 
         userUseCase.registerUserToNeighborhood(registerUserVO, userApp.email());
         return ResponseEntity.ok("Resident registered successfully");
@@ -56,5 +57,13 @@ public class AdmResidentController {
 
         userUseCase.removeResidentByUserId(userApp.neighborhoodId(), idUser);
         return ResponseEntity.ok("Resident removed successfully");
+    }
+
+    @GetMapping(path = "/residents")
+    @Operation(summary = "Obtain residents of a neighborhood")
+    public List<Resident> getResidentsByNeighborhood(@RequestHeader(value = "Authorization") String bearer,
+                                                     @RequestParam(required = false, defaultValue = "true") boolean active) {
+        UserApp userApp = jwtService.extractUser(bearer);
+        return userUseCase.getResidentByNeighborhood(userApp.neighborhoodId(), active);
     }
 }

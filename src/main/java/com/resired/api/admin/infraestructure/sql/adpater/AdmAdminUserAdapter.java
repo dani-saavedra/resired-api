@@ -2,6 +2,7 @@ package com.resired.api.admin.infraestructure.sql.adpater;
 
 import com.resired.api.admin.application.dto.GuardDto;
 import com.resired.api.admin.application.repository.AdminGuardPort;
+import com.resired.api.admin.domain.entity.Resident;
 import com.resired.api.admin.domain.repository.AdminResidentPort;
 import com.resired.api.admin.domain.repository.AdminUserPort;
 import com.resired.api.admin.domain.vo.RegisterUserVO;
@@ -80,14 +81,27 @@ public class AdmAdminUserAdapter implements AdminUserPort, AdminResidentPort, Ad
     }
 
     @Override
+    public List<Resident> getResidentByNeighborhood(Integer neighborhoodId, int active) {
+        List<UserRolOrm> residents = jpaRepository.findAllByNeighborhoodIdAndRolAndActive(neighborhoodId, UserType.RESIDENT, active);
+        return residents.stream().map(role -> new Resident(
+                role.getUser().getDocumentId(),
+                role.getUser().getDocumentType(),
+                role.getUser().getLastName(),
+                role.getUser().getFirstName(),
+                role.getHome().getNumber(),
+                role.getUser().getEmail()))
+            .toList();
+    }
+
+    @Override
     public List<GuardDto> getAllGuards(Integer neighborhoodId, int active) {
-        List<UserOrm> guards = jpaRepository.findAllByNeighborhoodIdAndRolAndActive(neighborhoodId, UserType.GUARD, active);
+        List<UserRolOrm> guards = jpaRepository.findAllByNeighborhoodIdAndRolAndActive(neighborhoodId, UserType.GUARD, active);
         return guards.stream().map(guard -> new GuardDto(
-                guard.getDocumentId(),
-                guard.getDocumentType(),
-                guard.getLastName(),
-                guard.getFirstName(),
-                guard.getEmail()))
+                guard.getUser().getDocumentId(),
+                guard.getUser().getDocumentType(),
+                guard.getUser().getLastName(),
+                guard.getUser().getFirstName(),
+                guard.getUser().getEmail()))
             .toList();
     }
 
