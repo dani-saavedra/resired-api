@@ -30,7 +30,7 @@ public class NotificationMessageAdapter implements NotificationMessagePort {
         return notificationUserRepository.findNotificationsByUserIdOrderByCreatedDateDesc(userId)
             .stream()
             .map((notificationOrm -> new NotificationMessage(notificationOrm.getId(), notificationOrm.getTitle(),
-                notificationOrm.getMessage(), true, FormatDate.formatDate(notificationOrm.getCreatedDate()))))
+                notificationOrm.getMessage(), true, notificationOrm.getCreatedDate())))
             .toList();
     }
 
@@ -57,10 +57,11 @@ public class NotificationMessageAdapter implements NotificationMessagePort {
         NotificationOrm notificationOrm = new NotificationOrm();
         notificationOrm.setTitle(notificationMessage.title());
         notificationOrm.setMessage(notificationMessage.message());
-        notificationOrm.setCreatedDate(LocalDateTime.now(ZoneOffset.UTC));
+        notificationOrm.setCreatedDate(notificationMessage.createdDate());
         notificationRepository.save(notificationOrm);
 
         List<UserOrm> residents = userRepository.findResidentsByHomeId(homeId);
+        System.out.println("dsassda" + residents.size());
         saveNotificationForResidents(notificationOrm, residents);
     }
 
@@ -69,7 +70,7 @@ public class NotificationMessageAdapter implements NotificationMessagePort {
         NotificationOrm notificationOrm = new NotificationOrm();
         notificationOrm.setTitle(notificationMessage.title());
         notificationOrm.setMessage(notificationMessage.message());
-        notificationOrm.setCreatedDate(LocalDateTime.now(ZoneOffset.UTC));
+        notificationOrm.setCreatedDate(notificationMessage.createdDate());
         notificationRepository.save(notificationOrm);
 
         List<UserOrm> residents = userRepository.findResidentsByNeighborhoodId(neighborhoodId);
