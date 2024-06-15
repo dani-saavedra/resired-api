@@ -48,8 +48,7 @@ public class ResidentController {
 
     @DeleteMapping(path = "/visitor/{id}")
     @Operation(summary = "Delete a visitor registered by a resident")
-    public ResponseData<String> deleteVisitor(@RequestHeader(value = "Authorization") String bearer,
-                                              @PathVariable(value = "id") Integer idVisitor) {
+    public ResponseData<String> deleteVisitor(@PathVariable(value = "id") Integer idVisitor) {
         visitUseCase.removeVisitor(idVisitor);
         return new ResponseData<>("Successfully deleted visitor");
     }
