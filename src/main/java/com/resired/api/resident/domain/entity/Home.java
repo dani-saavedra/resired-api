@@ -1,5 +1,6 @@
 package com.resired.api.resident.domain.entity;
 
+import com.resired.api.admin.domain.vo.GroupingType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,6 +18,7 @@ public class Home {
     private List<Package> packages;
     @Setter
     private Double squareMeter;
+    private GroupingType type;
 
     public Home(Integer id) {
         this.id = id;
@@ -36,9 +38,23 @@ public class Home {
         this.block = block;
     }
 
+    public Home(Integer id, String name, String block, GroupingType type) {
+        this.id = id;
+        this.name = name;
+        this.block = block;
+        this.type = type;
+    }
+
     public void addPackages(Package newPackage) {
         packages.add(newPackage);
     }
 
+    public String getFullHomeName() {
+        if (GroupingType.NINGUNA.equals(type)) {
+            return this.name;
+        } else {
+            return this.block + ", " + this.name;
+        }
+    }
 
 }

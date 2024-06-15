@@ -23,7 +23,7 @@ public class AdmReportController {
     private final JwtService jwtService;
     private final AdminReportUseCase adminReportUseCase;
 
-    @GetMapping("/visits")
+    @GetMapping("/report/visits")
     @Operation(summary = "Get visits report by date, last five days as default")
     public List<VisitReportDto> getVisitsReport(@RequestHeader(value = "Authorization") String bearer,
                                                 @Parameter(description = "Date as a String in format YYYY-MM-DD",

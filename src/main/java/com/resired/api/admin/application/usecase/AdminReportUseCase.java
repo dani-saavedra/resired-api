@@ -3,6 +3,7 @@ package com.resired.api.admin.application.usecase;
 import com.resired.api.admin.application.dto.VisitReportDto;
 import com.resired.api.guard.domain.entity.Visit;
 import com.resired.api.guard.domain.repository.GuardPort;
+import com.resired.api.utils.FormatDate;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +42,7 @@ public class AdminReportUseCase {
                 visit.getVisitorName(),
                 visit.getDestinationHome(),
                 visit.getVisitorDocument(),
-                visit.getCheckIn().toString(),
+                FormatDate.formatDate(visit.getCheckIn()),
                 visit.getAuthorizingGuardName()))
             .toList();
     }

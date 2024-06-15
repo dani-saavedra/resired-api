@@ -42,4 +42,8 @@ public class User {
         }
         return false;
     }
+
+    public String getFullNameLastOneFirst() {
+        return this.userLastName + " " + this.userName;
+    }
 }

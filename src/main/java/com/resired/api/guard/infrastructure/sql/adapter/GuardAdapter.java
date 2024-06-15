@@ -138,11 +138,8 @@ public class GuardAdapter implements GuardPort, PackagePort {
     }
 
     private Visit toVisitDomain(VisitOrm visitOrm) {
-        String guardFullName = visitOrm.getAuthorizingGuard().getLastName() + " "
-            + visitOrm.getAuthorizingGuard().getFirstName();
-        String homeNumber = visitOrm.getQr().getVisitor().getAuthorizingHome().getNumber();
-        String blockName = visitOrm.getQr().getVisitor().getAuthorizingHome().getBlock().getName();
-        String destination = blockName + ", " + homeNumber;
+        String guardFullName = visitOrm.getAuthorizingGuard().toEntity().getFullNameLastOneFirst();
+        String destination = visitOrm.getQr().getVisitor().getAuthorizingHome().toBasicInfoHome().getFullHomeName();
 
         return new Visit(
             visitOrm.getId(),

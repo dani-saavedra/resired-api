@@ -1,5 +1,6 @@
 package com.resired.api.resident.infraestructure.sql.orm;
 
+import com.resired.api.resident.domain.entity.Home;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,4 +34,13 @@ public class HomeOrm {
 
     @Column(name = "square_meter", precision = 10, scale = 1)
     private BigDecimal squareMeter;
+
+    public Home toBasicInfoHome(){
+        return new Home(
+            this.id,
+            this.number,
+            this.block.getName(),
+            this.block.getType()
+        );
+    }
 }
