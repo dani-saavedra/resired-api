@@ -43,7 +43,8 @@ public class VisitorResidentService implements CreateVisitor, ManageVisitor {
         }
         List<RegisteredVisitor> registeredVisitors = residentPort.obtainVisitors(resident.getEmail());
         for (RegisteredVisitor registeredVisitor : registeredVisitors) {
-            if (registeredVisitor.document().equals(residentVisit.documentVisitor())) {
+            if (registeredVisitor.document() != null &&
+                registeredVisitor.document().equals(residentVisit.documentVisitor())) {
                 throw new InvalidVisitorException(registeredVisitor.id());
             }
         }
