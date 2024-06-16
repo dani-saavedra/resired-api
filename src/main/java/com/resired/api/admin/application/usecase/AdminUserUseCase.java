@@ -1,6 +1,7 @@
 package com.resired.api.admin.application.usecase;
 
 import com.resired.api.admin.application.dto.GuardDto;
+import com.resired.api.admin.domain.entity.Resident;
 import com.resired.api.admin.application.repository.AdminGuardPort;
 import com.resired.api.admin.domain.repository.AdminUserPort;
 import com.resired.api.admin.domain.vo.RegisterUserVO;
@@ -41,5 +42,13 @@ public class AdminUserUseCase {
 
     public List<GuardDto> getAllGuards(Integer neighborhoodId, boolean active) {
         return adminGuardPort.getAllGuards(neighborhoodId, active ? 1 : 0);
+    }
+
+    public List<Resident> getResidentByNeighborhood(Integer neighborhoodId, boolean active) {
+        return adminUserPort.getResidentByNeighborhood(neighborhoodId, active ? 1 : 0);
+    }
+
+    public List<Resident> getResidentByHome(Integer homeId) {
+        return adminUserPort.getResidentByHome(homeId);
     }
 }

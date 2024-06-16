@@ -3,6 +3,7 @@ package com.resired.api.security.infraestructure.sql.jpa;
 import com.resired.api.resident.infraestructure.sql.orm.NeighborhoodOrm;
 import com.resired.api.security.domain.enums.UserType;
 import com.resired.api.security.infraestructure.sql.orm.UserOrm;
+import com.resired.api.security.infraestructure.sql.orm.UserRolOrm;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -51,7 +52,7 @@ public interface UserJpaRepository extends JpaRepository<UserOrm, Integer> {
     @Query("SELECT ur.user FROM UserRolOrm ur WHERE ur.neighborhood.id = :neighborhoodId AND ur.rol = 'RESIDENT' AND ur.active = 1")
     List<UserOrm> findResidentsByNeighborhoodId(@Param("neighborhoodId") Integer neighborhoodId);
 
-    @Query("SELECT user FROM UserOrm user JOIN user.userRols rol" +
-        " WHERE rol.neighborhood.id = :neighborhoodId AND rol.rol = :role AND rol.active = :active")
-    List<UserOrm> findAllByNeighborhoodIdAndRolAndActive(@Param("neighborhoodId") Integer neighborhoodId, @Param("role") UserType role, @Param("active") int active);
+    @Query("SELECT role FROM UserRolOrm role JOIN role.user user" +
+        " WHERE role.neighborhood.id = :neighborhoodId AND role.rol = :role AND role.active = :active")
+    List<UserRolOrm> findAllByNeighborhoodIdAndRolAndActive(@Param("neighborhoodId") Integer neighborhoodId, @Param("role") UserType role, @Param("active") int active);
 }
