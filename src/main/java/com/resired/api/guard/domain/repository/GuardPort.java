@@ -1,6 +1,7 @@
 package com.resired.api.guard.domain.repository;
 
 import com.resired.api.guard.domain.entity.Visit;
+import com.resired.api.guard.domain.entity.Visitor;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,4 +16,7 @@ public interface GuardPort {
     List<Visit> findVisitsByNeighborhoodIdAndDateRange(Integer neighborhoodId,
                                                        LocalDateTime startDate,
                                                        LocalDateTime endDate);
+
+    List<Visitor> findAllVisitorsWithActiveQr(Integer neighborhoodId);
+
 }

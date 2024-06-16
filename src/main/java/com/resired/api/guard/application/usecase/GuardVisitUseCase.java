@@ -6,9 +6,6 @@ import com.resired.api.guard.domain.entity.Visit;
 import com.resired.api.guard.domain.entity.Visitor;
 import com.resired.api.guard.domain.repository.GuardPort;
 import com.resired.api.guard.domain.repository.QrPort;
-import com.resired.api.guard.domain.service.VisitorGuardService;
-import com.resired.api.guard.domain.vo.VisitVO;
-import com.resired.api.resident.application.dto.VisitorRequestDTO;
 import com.resired.api.security.domain.service.JwtSecurity;
 import com.resired.api.utils.FormatDate;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -30,8 +27,6 @@ public class GuardVisitUseCase {
     private final GuardPort guardPort;
     private final QrPort qrPort;
     private final JwtSecurity jwtSecurity;
-    private final Visitor visitor;
-    private final VisitorGuardService visitorGuardService;
 
     public Visitor validateInfoQR(String qr) {
         validateQR(qr);
@@ -45,13 +40,6 @@ public class GuardVisitUseCase {
         }
         guardPort.registerVisit(qr, guardId);
         qrPort.makeQrUnavailable(qr);
-    }
-
-    public void registerVisitor(String emailGuard, VisitorRequestDTO visitorDto, Integer guardId) {
-        VisitVO residentVisit = new VisitVO(visitorDto.name(), visitorDto.documentId(), visitorDto.telephone(),
-            visitorDto.homeId(), emailGuard, false);
-        String tokenUUID = visitor.createVisitor(residentVisit, visitorGuardService);
-        guardPort.registerVisit(tokenUUID, guardId);
     }
 
     private void validateQR(String qr) {

@@ -21,4 +21,10 @@ public interface VisitorJpaRepository extends JpaRepository<VisitorOrm, Integer>
     @Modifying
     @Query("update VisitorOrm visitor set visitor.deleted = true where visitor.id =:idVisitor")
     void deleteVisitorById(Integer idVisitor);
+
+    @Query("SELECT visitor FROM VisitorOrm visitor " +
+        "JOIN visitor.qrs qr WHERE qr.available = true " +
+        "AND visitor.authorizingHome.block.neighborhoodOrm.id = :neighborhoodId ")
+    List<VisitorOrm> findAllWithActiveQr(Integer neighborhoodId);
+
 }
