@@ -17,4 +17,6 @@ public interface AdminUserPort {
 
     List<Resident> getResidentByNeighborhood(Integer neighborhoodId, int active);
 
+    List<Resident> getResidentByHome(Integer homeId);
+
 }

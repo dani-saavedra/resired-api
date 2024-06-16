@@ -88,9 +88,20 @@ public class AdmAdminUserAdapter implements AdminUserPort, AdminResidentPort, Ad
                 role.getUser().getDocumentType(),
                 role.getUser().getLastName(),
                 role.getUser().getFirstName(),
-                role.getHome().getNumber(),
-                role.getUser().getEmail()))
+                role.getUser().getEmail(),
+                role.getHome().getNumber()))
             .toList();
+    }
+
+    @Override
+    public List<Resident> getResidentByHome(Integer homeId) {
+        return jpaRepository.findResidentsByHomeId(homeId).stream().map(orm -> new Resident(
+            orm.getDocumentId(),
+            orm.getDocumentType(),
+            orm.getLastName(),
+            orm.getFirstName(),
+            orm.getEmail(),
+            null)).toList();
     }
 
     @Override

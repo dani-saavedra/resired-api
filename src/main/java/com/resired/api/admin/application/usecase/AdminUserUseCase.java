@@ -47,4 +47,8 @@ public class AdminUserUseCase {
     public List<Resident> getResidentByNeighborhood(Integer neighborhoodId, boolean active) {
         return adminUserPort.getResidentByNeighborhood(neighborhoodId, active ? 1 : 0);
     }
+
+    public List<Resident> getResidentByHome(Integer homeId) {
+        return adminUserPort.getResidentByHome(homeId);
+    }
 }

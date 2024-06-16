@@ -59,11 +59,17 @@ public class AdmResidentController {
         return ResponseEntity.ok("Resident removed successfully");
     }
 
-    @GetMapping(path = "/residents")
+    @GetMapping(path = "/neighborhood/residents")
     @Operation(summary = "Obtain residents of a neighborhood")
     public List<Resident> getResidentsByNeighborhood(@RequestHeader(value = "Authorization") String bearer,
                                                      @RequestParam(required = false, defaultValue = "true") boolean active) {
         UserApp userApp = jwtService.extractUser(bearer);
         return userUseCase.getResidentByNeighborhood(userApp.neighborhoodId(), active);
+    }
+
+    @GetMapping(path = "/home/{homeId}/residents")
+    @Operation(summary = "Obtain residents of a home")
+    public List<Resident> getResidentsByHome(@PathVariable Integer homeId) {
+        return userUseCase.getResidentByHome(homeId);
     }
 }
