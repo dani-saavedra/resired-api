@@ -1,5 +1,6 @@
 package com.resired.api.resident.infraestructure.sql.jpa;
 
+import com.resired.api.guard.infrastructure.sql.dto.VisitorWithQrDto;
 import com.resired.api.resident.infraestructure.sql.orm.QrOrm;
 import com.resired.api.resident.infraestructure.sql.orm.VisitorOrm;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,16 +16,18 @@ public interface VisitorJpaRepository extends JpaRepository<VisitorOrm, Integer>
     List<VisitorOrm> obtainVisitorByEmailResident(String emailResident);
 
     @Query(value = "SELECT qr FROM QrOrm  qr WHERE qr.visitor.id = :idVisitor and qr.available=true and" +
-            " qr.visitor.deleted=false")
+        " qr.visitor.deleted=false")
     QrOrm obtainQRByIdVisitor(Integer idVisitor);
 
     @Modifying
     @Query("update VisitorOrm visitor set visitor.deleted = true where visitor.id =:idVisitor")
     void deleteVisitorById(Integer idVisitor);
 
-    @Query("SELECT visitor FROM VisitorOrm visitor " +
-        "JOIN visitor.qrs qr WHERE qr.available = true " +
-        "AND visitor.authorizingHome.block.neighborhoodOrm.id = :neighborhoodId ")
-    List<VisitorOrm> findAllWithActiveQr(Integer neighborhoodId);
+    @Query("SELECT new com.resired.api.guard.infrastructure.sql.dto.VisitorWithQrDto(visitor, qr) " +
+        "FROM VisitorOrm visitor " +
+        "JOIN visitor.qrs qr " +
+        "WHERE qr.available = true " +
+        "AND visitor.authorizingHome.block.neighborhoodOrm.id = :neighborhoodId")
+    List<VisitorWithQrDto> findAllWithActiveQr(Integer neighborhoodId);
 
 }

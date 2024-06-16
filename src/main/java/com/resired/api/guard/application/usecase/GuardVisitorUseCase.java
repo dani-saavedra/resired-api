@@ -30,7 +30,7 @@ public class GuardVisitorUseCase {
     public List<ActiveVisitorDto> getActiveQrVisitors(Integer neighborhoodId) {
         return guardPort.findAllVisitorsWithActiveQr(neighborhoodId).stream()
             .map(visitor -> new ActiveVisitorDto(
-                visitor.getVisitorId(),
+                visitor.getVisitorQr(),
                 visitor.getVisitorName(),
                 visitor.getVisitorDocument(),
                 visitor.getHome()

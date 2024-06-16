@@ -5,6 +5,7 @@ import com.resired.api.guard.domain.entity.Visit;
 import com.resired.api.guard.domain.entity.Visitor;
 import com.resired.api.guard.domain.repository.GuardPort;
 import com.resired.api.guard.domain.repository.PackagePort;
+import com.resired.api.guard.infrastructure.sql.dto.VisitorWithQrDto;
 import com.resired.api.guard.infrastructure.sql.jpa.PackageJpaRepository;
 import com.resired.api.guard.infrastructure.sql.jpa.VisitJpaRepository;
 import com.resired.api.guard.infrastructure.sql.orm.VisitOrm;
@@ -159,12 +160,12 @@ public class GuardAdapter implements GuardPort, PackagePort {
         );
     }
 
-    private Visitor toVisitorDomain(VisitorOrm visitorOrm) {
+    private Visitor toVisitorDomain(VisitorWithQrDto visitorWithQr) {
         return new Visitor(
-            visitorOrm.getId(),
-            visitorOrm.getName(),
-            visitorOrm.getDocument(),
-            visitorOrm.getAuthorizingHome().toBasicInfoHome().getFullHomeName()
+            visitorWithQr.getVisitor().getName(),
+            visitorWithQr.getVisitor().getDocument(),
+            visitorWithQr.getVisitor().getAuthorizingHome().toBasicInfoHome().getFullHomeName(),
+            visitorWithQr.getQr().getQr()
         );
     }
 }
