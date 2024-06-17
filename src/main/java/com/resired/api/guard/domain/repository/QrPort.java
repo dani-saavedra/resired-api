@@ -8,7 +8,5 @@ public interface QrPort {
 
     boolean isAvailableQR(String qr);
 
-    void makeQrUnavailable(String qr);
-
     void disableVisitorQrByIdVisitor(Integer idVisitor);
 }

@@ -39,7 +39,6 @@ public class GuardVisitUseCase {
             throw new QrInvalidException("Unavailable");
         }
         guardPort.registerVisit(qr, guardId);
-        qrPort.makeQrUnavailable(qr);
     }
 
     private void validateQR(String qr) {

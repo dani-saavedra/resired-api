@@ -42,6 +42,7 @@ public class GuardAdapter implements GuardPort, PackagePort {
         UserOrm guard = new UserOrm();
         guard.setId(guardId);
         visit.setAuthorizingGuard(guard);
+        makeQrUnavailable(qr);
         visitJpaRepository.save(visit);
     }
 
@@ -110,6 +111,14 @@ public class GuardAdapter implements GuardPort, PackagePort {
     @Override
     public void updatePackage(Package packet) {
         packageJpaRepository.save(fromEntity(packet));
+    }
+
+    private void makeQrUnavailable(QrOrm qr) {
+        if (!qr.getVisitor().isFavorite()) {
+            qr.setAvailable(false);
+            qr.setDisabledAt(LocalDateTime.now(ZoneOffset.UTC));
+            qrJpaRepository.save(qr);
+        }
     }
 
     private Package toPackageDomain(PackageOrm packageOrm) {

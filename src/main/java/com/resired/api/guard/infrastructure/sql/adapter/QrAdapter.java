@@ -32,14 +32,6 @@ public class QrAdapter implements QrPort {
     }
 
     @Override
-    public void makeQrUnavailable(String qrStr) {
-        QrOrm qr = qrJpaRepository.findByQr(qrStr);
-        qr.setAvailable(false);
-        qr.setDisabledAt(LocalDateTime.now(ZoneOffset.UTC));
-        qrJpaRepository.save(qr);
-    }
-
-    @Override
     public void disableVisitorQrByIdVisitor(Integer idVisitor) {
         qrJpaRepository.disableVisitorQrByIdVisitor(LocalDateTime.now(ZoneOffset.UTC), idVisitor);
     }
