@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface VisitorJpaRepository extends JpaRepository<VisitorOrm, Integer> {
 
-    @Query(value = "SELECT visi FROM VisitorOrm  visi WHERE visi.authorizingUser.email = ?1 and visi.deleted=false order by visi.favorite, visi.createdAt desc")
+    @Query(value = "SELECT visi FROM VisitorOrm  visi WHERE visi.authorizingUser.email = ?1 and visi.deleted=false order by visi.createdAt desc")
     List<VisitorOrm> obtainVisitorByEmailResident(String emailResident);
 
     @Query(value = "SELECT qr FROM QrOrm  qr WHERE qr.visitor.id = :idVisitor and qr.available=true and" +
