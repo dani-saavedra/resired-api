@@ -2,8 +2,10 @@ package com.resired.api.guard.infrastructure.sql.adapter;
 
 import com.resired.api.guard.domain.entity.Package;
 import com.resired.api.guard.domain.entity.Visit;
+import com.resired.api.guard.domain.entity.Visitor;
 import com.resired.api.guard.domain.repository.GuardPort;
 import com.resired.api.guard.domain.repository.PackagePort;
+import com.resired.api.guard.infrastructure.sql.dto.VisitorWithQrDto;
 import com.resired.api.guard.infrastructure.sql.jpa.PackageJpaRepository;
 import com.resired.api.guard.infrastructure.sql.jpa.VisitJpaRepository;
 import com.resired.api.guard.infrastructure.sql.orm.VisitOrm;
@@ -66,6 +68,13 @@ public class GuardAdapter implements GuardPort, PackagePort {
         List<VisitOrm> visitOrms = visitJpaRepository.findVisitsByNeighborhoodIdAndDateRange(neighborhoodId,
             startDate, endDate);
         return visitOrms.stream().map(this::toVisitDomain).toList();
+    }
+
+    @Override
+    public List<Visitor> findAllVisitorsWithActiveQr(Integer neighborhoodId) {
+        return visitorJpa.findAllWithActiveQr(neighborhoodId).stream()
+            .map(this::toVisitorDomain)
+            .toList();
     }
 
     @Override
@@ -148,6 +157,15 @@ public class GuardAdapter implements GuardPort, PackagePort {
             destination,
             visitOrm.getCheckIn(),
             guardFullName
+        );
+    }
+
+    private Visitor toVisitorDomain(VisitorWithQrDto visitorWithQr) {
+        return new Visitor(
+            visitorWithQr.getVisitor().getName(),
+            visitorWithQr.getVisitor().getDocument(),
+            visitorWithQr.getVisitor().getAuthorizingHome().toBasicInfoHome().getFullHomeName(),
+            visitorWithQr.getQr().getQr()
         );
     }
 }

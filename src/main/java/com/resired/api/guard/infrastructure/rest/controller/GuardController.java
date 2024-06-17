@@ -1,7 +1,9 @@
 package com.resired.api.guard.infrastructure.rest.controller;
 
+import com.resired.api.guard.application.dto.ActiveVisitorDto;
 import com.resired.api.guard.application.dto.VisitResponseDTO;
 import com.resired.api.guard.application.usecase.GuardVisitUseCase;
+import com.resired.api.guard.application.usecase.GuardVisitorUseCase;
 import com.resired.api.guard.domain.entity.Visitor;
 import com.resired.api.guard.infrastructure.rest.dto.InfoQrRequest;
 import com.resired.api.resident.application.dto.VisitorRequestDTO;
@@ -30,6 +32,7 @@ import java.util.Optional;
 public class GuardController {
 
     private final GuardVisitUseCase visitUseCase;
+    private final GuardVisitorUseCase visitorUseCase;
     private final JwtService jwtService;
 
     @GetMapping("/info-qr")
@@ -60,7 +63,7 @@ public class GuardController {
     public ResponseData<String> registerVisitor(@RequestHeader(value = "Authorization") String bearer,
                                                 @RequestBody VisitorRequestDTO visitorRequestDTO) {
         UserApp userApp = jwtService.extractUser(bearer);
-        visitUseCase.registerVisitor(userApp.email(), visitorRequestDTO, userApp.userId());
+        visitorUseCase.registerVisitor(userApp.email(), visitorRequestDTO, userApp.userId());
         return new ResponseData<>("Registered visit successfully");
     }
 
@@ -80,5 +83,12 @@ public class GuardController {
         }
 
         return new ResponseData<>(visits);
+    }
+
+    @GetMapping("/visitors")
+    @Operation(summary = "List all visitors on neighborhood with an active QR code")
+    public List<ActiveVisitorDto> getActiveQrVisitors(@RequestHeader(value = "Authorization") String bearer) {
+        UserApp userApp = jwtService.extractUser(bearer);
+        return visitorUseCase.getActiveQrVisitors(userApp.neighborhoodId());
     }
 }

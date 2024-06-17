@@ -1,32 +1,36 @@
 package com.resired.api.guard.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.resired.api.guard.domain.service.CreateVisitor;
-import com.resired.api.guard.domain.vo.VisitVO;
 import lombok.Getter;
-import org.springframework.stereotype.Service;
 
 @Getter
-@Service
 public class Visitor {
     @JsonProperty("visitor_name")
-    String visitorName;
+    private String visitorName;
     @JsonProperty("visitor_document")
-    String visitorDocument;
-    String home;
-    boolean available;
+    private String visitorDocument;
+    private final String home;
+    private boolean available;
+    private String visitorQr;
+
+    public Visitor(String visitorName, String visitorDocument, String home, boolean available) {
+        this.visitorName = visitorName;
+        this.visitorDocument = visitorDocument;
+        this.home = home;
+        this.available = available;
+    }
+
+    public Visitor(String visitorName, String visitorDocument, String home, String visitorQr) {
+        this.visitorName = visitorName;
+        this.visitorDocument = visitorDocument;
+        this.home = home;
+        this.visitorQr = visitorQr;
+    }
 
     public static Visitor createVisitor(String visitorName, String visitorDocument, String home,
                                         boolean availableQR, boolean favorite, boolean visitorDeleted) {
-        Visitor visitor = new Visitor();
-        visitor.visitorName = visitorName;
-        visitor.visitorDocument = visitorDocument;
-        visitor.home = home;
-        visitor.available = (availableQR || favorite) && !visitorDeleted;
-        return visitor;
+        boolean available = (availableQR || favorite) && !visitorDeleted;
+        return new Visitor(visitorName, visitorDocument, home, available);
     }
 
-    public String createVisitor(VisitVO residentVisit, CreateVisitor visitorService) {
-        return visitorService.createVisitor(residentVisit);
-    }
 }
