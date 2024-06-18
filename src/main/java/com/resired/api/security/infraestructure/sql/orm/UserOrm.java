@@ -77,4 +77,15 @@ public class UserOrm {
                 .toList()
         );
     }
+
+    @Override
+    public String toString() {
+        return "UserOrm{" +
+            "documentId='" + documentId + '\'' +
+            ", documentType='" + documentType + '\'' +
+            ", firstName='" + firstName + '\'' +
+            ", lastName='" + lastName + '\'' +
+            ", email='" + email + '\'' +
+            '}';
+    }
 }

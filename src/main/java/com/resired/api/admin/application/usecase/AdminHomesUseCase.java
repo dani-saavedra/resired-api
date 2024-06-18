@@ -19,16 +19,17 @@ public class AdminHomesUseCase {
     private final HomePort homePort;
 
     public List<HomeDTO> getHomesByNeighborhood(Integer neighborhood) {
-        return homePort.getHomesByNeighborhood(neighborhood)
+        List<Home> homesByNeighborhood = homePort.getHomesByNeighborhood(neighborhood);
+        return homesByNeighborhood
             .stream()
-            .map(home -> new HomeDTO(home.getId(), home.getName(), home.getBlock()))
+            .map(home -> new HomeDTO(home.getId(), home.getName(), home.getBlock(), home.getResidents()))
             .toList();
     }
 
     public List<HomeDTO> getHomesByBlock(Integer block) {
         return homePort.getHomesByBlocks(block)
             .stream()
-            .map(home -> new HomeDTO(home.getId(), home.getName(), home.getBlock()))
+            .map(home -> new HomeDTO(home.getId(), home.getName(), home.getBlock(), home.getResidents()))
             .toList();
     }
 

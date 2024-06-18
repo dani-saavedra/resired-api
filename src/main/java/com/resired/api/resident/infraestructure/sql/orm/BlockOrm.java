@@ -32,4 +32,13 @@ public class BlockOrm {
 
     @OneToMany(mappedBy = "block", cascade = CascadeType.ALL)
     private List<HomeOrm> homes;
+
+    @Override
+    public String toString() {
+        return "BlockOrm{" +
+            "name='" + name + '\'' +
+            ", type=" + type +
+            ", neighborhoodOrm=" + neighborhoodOrm +
+            '}';
+    }
 }
