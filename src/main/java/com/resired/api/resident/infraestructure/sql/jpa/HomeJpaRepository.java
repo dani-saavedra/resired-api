@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface HomeJpaRepository extends JpaRepository<HomeOrm, Integer> {
 
-    @Query(value = "SELECT pac FROM PackageOrm  pac WHERE pac.home = ?1 order by pac.createdDate desc")
+    @Query(value = "SELECT pac FROM PackageOrm  pac WHERE pac.home = ?1 order by pac.updateDate desc, pac.createdDate desc")
     List<PackageOrm> getPackages(Integer homeId);
 
     List<HomeOrm> findByBlockId(Integer blockId);
