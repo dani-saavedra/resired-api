@@ -19,23 +19,26 @@ public class Home {
     @Setter
     private Double squareMeter;
     private GroupingType type;
+    private Integer residents;
 
     public Home(Integer id) {
         this.id = id;
         packages = new ArrayList<>();
     }
 
-    public Home(Integer id, String name, Integer neighborhood) {
+    public Home(Integer id, String name, Integer neighborhood, Integer residents) {
         this.id = id;
         this.name = name;
         this.neighborhood = neighborhood;
         packages = new ArrayList<>();
+        this.residents = residents;
     }
 
-    public Home(Integer id, String name, String block) {
+    public Home(Integer id, String name, String block, Integer residents) {
         this.id = id;
         this.name = name;
         this.block = block;
+        this.residents = residents;
     }
 
     public Home(Integer id, String name, String block, GroupingType type) {
