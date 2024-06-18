@@ -5,12 +5,15 @@ import com.resired.api.resident.domain.enums.StatePQRS;
 import com.resired.api.security.infraestructure.sql.orm.UserOrm;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 @Entity
 @Table(name = "pqrs")
 @Data
+@NoArgsConstructor
 public class PqrsOrm {
 
     @Id
@@ -52,4 +55,19 @@ public class PqrsOrm {
     @JoinColumn(name = "admin_responds")
     private UserOrm adminResponds;
 
+    public PqrsOrm(String title, String description, String ticketNumber, CategoryPQRS category, StatePQRS state,
+                   Integer residentId, Integer neighborhoodId) {
+        this.title = title;
+        this.description = description;
+        this.ticketNumber = ticketNumber;
+        this.category = category;
+        this.state = state;
+        UserOrm resident = new UserOrm();
+        resident.setId(residentId);
+        this.resident = resident;
+        NeighborhoodOrm neighborhood = new NeighborhoodOrm();
+        neighborhood.setId(neighborhoodId);
+        this.neighborhood = neighborhood;
+        this.creationDate = LocalDateTime.now(ZoneOffset.UTC);
+    }
 }
