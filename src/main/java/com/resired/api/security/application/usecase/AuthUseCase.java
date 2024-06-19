@@ -3,6 +3,7 @@ package com.resired.api.security.application.usecase;
 import com.resired.api.security.application.dto.AuthenticationRequest;
 import com.resired.api.security.application.dto.AuthenticationResponse;
 import com.resired.api.security.domain.entity.Rol;
+import com.resired.api.security.domain.enums.UserType;
 import com.resired.api.security.domain.exception.InactiveUserException;
 import com.resired.api.security.application.exception.InvalidCredentialException;
 import com.resired.api.security.domain.entity.User;
@@ -38,6 +39,20 @@ public class AuthUseCase {
         } else {
             jwt = jwtService.generateToken(user.getEmail());
         }
+        return new AuthenticationResponse(jwt, user.getRoles(), user.getUserName(), user.getEmail(),
+            user.getDocumentId(), user.isMandatoryChangePassword());
+    }
+
+    public AuthenticationResponse authAdmin(AuthenticationRequest auth) throws GeneralSecurityException {
+        String encryptPass = authService.encrypt(auth.password());
+        User user = userPort.getUserByCredentials(auth.email(), encryptPass);
+        if (user == null || user.getRoles().stream().noneMatch(n -> UserType.ADMIN.equals(n.getUserType()))) {
+            throw new InvalidCredentialException(auth.email());
+        }
+        Rol rol = user.getRoles().get(0);
+        String jwt = jwtService.generateToken(user.getEmail(), rol.getUserType().name(), rol.getNeighborhoodId(),
+            rol.getHomeId(), user.getId());
+
         return new AuthenticationResponse(jwt, user.getRoles(), user.getUserName(), user.getEmail(),
             user.getDocumentId(), user.isMandatoryChangePassword());
     }

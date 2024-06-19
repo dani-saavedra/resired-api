@@ -34,4 +34,14 @@ public class AuthenticationController {
     public AuthenticationResponse authenticate(@RequestBody AuthenticationRequest auth) throws GeneralSecurityException {
         return authService.authUser(auth);
     }
+
+    @PostMapping(path = "/admin/login")
+    @Operation(summary = "Authenticate administrador")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Succesful Authenticacion"),
+        @ApiResponse(responseCode = "401", description = "Failed Authentication", content =
+        @Content(schema = @Schema(implementation = ErrorDTO.class)))})
+    public AuthenticationResponse authenticateAdmin(@RequestBody AuthenticationRequest auth) throws GeneralSecurityException {
+        return authService.authAdmin(auth);
+    }
 }
