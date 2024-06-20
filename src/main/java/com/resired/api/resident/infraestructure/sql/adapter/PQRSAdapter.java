@@ -1,5 +1,6 @@
 package com.resired.api.resident.infraestructure.sql.adapter;
 
+import com.resired.api.resident.application.dto.PqrsDetailDTO;
 import com.resired.api.resident.application.dto.PqrsResponseDTO;
 import com.resired.api.resident.application.dto.RegisterPqrs;
 import com.resired.api.resident.application.port.PqrsPort;
@@ -25,6 +26,14 @@ public class PQRSAdapter implements PqrsPort {
         return jpaRepository.findByResidentId(residentId).stream().map(orm ->
             new PqrsResponseDTO(FormatDate.formatDate(orm.getCreationDate()), orm.getTitle(), orm.getCategory(),
                 orm.getTicketNumber(), orm.getState())).toList();
+    }
+
+    @Override
+    public PqrsDetailDTO obtainPqrByTicketNumber(String ticketNumber) {
+        PqrsOrm pqrOrm = jpaRepository.findByTicketNumber(ticketNumber);
+        return new PqrsDetailDTO(FormatDate.formatDate(pqrOrm.getCreationDate()),
+            FormatDate.formatDate(pqrOrm.getResponseDate()), pqrOrm.getTitle(), pqrOrm.getCategory(),
+            pqrOrm.getTicketNumber(), pqrOrm.getState(), pqrOrm.getAdminResponds().getFirstName(), pqrOrm.getResponse());
     }
 
     @Override

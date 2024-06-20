@@ -1,5 +1,6 @@
 package com.resired.api.resident.application.port;
 
+import com.resired.api.resident.application.dto.PqrsDetailDTO;
 import com.resired.api.resident.application.dto.PqrsResponseDTO;
 import com.resired.api.resident.application.dto.RegisterPqrs;
 import com.resired.api.resident.domain.enums.StatePQRS;
@@ -9,6 +10,8 @@ import java.util.List;
 public interface PqrsPort {
 
     List<PqrsResponseDTO> obtainPQRSByResidentId(Integer residentId);
+
+    PqrsDetailDTO obtainPqrByTicketNumber(String ticketNumber);
 
     Integer totalPqrByNeighborhood(Integer neighborhoodId);
 

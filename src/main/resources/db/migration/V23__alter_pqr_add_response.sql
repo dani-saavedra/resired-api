@@ -1,0 +1,2 @@
+ALTER TABLE pqrs
+    ADD COLUMN response VARCHAR(5000);

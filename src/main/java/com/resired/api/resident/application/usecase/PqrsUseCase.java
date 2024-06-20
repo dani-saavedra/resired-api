@@ -1,5 +1,6 @@
 package com.resired.api.resident.application.usecase;
 
+import com.resired.api.resident.application.dto.PqrsDetailDTO;
 import com.resired.api.resident.application.dto.PqrsResponseDTO;
 import com.resired.api.resident.application.dto.RegisterPqrs;
 import com.resired.api.resident.application.port.PqrsPort;
@@ -24,6 +25,10 @@ public class PqrsUseCase {
         String ticketNumber = generateTicketNumber(registerPqrs.category(), registerPqrs.neighbor());
         port.registerPQRr(registerPqrs, ticketNumber, StatePQRS.RADICADA);
         return ticketNumber;
+    }
+
+    public PqrsDetailDTO obtainDetailInformationPqrs(String ticketNumber) {
+        return port.obtainPqrByTicketNumber(ticketNumber);
     }
 
     private String generateTicketNumber(CategoryPQRS category, Integer neighborhood) {
