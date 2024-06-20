@@ -13,4 +13,8 @@ public interface PqrsPort {
     Integer totalPqrByNeighborhood(Integer neighborhoodId);
 
     void registerPQRr(RegisterPqrs registerPqrs, String ticketNumber, StatePQRS statePQRS);
+
+    Integer getNeighborByTicketNumber(String ticketNumber);
+
+    void updateStatePQRS(String ticketNumber);
 }

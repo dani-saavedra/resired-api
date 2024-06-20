@@ -37,5 +37,22 @@ public class PQRSAdapter implements PqrsPort {
         jpaRepository.save(orm);
     }
 
+    @Override
+    public Integer getNeighborByTicketNumber(String ticketNumber) {
+        PqrsOrm pqrsOrm = jpaRepository.findByTicketNumber(ticketNumber);
+        if (pqrsOrm == null) {
+            return null;
+        }
+        return pqrsOrm.getNeighborhood().getId();
+    }
+
+    @Override
+    public void updateStatePQRS(String ticketNumber) {
+        PqrsOrm pqrsOrm = jpaRepository.findByTicketNumber(ticketNumber);
+        pqrsOrm.setState(StatePQRS.EN_REVISION);
+
+        jpaRepository.save(pqrsOrm);
+    }
+
 }
 
