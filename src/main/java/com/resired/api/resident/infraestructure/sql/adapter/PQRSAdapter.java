@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 @Repository
@@ -71,7 +72,7 @@ public class PQRSAdapter implements PqrsPort {
         pqrsOrm.setState(StatePQRS.COMPLETADA);
         pqrsOrm.setResponse(response);
         pqrsOrm.setAdminResponds(new UserOrm(userId));
-        pqrsOrm.setResponseDate(LocalDateTime.now());
+        pqrsOrm.setResponseDate(LocalDateTime.now(ZoneOffset.UTC));
         jpaRepository.save(pqrsOrm);
     }
 
