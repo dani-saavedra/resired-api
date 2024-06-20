@@ -34,7 +34,8 @@ public class PQRSAdapter implements PqrsPort {
         PqrsOrm pqrOrm = jpaRepository.findByTicketNumber(ticketNumber);
         return new PqrsDetailDTO(FormatDate.formatDate(pqrOrm.getCreationDate()),
             FormatDate.formatDate(pqrOrm.getResponseDate()), pqrOrm.getTitle(), pqrOrm.getCategory(),
-            pqrOrm.getTicketNumber(), pqrOrm.getState(), pqrOrm.getAdminResponds().getFirstName(), pqrOrm.getResponse());
+            pqrOrm.getTicketNumber(), pqrOrm.getState(), pqrOrm.getAdminResponds().getFirstName(),
+            pqrOrm.getResponse(),pqrOrm.getDescription());
     }
 
     @Override

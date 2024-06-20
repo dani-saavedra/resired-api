@@ -8,5 +8,5 @@ public record PqrsDetailDTO(@JsonProperty("created_at") String createdAt,
                             @JsonProperty("response_at") String responseAt,
                             String title, CategoryPQRS category,
                             String ticket, StatePQRS state, @JsonProperty("admin_response") String adminResponse,
-                            String response) {
+                            String response, String description) {
 }
