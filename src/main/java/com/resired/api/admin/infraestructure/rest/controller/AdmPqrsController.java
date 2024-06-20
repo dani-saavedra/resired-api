@@ -1,6 +1,8 @@
 package com.resired.api.admin.infraestructure.rest.controller;
 
+import com.resired.api.admin.application.dto.ResponsePQRS;
 import com.resired.api.admin.application.usecase.AdminPqrsUseCase;
+import com.resired.api.admin.infraestructure.rest.dto.PqrsResponseAdminDTO;
 import com.resired.api.resident.infraestructure.rest.dto.ResponseData;
 import com.resired.api.security.application.usecase.JwtService;
 import com.resired.api.security.domain.entity.UserApp;
@@ -23,5 +25,13 @@ public class AdmPqrsController {
         UserApp userApp = jwtService.extractUser(bearer);
         adminPqrsUseCase.updateStatePQRS(ticketNumber, userApp.neighborhoodId());
         return new ResponseData<>("Update PQRS successfully");
+    }
+
+    @PostMapping("/response")
+    public ResponseData<String> responsePQRS(@RequestHeader(value = "Authorization") String bearer,
+                                             @RequestBody PqrsResponseAdminDTO dto) {
+        UserApp userApp = jwtService.extractUser(bearer);
+        adminPqrsUseCase.responsePQRS(new ResponsePQRS(dto.ticketNumber(), dto.response(), userApp.userId(), userApp.neighborhoodId()));
+        return new ResponseData<>("Save PQRS response successfully");
     }
 }

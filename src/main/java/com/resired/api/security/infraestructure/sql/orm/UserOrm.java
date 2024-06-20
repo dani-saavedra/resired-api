@@ -88,4 +88,8 @@ public class UserOrm {
             ", email='" + email + '\'' +
             '}';
     }
+
+    public UserOrm(Integer id) {
+        this.id = id;
+    }
 }

@@ -6,10 +6,12 @@ import com.resired.api.resident.application.port.PqrsPort;
 import com.resired.api.resident.domain.enums.StatePQRS;
 import com.resired.api.resident.infraestructure.sql.jpa.PqrsJpaRepository;
 import com.resired.api.resident.infraestructure.sql.orm.PqrsOrm;
+import com.resired.api.security.infraestructure.sql.orm.UserOrm;
 import com.resired.api.utils.FormatDate;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -51,6 +53,15 @@ public class PQRSAdapter implements PqrsPort {
         PqrsOrm pqrsOrm = jpaRepository.findByTicketNumber(ticketNumber);
         pqrsOrm.setState(StatePQRS.EN_REVISION);
 
+        jpaRepository.save(pqrsOrm);
+    }
+
+    @Override
+    public void responsePqrs(String ticketNumber, String response, Integer userId) {
+        PqrsOrm pqrsOrm = jpaRepository.findByTicketNumber(ticketNumber);
+        pqrsOrm.setState(StatePQRS.COMPLETADA);
+        pqrsOrm.setAdminResponds(new UserOrm(userId));
+        pqrsOrm.setResponseDate(LocalDateTime.now());
         jpaRepository.save(pqrsOrm);
     }
 

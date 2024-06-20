@@ -17,4 +17,6 @@ public interface PqrsPort {
     Integer getNeighborByTicketNumber(String ticketNumber);
 
     void updateStatePQRS(String ticketNumber);
+
+    void responsePqrs(String ticketNumber, String response, Integer userId);
 }
