@@ -6,6 +6,7 @@ import com.resired.api.admin.infraestructure.rest.dto.PqrsResponseAdminDTO;
 import com.resired.api.resident.infraestructure.rest.dto.ResponseData;
 import com.resired.api.security.application.usecase.JwtService;
 import com.resired.api.security.domain.entity.UserApp;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,7 @@ public class AdmPqrsController {
     private final JwtService jwtService;
 
     @PutMapping("/take")
+    @Operation(summary = "Take pqrs from the administrator to start working on it")
     public ResponseData<String> updateState(@RequestHeader(value = "Authorization") String bearer,
                                             @RequestParam(value = "ticket_number") String ticketNumber) {
         UserApp userApp = jwtService.extractUser(bearer);
@@ -28,6 +30,7 @@ public class AdmPqrsController {
     }
 
     @PostMapping("/response")
+    @Operation(summary = "Receive a response from the administrator to a query")
     public ResponseData<String> responsePQRS(@RequestHeader(value = "Authorization") String bearer,
                                              @RequestBody PqrsResponseAdminDTO dto) {
         UserApp userApp = jwtService.extractUser(bearer);
