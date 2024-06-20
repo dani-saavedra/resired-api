@@ -1,5 +1,6 @@
 package com.resired.api.resident.infraestructure.rest.controller;
 
+import com.resired.api.resident.application.dto.PqrsDetailDTO;
 import com.resired.api.resident.application.dto.PqrsResponseDTO;
 import com.resired.api.resident.application.dto.RegisterPqrs;
 import com.resired.api.resident.application.usecase.PqrsUseCase;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/pqrs/resident")
+@RequestMapping(path = "/resident/pqrs")
 @AllArgsConstructor
 @PreAuthorize("hasAuthority('RESIDENT')")
 public class PqrController {
@@ -37,5 +38,11 @@ public class PqrController {
         String ticketNumber = useCase.registerPQRSByResident(new RegisterPqrs(userApp.neighborhoodId(), userApp.userId(),
             dto.title(), dto.category(), dto.description()));
         return new ResponseData<>(ticketNumber);
+    }
+
+    @GetMapping(path = "/{ticketNumber}")
+    @Operation(summary = "Obtain detail information of PQRS")
+    public PqrsDetailDTO obtainDetailInformationPqrs(@PathVariable String ticketNumber) {
+        return useCase.obtainDetailInformationPqrs(ticketNumber);
     }
 }

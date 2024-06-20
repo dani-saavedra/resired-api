@@ -10,4 +10,6 @@ public interface PqrsJpaRepository extends JpaRepository<PqrsOrm, Integer> {
     List<PqrsOrm> findByResidentId(Integer residentId);
 
     Integer countByNeighborhoodId(Integer neighborhoodId);
+
+    PqrsOrm findByTicketNumber(String ticketNumber);
 }

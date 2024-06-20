@@ -19,7 +19,8 @@ public enum ErrorCode {
     DEVICE01("Device already exists"),
     DEVICE02("Device for user not found"),
     NEIGHBORHOOD01("Number of homes exceeds that allowed"),
-    PACKAGE01("Package not found");
+    PACKAGE01("Package not found"),
+    PQRS01("Invalid PQRS");
 
     private final String description;
 
