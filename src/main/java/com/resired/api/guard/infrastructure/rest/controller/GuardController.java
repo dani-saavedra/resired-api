@@ -41,8 +41,8 @@ public class GuardController {
         @ApiResponse(responseCode = "200", description = "OK QR"),
         @ApiResponse(responseCode = "409", description = "Problems with QR", content =
         @Content(schema = @Schema(implementation = ErrorDTO.class)))})
-    public Visitor obtainInfoQr(@RequestBody InfoQrRequest infoQrRequest) {
-        return visitUseCase.validateInfoQR(infoQrRequest.qr());
+    public Visitor obtainInfoQr(@RequestParam String qr) {
+        return visitUseCase.validateInfoQR(qr);
     }
 
     @PostMapping("/visit")
