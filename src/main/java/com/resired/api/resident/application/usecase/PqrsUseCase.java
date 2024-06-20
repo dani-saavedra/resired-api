@@ -29,6 +29,6 @@ public class PqrsUseCase {
     private String generateTicketNumber(CategoryPQRS category, Integer neighborhood) {
         Integer totalPqrs = port.totalPqrByNeighborhood(neighborhood);
         String format = String.format("%06d", totalPqrs + 1);
-        return category.getCode() + format;
+        return category.getCode() + neighborhood + format;
     }
 }
