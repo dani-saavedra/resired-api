@@ -55,6 +55,9 @@ public class PqrsOrm {
     @JoinColumn(name = "admin_responds")
     private UserOrm adminResponds;
 
+    @Column
+    private String response;
+
     public PqrsOrm(String title, String description, String ticketNumber, CategoryPQRS category, StatePQRS state,
                    Integer residentId, Integer neighborhoodId) {
         this.title = title;

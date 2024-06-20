@@ -60,6 +60,7 @@ public class PQRSAdapter implements PqrsPort {
     public void responsePqrs(String ticketNumber, String response, Integer userId) {
         PqrsOrm pqrsOrm = jpaRepository.findByTicketNumber(ticketNumber);
         pqrsOrm.setState(StatePQRS.COMPLETADA);
+        pqrsOrm.setResponse(response);
         pqrsOrm.setAdminResponds(new UserOrm(userId));
         pqrsOrm.setResponseDate(LocalDateTime.now());
         jpaRepository.save(pqrsOrm);
