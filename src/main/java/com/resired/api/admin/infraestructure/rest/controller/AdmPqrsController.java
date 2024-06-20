@@ -1,6 +1,6 @@
 package com.resired.api.admin.infraestructure.rest.controller;
 
-import com.resired.api.admin.application.dto.ResponsePQRS;
+import com.resired.api.admin.application.vo.ResponsePQRS;
 import com.resired.api.admin.application.usecase.AdminPqrsUseCase;
 import com.resired.api.admin.infraestructure.rest.dto.PqrsResponseAdminDTO;
 import com.resired.api.resident.infraestructure.rest.dto.ResponseData;

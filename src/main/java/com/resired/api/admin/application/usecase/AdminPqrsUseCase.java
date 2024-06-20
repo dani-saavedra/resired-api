@@ -1,6 +1,6 @@
 package com.resired.api.admin.application.usecase;
 
-import com.resired.api.admin.application.dto.ResponsePQRS;
+import com.resired.api.admin.application.vo.ResponsePQRS;
 import com.resired.api.admin.application.exception.InvalidPqrsException;
 import com.resired.api.resident.application.port.PqrsPort;
 import lombok.AllArgsConstructor;
