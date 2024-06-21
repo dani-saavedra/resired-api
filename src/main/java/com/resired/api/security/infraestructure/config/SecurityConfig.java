@@ -39,7 +39,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(request -> request.requestMatchers("/auth/admin/login", "/auth/login",
-                    "/swagger-ui/**", "/docs/**", "/actuator/**", "/account/password/**")
+                    "/swagger-ui/**", "/docs/**", "/actuator/**", "/account/password/**", "/google/resident/request")
                 .permitAll().anyRequest().authenticated())
             .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authenticationProvider(authenticationProvider()).addFilterBefore(
