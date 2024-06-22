@@ -16,7 +16,7 @@ public class AdmResidentRequestController {
 
     private final RequestResidentUseCase useCase;
 
-    @PostMapping(path = "/resident/request")
+    @PostMapping(path = "/forms/submit")
     @Operation(summary = "Receive a request from a future user of the app to join resired")
     public void registerResident(@RequestBody ResidentRequestDto request) {
         useCase.registerRequestResident(request);
