@@ -9,4 +9,6 @@ public interface QrPort {
     boolean isAvailableQR(String qr);
 
     void disableVisitorQrByIdVisitor(Integer idVisitor);
+
+    boolean hasDocumentRegisteredQR(String qr);
 }

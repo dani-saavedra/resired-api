@@ -63,6 +63,13 @@ public class GuardAdapter implements GuardPort, PackagePort {
     }
 
     @Override
+    public void updateVisitorDocument(String qrStr, String visitorDocument) {
+        QrOrm qr = qrJpaRepository.findByQr(qrStr);
+        qr.getVisitor().setDocument(visitorDocument);
+        visitorJpa.save(qr.getVisitor());
+    }
+
+    @Override
     public List<Visit> findVisitsByNeighborhoodIdAndDateRange(Integer neighborhoodId,
                                                               LocalDateTime startDate,
                                                               LocalDateTime endDate) {

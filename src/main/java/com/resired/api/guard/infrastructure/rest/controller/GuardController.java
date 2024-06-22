@@ -54,7 +54,7 @@ public class GuardController {
     public ResponseData<String> registerVisit(@RequestHeader(value = "Authorization") String bearer,
                                               @RequestBody InfoQrRequest infoQrRequest) {
         UserApp userApp = jwtService.extractUser(bearer);
-        visitUseCase.registerVisit(infoQrRequest.qr(), userApp.userId());
+        visitUseCase.registerVisit(infoQrRequest, userApp.userId());
         return new ResponseData<>("Registered visit successfully");
     }
 
