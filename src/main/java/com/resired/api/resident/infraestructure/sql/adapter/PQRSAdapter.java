@@ -32,6 +32,9 @@ public class PQRSAdapter implements PqrsPort {
     @Override
     public PqrsDetailDTO obtainPqrByTicketNumber(String ticketNumber) {
         PqrsOrm pqrOrm = jpaRepository.findByTicketNumber(ticketNumber);
+        if (pqrOrm == null) {
+            return null;
+        }
         String responder = null;
         if (pqrOrm.getAdminResponds() != null) {
             responder = pqrOrm.getAdminResponds().getFirstName();
