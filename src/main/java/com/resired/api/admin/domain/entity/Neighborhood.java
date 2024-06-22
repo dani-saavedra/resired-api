@@ -14,7 +14,7 @@ public class Neighborhood {
 
     private final Integer id;
     private final String name;
-    private final String document;
+    private String document;
     private final String address;
     private final String city;
     private final Integer socioeconomicLevel;
@@ -35,4 +35,13 @@ public class Neighborhood {
     @Setter
     private Integer homes;
 
+    public Neighborhood(Integer id, String name, String address, String city,
+                        NeighborhoodCategory category, Integer socioeconomicLevel) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.city = city;
+        this.category = category;
+        this.socioeconomicLevel = socioeconomicLevel;
+    }
 }

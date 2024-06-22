@@ -4,7 +4,7 @@ public interface EmailPort {
 
     void sendEmailToRecoverPass(String email, String token);
 
-    void sendRegisteredUserEmail(String email);
+    void sendRegisteredUserEmail(String email, String neighborhood);
 
-    void sendAssociateNewUserToNeighborhood(String email);
+    void sendAssociateNewUserToNeighborhood(String email, String neighborhood);
 }

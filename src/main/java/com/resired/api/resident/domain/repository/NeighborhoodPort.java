@@ -1,5 +1,6 @@
 package com.resired.api.resident.domain.repository;
 
+import com.resired.api.admin.domain.entity.Neighborhood;
 import com.resired.api.resident.domain.entity.News;
 
 import java.util.List;
@@ -7,4 +8,6 @@ import java.util.List;
 public interface NeighborhoodPort {
 
     List<News> getNews(Integer id);
+
+    Neighborhood findById(Integer id);
 }

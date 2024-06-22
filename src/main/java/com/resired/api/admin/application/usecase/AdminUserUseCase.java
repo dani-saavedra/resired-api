@@ -1,10 +1,12 @@
 package com.resired.api.admin.application.usecase;
 
 import com.resired.api.admin.application.dto.GuardDto;
+import com.resired.api.admin.domain.entity.Neighborhood;
 import com.resired.api.admin.domain.entity.Resident;
 import com.resired.api.admin.application.repository.AdminGuardPort;
 import com.resired.api.admin.domain.repository.AdminUserPort;
 import com.resired.api.admin.domain.vo.RegisterUserVO;
+import com.resired.api.resident.domain.repository.NeighborhoodPort;
 import com.resired.api.security.domain.repository.EmailPort;
 import com.resired.api.security.domain.service.AuthenticationService;
 import lombok.AllArgsConstructor;
@@ -23,16 +25,18 @@ public class AdminUserUseCase {
     private final AdminGuardPort adminGuardPort;
     private final AuthenticationService authService;
     private final EmailPort emailPort;
+    private final NeighborhoodPort neighborhoodPort;
 
     public void registerUserToNeighborhood(RegisterUserVO registerUserVO, String registeredBy) throws GeneralSecurityException {
         String password = authService.encrypt(registerUserVO.documentId());
         Integer userId = adminUserPort.getUserByEmail(registerUserVO.email());
+        Neighborhood neighborhood = neighborhoodPort.findById(registerUserVO.neighborhoodId());
         if (userId == null) {
             adminUserPort.registerUserToNeighborhood(registerUserVO, registeredBy, password);
-            emailPort.sendRegisteredUserEmail(registerUserVO.email());
+            emailPort.sendRegisteredUserEmail(registerUserVO.email(), neighborhood.getName());
         } else {
             adminUserPort.associateNewUserToNeighborhood(registerUserVO, userId);
-            emailPort.sendAssociateNewUserToNeighborhood(registerUserVO.email());
+            emailPort.sendAssociateNewUserToNeighborhood(registerUserVO.email(), neighborhood.getName());
         }
     }
 
