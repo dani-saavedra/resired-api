@@ -13,6 +13,8 @@ public interface GuardPort {
     String registerVisitFromGuard(Integer userId, Integer homeId, String homeName,
                                   String name, String visitorDocument, String telephone);
 
+    void updateVisitorDocument(String qr, String visitorDocument);
+
     List<Visit> findVisitsByNeighborhoodIdAndDateRange(Integer neighborhoodId,
                                                        LocalDateTime startDate,
                                                        LocalDateTime endDate);

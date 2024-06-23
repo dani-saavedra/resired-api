@@ -35,4 +35,9 @@ public class QrAdapter implements QrPort {
     public void disableVisitorQrByIdVisitor(Integer idVisitor) {
         qrJpaRepository.disableVisitorQrByIdVisitor(LocalDateTime.now(ZoneOffset.UTC), idVisitor);
     }
+
+    @Override
+    public boolean hasDocumentRegisteredQR(String qr) {
+        return qrJpaRepository.findByQr(qr).getVisitor().getDocument() != null;
+    }
 }

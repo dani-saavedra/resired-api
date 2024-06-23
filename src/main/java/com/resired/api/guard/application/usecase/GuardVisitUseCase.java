@@ -6,6 +6,7 @@ import com.resired.api.guard.domain.entity.Visit;
 import com.resired.api.guard.domain.entity.Visitor;
 import com.resired.api.guard.domain.repository.GuardPort;
 import com.resired.api.guard.domain.repository.QrPort;
+import com.resired.api.guard.infrastructure.rest.dto.InfoQrRequest;
 import com.resired.api.security.domain.service.JwtSecurity;
 import com.resired.api.utils.FormatDate;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -33,12 +34,18 @@ public class GuardVisitUseCase {
         return qrPort.obtainInfoQR(qr);
     }
 
-    public void registerVisit(String qr, Integer guardId) {
-        validateQR(qr);
-        if (!qrPort.isAvailableQR(qr)) {
+    public void registerVisit(InfoQrRequest infoQrRequest, Integer guardId) {
+        validateQR(infoQrRequest.qr());
+        if (!qrPort.isAvailableQR(infoQrRequest.qr())) {
             throw new QrInvalidException("Unavailable");
         }
-        guardPort.registerVisit(qr, guardId);
+        if (!qrPort.hasDocumentRegisteredQR(infoQrRequest.qr())) {
+            if (infoQrRequest.document() == null) {
+                throw new QrInvalidException("Document");
+            }
+            guardPort.updateVisitorDocument(infoQrRequest.qr(), infoQrRequest.document());
+        }
+        guardPort.registerVisit(infoQrRequest.qr(), guardId);
     }
 
     private void validateQR(String qr) {
