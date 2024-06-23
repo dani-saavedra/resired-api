@@ -25,7 +25,8 @@ public class PQRSAdapter implements PqrsPort {
     @Override
     public List<PqrsResponseDTO> obtainPQRSByResidentId(Integer residentId) {
         return jpaRepository.findByResidentId(residentId).stream().map(orm ->
-            new PqrsResponseDTO(FormatDate.formatDate(orm.getCreationDate()), orm.getTitle(), orm.getCategory(),
+            new PqrsResponseDTO(FormatDate.formatDate(orm.getCreationDate()),
+                FormatDate.formatDate(orm.getResponseDate()), orm.getTitle(), orm.getCategory(),
                 orm.getTicketNumber(), orm.getState())).toList();
     }
 
