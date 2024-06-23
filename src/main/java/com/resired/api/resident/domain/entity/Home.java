@@ -48,6 +48,15 @@ public class Home {
         this.type = type;
     }
 
+    public Home(String name, String block, GroupingType type, Integer neighborhood, Double squareMeter) {
+        this.id = null;
+        this.name = name;
+        this.block = block;
+        this.type = type;
+        this.neighborhood = neighborhood;
+        this.squareMeter = squareMeter;
+    }
+
     public void addPackages(Package newPackage) {
         packages.add(newPackage);
     }
