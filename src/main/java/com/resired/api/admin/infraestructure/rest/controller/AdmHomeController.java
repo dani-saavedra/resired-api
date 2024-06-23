@@ -1,16 +1,19 @@
 package com.resired.api.admin.infraestructure.rest.controller;
 
 import com.resired.api.admin.application.dto.HomeDTO;
-import com.resired.api.admin.infraestructure.rest.dto.UpdateHomeDTO;
 import com.resired.api.admin.application.usecase.AdminHomesUseCase;
+import com.resired.api.admin.infraestructure.rest.dto.UpdateHomeDTO;
 import com.resired.api.security.application.usecase.JwtService;
 import com.resired.api.security.domain.entity.UserApp;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -43,5 +46,14 @@ public class AdmHomeController {
         adminHomesUseCase.updateHome(userApp.neighborhoodId(), updateHomeDTO.home(), updateHomeDTO.name(),
             updateHomeDTO.meter());
         return ResponseEntity.ok("Updated home");
+    }
+
+    @PostMapping("/homes/excel")
+    @Operation(summary = "Upload a set of homes and blocks from an excel file")
+    public ResponseEntity<String> uploadHomesFromExcel(@RequestHeader(value = "Authorization") String bearer,
+                                                       @RequestParam("file") MultipartFile file) throws MessagingException, IOException {
+        UserApp userApp = jwtService.extractUser(bearer);
+        adminHomesUseCase.loadHomesFromExcel(file.getInputStream(), userApp.neighborhoodId());
+        return ResponseEntity.ok("Homes added");
     }
 }
