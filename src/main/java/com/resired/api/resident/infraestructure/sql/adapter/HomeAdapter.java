@@ -47,7 +47,7 @@ public class HomeAdapter implements HomePort {
             .map(orm -> {
                 List<UserRolOrm> activeResident = orm.getResidents()
                     .stream()
-                    .filter(userRolOrm -> userRolOrm.getUser().isActive()).toList();
+                    .filter(UserRolOrm::isActive).toList();
                 return new Home(orm.getId(), orm.getNumber(), orm.getBlock().getName(),
                     activeResident.size());
             }).toList();
