@@ -4,6 +4,7 @@ import com.resired.api.admin.application.dto.GuardDto;
 import com.resired.api.admin.domain.entity.Neighborhood;
 import com.resired.api.admin.domain.entity.Resident;
 import com.resired.api.admin.application.repository.AdminGuardPort;
+import com.resired.api.admin.domain.entity.ResidentHome;
 import com.resired.api.admin.domain.repository.AdminUserPort;
 import com.resired.api.admin.domain.vo.RegisterUserVO;
 import com.resired.api.resident.domain.repository.NeighborhoodPort;
@@ -52,7 +53,7 @@ public class AdminUserUseCase {
         return adminUserPort.getResidentByNeighborhood(neighborhoodId, active ? 1 : 0);
     }
 
-    public List<Resident> getResidentByHome(Integer homeId) {
+    public List<ResidentHome> getResidentByHome(Integer homeId) {
         return adminUserPort.getResidentByHome(homeId);
     }
 }

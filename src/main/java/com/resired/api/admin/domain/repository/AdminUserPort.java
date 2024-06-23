@@ -1,6 +1,7 @@
 package com.resired.api.admin.domain.repository;
 
 import com.resired.api.admin.domain.entity.Resident;
+import com.resired.api.admin.domain.entity.ResidentHome;
 import com.resired.api.admin.domain.vo.RegisterUserVO;
 
 import java.util.List;
@@ -17,6 +18,6 @@ public interface AdminUserPort {
 
     List<Resident> getResidentByNeighborhood(Integer neighborhoodId, int active);
 
-    List<Resident> getResidentByHome(Integer homeId);
+    List<ResidentHome> getResidentByHome(Integer homeId);
 
 }

@@ -3,6 +3,7 @@ package com.resired.api.admin.infraestructure.sql.adpater;
 import com.resired.api.admin.application.dto.GuardDto;
 import com.resired.api.admin.application.repository.AdminGuardPort;
 import com.resired.api.admin.domain.entity.Resident;
+import com.resired.api.admin.domain.entity.ResidentHome;
 import com.resired.api.admin.domain.repository.AdminResidentPort;
 import com.resired.api.admin.domain.repository.AdminUserPort;
 import com.resired.api.admin.domain.vo.RegisterUserVO;
@@ -94,14 +95,14 @@ public class AdmAdminUserAdapter implements AdminUserPort, AdminResidentPort, Ad
     }
 
     @Override
-    public List<Resident> getResidentByHome(Integer homeId) {
-        return jpaRepository.findResidentsByHomeId(homeId).stream().map(orm -> new Resident(
-            orm.getDocumentId(),
-            orm.getDocumentType(),
-            orm.getLastName(),
-            orm.getFirstName(),
-            orm.getEmail(),
-            null)).toList();
+    public List<ResidentHome> getResidentByHome(Integer homeId) {
+        return jpaRepository.findResidentsByHomeId(homeId).stream().map(orm -> new ResidentHome(
+                orm.getDocumentId(),
+                orm.getDocumentType(),
+                orm.getLastName(),
+                orm.getFirstName(),
+                orm.getEmail()))
+            .toList();
     }
 
     @Override

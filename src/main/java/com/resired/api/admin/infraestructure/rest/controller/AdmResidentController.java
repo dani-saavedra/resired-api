@@ -3,6 +3,7 @@ package com.resired.api.admin.infraestructure.rest.controller;
 import com.resired.api.admin.domain.entity.Resident;
 import com.resired.api.admin.application.usecase.AdminResidentUseCase;
 import com.resired.api.admin.application.usecase.AdminUserUseCase;
+import com.resired.api.admin.domain.entity.ResidentHome;
 import com.resired.api.admin.domain.vo.RegisterUserVO;
 import com.resired.api.admin.infraestructure.rest.dto.InfoUserRequest;
 import com.resired.api.security.application.usecase.JwtService;
@@ -69,7 +70,7 @@ public class AdmResidentController {
 
     @GetMapping(path = "/home/{homeId}/residents")
     @Operation(summary = "Obtain residents of a home")
-    public List<Resident> getResidentsByHome(@PathVariable Integer homeId) {
+    public List<ResidentHome> getResidentsByHome(@PathVariable Integer homeId) {
         return userUseCase.getResidentByHome(homeId);
     }
 }
