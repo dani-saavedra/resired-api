@@ -2,12 +2,14 @@ package com.resired.api.admin.application.usecase;
 
 import com.resired.api.admin.application.dto.HomeDTO;
 import com.resired.api.admin.application.exception.InvalidUserException;
+import com.resired.api.admin.application.port.HomeExcelPort;
 import com.resired.api.resident.domain.entity.Home;
 import com.resired.api.resident.domain.repository.HomePort;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.InputStream;
 import java.util.List;
 import java.util.Objects;
 
@@ -17,6 +19,7 @@ import java.util.Objects;
 public class AdminHomesUseCase {
 
     private final HomePort homePort;
+    private final HomeExcelPort homeExcelPort;
 
     public List<HomeDTO> getHomesByNeighborhood(Integer neighborhood) {
         List<Home> homesByNeighborhood = homePort.getHomesByNeighborhood(neighborhood);
@@ -41,5 +44,10 @@ public class AdminHomesUseCase {
         home.setName(newNameHome);
         home.setSquareMeter(squareMeter);
         homePort.updateHome(home.getId(), newNameHome, squareMeter);
+    }
+
+    public void loadHomesFromExcel(InputStream rawExcel) {
+        List<Home> homes = homeExcelPort.findAndGetHomes(rawExcel);
+        homePort.saveAll(homes);
     }
 }
