@@ -4,6 +4,7 @@ import com.resired.api.resident.domain.entity.Home;
 import com.resired.api.resident.domain.repository.HomePort;
 import com.resired.api.resident.infraestructure.sql.jpa.HomeJpaRepository;
 import com.resired.api.resident.infraestructure.sql.orm.HomeOrm;
+import com.resired.api.security.infraestructure.sql.orm.UserRolOrm;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -43,7 +44,13 @@ public class HomeAdapter implements HomePort {
         List<HomeOrm> byBlockNeighborhoodOrmId = jpaRepository.findByBlockNeighborhoodOrmId(neighborhoodId);
         return byBlockNeighborhoodOrmId
             .stream()
-            .map(orm -> new Home(orm.getId(), orm.getNumber(), orm.getBlock().getName(), orm.getResidents().size())).toList();
+            .map(orm -> {
+                List<UserRolOrm> activeResident = orm.getResidents()
+                    .stream()
+                    .filter(userRolOrm -> userRolOrm.getUser().isActive()).toList();
+                return new Home(orm.getId(), orm.getNumber(), orm.getBlock().getName(),
+                    activeResident.size());
+            }).toList();
     }
 
     @Override
