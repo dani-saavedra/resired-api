@@ -1,8 +1,8 @@
 package com.resired.api.resident.infraestructure.sql.adapter;
 
+import com.resired.api.admin.infraestructure.sql.jpa.BlockJpaRepository;
 import com.resired.api.resident.domain.entity.Home;
 import com.resired.api.resident.domain.repository.HomePort;
-import com.resired.api.resident.infraestructure.sql.jpa.BlockJpaRepository;
 import com.resired.api.resident.infraestructure.sql.jpa.HomeJpaRepository;
 import com.resired.api.resident.infraestructure.sql.jpa.NeighborhoodJpaRepository;
 import com.resired.api.resident.infraestructure.sql.orm.BlockOrm;
