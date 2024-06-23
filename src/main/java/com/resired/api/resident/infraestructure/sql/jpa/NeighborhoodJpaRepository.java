@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface NeighborhoodJpaRepository extends JpaRepository<NeighborhoodOrm, Integer> {
 
-    @Query(value = "SELECT ne FROM NewsOrm  ne WHERE ne.neighborhoodId = ?1")
+    @Query(value = "SELECT ne FROM NewsOrm  ne WHERE ne.neighborhoodId = ?1 order by ne.createdDate DESC LIMIT 20")
     List<NewsOrm> getNewsByNeighborhood(Integer neighborhoodId);
 }
