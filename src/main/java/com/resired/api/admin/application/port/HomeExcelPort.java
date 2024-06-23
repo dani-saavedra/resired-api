@@ -7,6 +7,6 @@ import java.io.InputStream;
 import java.util.List;
 
 public interface HomeExcelPort {
-    List<Home> findAndGetHomes(InputStream rawExcel) throws IOException;
+    List<Home> findAndGetHomes(InputStream rawExcel, Integer neighborhood) throws IOException;
 
 }

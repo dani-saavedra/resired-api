@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Objects;
@@ -46,8 +47,8 @@ public class AdminHomesUseCase {
         homePort.updateHome(home.getId(), newNameHome, squareMeter);
     }
 
-    public void loadHomesFromExcel(InputStream rawExcel) {
-        List<Home> homes = homeExcelPort.findAndGetHomes(rawExcel);
+    public void loadHomesFromExcel(InputStream rawExcel, Integer neighborhood) throws IOException {
+        List<Home> homes = homeExcelPort.findAndGetHomes(rawExcel, neighborhood);
         homePort.saveAll(homes);
     }
 }
