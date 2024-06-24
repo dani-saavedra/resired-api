@@ -7,8 +7,8 @@ import com.resired.api.resident.infraestructure.sql.jpa.HomeJpaRepository;
 import com.resired.api.resident.infraestructure.sql.jpa.NeighborhoodJpaRepository;
 import com.resired.api.resident.infraestructure.sql.orm.BlockOrm;
 import com.resired.api.resident.infraestructure.sql.orm.HomeOrm;
-import com.resired.api.security.infraestructure.sql.orm.UserRolOrm;
 import com.resired.api.resident.infraestructure.sql.orm.NeighborhoodOrm;
+import com.resired.api.security.infraestructure.sql.orm.UserRolOrm;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -77,18 +77,15 @@ public class HomeAdapter implements HomePort {
     @Override
     public void saveAll(List<Home> homes) {
         homes.stream().forEach(home -> {
-            Optional<BlockOrm> blockOpt = blockJpaRepository.findByNameAndNeighborhoodOrmId(home.getBlock(), home.getNeighborhood());
-            BlockOrm blockOrm;
+            BlockOrm blockOrm = getBlockOrm(home);
 
-            if (blockOpt.isEmpty()) {
+            if (blockOrm == null) {
                 Optional<NeighborhoodOrm> neighborhood = neighborhoodJpaRepository.findById(home.getNeighborhood());
                 blockOrm = new BlockOrm();
                 blockOrm.setName(home.getBlock());
                 blockOrm.setType(home.getType());
                 blockOrm.setNeighborhoodOrm(neighborhood.get());
                 blockOrm = blockJpaRepository.save(blockOrm);
-            } else {
-                blockOrm = blockOpt.get();
             }
 
             HomeOrm homeOrm = new HomeOrm();
@@ -99,5 +96,11 @@ public class HomeAdapter implements HomePort {
 
             jpaRepository.save(homeOrm);
         });
+    }
+
+    private BlockOrm getBlockOrm(Home home) {
+        Optional<BlockOrm> blockOpt = blockJpaRepository.findByNameAndNeighborhoodOrmId(home.getBlock(), home.getNeighborhood());
+        if (blockOpt.isEmpty()) return null;
+        return blockOpt.get();
     }
 }
