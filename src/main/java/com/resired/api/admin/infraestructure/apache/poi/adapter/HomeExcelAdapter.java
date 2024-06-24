@@ -62,7 +62,6 @@ public class HomeExcelAdapter implements HomeExcelPort {
     }
 
     private boolean checkIsNotValidExpectedCell(Cell cell, String expectedValue) {
-        System.out.print("Cell check: given: " + cell.getStringCellValue() + " \nexpected: " + expectedValue);
         return cell == null || !cell.getStringCellValue()
             .equalsIgnoreCase(expectedValue);
     }
