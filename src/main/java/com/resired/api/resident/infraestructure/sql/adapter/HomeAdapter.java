@@ -76,7 +76,7 @@ public class HomeAdapter implements HomePort {
 
     @Override
     public void saveAll(List<Home> homes) {
-        homes.stream().forEach(home -> {
+        homes.forEach(home -> {
             BlockOrm blockOrm = getBlockOrm(home);
 
             if (blockOrm == null) {
