@@ -61,7 +61,7 @@ public class HomeAdapter implements HomePort {
     }
 
     @Override
-    public void updateHome(Integer homeId, String number, double squareMeter) {
-        jpaRepository.updateHome(number, BigDecimal.valueOf(squareMeter), homeId);
+    public void updateHome(Integer homeId, String number, Double squareMeter) {
+        jpaRepository.updateHome(number, null, homeId);
     }
 }
