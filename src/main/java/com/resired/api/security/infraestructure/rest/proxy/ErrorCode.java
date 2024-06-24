@@ -13,6 +13,9 @@ public enum ErrorCode {
     VISIT01("QR invalid"),
     VISIT02("Visitor is invalid"),
     HOME01("Home not found"),
+    HOME02("Invalid template"),
+    HOME03("Empty template"),
+    HOME04("Missing grouping type"),
     GENERAL("Unknown error"),
     GENERAL_BAD_REQUEST("Bad request"),
     GENERAL_RESOURCE("Invalid url"),
@@ -20,7 +23,9 @@ public enum ErrorCode {
     DEVICE02("Device for user not found"),
     NEIGHBORHOOD01("Number of homes exceeds that allowed"),
     PACKAGE01("Package not found"),
-    PQRS01("Invalid PQRS");
+    PQRS01("Invalid PQRS"),
+    MULTIPART_FILE01("Multipart file not sent"),
+    MULTIPART_FILE02("Multipart file is not an Excel file .xlsx");
 
     private final String description;
 
