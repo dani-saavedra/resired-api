@@ -100,7 +100,6 @@ public class HomeAdapter implements HomePort {
 
     private BlockOrm getBlockOrm(Home home) {
         Optional<BlockOrm> blockOpt = blockJpaRepository.findByNameAndNeighborhoodOrmId(home.getBlock(), home.getNeighborhood());
-        if (blockOpt.isEmpty()) return null;
-        return blockOpt.get();
+        return blockOpt.orElse(null);
     }
 }
