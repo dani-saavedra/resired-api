@@ -16,7 +16,7 @@ public interface HomePort {
 
     List<Home> getHomesByBlocks(Integer blockId);
 
-    void updateHome(Integer homeId, String number, double squareMeter);
+    void updateHome(Integer homeId, String number, Double squareMeter);
 
     void saveAll(List<Home> homes);
 }
