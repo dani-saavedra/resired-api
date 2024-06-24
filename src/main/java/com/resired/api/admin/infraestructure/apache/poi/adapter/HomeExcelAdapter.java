@@ -27,13 +27,7 @@ public class HomeExcelAdapter implements HomeExcelPort {
 
         Cell groupingTypeCell = getCellByAddress(sheet, cellAddressGroupingType);
 
-        GroupingType blockType;
-
-        try {
-            blockType = GroupingType.valueOf(groupingTypeCell.getStringCellValue().toUpperCase());
-        } catch (IllegalArgumentException e) {
-            return null;
-        }
+        GroupingType blockType = GroupingType.valueOf(groupingTypeCell.getStringCellValue().toUpperCase());
 
         for (Row row : sheet) {
             if (row.getRowNum() < startRowHomes) {
