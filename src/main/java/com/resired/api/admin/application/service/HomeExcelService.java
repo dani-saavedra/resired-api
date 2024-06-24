@@ -1,7 +1,6 @@
-package com.resired.api.admin.infraestructure.apache.poi.adapter;
+package com.resired.api.admin.application.service;
 
 import com.resired.api.admin.application.exception.InvalidHomesTemplateException;
-import com.resired.api.admin.application.port.HomeExcelPort;
 import com.resired.api.admin.domain.vo.GroupingType;
 import com.resired.api.resident.domain.entity.Home;
 import org.apache.poi.ss.usermodel.*;
@@ -15,8 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class HomeExcelAdapter implements HomeExcelPort {
-    @Override
+public class HomeExcelService {
     public List<Home> findAndGetHomes(InputStream rawExcel, Integer neighborhood) throws IOException {
         List<Home> homes = new ArrayList<>();
         int startRowHomes = 5;
