@@ -6,7 +6,6 @@ import com.resired.api.admin.infraestructure.rest.dto.UpdateHomeDTO;
 import com.resired.api.security.application.usecase.JwtService;
 import com.resired.api.security.domain.entity.UserApp;
 import io.swagger.v3.oas.annotations.Operation;
-import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -51,7 +50,7 @@ public class AdmHomeController {
     @PostMapping("/homes/excel")
     @Operation(summary = "Upload a set of homes and blocks from an excel file")
     public ResponseEntity<String> uploadHomesFromExcel(@RequestHeader(value = "Authorization") String bearer,
-                                                       @RequestParam("file") MultipartFile file) throws MessagingException, IOException {
+                                                       @RequestParam("file") MultipartFile file) throws IOException {
         UserApp userApp = jwtService.extractUser(bearer);
         adminHomesUseCase.loadHomesFromExcel(file.getInputStream(), userApp.neighborhoodId());
         return ResponseEntity.ok("Homes added");
