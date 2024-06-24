@@ -20,7 +20,6 @@ public class HomeExcelAdapter implements HomeExcelPort {
         List<Home> homes = new ArrayList<>();
         int startRowHomes = 6;
         String cellAddressGroupingType = "E3";
-
         Workbook workbook = new XSSFWorkbook(rawExcel);
 
         Sheet sheet = workbook.getSheetAt(0);
