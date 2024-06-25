@@ -4,8 +4,6 @@ WORKDIR /app
 
 COPY build.gradle settings.gradle /app/
 
-RUN gradle assemble --no-daemon || return 0
-
 COPY src /app/src
 
 RUN gradle assemble --no-daemon
