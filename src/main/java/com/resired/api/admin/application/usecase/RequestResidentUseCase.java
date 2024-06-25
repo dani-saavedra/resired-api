@@ -5,6 +5,8 @@ import com.resired.api.admin.application.repository.ResidentRequestPort;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class RequestResidentUseCase {
@@ -13,5 +15,9 @@ public class RequestResidentUseCase {
 
     public void registerRequestResident(ResidentRequestDto residentRequestDto) {
         port.registerRequestResident(residentRequestDto);
+    }
+
+    public List<ResidentRequestDto> obtainRequestResident(Integer neighborhood) {
+        return port.obtainRequestResident(neighborhood);
     }
 }
