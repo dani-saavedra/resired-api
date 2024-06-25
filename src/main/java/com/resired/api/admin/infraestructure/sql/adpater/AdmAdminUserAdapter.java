@@ -90,7 +90,8 @@ public class AdmAdminUserAdapter implements AdminUserPort, AdminResidentPort, Ad
                 role.getUser().getLastName(),
                 role.getUser().getFirstName(),
                 role.getUser().getEmail(),
-                role.getHome().getNumber()))
+                role.getHome().getNumber(),
+                role.getUser().getId()))
             .toList();
     }
 
@@ -101,7 +102,8 @@ public class AdmAdminUserAdapter implements AdminUserPort, AdminResidentPort, Ad
                 orm.getDocumentType(),
                 orm.getLastName(),
                 orm.getFirstName(),
-                orm.getEmail()))
+                orm.getEmail(),
+                orm.getId()))
             .toList();
     }
 
@@ -113,7 +115,8 @@ public class AdmAdminUserAdapter implements AdminUserPort, AdminResidentPort, Ad
                 guard.getUser().getDocumentType(),
                 guard.getUser().getLastName(),
                 guard.getUser().getFirstName(),
-                guard.getUser().getEmail()))
+                guard.getUser().getEmail(),
+                guard.getUser().getId()))
             .toList();
     }
 

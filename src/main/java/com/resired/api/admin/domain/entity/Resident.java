@@ -8,6 +8,7 @@ public record Resident(@JsonProperty("document_id") String documentId,
                        @JsonProperty("last_name") String lastName,
                        @JsonProperty("first_name") String firstName,
                        @JsonProperty("email") String email,
-                       @JsonProperty("house") String house) {
+                       @JsonProperty("house") String house,
+                       Integer id) {
 
 }
