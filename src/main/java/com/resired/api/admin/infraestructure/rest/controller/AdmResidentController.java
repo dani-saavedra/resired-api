@@ -11,6 +11,7 @@ import com.resired.api.security.domain.entity.UserApp;
 import com.resired.api.security.domain.enums.UserType;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,7 @@ import java.util.List;
 @RequestMapping(path = "/admin")
 @AllArgsConstructor
 @PreAuthorize("hasAuthority('ADMIN')")
+@Slf4j
 public class AdmResidentController {
 
     private final JwtService jwtService;
@@ -45,6 +47,7 @@ public class AdmResidentController {
     public ResponseEntity<String> removeHomeResidents(@RequestHeader(value = "Authorization") String bearer,
                                                       @PathVariable(value = "id_home") Integer idHome) {
         UserApp userApp = jwtService.extractUser(bearer);
+        log.info("Resident was removed from home: " + idHome + " by " + userApp.userId());
 
         adminResidentUseCase.removeResidentsByHome(userApp.neighborhoodId(), idHome);
         return ResponseEntity.ok("Residents removed successfully");
