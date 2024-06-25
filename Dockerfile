@@ -4,11 +4,11 @@ WORKDIR /app
 
 COPY build.gradle settings.gradle /app/
 
-RUN gradle build --no-daemon || return 0
+RUN gradle assemble --no-daemon || return 0
 
 COPY src /app/src
 
-RUN gradle build --no-daemon
+RUN gradle assemble --no-daemon
 
 FROM openjdk:17-jdk-slim
 ENV DB_HOST=localhost
