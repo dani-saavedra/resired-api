@@ -25,10 +25,13 @@ public class AuthUseCase {
     public AuthenticationResponse authUser(AuthenticationRequest auth) throws GeneralSecurityException {
         String encryptPass = authService.encrypt(auth.password());
         User user = userPort.getUserByCredentials(auth.email(), encryptPass);
-        if (user == null) {
+        if (user == null || user.getRoles()
+            .stream()
+            .filter(userOrm -> !userOrm.getUserType().equals(UserType.ADMIN))
+            .toList().isEmpty()) {
             throw new InvalidCredentialException(auth.email());
         }
-        if (!user.isActive() || user.getRoles().isEmpty()) {
+        if (!user.isActive()) {
             throw new InactiveUserException(user.getDocumentId());
         }
         String jwt;
