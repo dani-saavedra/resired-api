@@ -1,6 +1,7 @@
 package com.resired.api.admin.infraestructure.sql.adpater;
 
 import com.resired.api.admin.domain.repository.BlockPort;
+import com.resired.api.admin.domain.vo.BlockVo;
 import com.resired.api.admin.domain.vo.GroupingType;
 import com.resired.api.admin.infraestructure.sql.jpa.BlockJpaRepository;
 import com.resired.api.resident.infraestructure.sql.orm.BlockOrm;
@@ -38,5 +39,13 @@ public class BlockAdapterSQL implements BlockPort {
         neighborhoodOrm.setId(neighborhoodId);
         entity.setNeighborhoodOrm(neighborhoodOrm);
         blockJpa.save(entity);
+    }
+
+    @Override
+    public List<BlockVo> getAllBlocksByNeighborhoodId(Integer neighborhoodId) {
+        List<BlockOrm> listBlocks = blockJpa.findAllByNeighborhoodOrmId(neighborhoodId);
+        return listBlocks.stream()
+            .map(block -> new BlockVo(block.getType(), block.getName()))
+            .toList();
     }
 }
