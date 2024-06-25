@@ -19,7 +19,7 @@ ENV DB_PASS=password
 
 WORKDIR /app
 
-COPY --from=build /app/build/libs/*.jar ./app.jar
+COPY --from=build /app/build/libs/api-0.1.jar ./app.jar
 
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "./app.jar"]
