@@ -1,21 +1,30 @@
 package com.resired.api.resident.infraestructure.sql.adapter;
 
+import com.resired.api.admin.infraestructure.sql.jpa.BlockJpaRepository;
 import com.resired.api.resident.domain.entity.Home;
 import com.resired.api.resident.domain.repository.HomePort;
 import com.resired.api.resident.infraestructure.sql.jpa.HomeJpaRepository;
+import com.resired.api.resident.infraestructure.sql.jpa.NeighborhoodJpaRepository;
+import com.resired.api.resident.infraestructure.sql.orm.BlockOrm;
 import com.resired.api.resident.infraestructure.sql.orm.HomeOrm;
+import com.resired.api.resident.infraestructure.sql.orm.NeighborhoodOrm;
 import com.resired.api.security.infraestructure.sql.orm.UserRolOrm;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @AllArgsConstructor
 public class HomeAdapter implements HomePort {
 
     private final HomeJpaRepository jpaRepository;
+    private final BlockJpaRepository blockJpaRepository;
+    private final NeighborhoodJpaRepository neighborhoodJpaRepository;
 
     @Override
     public Home getPackages(Integer homeId) {
@@ -63,5 +72,34 @@ public class HomeAdapter implements HomePort {
     @Override
     public void updateHome(Integer homeId, String number, Double squareMeter) {
         jpaRepository.updateHome(number, null, homeId);
+    }
+
+    @Override
+    public void saveAll(List<Home> homes) {
+        homes.forEach(home -> {
+            BlockOrm blockOrm = getBlockOrm(home);
+
+            if (blockOrm == null) {
+                Optional<NeighborhoodOrm> neighborhood = neighborhoodJpaRepository.findById(home.getNeighborhood());
+                blockOrm = new BlockOrm();
+                blockOrm.setName(home.getBlock());
+                blockOrm.setType(home.getType());
+                blockOrm.setNeighborhoodOrm(neighborhood.get());
+                blockOrm = blockJpaRepository.save(blockOrm);
+            }
+
+            HomeOrm homeOrm = new HomeOrm();
+            homeOrm.setBlock(blockOrm);
+            homeOrm.setNumber(home.getName());
+            homeOrm.setSquareMeter(BigDecimal.valueOf(home.getSquareMeter()));
+            homeOrm.setCreatedDate(LocalDateTime.now(ZoneOffset.UTC));
+
+            jpaRepository.save(homeOrm);
+        });
+    }
+
+    private BlockOrm getBlockOrm(Home home) {
+        Optional<BlockOrm> blockOpt = blockJpaRepository.findByNameAndNeighborhoodOrmId(home.getBlock(), home.getNeighborhood());
+        return blockOpt.orElse(null);
     }
 }

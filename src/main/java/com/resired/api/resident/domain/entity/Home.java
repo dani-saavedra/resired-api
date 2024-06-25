@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 public class Home {
 
-    private final Integer id;
+    private Integer id;
     @Setter
     private String name;
     private String block;
@@ -46,6 +46,14 @@ public class Home {
         this.name = name;
         this.block = block;
         this.type = type;
+    }
+
+    public Home(String name, String block, GroupingType type, Integer neighborhood, Double squareMeter) {
+        this.name = name;
+        this.block = block;
+        this.type = type;
+        this.neighborhood = neighborhood;
+        this.squareMeter = squareMeter;
     }
 
     public void addPackages(Package newPackage) {
