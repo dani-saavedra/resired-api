@@ -38,7 +38,8 @@ public class HomeAdapter implements HomePort {
         return jpaRepository.findById(homeId)
             .map(orm -> new Home(orm.getId(), orm.getNumber(),
                 orm.getBlock().getNeighborhoodOrm().getId(),
-                orm.getResidents().size()))
+                orm.getResidents().size(),
+                orm.getBlock().getName()))
             .orElse(null);
     }
 

@@ -32,7 +32,7 @@ public class PackageController {
         return new ResponseData<>("Registered package successfully");
     }
 
-    @GetMapping("/package")
+    @GetMapping("/packages")
     @Operation(summary = "Get all the packages from the last five days per neighborhood")
     public ResponseData<List<PackageResponseDTO>> getPackagesByNeighborhood(@RequestHeader(value = "Authorization") String bearer) {
         UserApp userApp = jwtService.extractUser(bearer);

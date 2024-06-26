@@ -6,6 +6,7 @@ import com.resired.api.guard.application.exception.PackageNotFoundException;
 import com.resired.api.guard.domain.entity.Package;
 import com.resired.api.guard.domain.exception.ResidentNotFoundOnHomeException;
 import com.resired.api.guard.domain.repository.PackagePort;
+import com.resired.api.resident.domain.entity.Home;
 import com.resired.api.resident.domain.repository.HomePort;
 import com.resired.api.security.domain.entity.User;
 import com.resired.api.security.domain.exception.InactiveUserException;
@@ -72,17 +73,18 @@ public class PackageUseCase {
     }
 
     private PackageResponseDTO toPackageResponseDTO(Package pkg) {
-        String homeNumber = homePort.getHomeNumberById(pkg.getHomeId());
+        Home home = homePort.getHomeById(pkg.getHomeId());
         return new PackageResponseDTO(
             pkg.getId(),
-            homeNumber,
+            home.getName(),
             pkg.getReceiver(),
             pkg.getTrackingNumber(),
             pkg.getPackageTransporter(),
             pkg.getDescription(),
             pkg.getStatus(),
             FormatDate.formatDate(pkg.getCreatedDate()),
-            FormatDate.formatDate(pkg.getUpdateDate())
+            FormatDate.formatDate(pkg.getUpdateDate()),
+            home.getBlock()
         );
     }
 

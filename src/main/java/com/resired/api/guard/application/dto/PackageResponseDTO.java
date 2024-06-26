@@ -12,5 +12,6 @@ public record PackageResponseDTO(
     @JsonProperty("description") String description,
     @JsonProperty("status") PackageStatusEnum status,
     @JsonProperty("created_date") String createdDate,
-    @JsonProperty("deliver_date") String deliverDate) {
+    @JsonProperty("deliver_date") String deliverDate,
+    @JsonProperty("block") String block) {
 }

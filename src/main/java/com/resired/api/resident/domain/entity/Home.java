@@ -26,12 +26,13 @@ public class Home {
         packages = new ArrayList<>();
     }
 
-    public Home(Integer id, String name, Integer neighborhood, Integer residents) {
+    public Home(Integer id, String name, Integer neighborhood, Integer residents, String block) {
         this.id = id;
         this.name = name;
         this.neighborhood = neighborhood;
         packages = new ArrayList<>();
         this.residents = residents;
+        this.block = block;
     }
 
     public Home(Integer id, String name, String block, Integer residents) {
