@@ -30,7 +30,8 @@ public class ResidentRequestAdapterSQL implements ResidentRequestPort {
             .stream()
             .map(orm -> new ResidentRequestDto(orm.getFirstName(),
                 orm.getLastName(), orm.getEmail(), orm.getDocument(), orm.getHouse(),
-                orm.getNeighborhood())).toList();
+                orm.getNeighborhood(), orm.getId()))
+            .toList();
     }
 
     @Override
