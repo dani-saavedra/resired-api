@@ -8,4 +8,6 @@ import java.util.List;
 public interface ResidentRequestJpaRepository extends JpaRepository<ResidentRequestOrm, Integer> {
 
     List<ResidentRequestOrm> findResidentRequestOrmByNeighborhood(Integer neighborhood);
+
+    ResidentRequestOrm findResidentRequestOrmByIdAndNeighborhood(Integer id, Integer neighborhood);
 }
