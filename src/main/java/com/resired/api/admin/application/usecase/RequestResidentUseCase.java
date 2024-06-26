@@ -2,6 +2,7 @@ package com.resired.api.admin.application.usecase;
 
 import com.resired.api.admin.application.dto.ResidentRequestDto;
 import com.resired.api.admin.application.repository.ResidentRequestPort;
+import com.resired.api.admin.domain.vo.DecisionRequestResident;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,8 +20,8 @@ public class RequestResidentUseCase {
         port.registerRequestResident(residentRequestDto);
     }
 
-    public List<ResidentRequestDto> obtainRequestResident(Integer neighborhood) {
-        return port.obtainRequestResident(neighborhood);
+    public List<ResidentRequestDto> obtainRequestResident(Integer neighborhood, DecisionRequestResident decision) {
+        return port.obtainRequestResident(neighborhood, decision);
     }
 
     public void rejectRequestResident(Integer id, Integer neighborhood) {

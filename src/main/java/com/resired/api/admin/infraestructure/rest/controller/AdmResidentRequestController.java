@@ -2,6 +2,7 @@ package com.resired.api.admin.infraestructure.rest.controller;
 
 import com.resired.api.admin.application.dto.ResidentRequestDto;
 import com.resired.api.admin.application.usecase.RequestResidentUseCase;
+import com.resired.api.admin.domain.vo.DecisionRequestResident;
 import com.resired.api.security.application.usecase.JwtService;
 import com.resired.api.security.domain.entity.UserApp;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,8 +28,9 @@ public class AdmResidentRequestController {
     @GetMapping(path = "/admin/request/residents")
     @PreAuthorize("hasAuthority('ADMIN')")
     @Operation(summary = "Obtain list of requests of future user of the app")
-    public List<ResidentRequestDto> obtainRequestResident(@RequestHeader(value = "Authorization") String bearer) {
+    public List<ResidentRequestDto> obtainRequestResident(@RequestHeader(value = "Authorization") String bearer,
+                                                          @RequestParam DecisionRequestResident decision) {
         UserApp userApp = jwtService.extractUser(bearer);
-        return useCase.obtainRequestResident(userApp.neighborhoodId());
+        return useCase.obtainRequestResident(userApp.neighborhoodId(), decision);
     }
 }

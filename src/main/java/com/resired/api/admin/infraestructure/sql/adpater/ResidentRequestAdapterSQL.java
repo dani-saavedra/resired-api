@@ -25,8 +25,8 @@ public class ResidentRequestAdapterSQL implements ResidentRequestPort {
         requestJpaRepository.save(orm);
     }
 
-    public List<ResidentRequestDto> obtainRequestResident(Integer neighborhood) {
-        return requestJpaRepository.findResidentRequestOrmByNeighborhood(neighborhood)
+    public List<ResidentRequestDto> obtainRequestResident(Integer neighborhood, DecisionRequestResident decision) {
+        return requestJpaRepository.findResidentRequestOrmByNeighborhoodAndDecision(neighborhood, decision)
             .stream()
             .map(orm -> new ResidentRequestDto(orm.getFirstName(),
                 orm.getLastName(), orm.getEmail(), orm.getDocument(), orm.getHouse(),
