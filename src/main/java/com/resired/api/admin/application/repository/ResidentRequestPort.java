@@ -9,4 +9,6 @@ public interface ResidentRequestPort {
     void registerRequestResident(ResidentRequestDto residentRequestDto);
 
     List<ResidentRequestDto> obtainRequestResident(Integer neighborhood);
+
+    boolean rejectRequestResident(Integer requestId, Integer neighborhood);
 }
