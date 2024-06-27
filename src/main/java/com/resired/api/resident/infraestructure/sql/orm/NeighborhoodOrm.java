@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.List;
 
 @Entity
 @Table(name = "NEIGHBORHOOD")
@@ -72,6 +73,9 @@ public class NeighborhoodOrm {
 
     @Column
     private LocalDate updateDate;
+
+    @OneToMany(mappedBy = "neighborhoodOrm")
+    private List<BlockOrm> blocks;
 
     public NeighborhoodOrm(String name, String address, String city, Integer socioeconomicLevel, String communityType,
                            NeighborhoodCategory category) {
