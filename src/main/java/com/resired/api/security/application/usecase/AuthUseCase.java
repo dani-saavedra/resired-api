@@ -1,5 +1,6 @@
 package com.resired.api.security.application.usecase;
 
+import com.resired.api.security.application.dto.AuthenticationAdminResponse;
 import com.resired.api.security.application.dto.AuthenticationRequest;
 import com.resired.api.security.application.dto.AuthenticationResponse;
 import com.resired.api.security.domain.entity.Rol;
@@ -46,7 +47,7 @@ public class AuthUseCase {
             user.getDocumentId(), user.isMandatoryChangePassword());
     }
 
-    public AuthenticationResponse authAdmin(AuthenticationRequest auth) throws GeneralSecurityException {
+    public AuthenticationAdminResponse authAdmin(AuthenticationRequest auth) throws GeneralSecurityException {
         String encryptPass = authService.encrypt(auth.password());
         User user = userPort.getUserByCredentials(auth.email(), encryptPass);
         if (user == null || user.getRoles().stream().noneMatch(n -> UserType.ADMIN.equals(n.getUserType()))) {
@@ -56,7 +57,7 @@ public class AuthUseCase {
         String jwt = jwtService.generateToken(user.getEmail(), rol.getUserType().name(), rol.getNeighborhoodId(),
             rol.getHomeId(), user.getId());
 
-        return new AuthenticationResponse(jwt, user.getRoles(), user.getUserName(), user.getEmail(),
+        return new AuthenticationAdminResponse(jwt, user.getRoles(), user.getUserName(), user.getEmail(),
             user.getDocumentId(), user.isMandatoryChangePassword());
     }
 

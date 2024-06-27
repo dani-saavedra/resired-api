@@ -1,5 +1,6 @@
 package com.resired.api.security.infraestructure.rest.controller;
 
+import com.resired.api.security.application.dto.AuthenticationAdminResponse;
 import com.resired.api.security.application.dto.AuthenticationRequest;
 import com.resired.api.security.application.dto.AuthenticationResponse;
 import com.resired.api.security.application.usecase.AuthUseCase;
@@ -41,7 +42,7 @@ public class AuthenticationController {
         @ApiResponse(responseCode = "200", description = "Succesful Authenticacion"),
         @ApiResponse(responseCode = "401", description = "Failed Authentication", content =
         @Content(schema = @Schema(implementation = ErrorDTO.class)))})
-    public AuthenticationResponse authenticateAdmin(@RequestBody AuthenticationRequest auth) throws GeneralSecurityException {
+    public AuthenticationAdminResponse authenticateAdmin(@RequestBody AuthenticationRequest auth) throws GeneralSecurityException {
         return authService.authAdmin(auth);
     }
 }
