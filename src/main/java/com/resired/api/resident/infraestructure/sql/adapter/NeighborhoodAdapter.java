@@ -1,10 +1,13 @@
 package com.resired.api.resident.infraestructure.sql.adapter;
 
 import com.resired.api.admin.domain.entity.Neighborhood;
+import com.resired.api.admin.domain.vo.GroupingType;
 import com.resired.api.resident.domain.entity.News;
 import com.resired.api.resident.domain.repository.NeighborhoodPort;
 import com.resired.api.resident.infraestructure.sql.jpa.NeighborhoodJpaRepository;
+import com.resired.api.resident.infraestructure.sql.orm.BlockOrm;
 import com.resired.api.resident.infraestructure.sql.orm.NeighborhoodOrm;
+import com.resired.api.security.domain.vo.InfoBlocks;
 import com.resired.api.utils.FormatDate;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -32,5 +35,17 @@ public class NeighborhoodAdapter implements NeighborhoodPort {
             new Neighborhood(orm.getId(), orm.getName(), orm.getAddress(), orm.getCity(), orm.getCategory(),
                 orm.getSocioeconomicLevel())).orElse(null);
 
+    }
+
+    @Override
+    public InfoBlocks getBlocksByNeighborhood(Integer neighborhood) {
+        Optional<NeighborhoodOrm> orm = jpaRepository.findById(neighborhood);
+        if (orm.isPresent()) {
+            GroupingType groupingType = orm.get().getGroupingType();
+            List<String> list = orm.get().getBlocks().stream().map(BlockOrm::getName).toList();
+            return new InfoBlocks(groupingType, list);
+
+        }
+        return null;
     }
 }
