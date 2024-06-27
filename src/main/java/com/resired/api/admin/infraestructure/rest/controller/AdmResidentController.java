@@ -88,4 +88,15 @@ public class AdmResidentController {
         log.info("User Admin {} reject request resident with id {}", userApp.userId(), id);
         return new ResponseData<>("Request Resident rejected");
     }
+
+    @PostMapping("/home/{id_home}/request/{id_request}/accept")
+    public ResponseData<String> acceptRequestResident(@RequestHeader(value = "Authorization") String bearer,
+                                                      @PathVariable(value = "id_home") Integer idHome,
+                                                      @PathVariable(value = "id_request") Integer idRequest) throws GeneralSecurityException {
+
+        UserApp userApp = jwtService.extractUser(bearer);
+        requestResidentUseCase.acceptRequestResident(idRequest, idHome, userApp.neighborhoodId(), userApp.email());
+        log.info("User Admin {} accept request resident with id {}", userApp.userId(), idRequest);
+        return new ResponseData<>("Request Resident rejected");
+    }
 }

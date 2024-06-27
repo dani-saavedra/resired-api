@@ -35,12 +35,33 @@ public class ResidentRequestAdapterSQL implements ResidentRequestPort {
     }
 
     @Override
+    public ResidentRequestDto obtainRequestResidentsById(Integer id) {
+        return requestJpaRepository.findById(id)
+            .map(orm -> new ResidentRequestDto(orm.getFirstName(),
+                orm.getLastName(), orm.getEmail(), orm.getDocument(), orm.getHouse(),
+                orm.getNeighborhood(), orm.getId()))
+            .orElse(null);
+    }
+
+    @Override
     public boolean rejectRequestResident(Integer id, Integer neighborhood) {
         ResidentRequestOrm orm = requestJpaRepository.findResidentRequestOrmByIdAndNeighborhood(id, neighborhood);
         if (orm == null) {
             return false;
         }
         orm.setDecision(DecisionRequestResident.REJECTED);
+        orm.setUpdatedDate(LocalDateTime.now(ZoneOffset.UTC));
+        requestJpaRepository.save(orm);
+        return true;
+    }
+
+    @Override
+    public boolean acceptRequestResident(Integer id, Integer neighborhood) {
+        ResidentRequestOrm orm = requestJpaRepository.findResidentRequestOrmByIdAndNeighborhood(id, neighborhood);
+        if (orm == null) {
+            return false;
+        }
+        orm.setDecision(DecisionRequestResident.APPROVED);
         orm.setUpdatedDate(LocalDateTime.now(ZoneOffset.UTC));
         requestJpaRepository.save(orm);
         return true;

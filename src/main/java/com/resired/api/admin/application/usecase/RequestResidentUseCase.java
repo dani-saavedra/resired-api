@@ -3,10 +3,13 @@ package com.resired.api.admin.application.usecase;
 import com.resired.api.admin.application.dto.ResidentRequestDto;
 import com.resired.api.admin.application.repository.ResidentRequestPort;
 import com.resired.api.admin.domain.vo.DecisionRequestResident;
+import com.resired.api.admin.domain.vo.RegisterUserVO;
+import com.resired.api.security.domain.enums.UserType;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.security.GeneralSecurityException;
 import java.util.List;
 
 @Service
@@ -15,6 +18,7 @@ import java.util.List;
 public class RequestResidentUseCase {
 
     private final ResidentRequestPort port;
+    private final AdminUserUseCase userUseCase;
 
     public void registerRequestResident(ResidentRequestDto residentRequestDto) {
         port.registerRequestResident(residentRequestDto);
@@ -28,6 +32,20 @@ public class RequestResidentUseCase {
         boolean rejectionCompleted = port.rejectRequestResident(id, neighborhood);
         if (!rejectionCompleted) {
             log.error("Rejection id: {} in neighborhood: {} no exists", id, neighborhood);
+        }
+    }
+
+    public void acceptRequestResident(Integer idRequest, Integer idHome, Integer neighborhood, String emailAdmin)
+        throws GeneralSecurityException {
+        ResidentRequestDto request = port.obtainRequestResidentsById(idRequest);
+
+        RegisterUserVO registerUserVO = new RegisterUserVO(request.document(), null,
+            request.firstName(), request.lastName(), request.email(), neighborhood, idHome,
+            UserType.RESIDENT);
+        userUseCase.registerUserToNeighborhood(registerUserVO, emailAdmin);
+        boolean acceptationCompleted = port.acceptRequestResident(idRequest, neighborhood);
+        if (!acceptationCompleted) {
+            log.error("Accept id: {} in neighborhood: {} no exists", idRequest, neighborhood);
         }
     }
 }

@@ -11,5 +11,10 @@ public interface ResidentRequestPort {
 
     List<ResidentRequestDto> obtainRequestResident(Integer neighborhood, DecisionRequestResident decision);
 
+    ResidentRequestDto obtainRequestResidentsById(Integer id);
+
     boolean rejectRequestResident(Integer requestId, Integer neighborhood);
+
+    boolean acceptRequestResident(Integer id, Integer neighborhood);
+
 }
