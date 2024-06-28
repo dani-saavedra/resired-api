@@ -30,4 +30,10 @@ public class VisitOrm {
     @ManyToOne
     @JoinColumn(name = "scanned_by")
     private UserOrm authorizingGuard;
+
+    @Column
+    private String plateCarNumber;
+
+    @Column
+    private Boolean isCarActive;
 }

@@ -1,5 +1,7 @@
 package com.resired.api.guard.infrastructure.rest.dto;
 
-public record InfoQrRequest(String qr, String document) {
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public record InfoQrRequest(String qr, String document, @JsonProperty("car_plate_id") String carPlateId) {
 
 }

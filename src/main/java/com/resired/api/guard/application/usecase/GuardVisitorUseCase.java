@@ -24,7 +24,7 @@ public class GuardVisitorUseCase {
         VisitVO residentVisit = new VisitVO(visitorDto.name(), visitorDto.documentId(), visitorDto.telephone(),
             visitorDto.homeId(), emailGuard, false);
         String tokenUUID = visitorGuardService.createVisitor(residentVisit);
-        guardPort.registerVisit(tokenUUID, guardId);
+        guardPort.registerVisit(tokenUUID, guardId, visitorDto.carPlateId());
     }
 
     public List<ActiveVisitorDto> getActiveQrVisitors(Integer neighborhoodId) {
