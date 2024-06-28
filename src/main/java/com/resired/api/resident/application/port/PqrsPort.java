@@ -13,6 +13,8 @@ public interface PqrsPort {
 
     PqrsDetailDTO obtainPqrByTicketNumber(String ticketNumber);
 
+    List<PqrsDetailDTO> obtainPqrByStateAndNeighborhood(StatePQRS statePQRS, Integer neighborhood);
+
     Integer totalPqrByNeighborhood(Integer neighborhoodId);
 
     void registerPQRr(RegisterPqrs registerPqrs, String ticketNumber, StatePQRS statePQRS);

@@ -36,13 +36,16 @@ public class PQRSAdapter implements PqrsPort {
         if (pqrOrm == null) {
             return null;
         }
-        String responder = null;
-        if (pqrOrm.getAdminResponds() != null) {
-            responder = pqrOrm.getAdminResponds().getFirstName();
-        }
-        return new PqrsDetailDTO(FormatDate.formatDate(pqrOrm.getCreationDate()),
-            FormatDate.formatDate(pqrOrm.getResponseDate()), pqrOrm.getTitle(), pqrOrm.getCategory(),
-            pqrOrm.getTicketNumber(), pqrOrm.getState(), responder, pqrOrm.getResponse(), pqrOrm.getDescription());
+        return getPqrsDetailDTO(pqrOrm);
+    }
+
+    @Override
+
+    public List<PqrsDetailDTO> obtainPqrByStateAndNeighborhood(StatePQRS statePQRS, Integer neighborhood) {
+        return jpaRepository.findByStateAndNeighborhoodId(statePQRS, neighborhood)
+            .stream()
+            .map(PQRSAdapter::getPqrsDetailDTO)
+            .toList();
     }
 
     @Override
@@ -82,6 +85,16 @@ public class PQRSAdapter implements PqrsPort {
         pqrsOrm.setAdminResponds(new UserOrm(userId));
         pqrsOrm.setResponseDate(LocalDateTime.now(ZoneOffset.UTC));
         jpaRepository.save(pqrsOrm);
+    }
+
+    private static PqrsDetailDTO getPqrsDetailDTO(PqrsOrm pqrOrm) {
+        String responder = null;
+        if (pqrOrm.getAdminResponds() != null) {
+            responder = pqrOrm.getAdminResponds().getFirstName();
+        }
+        return new PqrsDetailDTO(FormatDate.formatDate(pqrOrm.getCreationDate()),
+            FormatDate.formatDate(pqrOrm.getResponseDate()), pqrOrm.getTitle(), pqrOrm.getCategory(),
+            pqrOrm.getTicketNumber(), pqrOrm.getState(), responder, pqrOrm.getResponse(), pqrOrm.getDescription());
     }
 
 }
