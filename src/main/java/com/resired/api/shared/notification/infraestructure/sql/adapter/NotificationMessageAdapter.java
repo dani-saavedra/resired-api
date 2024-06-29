@@ -84,7 +84,7 @@ public class NotificationMessageAdapter implements NotificationMessagePort {
     public List<NotificationMessage> getAllNotificationMessagesByNeighborhoodId(Integer neighborhoodId) {
         return notificationRepository.findAllByNeighborhoodId(neighborhoodId).stream()
             .map(notificationOrm -> new NotificationMessage(notificationOrm.getId(), notificationOrm.getTitle(),
-                notificationOrm.getMessage(), true,
+                notificationOrm.getMessage(), null,
                 FormatDate.formatDate(notificationOrm.getCreatedDate()))).toList();
     }
 

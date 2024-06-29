@@ -72,4 +72,8 @@ public class NotificationUseCase {
     public void deleteNotificationForUser(Integer notificationId, String email) {
         userNotificationRepository.deleteNotificationByID(email, notificationId);
     }
+
+    public List<NotificationMessage> getAllNotificationsByNeighborhoodId(Integer neighborhoodId) {
+        return notificationRepository.getAllNotificationMessagesByNeighborhoodId(neighborhoodId);
+    }
 }
