@@ -86,7 +86,7 @@ public class AdmAdminUserAdapter implements AdminUserPort, AdminResidentPort, Ad
         List<UserRolOrm> residents = jpaRepository.findAllByNeighborhoodIdAndRolAndActive(neighborhoodId, UserType.RESIDENT, active);
         return residents.stream().map(role -> new Resident(
                 role.getUser().getDocumentId(),
-                role.getUser().getDocumentType(),
+                role.getUser().getDocumentType().getValue(),
                 role.getUser().getLastName(),
                 role.getUser().getFirstName(),
                 role.getUser().getEmail(),
@@ -99,7 +99,7 @@ public class AdmAdminUserAdapter implements AdminUserPort, AdminResidentPort, Ad
     public List<ResidentHome> getResidentByHome(Integer homeId) {
         return jpaRepository.findResidentsByHomeId(homeId).stream().map(orm -> new ResidentHome(
                 orm.getDocumentId(),
-                orm.getDocumentType(),
+                orm.getDocumentType().getValue(),
                 orm.getLastName(),
                 orm.getFirstName(),
                 orm.getEmail(),
@@ -112,7 +112,7 @@ public class AdmAdminUserAdapter implements AdminUserPort, AdminResidentPort, Ad
         List<UserRolOrm> guards = jpaRepository.findAllByNeighborhoodIdAndRolAndActive(neighborhoodId, UserType.GUARD, active);
         return guards.stream().map(guard -> new GuardDto(
                 guard.getUser().getDocumentId(),
-                guard.getUser().getDocumentType(),
+                guard.getUser().getDocumentType().getValue(),
                 guard.getUser().getLastName(),
                 guard.getUser().getFirstName(),
                 guard.getUser().getEmail(),

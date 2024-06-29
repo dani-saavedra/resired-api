@@ -1,5 +1,6 @@
 package com.resired.api.security.infraestructure.sql.orm;
 
+import com.resired.api.resident.domain.enums.DocumentTypeEnum;
 import com.resired.api.security.domain.entity.User;
 import com.resired.api.shared.notification.infraestructure.sql.orm.DeviceOrm;
 import jakarta.persistence.*;
@@ -25,8 +26,9 @@ public class UserOrm {
     @Column(nullable = false, unique = true)
     private String documentId;
 
-    @Column
-    private String documentType;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "document_type", columnDefinition = "VARCHAR(15)")
+    private DocumentTypeEnum documentType;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<UserRolOrm> userRols;
