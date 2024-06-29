@@ -39,7 +39,7 @@ public class NotificationMessageAdapter implements NotificationMessagePort {
         Integer userId = userRepository.findByEmail(email).getId();
         NotificationUserOrm notificationUserOrm = notificationUserRepository.findTopByUserIdOrderByCreatedDateDesc(userId);
         if (notificationUserOrm == null) return null;
-        return new NotificationMessage(notificationUserOrm.getNotification().getTitle(),
+        return new NotificationMessage(null, notificationUserOrm.getNotification().getTitle(),
             notificationUserOrm.getNotification().getMessage(),
             notificationUserOrm.getViewed(), FormatDate.formatDate(notificationUserOrm.getViewedAt()));
     }
