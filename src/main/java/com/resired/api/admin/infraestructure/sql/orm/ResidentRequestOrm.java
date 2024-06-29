@@ -1,6 +1,7 @@
 package com.resired.api.admin.infraestructure.sql.orm;
 
 import com.resired.api.admin.domain.vo.DecisionRequestResident;
+import com.resired.api.resident.domain.enums.DocumentTypeEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,6 +32,10 @@ public class ResidentRequestOrm {
     @Column
     private String document;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "document_type", columnDefinition = "VARCHAR(15)")
+    private DocumentTypeEnum documentType;
+
     @Column
     private String house;
 
@@ -48,7 +53,7 @@ public class ResidentRequestOrm {
 
 
     public ResidentRequestOrm(String firstName, String lastName, String email, String document, String house,
-                              Integer neighborhood) {
+                              Integer neighborhood, DocumentTypeEnum documentType) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -57,5 +62,6 @@ public class ResidentRequestOrm {
         this.neighborhood = neighborhood;
         this.createdDate = LocalDateTime.now(ZoneOffset.UTC);
         this.decision = DecisionRequestResident.PENDING;
+        this.documentType = documentType;
     }
 }

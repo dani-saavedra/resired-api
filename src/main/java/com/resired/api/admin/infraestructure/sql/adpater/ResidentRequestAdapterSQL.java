@@ -21,7 +21,7 @@ public class ResidentRequestAdapterSQL implements ResidentRequestPort {
     @Override
     public void registerRequestResident(ResidentRequestDto dto) {
         ResidentRequestOrm orm = new ResidentRequestOrm(dto.firstName(), dto.lastName(), dto.email(),
-            dto.document(), dto.house(), dto.neighborhood());
+            dto.document(), dto.house(), dto.neighborhood(), dto.documentType());
         requestJpaRepository.save(orm);
     }
 
@@ -29,7 +29,7 @@ public class ResidentRequestAdapterSQL implements ResidentRequestPort {
         return requestJpaRepository.findResidentRequestOrmByNeighborhoodAndDecision(neighborhood, decision)
             .stream()
             .map(orm -> new ResidentRequestDto(orm.getFirstName(),
-                orm.getLastName(), orm.getEmail(), orm.getDocument(), orm.getHouse(),
+                orm.getLastName(), orm.getEmail(), orm.getDocumentType(), orm.getDocument(), orm.getHouse(),
                 orm.getNeighborhood(), orm.getId()))
             .toList();
     }
@@ -38,7 +38,7 @@ public class ResidentRequestAdapterSQL implements ResidentRequestPort {
     public ResidentRequestDto obtainRequestResidentsById(Integer id) {
         return requestJpaRepository.findById(id)
             .map(orm -> new ResidentRequestDto(orm.getFirstName(),
-                orm.getLastName(), orm.getEmail(), orm.getDocument(), orm.getHouse(),
+                orm.getLastName(), orm.getEmail(), orm.getDocumentType(), orm.getDocument(), orm.getHouse(),
                 orm.getNeighborhood(), orm.getId()))
             .orElse(null);
     }
