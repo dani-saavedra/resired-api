@@ -91,4 +91,8 @@ public class UserOrm {
     public UserOrm(Integer id) {
         this.id = id;
     }
+
+    public String fullName(){
+        return firstName + " " + lastName;
+    }
 }
