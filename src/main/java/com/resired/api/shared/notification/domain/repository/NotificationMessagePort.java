@@ -11,8 +11,11 @@ public interface NotificationMessagePort {
 
     void markAllNotificationsAsRead(String email);
 
-    void saveNotificationForHomeResidents(NotificationMessage notificationMessage, Integer homeId);
+    void saveNotificationForHomeResidents(NotificationMessage notificationMessage, Integer homeId,
+                                          Integer neighborhoodId);
 
     void saveNotificationForNeighborhoodResidents(NotificationMessage notificationMessage,
                                                   Integer neighborhoodId);
+
+    List<NotificationMessage> getAllNotificationMessagesByNeighborhoodId(Integer neighborhoodId);
 }

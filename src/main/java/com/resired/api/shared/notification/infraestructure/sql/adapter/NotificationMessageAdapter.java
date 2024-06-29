@@ -53,11 +53,13 @@ public class NotificationMessageAdapter implements NotificationMessagePort {
     }
 
     @Override
-    public void saveNotificationForHomeResidents(NotificationMessage notificationMessage, Integer homeId) {
+    public void saveNotificationForHomeResidents(NotificationMessage notificationMessage, Integer homeId,
+                                                 Integer neighborhoodId) {
         NotificationOrm notificationOrm = new NotificationOrm();
         notificationOrm.setTitle(notificationMessage.title());
         notificationOrm.setMessage(notificationMessage.message());
         notificationOrm.setCreatedDate(LocalDateTime.now(ZoneOffset.UTC));
+        notificationOrm.setNeighborhoodId(neighborhoodId);
         notificationRepository.save(notificationOrm);
 
         List<UserOrm> residents = userRepository.findResidentsByHomeId(homeId);
@@ -70,11 +72,20 @@ public class NotificationMessageAdapter implements NotificationMessagePort {
         notificationOrm.setTitle(notificationMessage.title());
         notificationOrm.setMessage(notificationMessage.message());
         notificationOrm.setCreatedDate(LocalDateTime.now(ZoneOffset.UTC));
+        notificationOrm.setNeighborhoodId(neighborhoodId);
         notificationRepository.save(notificationOrm);
 
         List<UserOrm> residents = userRepository.findResidentsByNeighborhoodId(neighborhoodId);
 
         saveNotificationForResidents(notificationOrm, residents);
+    }
+
+    @Override
+    public List<NotificationMessage> getAllNotificationMessagesByNeighborhoodId(Integer neighborhoodId) {
+        return notificationRepository.findAllByNeighborhoodId(neighborhoodId).stream()
+            .map(notificationOrm -> new NotificationMessage(notificationOrm.getId(), notificationOrm.getTitle(),
+                notificationOrm.getMessage(), true,
+                FormatDate.formatDate(notificationOrm.getCreatedDate()))).toList();
     }
 
     private void saveNotificationForResidents(NotificationOrm notificationOrm, List<UserOrm> residents) {

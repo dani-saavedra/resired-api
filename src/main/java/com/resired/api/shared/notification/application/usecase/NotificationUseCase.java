@@ -34,7 +34,8 @@ public class NotificationUseCase {
 
         if (!devices.isEmpty()) {
             notificationSenderService.sendToDeviceList(notificationMessage, devices);
-            notificationRepository.saveNotificationForHomeResidents(notificationMessage, requestDTO.homeID());
+            notificationRepository.saveNotificationForHomeResidents(notificationMessage,
+                requestDTO.homeID(), requestDTO.neighborhoodID());
         }
     }
 
