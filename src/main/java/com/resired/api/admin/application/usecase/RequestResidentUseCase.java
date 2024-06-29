@@ -39,7 +39,7 @@ public class RequestResidentUseCase {
         throws GeneralSecurityException {
         ResidentRequestDto request = port.obtainRequestResidentsById(idRequest);
 
-        RegisterUserVO registerUserVO = new RegisterUserVO(request.document(), null,
+        RegisterUserVO registerUserVO = new RegisterUserVO(request.document(), request.documentType(),
             request.firstName(), request.lastName(), request.email(), neighborhood, idHome,
             UserType.RESIDENT);
         userUseCase.registerUserToNeighborhood(registerUserVO, emailAdmin);
