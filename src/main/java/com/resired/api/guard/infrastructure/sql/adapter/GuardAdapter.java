@@ -33,12 +33,20 @@ public class GuardAdapter implements GuardPort, PackagePort {
     private final PackageJpaRepository packageJpaRepository;
 
     @Override
-    public void registerVisit(String qrStr, Integer guardId) {
+    public void registerVisit(String qrStr, Integer guardId, String plateNumber) {
         QrOrm qr = qrJpaRepository.findByQr(qrStr);
 
         VisitOrm visit = new VisitOrm();
         visit.setQr(qr);
         visit.setCheckIn(LocalDateTime.now(ZoneOffset.UTC));
+
+        if (plateNumber != null) {
+            visit.setPlateCarNumber(plateNumber);
+            visit.setIsCarActive(true);
+        } else {
+            visit.setIsCarActive(false);
+        }
+
         UserOrm guard = new UserOrm();
         guard.setId(guardId);
         visit.setAuthorizingGuard(guard);

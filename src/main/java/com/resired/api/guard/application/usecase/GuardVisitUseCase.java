@@ -45,7 +45,7 @@ public class GuardVisitUseCase {
             }
             guardPort.updateVisitorDocument(infoQrRequest.qr(), infoQrRequest.document());
         }
-        guardPort.registerVisit(infoQrRequest.qr(), guardId);
+        guardPort.registerVisit(infoQrRequest.qr(), guardId, infoQrRequest.carPlateId());
     }
 
     private void validateQR(String qr) {
