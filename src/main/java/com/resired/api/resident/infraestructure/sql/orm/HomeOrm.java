@@ -1,5 +1,6 @@
 package com.resired.api.resident.infraestructure.sql.orm;
 
+import com.resired.api.admin.domain.vo.GroupingType;
 import com.resired.api.resident.domain.entity.Home;
 import com.resired.api.security.infraestructure.sql.orm.UserRolOrm;
 import jakarta.persistence.*;
@@ -56,5 +57,13 @@ public class HomeOrm {
             ", id=" + id +
             ", squareMeter=" + squareMeter +
             '}';
+    }
+
+    public String getFullHomeName() {
+        if (GroupingType.NINGUNA.equals(this.block.getType())) {
+            return this.number;
+        } else {
+            return this.block.getName() + " - " + this.number;
+        }
     }
 }

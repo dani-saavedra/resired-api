@@ -58,8 +58,12 @@ public class PqrsOrm {
     @Column
     private String response;
 
+    @ManyToOne
+    @JoinColumn(name = "home")
+    private HomeOrm home;
+
     public PqrsOrm(String title, String description, String ticketNumber, CategoryPQRS category, StatePQRS state,
-                   Integer residentId, Integer neighborhoodId) {
+                   Integer residentId, Integer neighborhoodId, Integer homeId) {
         this.title = title;
         this.description = description;
         this.ticketNumber = ticketNumber;
@@ -72,5 +76,8 @@ public class PqrsOrm {
         neighborhood.setId(neighborhoodId);
         this.neighborhood = neighborhood;
         this.creationDate = LocalDateTime.now(ZoneOffset.UTC);
+        HomeOrm home = new HomeOrm();
+        home.setId(homeId);
+        this.home = home;
     }
 }

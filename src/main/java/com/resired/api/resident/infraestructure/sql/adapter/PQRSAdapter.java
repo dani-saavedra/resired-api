@@ -56,7 +56,7 @@ public class PQRSAdapter implements PqrsPort {
     @Override
     public void registerPQRr(RegisterPqrs registerPqrs, String ticketNumber, StatePQRS state) {
         PqrsOrm orm = new PqrsOrm(registerPqrs.title(), registerPqrs.description(), ticketNumber,
-            registerPqrs.category(), state, registerPqrs.residentId(), registerPqrs.neighbor());
+            registerPqrs.category(), state, registerPqrs.residentId(), registerPqrs.neighbor(),registerPqrs.homeId());
         jpaRepository.save(orm);
     }
 
@@ -95,7 +95,7 @@ public class PQRSAdapter implements PqrsPort {
         return new PqrsDetailDTO(FormatDate.formatDate(pqrOrm.getCreationDate()),
             FormatDate.formatDate(pqrOrm.getResponseDate()), pqrOrm.getTitle(), pqrOrm.getCategory(),
             pqrOrm.getTicketNumber(), pqrOrm.getState(), responder, pqrOrm.getResponse(), pqrOrm.getDescription(),
-            pqrOrm.getResident().fullName());
+            pqrOrm.getResident().fullName(),pqrOrm.getHome().getFullHomeName());
     }
 
 }

@@ -1,0 +1,2 @@
+ALTER TABLE pqrs
+    ADD COLUMN home INTEGER, ADD FOREIGN KEY (home) REFERENCES home (id);

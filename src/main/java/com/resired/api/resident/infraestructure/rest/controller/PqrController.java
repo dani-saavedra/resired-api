@@ -36,7 +36,7 @@ public class PqrController {
                                              @RequestBody PqrsRequestDTO dto) {
         UserApp userApp = jwtService.extractUser(bearer);
         String ticketNumber = useCase.registerPQRSByResident(new RegisterPqrs(userApp.neighborhoodId(), userApp.userId(),
-            dto.title(), dto.category(), dto.description()));
+            dto.title(), dto.category(), dto.description(), userApp.homeId()));
         return new ResponseData<>(ticketNumber);
     }
 
