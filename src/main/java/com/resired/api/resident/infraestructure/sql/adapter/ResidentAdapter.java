@@ -40,9 +40,7 @@ public class ResidentAdapter implements ResidentPort {
                 QrOrm lastQR = visitorOrm.getQrs().get(visitorOrm.getQrs().size() - 1);
                 return new RegisteredVisitor(visitorOrm.getId(), visitorOrm.getName(),
                     visitorOrm.getDocument(), visitorOrm.isFavorite(),
-                    (visitorOrm.isFavorite() ||
-                        (lastQR.isAvailable() &&
-                            lastQR.getCreatedAt().plusDays(1).isAfter(LocalDateTime.now(ZoneOffset.UTC)))));
+                    lastQR.isAvailableToEnter());
             })
             .toList();
     }

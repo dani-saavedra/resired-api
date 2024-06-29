@@ -80,7 +80,10 @@ public class GuardAdapter implements GuardPort, PackagePort {
 
     @Override
     public List<Visitor> findAllVisitorsWithActiveQr(Integer neighborhoodId) {
-        return visitorJpa.findAllWithActiveQr(neighborhoodId).stream()
+        List<VisitorWithQrDto> list = visitorJpa.findAllWithActiveQr(neighborhoodId);
+        return list
+            .stream()
+            .filter(obj -> obj.getQr().isAvailableToEnter())
             .map(this::toVisitorDomain)
             .toList();
     }

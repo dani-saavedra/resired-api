@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.JdbcTypeCode;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 import static java.sql.Types.TINYINT;
 
@@ -36,4 +37,10 @@ public class QrOrm {
 
     @Column
     private LocalDateTime disabledAt;
+
+    public boolean isAvailableToEnter() {
+        return !this.getVisitor().isDeleted() && (
+            this.getVisitor().isFavorite() || (this.isAvailable() &&
+                this.getCreatedAt().plusDays(1).isAfter(LocalDateTime.now(ZoneOffset.UTC))));
+    }
 }
