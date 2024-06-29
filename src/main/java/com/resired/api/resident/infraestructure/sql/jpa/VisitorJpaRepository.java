@@ -26,7 +26,7 @@ public interface VisitorJpaRepository extends JpaRepository<VisitorOrm, Integer>
     @Query("SELECT new com.resired.api.guard.infrastructure.sql.dto.VisitorWithQrDto(visitor, qr) " +
         "FROM VisitorOrm visitor " +
         "JOIN visitor.qrs qr " +
-        "WHERE qr.available = true " +
+        "WHERE qr.available = true AND visitor.deleted = false " +
         "AND visitor.authorizingHome.block.neighborhoodOrm.id = :neighborhoodId " +
         "ORDER BY qr.createdAt desc")
     List<VisitorWithQrDto> findAllWithActiveQr(Integer neighborhoodId);
