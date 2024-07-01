@@ -20,8 +20,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 @AllArgsConstructor
 public class AdminNeighborhoodUseCase {
 
-    public static final String DEFAULT_NOTIFICATION = "GENERAL";
-
     private final NotificationCategoryPort notificationCategoryPort;
     private final AdminNeighborhoodPort adminNeighborhoodPort;
     private final AdminNewsPort adminNewsPort;
@@ -31,14 +29,20 @@ public class AdminNeighborhoodUseCase {
 
     public void createNewNeighborhood(CreateNeighborhoodVo createNeighborhoodVo) throws GeneralSecurityException {
         Integer idNewNeigh = adminNeighborhoodPort.createNeighborHood(createNeighborhoodVo);
-        notificationCategoryPort.createNewNotificationCategory
-            (idNewNeigh, DEFAULT_NOTIFICATION, LevelNotificationEnum.MEDIUM);
+        associateDefaultCategories(idNewNeigh);
 
         CreateNeighborhoodVo.AdminUser admin = createNeighborhoodVo.admin();
         RegisterUserVO registerUserVO = new RegisterUserVO(admin.document(), admin.documentType(), "Admin", null,
             admin.email(), idNewNeigh, null, UserType.ADMIN);
         adminUserUseCase.registerUserToNeighborhood(registerUserVO, "resired");
 
+    }
+
+    private void associateDefaultCategories(Integer idNewNeigh) {
+        for (DefaultNotificationCategory category : DefaultNotificationCategory.values()) {
+            notificationCategoryPort.createNewNotificationCategory
+                (idNewNeigh, category.name(), LevelNotificationEnum.MEDIUM);
+        }
     }
 
     public void configNeighborhood(NeighConfig neighConfig) {
