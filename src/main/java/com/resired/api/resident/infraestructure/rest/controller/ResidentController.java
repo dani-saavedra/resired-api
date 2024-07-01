@@ -25,11 +25,11 @@ public class ResidentController {
 
     @PostMapping(path = "/visitor")
     @Operation(summary = "Create a qr for a new visitor")
-    public ResponseData<String> createVisitor(@RequestHeader(value = "Authorization") String bearer,
-                                              @RequestBody VisitorRequestDTO visitor) {
+    public ResponseData<Integer> createVisitor(@RequestHeader(value = "Authorization") String bearer,
+                                               @RequestBody VisitorRequestDTO visitor) {
         UserApp userApp = jwtService.extractUser(bearer);
-        String qr = visitUseCase.createVisitor(userApp.email(), userApp.homeId(), visitor);
-        return new ResponseData<>(qr);
+        Integer id = visitUseCase.createVisitor(userApp.email(), userApp.homeId(), visitor);
+        return new ResponseData<>(id);
     }
 
     @GetMapping(path = "/visitors")

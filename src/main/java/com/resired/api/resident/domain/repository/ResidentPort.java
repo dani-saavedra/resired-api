@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface ResidentPort {
 
-    String registerVisit(Integer userId, Integer homeId, String homeName, String name, String visitorDocument,
-                         String telephone, boolean favorite, Date expirationDate);
+    Integer registerVisit(Integer userId, Integer homeId, String homeName, String name, String visitorDocument,
+                          String telephone, boolean favorite, Date expirationDate);
 
     List<RegisteredVisitor> obtainVisitors(String emailResident);
 

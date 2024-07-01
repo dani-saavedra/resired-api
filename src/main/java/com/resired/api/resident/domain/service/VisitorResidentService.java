@@ -1,7 +1,6 @@
 package com.resired.api.resident.domain.service;
 
 import com.resired.api.guard.domain.repository.QrPort;
-import com.resired.api.guard.domain.service.CreateVisitor;
 import com.resired.api.guard.domain.service.ManageVisitor;
 import com.resired.api.guard.domain.vo.VisitVO;
 import com.resired.api.resident.domain.entity.Home;
@@ -25,14 +24,14 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 @Transactional
-public class VisitorResidentService implements CreateVisitor, ManageVisitor {
+public class VisitorResidentService implements CreateVisitorResident, ManageVisitor {
     private final UserPort userPort;
     private final HomePort homePort;
     private final ResidentPort residentPort;
     private final QrPort qrPort;
 
     @Override
-    public String createVisitor(VisitVO residentVisit) {
+    public Integer createVisitor(VisitVO residentVisit) {
         User resident = userPort.getResidentByEmail(residentVisit.authorizer());
         if (resident == null || !resident.isActive()) {
             throw new InactiveUserException(residentVisit.authorizer());

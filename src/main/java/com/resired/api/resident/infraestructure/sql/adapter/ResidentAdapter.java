@@ -24,11 +24,12 @@ public class ResidentAdapter implements ResidentPort {
     private final JwtSecurity jwtSecurity;
 
     @Override
-    public String registerVisit(Integer userId, Integer homeId, String homeName, String visitorName, String visitorDocument,
-                                String telephone, boolean favorite, Date expirationDate) {
+    public Integer registerVisit(Integer userId, Integer homeId, String homeName, String visitorName, String visitorDocument,
+                                 String telephone, boolean favorite, Date expirationDate) {
         VisitorOrm visitor = visitorJpa.save(VisitorOrm.visitorFromResident(userId, homeId, homeName, visitorName,
             visitorDocument, telephone, favorite));
-        return generateAndSaveQR(visitor, expirationDate);
+        generateAndSaveQR(visitor, expirationDate);
+        return visitor.getId();
     }
 
     @Override
