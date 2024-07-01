@@ -2,8 +2,9 @@ package com.resired.api.shared.notification.infraestructure.sql.adapter;
 
 import com.resired.api.security.infraestructure.sql.jpa.UserJpaRepository;
 import com.resired.api.security.infraestructure.sql.orm.UserOrm;
+import com.resired.api.shared.notification.domain.entity.NotificationMessage;
 import com.resired.api.shared.notification.domain.repository.NotificationMessagePort;
-import com.resired.api.shared.notification.domain.vo.NotificationMessage;
+import com.resired.api.shared.notification.domain.vo.NotificationForUser;
 import com.resired.api.shared.notification.infraestructure.sql.jpa.NotificationJpaRepository;
 import com.resired.api.shared.notification.infraestructure.sql.jpa.NotificationUserJpaRepository;
 import com.resired.api.shared.notification.infraestructure.sql.orm.NotificationOrm;
@@ -25,23 +26,32 @@ public class NotificationMessageAdapter implements NotificationMessagePort {
     private final NotificationJpaRepository notificationRepository;
 
     @Override
-    public List<NotificationMessage> getAllNotificationMessagesByEmail(String email) {
+    public List<NotificationForUser> getAllNotificationMessagesByEmail(String email) {
         Integer userId = userRepository.findByEmail(email).getId();
         return notificationUserRepository.findNotificationsByUserIdOrderByCreatedDateDesc(userId)
             .stream()
-            .map((notificationOrm -> new NotificationMessage(notificationOrm.getId(), notificationOrm.getTitle(),
-                notificationOrm.getMessage(), true, FormatDate.formatDate(notificationOrm.getCreatedDate()))))
+            .map((notificationOrm -> {
+                NotificationMessage notificationMessage = new NotificationMessage(notificationOrm.getId(), notificationOrm.getTitle(),
+                    notificationOrm.getMessage(), FormatDate.formatDate(notificationOrm.getCreatedDate()));
+                return new NotificationForUser(notificationMessage,
+                    true);
+            }))
             .toList();
     }
 
     @Override
-    public NotificationMessage getLastNotification(String email) {
+    public NotificationForUser getLastNotification(String email) {
         Integer userId = userRepository.findByEmail(email).getId();
         NotificationUserOrm notificationUserOrm = notificationUserRepository.findTopByUserIdOrderByCreatedDateDesc(userId);
         if (notificationUserOrm == null) return null;
-        return new NotificationMessage(null, notificationUserOrm.getNotification().getTitle(),
+
+        NotificationMessage notificationMessage = new NotificationMessage(
+            notificationUserOrm.getNotification().getId(),
+            notificationUserOrm.getNotification().getTitle(),
             notificationUserOrm.getNotification().getMessage(),
-            notificationUserOrm.getViewed(), FormatDate.formatDate(notificationUserOrm.getViewedAt()));
+            FormatDate.formatDate(notificationUserOrm.getViewedAt()));
+        return new NotificationForUser(notificationMessage,
+            notificationUserOrm.getViewed());
     }
 
     @Transactional
@@ -83,8 +93,9 @@ public class NotificationMessageAdapter implements NotificationMessagePort {
     @Override
     public List<NotificationMessage> getAllNotificationMessagesByNeighborhoodId(Integer neighborhoodId) {
         return notificationRepository.findAllByNeighborhoodId(neighborhoodId).stream()
-            .map(notificationOrm -> new NotificationMessage(notificationOrm.getId(), notificationOrm.getTitle(),
-                notificationOrm.getMessage(), null,
+            .map(notificationOrm -> new NotificationMessage(notificationOrm.getId(),
+                notificationOrm.getTitle(),
+                notificationOrm.getMessage(),
                 FormatDate.formatDate(notificationOrm.getCreatedDate()))).toList();
     }
 

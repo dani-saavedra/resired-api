@@ -3,10 +3,10 @@ package com.resired.api.shared.notification.infraestructure.rest.controller;
 import com.resired.api.security.application.usecase.JwtService;
 import com.resired.api.security.domain.entity.UserApp;
 import com.resired.api.shared.notification.application.dto.NewNotificationsResponse;
+import com.resired.api.shared.notification.application.dto.NotificationForUserDto;
 import com.resired.api.shared.notification.application.dto.NotificationHomeRequest;
 import com.resired.api.shared.notification.application.dto.NotificationNeighborhoodRequest;
 import com.resired.api.shared.notification.application.usecase.NotificationUseCase;
-import com.resired.api.shared.notification.domain.vo.NotificationMessage;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +40,7 @@ public class NotificationController {
     @GetMapping
     @Operation(summary = "Get all notifications for a user (not deleted notifications),"
         + "this also change the state of all these notifications to viewed")
-    public ResponseEntity<List<NotificationMessage>> getAllNotificationsForUser(
+    public ResponseEntity<List<NotificationForUserDto>> getAllNotificationsForUser(
         @RequestHeader(value = "Authorization") String bearer) {
         UserApp userApp = jwtService.extractUser(bearer);
 
