@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "803701384467",
+    "project_id": "resired-dev-427103",
+    "storage_bucket": "resired-dev-427103.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:803701384467:android:dd84fab428bcdc47f5e6e6",
+        "android_client_info": {
+          "package_name": "com.resiredapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrViOtj4EtMQDguX3qHfX1rspsWSwAbOg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
