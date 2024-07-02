@@ -54,7 +54,8 @@ public class NotificationUseCase {
 
     public List<NotificationForUserDto> listAllNotifications(String email) {
         List<NotificationForUserDto> notifications = notificationRepository.getAllNotificationMessagesByEmail(email)
-            .stream().map(notificationForUser -> new NotificationForUserDto(
+            .stream()
+            .map(notificationForUser -> new NotificationForUserDto(
                 notificationForUser.notificationMessage().id(),
                 notificationForUser.notificationMessage().title(),
                 notificationForUser.notificationMessage().message(),

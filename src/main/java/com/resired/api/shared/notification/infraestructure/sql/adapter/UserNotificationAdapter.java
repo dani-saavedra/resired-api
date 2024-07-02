@@ -50,7 +50,8 @@ public class UserNotificationAdapter implements UserNotificationPort {
     public List<Integer> getNeighborhoodIdsForResidentByEmail(String email) {
         return userRepository
             .findNeighborhoodsByUserEmailAndUserRole(email, UserType.RESIDENT)
-            .stream().map(NeighborhoodOrm::getId)
+            .stream()
+            .map(NeighborhoodOrm::getId)
             .toList();
     }
 
