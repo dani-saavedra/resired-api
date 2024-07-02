@@ -92,7 +92,8 @@ public class NotificationMessageAdapter implements NotificationMessagePort {
 
     @Override
     public List<NotificationMessage> getAllNotificationMessagesByNeighborhoodId(Integer neighborhoodId) {
-        return notificationRepository.findAllByNeighborhoodId(neighborhoodId).stream()
+        return notificationRepository.findAllByNeighborhoodId(neighborhoodId)
+            .stream()
             .map(notificationOrm -> new NotificationMessage(notificationOrm.getId(),
                 notificationOrm.getTitle(),
                 notificationOrm.getMessage(),

@@ -31,8 +31,7 @@ public class NotificationUseCase {
         NotificationMessage notificationMessage = new NotificationMessage(null, requestDTO.title(),
             requestDTO.message(), null);
 
-        List<Device> devices = deviceRepository.getDevicesForHomeResident(requestDTO.homeID())
-            .stream().filter(Device::getAllowNotifications).toList();
+        List<Device> devices = deviceRepository.getDevicesForHomeResident(requestDTO.homeID());
 
         if (!devices.isEmpty()) {
             notificationSenderService.sendToDeviceList(notificationMessage, devices);
@@ -55,7 +54,8 @@ public class NotificationUseCase {
 
     public List<NotificationForUserDto> listAllNotifications(String email) {
         List<NotificationForUserDto> notifications = notificationRepository.getAllNotificationMessagesByEmail(email)
-            .stream().map(notificationForUser -> new NotificationForUserDto(
+            .stream()
+            .map(notificationForUser -> new NotificationForUserDto(
                 notificationForUser.notificationMessage().id(),
                 notificationForUser.notificationMessage().title(),
                 notificationForUser.notificationMessage().message(),

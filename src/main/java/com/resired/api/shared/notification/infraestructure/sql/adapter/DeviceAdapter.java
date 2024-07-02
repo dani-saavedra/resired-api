@@ -31,8 +31,7 @@ public class DeviceAdapter implements DevicePort {
     public List<Device> getDevicesForHomeResident(Integer homeID) {
         return deviceRepository.findDevicesByHomeIdAndUserRole(homeID, UserType.RESIDENT)
             .stream()
-            .map(deviceOrm -> new Device(deviceOrm.getId(),
-                deviceOrm.getAllowNotifications()))
+            .map(deviceOrm -> new Device(deviceOrm.getId()))
             .toList();
 
     }
