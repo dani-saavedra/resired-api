@@ -3,6 +3,7 @@ package com.resired.api.admin.infraestructure.sql.adpater;
 import com.resired.api.admin.application.dto.CreateNewsDto;
 import com.resired.api.admin.application.repository.AdminNewsPort;
 import com.resired.api.admin.domain.entity.Neighborhood;
+import com.resired.api.admin.domain.entity.NotificationCategory;
 import com.resired.api.admin.domain.repository.AdminNeighborhoodPort;
 import com.resired.api.admin.domain.repository.NotificationCategoryPort;
 import com.resired.api.admin.domain.vo.CreateNeighborhoodVo;
@@ -38,6 +39,28 @@ public class AdminNeighborhoodAdapterSQL implements NotificationCategoryPort, Ad
         notificationCategoryOrm.setNotificationCategory(levelNotification);
         notificationCategoryOrm.setNeighborhoodId(neighborhoodId);
         notificationCategoryRepository.save(notificationCategoryOrm);
+    }
+
+    @Override
+    public NotificationCategory getNotificationCategoryById(Integer id) {
+        Optional<NotificationCategoryOrm> notificationCategoryOrmOptional = notificationCategoryRepository.findById(id);
+        if (notificationCategoryOrmOptional.isEmpty()) return null;
+
+        NotificationCategoryOrm notificationCategoryOrm = notificationCategoryOrmOptional.get();
+        return new NotificationCategory(notificationCategoryOrm.getId(),
+            notificationCategoryOrm.getNeighborhoodId(),
+            notificationCategoryOrm.getName(),
+            notificationCategoryOrm.getDefaultMessage(),
+            notificationCategoryOrm.getNotificationCategory(),
+            notificationCategoryOrm.getDefaultTitle());
+    }
+
+    @Override
+    public NotificationCategory getNotificationCategoryByNameAndNeighborhoodId(String name, Integer id) {
+        NotificationCategoryOrm notificationCategoryOrm = notificationCategoryRepository
+            .getNotificationCategoryOrmByNameAndNeighborhoodId(name, id);
+
+        return notificationCategoryOrm.castToEntity();
     }
 
     @Override

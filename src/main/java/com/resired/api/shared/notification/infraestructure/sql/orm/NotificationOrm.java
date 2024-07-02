@@ -1,5 +1,7 @@
 package com.resired.api.shared.notification.infraestructure.sql.orm;
 
+import com.resired.api.admin.domain.vo.LevelNotificationEnum;
+import com.resired.api.admin.infraestructure.sql.orm.NotificationCategoryOrm;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,6 +30,11 @@ public class NotificationOrm {
     @Column
     private LocalDateTime createdDate;
 
-    @Column
-    private Integer neighborhoodId;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "level", columnDefinition = "VARCHAR(20)")
+    private LevelNotificationEnum notificationCategory;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "category_id", updatable = false)
+    private NotificationCategoryOrm categoryOrm;
 }
