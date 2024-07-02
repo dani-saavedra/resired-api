@@ -4,6 +4,8 @@ import com.resired.api.admin.application.dto.CreateNewsDto;
 import com.resired.api.admin.application.usecase.AdminNeighborhoodUseCase;
 import com.resired.api.admin.domain.vo.CreateNeighborhoodVo;
 import com.resired.api.admin.domain.vo.NeighConfig;
+import com.resired.api.resident.application.dto.NewsResponse;
+import com.resired.api.resident.application.usecase.NeighborhoodUseCase;
 import com.resired.api.resident.infraestructure.rest.dto.ResponseData;
 import com.resired.api.security.application.usecase.JwtService;
 import com.resired.api.security.domain.entity.UserApp;
@@ -21,29 +23,38 @@ import java.security.GeneralSecurityException;
 @PreAuthorize("hasAuthority('ADMIN')")
 public class AdmNeighborhoodController {
 
-    private AdminNeighborhoodUseCase adminNeighborhoodUseCase;
-    private JwtService jwtService;
+    private final AdminNeighborhoodUseCase adminNeighborhoodUseCase;
+    private final NeighborhoodUseCase neighborhoodUseCase;
+    private final JwtService jwtService;
 
     //TODO revisar rol de owner de resired que realizaria esta creación incial
-    @PostMapping(path = "/neigborhood")
+    @PostMapping(path = "/neighborhood")
     public ResponseEntity<String> createNeighborhood(@RequestBody CreateNeighborhoodVo createNeighborhoodVo) throws GeneralSecurityException {
         adminNeighborhoodUseCase.createNewNeighborhood(createNeighborhoodVo);
         return ResponseEntity.ok("Success");
     }
 
-    @PutMapping(path = "/neigborhood")
+    @PutMapping(path = "/neighborhood")
     @Operation(summary = "Set up a neighborhood after onboarding")
     public ResponseEntity<String> configureNeighborhood(@RequestBody NeighConfig neighConfig) {
         adminNeighborhoodUseCase.configNeighborhood(neighConfig);
         return ResponseEntity.ok("Success");
     }
 
-    @PostMapping(path = "/news")
+    @PostMapping(path = "/neighborhood/news")
     @Operation(summary = "Create a news for the neighborhood")
     public ResponseData<String> createNews(@RequestHeader(value = "Authorization") String bearer,
                                            @RequestBody CreateNewsDto newsRequest) {
         UserApp userApp = jwtService.extractUser(bearer);
         adminNeighborhoodUseCase.createNews(newsRequest, userApp.neighborhoodId());
         return new ResponseData<>("News created successfully");
+    }
+
+    @GetMapping(path = "/neighborhood/news")
+    @Operation(summary = "Obtain news by neighborhood")
+    public NewsResponse obtainNews(@RequestHeader(value = "Authorization") String bearer) {
+        UserApp userApp = jwtService.extractUser(bearer);
+        return neighborhoodUseCase.getNewsFromNeighborhood(userApp.neighborhoodId());
+
     }
 }
