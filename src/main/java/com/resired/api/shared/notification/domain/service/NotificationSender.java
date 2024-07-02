@@ -1,7 +1,7 @@
 package com.resired.api.shared.notification.domain.service;
 
 import com.resired.api.shared.notification.domain.entity.Device;
-import com.resired.api.shared.notification.domain.vo.NotificationMessage;
+import com.resired.api.shared.notification.domain.entity.NotificationMessage;
 
 import java.util.List;
 

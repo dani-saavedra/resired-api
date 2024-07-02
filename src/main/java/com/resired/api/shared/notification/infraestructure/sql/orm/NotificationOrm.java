@@ -27,4 +27,7 @@ public class NotificationOrm {
 
     @Column
     private LocalDateTime createdDate;
+
+    @Column
+    private Integer neighborhoodId;
 }

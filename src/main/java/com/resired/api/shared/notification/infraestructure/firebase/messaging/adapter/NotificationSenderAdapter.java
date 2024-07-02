@@ -2,8 +2,8 @@ package com.resired.api.shared.notification.infraestructure.firebase.messaging.a
 
 import com.google.firebase.messaging.*;
 import com.resired.api.shared.notification.domain.entity.Device;
+import com.resired.api.shared.notification.domain.entity.NotificationMessage;
 import com.resired.api.shared.notification.domain.service.NotificationSender;
-import com.resired.api.shared.notification.domain.vo.NotificationMessage;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

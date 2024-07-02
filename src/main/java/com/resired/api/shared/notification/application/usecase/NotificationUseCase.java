@@ -1,14 +1,16 @@
 package com.resired.api.shared.notification.application.usecase;
 
 import com.resired.api.shared.notification.application.dto.NewNotificationsResponse;
+import com.resired.api.shared.notification.application.dto.NotificationForUserDto;
 import com.resired.api.shared.notification.application.dto.NotificationHomeRequest;
 import com.resired.api.shared.notification.application.dto.NotificationNeighborhoodRequest;
 import com.resired.api.shared.notification.domain.entity.Device;
+import com.resired.api.shared.notification.domain.entity.NotificationMessage;
 import com.resired.api.shared.notification.domain.repository.DevicePort;
 import com.resired.api.shared.notification.domain.repository.NotificationMessagePort;
 import com.resired.api.shared.notification.domain.repository.UserNotificationPort;
 import com.resired.api.shared.notification.domain.service.NotificationSender;
-import com.resired.api.shared.notification.domain.vo.NotificationMessage;
+import com.resired.api.shared.notification.domain.vo.NotificationForUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -26,23 +28,24 @@ public class NotificationUseCase {
     private String NEIGHBORHOOD_TOPIC;
 
     public void notifyHome(NotificationHomeRequest requestDTO) {
-        NotificationMessage notificationMessage = new NotificationMessage(requestDTO.title(),
-            requestDTO.message(), false, "");
+        NotificationMessage notificationMessage = new NotificationMessage(null, requestDTO.title(),
+            requestDTO.message(), null);
 
         List<Device> devices = deviceRepository.getDevicesForHomeResident(requestDTO.homeID())
             .stream().filter(Device::getAllowNotifications).toList();
 
         if (!devices.isEmpty()) {
             notificationSenderService.sendToDeviceList(notificationMessage, devices);
-            notificationRepository.saveNotificationForHomeResidents(notificationMessage, requestDTO.homeID());
+            notificationRepository.saveNotificationForHomeResidents(notificationMessage,
+                requestDTO.homeID(), requestDTO.neighborhoodID());
         }
     }
 
     public void notifyNeighborhood(NotificationNeighborhoodRequest requestDTO) {
         String topic = NEIGHBORHOOD_TOPIC + requestDTO.neighborhoodID();
 
-        NotificationMessage notificationMessage = new NotificationMessage(requestDTO.title(),
-            requestDTO.message(), false, "");
+        NotificationMessage notificationMessage = new NotificationMessage(null, requestDTO.title(),
+            requestDTO.message(), null);
 
         notificationSenderService.sendToTopic(notificationMessage, topic);
 
@@ -50,14 +53,21 @@ public class NotificationUseCase {
             requestDTO.neighborhoodID());
     }
 
-    public List<NotificationMessage> listAllNotifications(String email) {
-        List<NotificationMessage> notifications = notificationRepository.getAllNotificationMessagesByEmail(email);
+    public List<NotificationForUserDto> listAllNotifications(String email) {
+        List<NotificationForUserDto> notifications = notificationRepository.getAllNotificationMessagesByEmail(email)
+            .stream().map(notificationForUser -> new NotificationForUserDto(
+                notificationForUser.notificationMessage().id(),
+                notificationForUser.notificationMessage().title(),
+                notificationForUser.notificationMessage().message(),
+                notificationForUser.notificationMessage().date(),
+                notificationForUser.viewed()
+            )).toList();
         notificationRepository.markAllNotificationsAsRead(email);
         return notifications;
     }
 
     public NewNotificationsResponse thereAreNewNotifications(String email) {
-        NotificationMessage notificationMessage = notificationRepository.getLastNotification(email);
+        NotificationForUser notificationMessage = notificationRepository.getLastNotification(email);
         boolean newNotification;
         if (notificationMessage == null) {
             newNotification = false;
@@ -70,5 +80,9 @@ public class NotificationUseCase {
 
     public void deleteNotificationForUser(Integer notificationId, String email) {
         userNotificationRepository.deleteNotificationByID(email, notificationId);
+    }
+
+    public List<NotificationMessage> getAllNotificationsByNeighborhoodId(Integer neighborhoodId) {
+        return notificationRepository.getAllNotificationMessagesByNeighborhoodId(neighborhoodId);
     }
 }
