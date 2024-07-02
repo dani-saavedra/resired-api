@@ -21,7 +21,7 @@ import java.util.List;
 @PreAuthorize("hasAuthority('ADMIN')")
 public class AdmPqrsController {
 
-    private AdminPqrsUseCase adminPqrsUseCase;
+    private final AdminPqrsUseCase adminPqrsUseCase;
     private final JwtService jwtService;
 
     @PutMapping("/take")

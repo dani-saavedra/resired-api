@@ -23,9 +23,9 @@ import java.security.GeneralSecurityException;
 @PreAuthorize("hasAuthority('ADMIN')")
 public class AdmNeighborhoodController {
 
-    private AdminNeighborhoodUseCase adminNeighborhoodUseCase;
-    private NeighborhoodUseCase neighborhoodUseCase;
-    private JwtService jwtService;
+    private final AdminNeighborhoodUseCase adminNeighborhoodUseCase;
+    private final NeighborhoodUseCase neighborhoodUseCase;
+    private final JwtService jwtService;
 
     //TODO revisar rol de owner de resired que realizaria esta creación incial
     @PostMapping(path = "/neigborhood")
