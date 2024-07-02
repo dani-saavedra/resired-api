@@ -18,7 +18,4 @@ public class DeviceOrm {
 
     @JoinColumn(name = "user_id", nullable = false)
     private Integer userId;
-
-    @Column(name = "allow_notifications")
-    private Boolean allowNotifications;
 }

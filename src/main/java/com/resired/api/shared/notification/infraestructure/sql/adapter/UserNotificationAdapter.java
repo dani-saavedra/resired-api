@@ -26,7 +26,7 @@ public class UserNotificationAdapter implements UserNotificationPort {
     public void addDevice(String email, Device device) {
         UserOrm user = userRepository.findByEmail(email);
 
-        DeviceOrm deviceOrm = new DeviceOrm(device.getId(), user.getId(), device.getAllowNotifications());
+        DeviceOrm deviceOrm = new DeviceOrm(device.id(), user.getId());
         deviceRepository.save(deviceOrm);
     }
 
@@ -62,6 +62,6 @@ public class UserNotificationAdapter implements UserNotificationPort {
     }
 
     private Device convertToDevice(DeviceOrm deviceOrm) {
-        return new Device(deviceOrm.getId(), deviceOrm.getAllowNotifications());
+        return new Device(deviceOrm.getId());
     }
 }

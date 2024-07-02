@@ -22,8 +22,8 @@ public class DeviceUseCase {
     private String NEIGHBORHOOD_TOPIC;
 
     public void registerDevice(Device device, String email) {
-        if (devicePort.alreadyExists(device.getId())) {
-            throw new DeviceAlreadyExistsException(device.getId());
+        if (devicePort.alreadyExists(device.id())) {
+            throw new DeviceAlreadyExistsException(device.id());
         }
 
         userPort.addDevice(email, device);

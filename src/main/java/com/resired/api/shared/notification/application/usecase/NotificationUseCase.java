@@ -31,8 +31,7 @@ public class NotificationUseCase {
         NotificationMessage notificationMessage = new NotificationMessage(null, requestDTO.title(),
             requestDTO.message(), null);
 
-        List<Device> devices = deviceRepository.getDevicesForHomeResident(requestDTO.homeID())
-            .stream().filter(Device::getAllowNotifications).toList();
+        List<Device> devices = deviceRepository.getDevicesForHomeResident(requestDTO.homeID());
 
         if (!devices.isEmpty()) {
             notificationSenderService.sendToDeviceList(notificationMessage, devices);

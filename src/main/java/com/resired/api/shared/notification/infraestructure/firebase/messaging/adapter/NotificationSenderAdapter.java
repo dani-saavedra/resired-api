@@ -24,7 +24,7 @@ public class NotificationSenderAdapter implements NotificationSender {
             = buildNotificationFromNotificationMessage(notificationMessage);
         Message message = Message
             .builder()
-            .setToken(device.getId())
+            .setToken(device.id())
             .setNotification(firebaseNotification)
             .build();
 
@@ -38,7 +38,7 @@ public class NotificationSenderAdapter implements NotificationSender {
 
     @Override
     public void sendToDeviceList(NotificationMessage notificationMessage, List<Device> devices) {
-        List<String> devicesIDs = devices.stream().map(Device::getId).toList();
+        List<String> devicesIDs = devices.stream().map(Device::id).toList();
 
         Notification firebaseNotification
             = buildNotificationFromNotificationMessage(notificationMessage);
@@ -88,7 +88,7 @@ public class NotificationSenderAdapter implements NotificationSender {
 
     @Override
     public void subscribeDeviceToTopic(Device device, String topic) {
-        List<String> devicesID = Collections.singletonList(device.getId());
+        List<String> devicesID = Collections.singletonList(device.id());
 
         try {
             TopicManagementResponse response = firebaseMessaging.subscribeToTopic(devicesID, topic);
@@ -100,7 +100,7 @@ public class NotificationSenderAdapter implements NotificationSender {
 
     @Override
     public void unsubscribeDeviceToTopic(Device device, String topic) {
-        List<String> devicesID = Collections.singletonList(device.getId());
+        List<String> devicesID = Collections.singletonList(device.id());
 
         try {
             TopicManagementResponse response = firebaseMessaging.unsubscribeFromTopic(devicesID, topic);
