@@ -28,20 +28,20 @@ public class AdmNeighborhoodController {
     private final JwtService jwtService;
 
     //TODO revisar rol de owner de resired que realizaria esta creación incial
-    @PostMapping(path = "/neigborhood")
+    @PostMapping(path = "/neighborhood")
     public ResponseEntity<String> createNeighborhood(@RequestBody CreateNeighborhoodVo createNeighborhoodVo) throws GeneralSecurityException {
         adminNeighborhoodUseCase.createNewNeighborhood(createNeighborhoodVo);
         return ResponseEntity.ok("Success");
     }
 
-    @PutMapping(path = "/neigborhood")
+    @PutMapping(path = "/neighborhood")
     @Operation(summary = "Set up a neighborhood after onboarding")
     public ResponseEntity<String> configureNeighborhood(@RequestBody NeighConfig neighConfig) {
         adminNeighborhoodUseCase.configNeighborhood(neighConfig);
         return ResponseEntity.ok("Success");
     }
 
-    @PostMapping(path = "/neigborhood/news")
+    @PostMapping(path = "/neighborhood/news")
     @Operation(summary = "Create a news for the neighborhood")
     public ResponseData<String> createNews(@RequestHeader(value = "Authorization") String bearer,
                                            @RequestBody CreateNewsDto newsRequest) {
@@ -50,7 +50,7 @@ public class AdmNeighborhoodController {
         return new ResponseData<>("News created successfully");
     }
 
-    @GetMapping(path = "/neigborhood/news")
+    @GetMapping(path = "/neighborhood/news")
     @Operation(summary = "Obtain news by neighborhood")
     public NewsResponse obtainNews(@RequestHeader(value = "Authorization") String bearer) {
         UserApp userApp = jwtService.extractUser(bearer);
