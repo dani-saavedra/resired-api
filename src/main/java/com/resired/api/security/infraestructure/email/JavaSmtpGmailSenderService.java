@@ -28,10 +28,10 @@ public class JavaSmtpGmailSenderService implements EmailPort {
     @Override
     public void sendRegisteredUserEmail(String email, String neighborhood) {
         SimpleMailMessage message = new SimpleMailMessage();
-        String body = "Bienvenido a ResiRed, tu cuenta ha sido asociada satisfactoriamente a " + neighborhood + " y ya podrás ingresar " +
-            "a la app ResiRed y hacer uso de ella. Si aún no tienes la app, descargala desde todas las tiendas." +
-            "Ten presente que tu usuario será tu correo electronico diligenciado en tu solicitud y la clave de acceso por primera " +
-            "vez será tu número de documento";
+        String body = "¡Bienvenido a ResiRed! \n \n" +
+            "Tu cuenta ha sido asociada con éxito a " + neighborhood + ". Ahora puedes acceder a nuestra app para empezar a disfrutar de todas las ventajas que tenemos para ofrecerte. Si aún no tienes la aplicación, puedes descargarla desde cualquier tienda.\n" +
+            "\nRecuerda que tu usuario es el correo electrónico que diligenciaste en tu solicitud y para acceder por primera vez deberás usar tu número de documento como contraseña.\n" +
+            "\n¡Gracias por ser parte de nuestra comunidad! Siempre estamos dispuestos a ayudarte en cualquier cosa que necesites.";
 
         message.setTo(email);
         message.setSubject("Bienvenido a Resired");
