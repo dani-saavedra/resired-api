@@ -10,6 +10,8 @@ import com.resired.api.admin.domain.repository.BlockPort;
 import com.resired.api.admin.domain.repository.NotificationCategoryPort;
 import com.resired.api.admin.domain.vo.*;
 import com.resired.api.security.domain.enums.UserType;
+import com.resired.api.shared.notification.application.dto.NotificationNeighborhoodRequest;
+import com.resired.api.shared.notification.application.usecase.NotificationUseCase;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,7 @@ public class AdminNeighborhoodUseCase {
     private final AdminNewsPort adminNewsPort;
     private final AdminUserUseCase adminUserUseCase;
     private final BlockPort blockPort;
+    private final NotificationUseCase notificationUseCase;
 
 
     public void createNewNeighborhood(CreateNeighborhoodVo createNeighborhoodVo) throws GeneralSecurityException {
@@ -73,5 +76,8 @@ public class AdminNeighborhoodUseCase {
 
     public void createNews(CreateNewsDto newsRequest, Integer neighborhoodId) {
         adminNewsPort.createNews(newsRequest, neighborhoodId);
+        NotificationNeighborhoodRequest requestDTO = new NotificationNeighborhoodRequest("¡Novedad en tu conjunto!",
+            newsRequest.title(), neighborhoodId);
+        notificationUseCase.notifyNeighborhood(requestDTO);
     }
 }
