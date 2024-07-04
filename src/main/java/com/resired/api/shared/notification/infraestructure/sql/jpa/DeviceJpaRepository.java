@@ -12,6 +12,8 @@ public interface DeviceJpaRepository extends JpaRepository<DeviceOrm, String> {
 
     DeviceOrm findDeviceOrmByIdAndUserId(String deviceID, Integer userID);
 
+    DeviceOrm findByUserId(Integer userId);
+
     @Query("SELECT d FROM DeviceOrm d " +
         "JOIN UserOrm u ON d.userId = u.id " +
         "JOIN UserRolOrm ur ON u.id = ur.user.id " +
