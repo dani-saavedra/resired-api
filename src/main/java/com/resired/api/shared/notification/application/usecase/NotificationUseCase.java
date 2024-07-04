@@ -1,9 +1,6 @@
 package com.resired.api.shared.notification.application.usecase;
 
-import com.resired.api.shared.notification.application.dto.NewNotificationsResponse;
-import com.resired.api.shared.notification.application.dto.NotificationForUserDto;
-import com.resired.api.shared.notification.application.dto.NotificationHomeRequest;
-import com.resired.api.shared.notification.application.dto.NotificationNeighborhoodRequest;
+import com.resired.api.shared.notification.application.dto.*;
 import com.resired.api.shared.notification.domain.entity.Device;
 import com.resired.api.shared.notification.domain.entity.NotificationMessage;
 import com.resired.api.shared.notification.domain.repository.DevicePort;
@@ -37,6 +34,15 @@ public class NotificationUseCase {
             notificationSenderService.sendToDeviceList(notificationMessage, devices);
             notificationRepository.saveNotificationForHomeResidents(notificationMessage,
                 requestDTO.homeID(), requestDTO.neighborhoodID());
+        }
+    }
+
+    public void notifyHome(NotificationHome notification) {
+        NotificationMessage notificationMessage = new NotificationMessage(null, notification.title(),
+            notification.message(), null);
+        List<Device> devices = deviceRepository.getDevicesForHomeResident(notification.homeID());
+        if (!devices.isEmpty()) {
+            notificationSenderService.sendToDeviceList(notificationMessage, devices);
         }
     }
 
