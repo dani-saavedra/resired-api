@@ -46,6 +46,15 @@ public class NotificationUseCase {
         }
     }
 
+    public void notifyResident(NotificationResident notification) {
+        NotificationMessage notificationMessage = new NotificationMessage(null, notification.title(),
+            notification.message(), null);
+        Device device = deviceRepository.getDeviceByUser(notification.userId());
+        if (device != null) {
+            notificationSenderService.sendToDevice(notificationMessage, device);
+        }
+    }
+
     public void notifyNeighborhood(NotificationNeighborhoodRequest requestDTO) {
         String topic = NEIGHBORHOOD_TOPIC + requestDTO.neighborhoodID();
 
