@@ -25,17 +25,20 @@ public class AdminPqrsUseCase {
             throw new InvalidPqrsException("PQRS01");
         }
         port.updateStatePQRS(ticketNumber);
-        NotificationHome notificationHome = new NotificationHome("PQRs " + ticketNumber + " en gestión",
+        NotificationHome notificationHome = new NotificationHome("PQRS " + ticketNumber + " en gestión",
             "La PQRS " + ticketNumber + " comenzo a ser gestionada por la administración", pqrs.homeId());
         notificationUseCase.notifyHome(notificationHome);
     }
 
     public void responsePQRS(ResponsePQRS responsePQRS) {
-        Integer neighborByTicketNumber = port.getNeighborByTicketNumber(responsePQRS.ticketNumber());
-        if (neighborByTicketNumber == null || !neighborByTicketNumber.equals(responsePQRS.neighborhood())) {
+        PqrsDetailDTO pqrs = port.obtainPqrByTicketNumber(responsePQRS.ticketNumber());
+        if (pqrs == null || !pqrs.state().equals(StatePQRS.EN_REVISION)) {
             throw new InvalidPqrsException("PQRS01");
         }
+        NotificationHome notificationHome = new NotificationHome("PQRS " + responsePQRS.ticketNumber() + " completada",
+            "La PQRS " + responsePQRS.ticketNumber() + " ha sido completada por la administración, ve a conocer su respuesta", pqrs.homeId());
         port.responsePqrs(responsePQRS.ticketNumber(), responsePQRS.response(), responsePQRS.userResponse());
+        notificationUseCase.notifyHome(notificationHome);
     }
 
     public List<PqrsDetailDTO> obtainPqrsByStateAndNeighborhood(StatePQRS statePQRS, Integer neighborhood) {
