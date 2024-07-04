@@ -78,6 +78,7 @@ public class AdminNeighborhoodUseCase {
         adminNewsPort.createNews(newsRequest, neighborhoodId);
         NotificationNeighborhoodRequest requestDTO = new NotificationNeighborhoodRequest("¡Novedad en tu conjunto!",
             newsRequest.title(), neighborhoodId);
+        //TODO pendiente revisar si deberiamos guardar en la tabla de notification
         notificationUseCase.notifyNeighborhood(requestDTO);
     }
 }
