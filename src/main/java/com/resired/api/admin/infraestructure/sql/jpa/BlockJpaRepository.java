@@ -9,5 +9,5 @@ import java.util.Optional;
 public interface BlockJpaRepository extends JpaRepository<BlockOrm, Integer> {
     Optional<BlockOrm> findByNameAndNeighborhoodOrmId(String name, Integer neighborhoodId);
 
-    List<BlockOrm> findAllByNeighborhoodOrmId(Integer neighborhoodId);
+    List<BlockOrm> findByNeighborhoodOrmIdOrderByIdAsc(Integer neighborhoodId);
 }

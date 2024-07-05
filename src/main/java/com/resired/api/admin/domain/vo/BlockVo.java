@@ -1,5 +1,5 @@
 package com.resired.api.admin.domain.vo;
 
-public record BlockVo(GroupingType type, String name) {
+public record BlockVo(Integer id, String name) {
 
 }
