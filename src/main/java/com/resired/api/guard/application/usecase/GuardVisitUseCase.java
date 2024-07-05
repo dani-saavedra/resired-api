@@ -61,7 +61,7 @@ public class GuardVisitUseCase {
         } catch (ExpiredJwtException e) {
             throw new QrInvalidException("Expired");
         } catch (Exception e) {
-            log.error("QR presented has problems {}", e.getMessage());
+            log.error("QR presented has problems {}", e.getMessage(), e);
             throw new QrInvalidException("Invalid");
         }
     }
