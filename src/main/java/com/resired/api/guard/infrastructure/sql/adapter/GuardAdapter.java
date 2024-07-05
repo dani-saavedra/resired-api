@@ -5,6 +5,7 @@ import com.resired.api.guard.domain.entity.Visit;
 import com.resired.api.guard.domain.entity.Visitor;
 import com.resired.api.guard.domain.repository.GuardPort;
 import com.resired.api.guard.domain.repository.PackagePort;
+import com.resired.api.guard.domain.vo.VisitMade;
 import com.resired.api.guard.infrastructure.sql.dto.VisitorWithQrDto;
 import com.resired.api.guard.infrastructure.sql.jpa.PackageJpaRepository;
 import com.resired.api.guard.infrastructure.sql.jpa.VisitJpaRepository;
@@ -33,12 +34,13 @@ public class GuardAdapter implements GuardPort, PackagePort {
     private final PackageJpaRepository packageJpaRepository;
 
     @Override
-    public void registerVisit(String qrStr, Integer guardId, String plateNumber) {
+    public VisitMade registerVisit(String qrStr, Integer guardId, String plateNumber) {
         QrOrm qr = qrJpaRepository.findByQr(qrStr);
 
         VisitOrm visit = new VisitOrm();
         visit.setQr(qr);
-        visit.setCheckIn(LocalDateTime.now(ZoneOffset.UTC));
+        LocalDateTime checkin = LocalDateTime.now(ZoneOffset.UTC);
+        visit.setCheckIn(checkin);
 
         if (plateNumber != null) {
             visit.setPlateCarNumber(plateNumber);
@@ -52,6 +54,12 @@ public class GuardAdapter implements GuardPort, PackagePort {
         visit.setAuthorizingGuard(guard);
         makeQrUnavailable(qr);
         visitJpaRepository.save(visit);
+        UserOrm authorizingUser = qr.getVisitor().getAuthorizingUser();
+        if (authorizingUser != null) {
+            return new VisitMade(authorizingUser.getId(), qr.getVisitor().getName(), checkin);
+        } else {
+            return new VisitMade(null, qr.getVisitor().getName(), checkin);
+        }
     }
 
     @Override

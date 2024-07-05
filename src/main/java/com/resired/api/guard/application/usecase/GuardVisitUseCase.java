@@ -6,8 +6,11 @@ import com.resired.api.guard.domain.entity.Visit;
 import com.resired.api.guard.domain.entity.Visitor;
 import com.resired.api.guard.domain.repository.GuardPort;
 import com.resired.api.guard.domain.repository.QrPort;
+import com.resired.api.guard.domain.vo.VisitMade;
 import com.resired.api.guard.infrastructure.rest.dto.InfoQrRequest;
 import com.resired.api.security.domain.service.JwtSecurity;
+import com.resired.api.shared.notification.application.dto.NotificationResident;
+import com.resired.api.shared.notification.application.usecase.NotificationUseCase;
 import com.resired.api.utils.FormatDate;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.AllArgsConstructor;
@@ -28,6 +31,7 @@ public class GuardVisitUseCase {
     private final GuardPort guardPort;
     private final QrPort qrPort;
     private final JwtSecurity jwtSecurity;
+    private final NotificationUseCase notificationUseCase;
 
     public Visitor validateInfoQR(String qr) {
         validateQR(qr);
@@ -45,7 +49,10 @@ public class GuardVisitUseCase {
             }
             guardPort.updateVisitorDocument(infoQrRequest.qr(), infoQrRequest.document());
         }
-        guardPort.registerVisit(infoQrRequest.qr(), guardId, infoQrRequest.carPlateId());
+        VisitMade visitMade = guardPort.registerVisit(infoQrRequest.qr(), guardId, infoQrRequest.carPlateId());
+        NotificationResident notification = new NotificationResident("¡Tu visita a llegado!",
+            visitMade.visitor() + " a presentado el QR en portería", visitMade.resident());
+        notificationUseCase.notifyResident(notification);
     }
 
     private void validateQR(String qr) {
