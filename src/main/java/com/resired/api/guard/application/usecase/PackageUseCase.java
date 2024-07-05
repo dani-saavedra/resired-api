@@ -11,6 +11,8 @@ import com.resired.api.resident.domain.repository.HomePort;
 import com.resired.api.security.domain.entity.User;
 import com.resired.api.security.domain.exception.InactiveUserException;
 import com.resired.api.security.domain.repository.UserPort;
+import com.resired.api.shared.notification.application.dto.NotificationHome;
+import com.resired.api.shared.notification.application.usecase.NotificationUseCase;
 import com.resired.api.utils.FormatDate;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,7 @@ public class PackageUseCase {
     private final UserPort userPort;
     private final HomePort homePort;
     private final PackagePort packagePort;
+    private final NotificationUseCase notificationUseCase;
 
     public void registerPackage(String emailGuard, PackageRequestDTO packageRequestDTO) {
         User guard = validateGuard(emailGuard);
@@ -38,6 +41,10 @@ public class PackageUseCase {
         );
 
         packagePort.registerPackage(packet);
+        NotificationHome notification = new NotificationHome("Paquete en porteria",
+            "A llegado un paquete de " + packageRequestDTO.packageTransporter() + " para " + packageRequestDTO.receiver(),
+            packageRequestDTO.homeId());
+        notificationUseCase.notifyHome(notification);
     }
 
     public List<PackageResponseDTO> getPackagesByNeighborhood(String emailGuard, Integer neighborhoodId) {
