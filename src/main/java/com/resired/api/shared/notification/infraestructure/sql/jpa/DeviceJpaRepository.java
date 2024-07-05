@@ -12,7 +12,7 @@ public interface DeviceJpaRepository extends JpaRepository<DeviceOrm, String> {
 
     DeviceOrm findDeviceOrmByIdAndUserId(String deviceID, Integer userID);
 
-    DeviceOrm findByUserId(Integer userId);
+    DeviceOrm findFirstByUserId(Integer userId);
 
     @Query("SELECT d FROM DeviceOrm d " +
         "JOIN UserOrm u ON d.userId = u.id " +
