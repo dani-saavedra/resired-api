@@ -51,7 +51,7 @@ public class GuardVisitUseCase {
         }
         VisitMade visitMade = guardPort.registerVisit(infoQrRequest.qr(), guardId, infoQrRequest.carPlateId());
         NotificationResident notification = new NotificationResident("¡Tu visita a llegado!",
-            visitMade.visitor() + " a presentado el QR en portería", visitMade.resident());
+            visitMade.visitor() + " ha presentado el QR en portería", visitMade.resident());
         notificationUseCase.notifyResident(notification);
     }
 

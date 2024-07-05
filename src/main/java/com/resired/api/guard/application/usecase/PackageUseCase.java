@@ -42,7 +42,7 @@ public class PackageUseCase {
 
         packagePort.registerPackage(packet);
         NotificationHome notification = new NotificationHome("Paquete en porteria",
-            "A llegado un paquete de " + packageRequestDTO.packageTransporter() + " para " + packageRequestDTO.receiver(),
+            "Ha llegado un paquete de " + packageRequestDTO.packageTransporter() + " para " + packageRequestDTO.receiver(),
             packageRequestDTO.homeId());
         notificationUseCase.notifyHome(notification);
     }
