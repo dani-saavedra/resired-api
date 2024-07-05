@@ -1,8 +1,11 @@
 package com.resired.api.shared.notification.application.usecase;
 
+import com.resired.api.admin.domain.entity.NotificationCategory;
+import com.resired.api.admin.domain.repository.NotificationCategoryPort;
 import com.resired.api.shared.notification.application.dto.*;
 import com.resired.api.shared.notification.domain.entity.Device;
 import com.resired.api.shared.notification.domain.entity.NotificationMessage;
+import com.resired.api.shared.notification.domain.exception.NotificationCategoryNotFoundException;
 import com.resired.api.shared.notification.domain.repository.DevicePort;
 import com.resired.api.shared.notification.domain.repository.NotificationMessagePort;
 import com.resired.api.shared.notification.domain.repository.UserNotificationPort;
@@ -21,25 +24,30 @@ public class NotificationUseCase {
     private final DevicePort deviceRepository;
     private final NotificationMessagePort notificationRepository;
     private final UserNotificationPort userNotificationRepository;
+    private final NotificationCategoryPort notificationCategoryRepository;
     @Value("${topic.neighborhood}")
     private String NEIGHBORHOOD_TOPIC;
 
     public void notifyHome(NotificationHomeRequest requestDTO) {
+        NotificationCategory category = notificationCategoryRepository.getNotificationCategoryById(requestDTO.categoryId());
+
+        if (category == null) throw new NotificationCategoryNotFoundException(requestDTO.categoryId());
+
         NotificationMessage notificationMessage = new NotificationMessage(null, requestDTO.title(),
-            requestDTO.message(), null);
+            requestDTO.message(), null, category, requestDTO.level());
 
         List<Device> devices = deviceRepository.getDevicesForHomeResident(requestDTO.homeID());
 
         if (!devices.isEmpty()) {
             notificationSenderService.sendToDeviceList(notificationMessage, devices);
             notificationRepository.saveNotificationForHomeResidents(notificationMessage,
-                requestDTO.homeID(), requestDTO.neighborhoodID());
+                requestDTO.homeID());
         }
     }
 
     public void notifyHome(NotificationHome notification) {
         NotificationMessage notificationMessage = new NotificationMessage(null, notification.title(),
-            notification.message(), null);
+            notification.message(), null, null, null);
         List<Device> devices = deviceRepository.getDevicesForHomeResident(notification.homeID());
         if (!devices.isEmpty()) {
             notificationSenderService.sendToDeviceList(notificationMessage, devices);
@@ -48,7 +56,7 @@ public class NotificationUseCase {
 
     public void notifyResident(NotificationResident notification) {
         NotificationMessage notificationMessage = new NotificationMessage(null, notification.title(),
-            notification.message(), null);
+            notification.message(), null, null, null);
         Device device = deviceRepository.getDeviceByUser(notification.userId());
         if (device != null) {
             notificationSenderService.sendToDevice(notificationMessage, device);
@@ -58,13 +66,26 @@ public class NotificationUseCase {
     public void notifyNeighborhood(NotificationNeighborhoodRequest requestDTO) {
         String topic = NEIGHBORHOOD_TOPIC + requestDTO.neighborhoodID();
 
+        NotificationCategory category = notificationCategoryRepository.getNotificationCategoryById(requestDTO.categoryId());
+
+        if (category == null) throw new NotificationCategoryNotFoundException(requestDTO.categoryId());
+
         NotificationMessage notificationMessage = new NotificationMessage(null, requestDTO.title(),
-            requestDTO.message(), null);
+            requestDTO.message(), null, category, requestDTO.level());
 
         notificationSenderService.sendToTopic(notificationMessage, topic);
 
         notificationRepository.saveNotificationForNeighborhoodResidents(notificationMessage,
             requestDTO.neighborhoodID());
+    }
+
+    public void notifyNeighborhood(PushNotificationNeighborhood requestDTO) {
+        String topic = NEIGHBORHOOD_TOPIC + requestDTO.neighborhoodID();
+
+        NotificationMessage notificationMessage = new NotificationMessage(null, requestDTO.title(),
+            requestDTO.message(), null, null, null);
+
+        notificationSenderService.sendToTopic(notificationMessage, topic);
     }
 
     public List<NotificationForUserDto> listAllNotifications(String email) {
@@ -74,6 +95,8 @@ public class NotificationUseCase {
                 notificationForUser.notificationMessage().id(),
                 notificationForUser.notificationMessage().title(),
                 notificationForUser.notificationMessage().message(),
+                notificationForUser.notificationMessage().category().name(),
+                notificationForUser.notificationMessage().level(),
                 notificationForUser.notificationMessage().date(),
                 notificationForUser.viewed()
             )).toList();
