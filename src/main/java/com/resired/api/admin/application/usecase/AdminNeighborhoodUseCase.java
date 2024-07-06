@@ -10,8 +10,8 @@ import com.resired.api.admin.domain.repository.BlockPort;
 import com.resired.api.admin.domain.repository.NotificationCategoryPort;
 import com.resired.api.admin.domain.vo.*;
 import com.resired.api.security.domain.enums.UserType;
-import com.resired.api.shared.notification.application.dto.PushNotificationNeighborhood;
-import com.resired.api.shared.notification.application.usecase.NotificationUseCase;
+import com.resired.api.shared.notification.application.dto.NotificationNeighborhoodRequest;
+import com.resired.api.shared.notification.application.usecase.PushAppUseCase;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +27,7 @@ public class AdminNeighborhoodUseCase {
     private final AdminNewsPort adminNewsPort;
     private final AdminUserUseCase adminUserUseCase;
     private final BlockPort blockPort;
-    private final NotificationUseCase notificationUseCase;
+    private final PushAppUseCase pushAppUseCase;
 
 
     public void createNewNeighborhood(CreateNeighborhoodVo createNeighborhoodVo) throws GeneralSecurityException {
@@ -77,9 +77,8 @@ public class AdminNeighborhoodUseCase {
     public void createNews(CreateNewsDto newsRequest, Integer neighborhoodId) {
         adminNewsPort.createNews(newsRequest, neighborhoodId);
 
-        PushNotificationNeighborhood requestDTO = new PushNotificationNeighborhood("¡Novedad en tu conjunto!",
+        NotificationNeighborhoodRequest requestDTO = new NotificationNeighborhoodRequest("¡Novedad en tu conjunto!",
             newsRequest.title(), neighborhoodId);
-        //TODO pendiente revisar si deberiamos guardar en la tabla de notification
-        notificationUseCase.notifyNeighborhood(requestDTO);
+        pushAppUseCase.notifyNeighborhood(requestDTO);
     }
 }

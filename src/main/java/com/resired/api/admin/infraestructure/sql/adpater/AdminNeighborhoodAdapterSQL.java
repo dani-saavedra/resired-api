@@ -78,10 +78,6 @@ public class AdminNeighborhoodAdapterSQL implements NotificationCategoryPort, Ad
         neighborhoodRepository.save(neighborhoodOrm);
     }
 
-    public void deactivateNotificationCategory(Integer neighborhoodId, String name) {
-        notificationCategoryRepository.deactivateNotificationCategory(neighborhoodId, name);
-    }
-
     @Override
     public Integer createNeighborHood(CreateNeighborhoodVo neighbor) {
         NeighborhoodOrm entity = new NeighborhoodOrm(neighbor.name(), neighbor.address(), neighbor.city(),
