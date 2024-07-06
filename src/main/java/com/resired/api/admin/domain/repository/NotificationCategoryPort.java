@@ -9,6 +9,8 @@ public interface NotificationCategoryPort {
 
     void createNewNotificationCategory(Integer neighborhoodId, String name, LevelNotificationEnum levelNotification);
 
+    void createNewNotificationCategory(NotificationCategory category);
+
     NotificationCategory getNotificationCategoryById(Integer id);
 
     NotificationCategory getNotificationCategoryByNameAndNeighborhoodId(String name, Integer id);

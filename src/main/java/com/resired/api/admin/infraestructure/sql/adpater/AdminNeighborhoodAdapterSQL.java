@@ -43,6 +43,18 @@ public class AdminNeighborhoodAdapterSQL implements NotificationCategoryPort, Ad
     }
 
     @Override
+    public void createNewNotificationCategory(NotificationCategory category) {
+        NotificationCategoryOrm notificationCategoryOrm = new NotificationCategoryOrm();
+        notificationCategoryOrm.setName(category.name());
+        notificationCategoryOrm.setActive(true);
+        notificationCategoryOrm.setNotificationCategory(category.level());
+        notificationCategoryOrm.setNeighborhoodId(category.neighborhoodId());
+        notificationCategoryOrm.setDefaultMessage(category.defaultMessage());
+        notificationCategoryOrm.setDefaultTitle(category.defaultTitle());
+        notificationCategoryRepository.save(notificationCategoryOrm);
+    }
+
+    @Override
     public NotificationCategory getNotificationCategoryById(Integer id) {
         Optional<NotificationCategoryOrm> notificationCategoryOrmOptional = notificationCategoryRepository.findById(id);
         if (notificationCategoryOrmOptional.isEmpty()) return null;

@@ -1,10 +1,7 @@
 package com.resired.api.admin.application.usecase;
 
-import com.resired.api.admin.application.dto.CreateNotificationDto;
-import com.resired.api.admin.application.dto.NotificationCategoryDto;
-import com.resired.api.admin.application.dto.NotificationCategoryResponseDto;
-import com.resired.api.admin.application.dto.NotificationResponseDto;
 import com.resired.api.shared.notification.domain.repository.NotificationMessagePort;
+import com.resired.api.admin.application.dto.*;
 import com.resired.api.admin.domain.entity.NotificationCategory;
 import com.resired.api.admin.domain.repository.NotificationCategoryPort;
 import com.resired.api.shared.notification.application.dto.NotificationNeighborhoodRequest;
@@ -60,5 +57,13 @@ public class AdminNotificationUseCase {
             category.defaultMessage(),
             category.level(),
             category.defaultTitle());
+    }
+
+    public void createNotificationCategory(NotificationCategoryRequestDto requestDto, Integer neighborhoodId) {
+        NotificationCategory category = new NotificationCategory(null, neighborhoodId,
+            requestDto.name(), requestDto.defaultMessage(), requestDto.priority(),
+            requestDto.defaultTitle());
+
+        notificationCategoryPort.createNewNotificationCategory(category);
     }
 }

@@ -1,9 +1,6 @@
 package com.resired.api.admin.infraestructure.rest.controller;
 
-import com.resired.api.admin.application.dto.CreateNotificationDto;
-import com.resired.api.admin.application.dto.NotificationCategoryDto;
-import com.resired.api.admin.application.dto.NotificationCategoryResponseDto;
-import com.resired.api.admin.application.dto.NotificationResponseDto;
+import com.resired.api.admin.application.dto.*;
 import com.resired.api.admin.application.usecase.AdminNotificationUseCase;
 import com.resired.api.security.application.usecase.JwtService;
 import com.resired.api.security.domain.entity.UserApp;
@@ -56,4 +53,15 @@ public class AdmNotificationController {
         UserApp userApp = jwtService.extractUser(bearer);
         return adminNotificationUseCase.getNotificationCategory(categoryId, userApp.neighborhoodId());
     }
+
+    @PostMapping("/notifications/categories")
+    @Operation(summary = "Create a new notification category")
+    public ResponseEntity<String> createNotificationCategoryForNeighborhood(
+        @RequestHeader(value = "Authorization") String bearer,
+        @RequestBody NotificationCategoryRequestDto request) {
+        UserApp userApp = jwtService.extractUser(bearer);
+        adminNotificationUseCase.createNotificationCategory(request, userApp.neighborhoodId());
+        return ResponseEntity.ok("Created");
+    }
+
 }
