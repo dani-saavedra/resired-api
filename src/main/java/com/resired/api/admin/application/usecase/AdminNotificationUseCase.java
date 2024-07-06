@@ -99,4 +99,12 @@ public class AdminNotificationUseCase {
             category.level(),
             category.defaultTitle());
     }
+
+    public void createNotificationCategory(NotificationCategoryRequestDto requestDto, Integer neighborhoodId) {
+        NotificationCategory category = new NotificationCategory(null, neighborhoodId,
+            requestDto.name(), requestDto.defaultMessage(), requestDto.priority(),
+            requestDto.defaultTitle());
+
+        notificationCategoryPort.createNewNotificationCategory(category);
+    }
 }
