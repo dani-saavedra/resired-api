@@ -1,5 +1,6 @@
 package com.resired.api.admin.application.usecase;
 
+import com.resired.api.admin.application.dto.CreateNotificationDto;
 import com.resired.api.admin.application.dto.NotificationResponseDto;
 import com.resired.api.shared.notification.domain.repository.NotificationMessagePort;
 import lombok.AllArgsConstructor;
@@ -19,7 +20,16 @@ public class AdminNotificationUseCase {
                 new NotificationResponseDto(notificationMessage.id(),
                     notificationMessage.title(),
                     notificationMessage.message(),
-                    notificationMessage.date()))
+                    notificationMessage.date(),
+                    notificationMessage.category().name(),
+                    notificationMessage.level().name()))
             .toList();
+    }
+
+    public void sendNotificationToNeighborhood(CreateNotificationDto requestDto, Integer neighborhoodId) {
+        NotificationNeighborhoodRequest notification = new NotificationNeighborhoodRequest(requestDto.title(),
+            requestDto.message(), neighborhoodId, requestDto.categoryId(), requestDto.priority());
+
+        notificationUseCase.notifyNeighborhood(notification);
     }
 }
