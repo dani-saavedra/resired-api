@@ -85,4 +85,18 @@ public class AdminNotificationUseCase {
                 notificationCategory.name()))
             .toList();
     }
+
+    public NotificationCategoryDto getNotificationCategory(Integer categoryId, Integer neighborhoodId) {
+        NotificationCategory category = notificationCategoryPort
+            .getNotificationCategoryByIdAndNeighborhoodId(categoryId, neighborhoodId);
+
+        if (category == null) return null;
+
+        return new NotificationCategoryDto(
+            category.id(),
+            category.name(),
+            category.defaultMessage(),
+            category.level(),
+            category.defaultTitle());
+    }
 }
