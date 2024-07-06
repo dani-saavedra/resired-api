@@ -1,5 +1,6 @@
 package com.resired.api.shared.notification.infraestructure.sql.adapter;
 
+import com.resired.api.admin.infraestructure.sql.orm.NotificationCategoryOrm;
 import com.resired.api.security.infraestructure.sql.jpa.UserJpaRepository;
 import com.resired.api.security.infraestructure.sql.orm.UserOrm;
 import com.resired.api.shared.notification.domain.entity.NotificationMessage;
@@ -9,7 +10,6 @@ import com.resired.api.shared.notification.infraestructure.sql.jpa.NotificationJ
 import com.resired.api.shared.notification.infraestructure.sql.jpa.NotificationUserJpaRepository;
 import com.resired.api.shared.notification.infraestructure.sql.orm.NotificationOrm;
 import com.resired.api.shared.notification.infraestructure.sql.orm.NotificationUserOrm;
-import com.resired.api.utils.FormatDate;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,8 +31,7 @@ public class NotificationMessageAdapter implements NotificationMessagePort {
         return notificationUserRepository.findNotificationsByUserIdOrderByCreatedDateDesc(userId)
             .stream()
             .map((notificationOrm -> {
-                NotificationMessage notificationMessage = new NotificationMessage(notificationOrm.getId(), notificationOrm.getTitle(),
-                    notificationOrm.getMessage(), FormatDate.formatDate(notificationOrm.getCreatedDate()));
+                NotificationMessage notificationMessage = notificationOrm.castToEntity();
                 return new NotificationForUser(notificationMessage,
                     true);
             }))
@@ -45,11 +44,7 @@ public class NotificationMessageAdapter implements NotificationMessagePort {
         NotificationUserOrm notificationUserOrm = notificationUserRepository.findTopByUserIdOrderByCreatedDateDesc(userId);
         if (notificationUserOrm == null) return null;
 
-        NotificationMessage notificationMessage = new NotificationMessage(
-            notificationUserOrm.getNotification().getId(),
-            notificationUserOrm.getNotification().getTitle(),
-            notificationUserOrm.getNotification().getMessage(),
-            FormatDate.formatDate(notificationUserOrm.getViewedAt()));
+        NotificationMessage notificationMessage = notificationUserOrm.getNotification().castToEntity();
         return new NotificationForUser(notificationMessage,
             notificationUserOrm.getViewed());
     }
@@ -63,14 +58,8 @@ public class NotificationMessageAdapter implements NotificationMessagePort {
     }
 
     @Override
-    public void saveNotificationForHomeResidents(NotificationMessage notificationMessage, Integer homeId,
-                                                 Integer neighborhoodId) {
-        NotificationOrm notificationOrm = new NotificationOrm();
-        notificationOrm.setTitle(notificationMessage.title());
-        notificationOrm.setMessage(notificationMessage.message());
-        notificationOrm.setCreatedDate(LocalDateTime.now(ZoneOffset.UTC));
-        notificationOrm.setNeighborhoodId(neighborhoodId);
-        notificationRepository.save(notificationOrm);
+    public void saveNotificationForHomeResidents(NotificationMessage notificationMessage, Integer homeId) {
+        NotificationOrm notificationOrm = castNotificationMessageToOrm(notificationMessage);
 
         List<UserOrm> residents = userRepository.findResidentsByHomeId(homeId);
         saveNotificationForResidents(notificationOrm, residents);
@@ -78,12 +67,7 @@ public class NotificationMessageAdapter implements NotificationMessagePort {
 
     @Override
     public void saveNotificationForNeighborhoodResidents(NotificationMessage notificationMessage, Integer neighborhoodId) {
-        NotificationOrm notificationOrm = new NotificationOrm();
-        notificationOrm.setTitle(notificationMessage.title());
-        notificationOrm.setMessage(notificationMessage.message());
-        notificationOrm.setCreatedDate(LocalDateTime.now(ZoneOffset.UTC));
-        notificationOrm.setNeighborhoodId(neighborhoodId);
-        notificationRepository.save(notificationOrm);
+        NotificationOrm notificationOrm = castNotificationMessageToOrm(notificationMessage);
 
         List<UserOrm> residents = userRepository.findResidentsByNeighborhoodId(neighborhoodId);
 
@@ -94,10 +78,7 @@ public class NotificationMessageAdapter implements NotificationMessagePort {
     public List<NotificationMessage> getAllNotificationMessagesByNeighborhoodId(Integer neighborhoodId) {
         return notificationRepository.findAllByNeighborhoodId(neighborhoodId)
             .stream()
-            .map(notificationOrm -> new NotificationMessage(notificationOrm.getId(),
-                notificationOrm.getTitle(),
-                notificationOrm.getMessage(),
-                FormatDate.formatDate(notificationOrm.getCreatedDate()))).toList();
+            .map(NotificationOrm::castToEntity).toList();
     }
 
     private void saveNotificationForResidents(NotificationOrm notificationOrm, List<UserOrm> residents) {
@@ -111,4 +92,22 @@ public class NotificationMessageAdapter implements NotificationMessagePort {
             notificationUserRepository.save(notificationUserOrm);
         });
     }
+
+    private NotificationOrm castNotificationMessageToOrm(NotificationMessage notificationMessage) {
+        NotificationOrm notificationOrm = new NotificationOrm();
+        notificationOrm.setTitle(notificationMessage.title());
+        notificationOrm.setMessage(notificationMessage.message());
+        notificationOrm.setCreatedDate(LocalDateTime.now(ZoneOffset.UTC));
+
+        NotificationCategoryOrm notificationCategoryOrm = new NotificationCategoryOrm();
+        notificationCategoryOrm.setId(notificationMessage.category().id());
+
+        notificationOrm.setCategoryOrm(notificationCategoryOrm);
+        notificationOrm.setLevel(notificationMessage.level());
+
+        notificationRepository.save(notificationOrm);
+        return notificationOrm;
+    }
 }
+
+

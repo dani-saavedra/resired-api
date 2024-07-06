@@ -1,5 +1,6 @@
 package com.resired.api.admin.infraestructure.sql.orm;
 
+import com.resired.api.admin.domain.entity.NotificationCategory;
 import com.resired.api.admin.domain.vo.LevelNotificationEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -30,4 +31,16 @@ public class NotificationCategoryOrm {
     @Enumerated(EnumType.STRING)
     @Column(name = "level", columnDefinition = "VARCHAR(20)")
     private LevelNotificationEnum notificationCategory;
+
+    @Column(name = "default_message", columnDefinition = "VARCHAR(255)")
+    private String defaultMessage;
+
+    @Column(name = "default_title", columnDefinition = "VARCHAR(255)")
+    private String defaultTitle;
+
+    public NotificationCategory castToEntity() {
+        return new NotificationCategory(getId(),
+            getNeighborhoodId(), getName(), getDefaultMessage(),
+            getNotificationCategory(), getDefaultTitle());
+    }
 }

@@ -12,6 +12,7 @@ import com.resired.api.security.application.exception.InvalidCredentialException
 import com.resired.api.security.domain.exception.InactiveUserException;
 import com.resired.api.shared.notification.domain.exception.DeviceAlreadyExistsException;
 import com.resired.api.shared.notification.domain.exception.DeviceNotFoundException;
+import com.resired.api.shared.notification.domain.exception.NotificationCategoryNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -150,6 +151,14 @@ public class ExceptionHandlerResired {
         log.error("Invalid Multipart file", ex);
         return new ResponseEntity<>(new ErrorDTO(ex.getCode(),
             ex.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = NotificationCategoryNotFoundException.class)
+    protected ResponseEntity<ErrorDTO> handleNotificationCategoryNotFoundException(
+        RuntimeException ex, WebRequest request) {
+        log.error("Notification not found", ex);
+        return new ResponseEntity<>(new ErrorDTO(ErrorCode.CATEGORY01.name(),
+            ErrorCode.CATEGORY01.getDescription()), HttpStatus.NOT_FOUND);
     }
 
 }
