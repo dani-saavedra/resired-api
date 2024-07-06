@@ -5,6 +5,7 @@ import com.resired.api.admin.domain.repository.NotificationCategoryPort;
 import com.resired.api.shared.notification.application.dto.*;
 import com.resired.api.shared.notification.domain.entity.Device;
 import com.resired.api.shared.notification.domain.entity.NotificationMessage;
+import com.resired.api.shared.notification.domain.entity.PushNotification;
 import com.resired.api.shared.notification.domain.exception.NotificationCategoryNotFoundException;
 import com.resired.api.shared.notification.domain.repository.DevicePort;
 import com.resired.api.shared.notification.domain.repository.NotificationMessagePort;
@@ -38,16 +39,18 @@ public class NotificationUseCase {
 
         List<Device> devices = deviceRepository.getDevicesForHomeResident(requestDTO.homeID());
 
+        PushNotification notification = new PushNotification(requestDTO.title(), requestDTO.message());
+
         if (!devices.isEmpty()) {
-            notificationSenderService.sendToDeviceList(notificationMessage, devices);
+            notificationSenderService.sendToDeviceList(notification, devices);
             notificationRepository.saveNotificationForHomeResidents(notificationMessage,
                 requestDTO.homeID());
         }
     }
 
     public void notifyHome(NotificationHome notification) {
-        NotificationMessage notificationMessage = new NotificationMessage(null, notification.title(),
-            notification.message(), null, null, null);
+        PushNotification notificationMessage = new PushNotification(notification.title(),
+            notification.message());
         List<Device> devices = deviceRepository.getDevicesForHomeResident(notification.homeID());
         if (!devices.isEmpty()) {
             notificationSenderService.sendToDeviceList(notificationMessage, devices);
@@ -55,8 +58,8 @@ public class NotificationUseCase {
     }
 
     public void notifyResident(NotificationResident notification) {
-        NotificationMessage notificationMessage = new NotificationMessage(null, notification.title(),
-            notification.message(), null, null, null);
+        PushNotification notificationMessage = new PushNotification(notification.title(),
+            notification.message());
         Device device = deviceRepository.getDeviceByUser(notification.userId());
         if (device != null) {
             notificationSenderService.sendToDevice(notificationMessage, device);
@@ -73,7 +76,9 @@ public class NotificationUseCase {
         NotificationMessage notificationMessage = new NotificationMessage(null, requestDTO.title(),
             requestDTO.message(), null, category, requestDTO.level());
 
-        notificationSenderService.sendToTopic(notificationMessage, topic);
+        PushNotification notification = new PushNotification(requestDTO.title(), requestDTO.message());
+
+        notificationSenderService.sendToTopic(notification, topic);
 
         notificationRepository.saveNotificationForNeighborhoodResidents(notificationMessage,
             requestDTO.neighborhoodID());
@@ -82,8 +87,8 @@ public class NotificationUseCase {
     public void notifyNeighborhood(PushNotificationNeighborhood requestDTO) {
         String topic = NEIGHBORHOOD_TOPIC + requestDTO.neighborhoodID();
 
-        NotificationMessage notificationMessage = new NotificationMessage(null, requestDTO.title(),
-            requestDTO.message(), null, null, null);
+        PushNotification notificationMessage = new PushNotification(requestDTO.title(),
+            requestDTO.message());
 
         notificationSenderService.sendToTopic(notificationMessage, topic);
     }

@@ -2,7 +2,7 @@ package com.resired.api.shared.notification.infraestructure.firebase.messaging.a
 
 import com.google.firebase.messaging.*;
 import com.resired.api.shared.notification.domain.entity.Device;
-import com.resired.api.shared.notification.domain.entity.NotificationMessage;
+import com.resired.api.shared.notification.domain.entity.PushNotification;
 import com.resired.api.shared.notification.domain.service.NotificationSender;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +19,7 @@ public class NotificationSenderAdapter implements NotificationSender {
     private final FirebaseMessaging firebaseMessaging;
 
     @Override
-    public void sendToDevice(NotificationMessage notificationMessage, Device device) {
+    public void sendToDevice(PushNotification notificationMessage, Device device) {
         Notification firebaseNotification
             = buildNotificationFromNotificationMessage(notificationMessage);
         Message message = Message
@@ -37,7 +37,7 @@ public class NotificationSenderAdapter implements NotificationSender {
     }
 
     @Override
-    public void sendToDeviceList(NotificationMessage notificationMessage, List<Device> devices) {
+    public void sendToDeviceList(PushNotification notificationMessage, List<Device> devices) {
         List<String> devicesIDs = devices.stream().map(Device::id).toList();
 
         Notification firebaseNotification
@@ -68,7 +68,7 @@ public class NotificationSenderAdapter implements NotificationSender {
     }
 
     @Override
-    public void sendToTopic(NotificationMessage notificationMessage, String topic) {
+    public void sendToTopic(PushNotification notificationMessage, String topic) {
         Notification firebaseNotification
             = buildNotificationFromNotificationMessage(notificationMessage);
 
@@ -110,7 +110,7 @@ public class NotificationSenderAdapter implements NotificationSender {
         }
     }
 
-    private Notification buildNotificationFromNotificationMessage(NotificationMessage notificationMessage) {
+    private Notification buildNotificationFromNotificationMessage(PushNotification notificationMessage) {
         return Notification
             .builder()
             .setTitle(notificationMessage.title())
