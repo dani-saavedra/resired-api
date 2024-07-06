@@ -21,6 +21,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -61,6 +62,14 @@ public class AdminNeighborhoodAdapterSQL implements NotificationCategoryPort, Ad
             .getNotificationCategoryOrmByNameAndNeighborhoodId(name, id);
 
         return notificationCategoryOrm.castToEntity();
+    }
+
+    @Override
+    public List<NotificationCategory> getAllCategoriesByNeighborhoodId(Integer id) {
+        return notificationCategoryRepository.findAllByNeighborhoodId(id)
+            .stream()
+            .map(NotificationCategoryOrm::castToEntity)
+            .toList();
     }
 
     @Override

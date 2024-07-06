@@ -1,6 +1,7 @@
 package com.resired.api.admin.application.usecase;
 
 import com.resired.api.admin.application.dto.CreateNotificationDto;
+import com.resired.api.admin.application.dto.NotificationCategoryResponseDto;
 import com.resired.api.admin.application.dto.NotificationResponseDto;
 import com.resired.api.shared.notification.domain.repository.NotificationMessagePort;
 import lombok.AllArgsConstructor;
@@ -12,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class AdminNotificationUseCase {
     private final NotificationMessagePort notificationRepository;
+    private final NotificationCategoryPort notificationCategoryPort;
 
     public List<NotificationResponseDto> getAllNotificationsByNeighborhoodId(Integer neighborhoodId) {
         return notificationRepository.getAllNotificationMessagesByNeighborhoodId(neighborhoodId)
@@ -31,5 +33,13 @@ public class AdminNotificationUseCase {
             requestDto.message(), neighborhoodId, requestDto.categoryId(), requestDto.priority());
 
         notificationUseCase.notifyNeighborhood(notification);
+    }
+
+    public List<NotificationCategoryResponseDto> getAllNotificationCategories(Integer neighborhoodId) {
+        return notificationCategoryPort.getAllCategoriesByNeighborhoodId(neighborhoodId)
+            .stream()
+            .map(notificationCategory -> new NotificationCategoryResponseDto(notificationCategory.id(),
+                notificationCategory.name()))
+            .toList();
     }
 }

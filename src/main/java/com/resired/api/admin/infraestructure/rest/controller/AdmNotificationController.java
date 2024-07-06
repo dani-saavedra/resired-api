@@ -1,6 +1,7 @@
 package com.resired.api.admin.infraestructure.rest.controller;
 
 import com.resired.api.admin.application.dto.CreateNotificationDto;
+import com.resired.api.admin.application.dto.NotificationCategoryResponseDto;
 import com.resired.api.admin.application.dto.NotificationResponseDto;
 import com.resired.api.admin.application.usecase.AdminNotificationUseCase;
 import com.resired.api.security.application.usecase.JwtService;
@@ -37,5 +38,12 @@ public class AdmNotificationController {
         UserApp userApp = jwtService.extractUser(bearer);
         adminNotificationUseCase.sendNotificationToNeighborhood(request, userApp.neighborhoodId());
         return ResponseEntity.ok("Sent");
+    }
+
+    @GetMapping(path = "/notifications/categories")
+    @Operation(summary = "Obtain all notification categories from Neighborhood")
+    public List<NotificationCategoryResponseDto> getCategories(@RequestHeader(value = "Authorization") String bearer) {
+        UserApp userApp = jwtService.extractUser(bearer);
+        return adminNotificationUseCase.getAllNotificationCategories(userApp.neighborhoodId());
     }
 }
