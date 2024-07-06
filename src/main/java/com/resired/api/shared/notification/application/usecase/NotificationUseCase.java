@@ -34,17 +34,12 @@ public class NotificationUseCase {
 
         if (category == null) throw new NotificationCategoryNotFoundException(requestDTO.categoryId());
 
-        NotificationMessage notificationMessage = new NotificationMessage(null, requestDTO.title(),
-            requestDTO.message(), null, category, requestDTO.level());
-
         List<Device> devices = deviceRepository.getDevicesForHomeResident(requestDTO.homeID());
 
         PushNotification notification = new PushNotification(requestDTO.title(), requestDTO.message());
 
         if (!devices.isEmpty()) {
             notificationSenderService.sendToDeviceList(notification, devices);
-            notificationRepository.saveNotificationForHomeResidents(notificationMessage,
-                requestDTO.homeID());
         }
     }
 
