@@ -77,4 +77,12 @@ public class AdminNotificationUseCase {
 
         notificationCategoryPort.createNewNotificationCategory(category);
     }
+
+    public List<NotificationCategoryResponseDto> getAllNotificationCategories(Integer neighborhoodId) {
+        return notificationCategoryPort.getAllCategoriesByNeighborhoodId(neighborhoodId)
+            .stream()
+            .map(notificationCategory -> new NotificationCategoryResponseDto(notificationCategory.id(),
+                notificationCategory.name()))
+            .toList();
+    }
 }
