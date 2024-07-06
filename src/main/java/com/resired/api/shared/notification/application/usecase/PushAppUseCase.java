@@ -1,0 +1,48 @@
+package com.resired.api.shared.notification.application.usecase;
+
+import com.resired.api.shared.notification.application.dto.NotificationHomeRequest;
+import com.resired.api.shared.notification.application.dto.NotificationNeighborhoodRequest;
+import com.resired.api.shared.notification.application.dto.NotificationResident;
+import com.resired.api.shared.notification.domain.entity.Device;
+import com.resired.api.shared.notification.domain.entity.PushNotification;
+import com.resired.api.shared.notification.domain.repository.DevicePort;
+import com.resired.api.shared.notification.domain.service.NotificationSender;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class PushAppUseCase {
+    private final NotificationSender notificationSenderService;
+    private final DevicePort deviceRepository;
+
+    @Value("${topic.neighborhood}")
+    private String NEIGHBORHOOD_TOPIC;
+
+    public void notifyHome(NotificationHomeRequest requestDTO) {
+        List<Device> devices = deviceRepository.getDevicesForHomeResident(requestDTO.homeID());
+
+        if (!devices.isEmpty()) {
+            PushNotification notification = new PushNotification(requestDTO.title(), requestDTO.message());
+            notificationSenderService.sendToDeviceList(notification, devices);
+        }
+    }
+
+    public void notifyResident(NotificationResident notification) {
+        Device device = deviceRepository.getDeviceByUser(notification.userId());
+        if (device != null) {
+            PushNotification notificationMessage = new PushNotification(notification.title(),
+                notification.message());
+            notificationSenderService.sendToDevice(notificationMessage, device);
+        }
+    }
+
+    public void notifyNeighborhood(NotificationNeighborhoodRequest requestDTO) {
+        String topic = NEIGHBORHOOD_TOPIC + requestDTO.neighborhoodID();
+        PushNotification notification = new PushNotification(requestDTO.title(), requestDTO.message());
+        notificationSenderService.sendToTopic(notification, topic);
+    }
+}

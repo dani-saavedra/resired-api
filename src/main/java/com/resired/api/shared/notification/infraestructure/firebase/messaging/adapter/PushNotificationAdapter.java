@@ -15,7 +15,7 @@ import java.util.stream.IntStream;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class NotificationSenderAdapter implements NotificationSender {
+public class PushNotificationAdapter implements NotificationSender {
     private final FirebaseMessaging firebaseMessaging;
 
     @Override
