@@ -16,4 +16,6 @@ public interface NotificationCategoryJpaRepository extends JpaRepository<Notific
     NotificationCategoryOrm getNotificationCategoryOrmByNameAndNeighborhoodId(String name, Integer id);
 
     List<NotificationCategoryOrm> findAllByNeighborhoodId(Integer id);
+
+    NotificationCategoryOrm findByIdAndNeighborhoodId(Integer id, Integer neighborhoodId);
 }

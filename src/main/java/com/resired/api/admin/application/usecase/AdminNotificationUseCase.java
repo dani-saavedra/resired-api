@@ -1,9 +1,14 @@
 package com.resired.api.admin.application.usecase;
 
 import com.resired.api.admin.application.dto.CreateNotificationDto;
+import com.resired.api.admin.application.dto.NotificationCategoryDto;
 import com.resired.api.admin.application.dto.NotificationCategoryResponseDto;
 import com.resired.api.admin.application.dto.NotificationResponseDto;
 import com.resired.api.shared.notification.domain.repository.NotificationMessagePort;
+import com.resired.api.admin.domain.entity.NotificationCategory;
+import com.resired.api.admin.domain.repository.NotificationCategoryPort;
+import com.resired.api.shared.notification.application.dto.NotificationNeighborhoodRequest;
+import com.resired.api.shared.notification.application.usecase.NotificationUseCase;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -41,5 +46,19 @@ public class AdminNotificationUseCase {
             .map(notificationCategory -> new NotificationCategoryResponseDto(notificationCategory.id(),
                 notificationCategory.name()))
             .toList();
+    }
+
+    public NotificationCategoryDto getNotificationCategory(Integer categoryId, Integer neighborhoodId) {
+        NotificationCategory category = notificationCategoryPort
+            .getNotificationCategoryByIdAndNeighborhoodId(categoryId, neighborhoodId);
+
+        if (category == null) return null;
+
+        return new NotificationCategoryDto(
+            category.id(),
+            category.name(),
+            category.defaultMessage(),
+            category.level(),
+            category.defaultTitle());
     }
 }
