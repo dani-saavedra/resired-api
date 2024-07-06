@@ -19,7 +19,7 @@ public class AdminPqrsUseCase {
     private final PqrsPort port;
     private final PushAppUseCase pushAppUseCase;
 
-    public void updateStatePQRS(String ticketNumber, Integer neighbor) {
+    public void updateStatePQRS(String ticketNumber) {
         PqrsDetailDTO pqrs = port.obtainPqrByTicketNumber(ticketNumber);
         if (pqrs == null || !pqrs.state().equals(StatePQRS.RADICADA)) {
             throw new InvalidPqrsException("PQRS01");

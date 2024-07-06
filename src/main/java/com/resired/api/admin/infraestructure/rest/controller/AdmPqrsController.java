@@ -26,10 +26,8 @@ public class AdmPqrsController {
 
     @PutMapping("/take")
     @Operation(summary = "Take pqrs from the administrator to start working on it")
-    public ResponseData<String> updateState(@RequestHeader(value = "Authorization") String bearer,
-                                            @RequestParam(value = "ticket_number") String ticketNumber) {
-        UserApp userApp = jwtService.extractUser(bearer);
-        adminPqrsUseCase.updateStatePQRS(ticketNumber, userApp.neighborhoodId());
+    public ResponseData<String> updateState(@RequestParam(value = "ticket_number") String ticketNumber) {
+        adminPqrsUseCase.updateStatePQRS(ticketNumber);
         return new ResponseData<>("Update PQRS successfully");
     }
 
