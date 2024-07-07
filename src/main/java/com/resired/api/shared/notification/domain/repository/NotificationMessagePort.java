@@ -7,4 +7,6 @@ import java.util.List;
 public interface NotificationMessagePort {
 
     List<NotificationMessage> getAllNotificationMessagesByNeighborhoodId(Integer neighborhoodId);
+
+    void saveNotification(NotificationMessage notificationMessage);
 }

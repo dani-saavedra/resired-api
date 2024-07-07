@@ -1,11 +1,13 @@
 package com.resired.api.admin.application.usecase;
 
-import com.resired.api.shared.notification.domain.repository.NotificationMessagePort;
 import com.resired.api.admin.application.dto.*;
 import com.resired.api.admin.domain.entity.NotificationCategory;
 import com.resired.api.admin.domain.repository.NotificationCategoryPort;
 import com.resired.api.shared.notification.application.dto.NotificationNeighborhoodRequest;
-import com.resired.api.shared.notification.application.usecase.NotificationUseCase;
+import com.resired.api.shared.notification.application.usecase.PushAppUseCase;
+import com.resired.api.shared.notification.domain.entity.NotificationMessage;
+import com.resired.api.shared.notification.domain.exception.NotificationCategoryNotFoundException;
+import com.resired.api.shared.notification.domain.repository.NotificationMessagePort;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,7 @@ import java.util.List;
 public class AdminNotificationUseCase {
     private final NotificationMessagePort notificationRepository;
     private final NotificationCategoryPort notificationCategoryPort;
+    private final PushAppUseCase pushNotificationUseCase;
 
     public List<NotificationResponseDto> getAllNotificationsByNeighborhoodId(Integer neighborhoodId) {
         return notificationRepository.getAllNotificationMessagesByNeighborhoodId(neighborhoodId)
@@ -31,10 +34,18 @@ public class AdminNotificationUseCase {
     }
 
     public void sendNotificationToNeighborhood(CreateNotificationDto requestDto, Integer neighborhoodId) {
-        NotificationNeighborhoodRequest notification = new NotificationNeighborhoodRequest(requestDto.title(),
-            requestDto.message(), neighborhoodId, requestDto.categoryId(), requestDto.priority());
+        NotificationNeighborhoodRequest pushNotification = new NotificationNeighborhoodRequest(requestDto.title(),
+            requestDto.message(), neighborhoodId);
 
-        notificationUseCase.notifyNeighborhood(notification);
+        NotificationCategory category = notificationCategoryPort.getNotificationCategoryById(requestDto.categoryId());
+
+        if (category == null) throw new NotificationCategoryNotFoundException(requestDto.categoryId());
+
+        NotificationMessage notificationMessage = new NotificationMessage(null, requestDto.title(),
+            requestDto.message(), null, category, requestDto.priority());
+
+        pushNotificationUseCase.notifyNeighborhood(pushNotification);
+        notificationRepository.saveNotification(notificationMessage);
     }
 
     public List<NotificationCategoryResponseDto> getAllNotificationCategories(Integer neighborhoodId) {
