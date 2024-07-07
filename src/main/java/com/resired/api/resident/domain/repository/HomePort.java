@@ -10,8 +10,6 @@ public interface HomePort {
 
     Home getHomeById(Integer homeId);
 
-    String getHomeNumberById(Integer homeId);
-
     List<Home> getHomesByNeighborhood(Integer neighborhoodId);
 
     List<Home> getHomesByBlocks(Integer blockId);
