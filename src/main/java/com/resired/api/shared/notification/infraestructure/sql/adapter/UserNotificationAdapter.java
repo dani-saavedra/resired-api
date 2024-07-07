@@ -7,9 +7,7 @@ import com.resired.api.security.infraestructure.sql.orm.UserOrm;
 import com.resired.api.shared.notification.domain.entity.Device;
 import com.resired.api.shared.notification.domain.repository.UserNotificationPort;
 import com.resired.api.shared.notification.infraestructure.sql.jpa.DeviceJpaRepository;
-import com.resired.api.shared.notification.infraestructure.sql.jpa.NotificationUserJpaRepository;
 import com.resired.api.shared.notification.infraestructure.sql.orm.DeviceOrm;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -20,7 +18,6 @@ import java.util.List;
 public class UserNotificationAdapter implements UserNotificationPort {
     private final DeviceJpaRepository deviceRepository;
     private final UserJpaRepository userRepository;
-    private final NotificationUserJpaRepository notificationUserRepository;
 
     @Override
     public void addDevice(String email, Device device) {
@@ -34,7 +31,10 @@ public class UserNotificationAdapter implements UserNotificationPort {
     public List<Device> getAllDevicesByEmail(String email) {
         UserOrm user = userRepository.findByEmail(email);
 
-        return user.getDevices().stream().map(this::convertToDevice).toList();
+        return user.getDevices()
+            .stream()
+            .map(this::convertToDevice)
+            .toList();
     }
 
     @Override
@@ -53,13 +53,6 @@ public class UserNotificationAdapter implements UserNotificationPort {
             .stream()
             .map(NeighborhoodOrm::getId)
             .toList();
-    }
-
-    @Override
-    @Transactional
-    public void deleteNotificationByID(String email, Integer notificationId) {
-        Integer userId = userRepository.findByEmail(email).getId();
-        notificationUserRepository.softDeleteNotificationByNotificationIdAndUserId(notificationId, userId);
     }
 
     private Device convertToDevice(DeviceOrm deviceOrm) {

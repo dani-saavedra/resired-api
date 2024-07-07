@@ -13,5 +13,4 @@ public interface UserNotificationPort {
 
     List<Integer> getNeighborhoodIdsForResidentByEmail(String email);
 
-    void deleteNotificationByID(String email, Integer notificationId);
 }
