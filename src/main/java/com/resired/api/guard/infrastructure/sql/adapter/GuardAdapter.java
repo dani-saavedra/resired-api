@@ -26,12 +26,11 @@ import java.util.UUID;
 
 @Repository
 @AllArgsConstructor
-public class GuardAdapter implements GuardPort, PackagePort {
+public class GuardAdapter implements GuardPort {
 
     private final QrJpaRepository qrJpaRepository;
     private final VisitJpaRepository visitJpaRepository;
     private final VisitorJpaRepository visitorJpa;
-    private final PackageJpaRepository packageJpaRepository;
 
     @Override
     public VisitMade registerVisit(String qrStr, Integer guardId, String plateNumber) {
@@ -104,40 +103,7 @@ public class GuardAdapter implements GuardPort, PackagePort {
             .toList();
     }
 
-    @Override
-    public void registerPackage(Package packet) {
-        PackageOrm packageOrm = new PackageOrm();
-        packageOrm.setGuardReceivedId(packet.getReceivedGuardId());
-        packageOrm.setHome(packet.getHomeId());
-        packageOrm.setReceiver(packet.getReceiver());
-        packageOrm.setTrackingNumber(packet.getTrackingNumber());
-        packageOrm.setPackageTransporter(packet.getPackageTransporter());
-        packageOrm.setDescription(packet.getDescription());
-        packageOrm.setCreatedDate(packet.getCreatedDate());
-        packageOrm.setStatus(packet.getStatus());
 
-        packageJpaRepository.save(packageOrm);
-    }
-
-    @Override
-    public List<Package> findAllByNeighborhoodIdAndStartDate(Integer neighborhoodId, LocalDateTime date) {
-        List<PackageOrm> packageOrms = packageJpaRepository.findAllByNeighborhoodIdAndStartDate(neighborhoodId, date);
-        return packageOrms.stream().map(this::toPackageDomain).toList();
-    }
-
-    @Override
-    public Package findPackageByIdAndByNeighborhoodId(Integer packageId, Integer neighborhoodId) {
-        PackageOrm packetOrm = packageJpaRepository.findByIdAndNeighborhoodId(packageId, neighborhoodId);
-        if (packetOrm != null) {
-            return toPackageDomain(packetOrm);
-        }
-        return null;
-    }
-
-    @Override
-    public void updatePackage(Package packet) {
-        packageJpaRepository.save(fromEntity(packet));
-    }
 
     private void makeQrUnavailable(QrOrm qr) {
         if (!qr.getVisitor().isFavorite()) {
@@ -145,40 +111,6 @@ public class GuardAdapter implements GuardPort, PackagePort {
             qr.setDisabledAt(LocalDateTime.now(ZoneOffset.UTC));
             qrJpaRepository.save(qr);
         }
-    }
-
-    private Package toPackageDomain(PackageOrm packageOrm) {
-        return Package.fromExistingPackage(
-            packageOrm.getId(),
-            packageOrm.getGuardReceivedId(),
-            packageOrm.getHome(),
-            packageOrm.getReceiver(),
-            packageOrm.getTrackingNumber(),
-            packageOrm.getPackageTransporter(),
-            packageOrm.getDescription(),
-            packageOrm.getStatus(),
-            packageOrm.getCreatedDate(),
-            packageOrm.getUpdateDate(),
-            packageOrm.getDeliveredGuardId(),
-            packageOrm.getReceiverLastFourDigits()
-        );
-    }
-
-    public PackageOrm fromEntity(Package packet) {
-        return new PackageOrm(
-            packet.getId(),
-            packet.getReceivedGuardId(),
-            packet.getHomeId(),
-            packet.getReceiver(),
-            packet.getTrackingNumber(),
-            packet.getPackageTransporter(),
-            packet.getDescription(),
-            packet.getStatus(),
-            packet.getCreatedDate(),
-            packet.getUpdateDate(),
-            packet.getDeliveredGuardId(),
-            packet.getReceiverLastFourDigits()
-        );
     }
 
     private Visit toVisitDomain(VisitOrm visitOrm) {

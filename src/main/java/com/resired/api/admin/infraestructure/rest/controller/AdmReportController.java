@@ -4,6 +4,7 @@ import com.resired.api.admin.application.dto.VisitReportDto;
 import com.resired.api.admin.application.usecase.AdminReportUseCase;
 import com.resired.api.guard.application.dto.PackageResponseDTO;
 import com.resired.api.guard.application.usecase.PackageUseCase;
+import com.resired.api.resident.domain.enums.PackageStatusEnum;
 import com.resired.api.resident.infraestructure.rest.dto.ResponseData;
 import com.resired.api.security.application.usecase.JwtService;
 import com.resired.api.security.domain.entity.UserApp;
@@ -23,7 +24,6 @@ import java.util.Optional;
 @AllArgsConstructor
 @PreAuthorize("hasAuthority('ADMIN')")
 public class AdmReportController {
-    public static final int NUMBER_DAY_ADMIN_QUERY = 30;
     private final JwtService jwtService;
     private final AdminReportUseCase adminReportUseCase;
     private final PackageUseCase packageUseCase;
@@ -45,10 +45,10 @@ public class AdmReportController {
     }
 
     @GetMapping("/report/packages")
-    @Operation(summary = "Get all the packages from the 30 days per neighborhood")
-    public ResponseData<List<PackageResponseDTO>> getPackagesByNeighborhood(@RequestHeader(value = "Authorization") String bearer) {
+    @Operation(summary = "Get all the packages by state from the 30 days per neighborhood")
+    public ResponseData<List<PackageResponseDTO>> getPackagesByNeighborhood(@RequestHeader(value = "Authorization") String bearer, @RequestParam PackageStatusEnum status) {
         UserApp userApp = jwtService.extractUser(bearer);
-        return new ResponseData<>(packageUseCase.getPackagesByNeighborhood(userApp.email(), userApp.neighborhoodId(), NUMBER_DAY_ADMIN_QUERY));
+        return new ResponseData<>(packageUseCase.getPackagesByStatus(userApp.neighborhoodId(), status));
     }
 
 }

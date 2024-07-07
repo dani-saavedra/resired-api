@@ -7,6 +7,7 @@ import com.resired.api.guard.domain.entity.Package;
 import com.resired.api.guard.domain.exception.ResidentNotFoundOnHomeException;
 import com.resired.api.guard.domain.repository.PackagePort;
 import com.resired.api.resident.domain.entity.Home;
+import com.resired.api.resident.domain.enums.PackageStatusEnum;
 import com.resired.api.resident.domain.repository.HomePort;
 import com.resired.api.security.domain.entity.User;
 import com.resired.api.security.domain.exception.InactiveUserException;
@@ -52,6 +53,13 @@ public class PackageUseCase {
         LocalDateTime fiveDaysAgo = LocalDateTime.now(ZoneOffset.UTC).minusDays(days);
         List<Package> packages = packagePort.findAllByNeighborhoodIdAndStartDate(neighborhoodId, fiveDaysAgo);
 
+        return packages.stream()
+            .map(this::toPackageResponseDTO)
+            .toList();
+    }
+
+    public List<PackageResponseDTO> getPackagesByStatus(Integer neighborhoodId, PackageStatusEnum status) {
+        List<Package> packages = packagePort.findPackagesByStatus(neighborhoodId, status.name());
         return packages.stream()
             .map(this::toPackageResponseDTO)
             .toList();

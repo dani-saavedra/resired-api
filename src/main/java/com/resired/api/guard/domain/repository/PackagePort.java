@@ -11,6 +11,8 @@ public interface PackagePort {
 
     List<Package> findAllByNeighborhoodIdAndStartDate(Integer neighborhoodId, LocalDateTime date);
 
+    List<Package> findPackagesByStatus(Integer neighborhoodId, String statusEnum);
+
     Package findPackageByIdAndByNeighborhoodId(Integer packageId, Integer neighborhoodId);
 
     void updatePackage(Package packet);
