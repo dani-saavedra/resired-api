@@ -17,8 +17,8 @@ public class PqrsUseCase {
 
     private final PqrsPort port;
 
-    public List<PqrsResponseDTO> obtainPQRSByResident(Integer residentId) {
-        return port.obtainPQRSByResidentId(residentId);
+    public List<PqrsResponseDTO> obtainPQRSByHome(Integer homeId) {
+        return port.obtainPQRSByHomeId(homeId);
     }
 
     public String registerPQRSByResident(RegisterPqrs registerPqrs) {

@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface PqrsJpaRepository extends JpaRepository<PqrsOrm, Integer> {
 
-    List<PqrsOrm> findByResidentId(Integer residentId);
+    List<PqrsOrm> findByHomeId(Integer homeId);
 
     List<PqrsOrm> findByStateAndNeighborhoodId(StatePQRS state, Integer neighborhoodId);
 
