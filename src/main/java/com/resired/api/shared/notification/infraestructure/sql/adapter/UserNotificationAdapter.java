@@ -1,5 +1,6 @@
 package com.resired.api.shared.notification.infraestructure.sql.adapter;
 
+import com.resired.api.admin.domain.vo.BlockVo;
 import com.resired.api.resident.infraestructure.sql.orm.NeighborhoodOrm;
 import com.resired.api.security.domain.enums.UserType;
 import com.resired.api.security.infraestructure.sql.jpa.UserJpaRepository;
@@ -52,6 +53,15 @@ public class UserNotificationAdapter implements UserNotificationPort {
             .findNeighborhoodsByUserEmailAndUserRole(email, UserType.RESIDENT)
             .stream()
             .map(NeighborhoodOrm::getId)
+            .toList();
+    }
+
+    @Override
+    public List<BlockVo> getAllBlocksByUserId(Integer id) {
+        return userRepository.findBlockOrmsByResidentId(id)
+            .stream()
+            .map(blockOrm -> new BlockVo(blockOrm.getId(),
+                blockOrm.getName()))
             .toList();
     }
 

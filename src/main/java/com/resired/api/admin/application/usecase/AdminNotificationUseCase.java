@@ -3,6 +3,7 @@ package com.resired.api.admin.application.usecase;
 import com.resired.api.admin.application.dto.*;
 import com.resired.api.admin.domain.entity.NotificationCategory;
 import com.resired.api.admin.domain.repository.NotificationCategoryPort;
+import com.resired.api.shared.notification.application.dto.NotificationBlockRequest;
 import com.resired.api.shared.notification.application.dto.NotificationNeighborhoodRequest;
 import com.resired.api.shared.notification.application.usecase.PushAppUseCase;
 import com.resired.api.shared.notification.domain.entity.NotificationMessage;
@@ -78,33 +79,20 @@ public class AdminNotificationUseCase {
         notificationCategoryPort.createNewNotificationCategory(category);
     }
 
-    public List<NotificationCategoryResponseDto> getAllNotificationCategories(Integer neighborhoodId) {
-        return notificationCategoryPort.getAllCategoriesByNeighborhoodId(neighborhoodId)
-            .stream()
-            .map(notificationCategory -> new NotificationCategoryResponseDto(notificationCategory.id(),
-                notificationCategory.name()))
-            .toList();
-    }
+    public void sendNotificationToBlocks(CreateNotificationForBlocksDto requestDto) {
+        NotificationCategory category = notificationCategoryPort.getNotificationCategoryById(requestDto.categoryId());
 
-    public NotificationCategoryDto getNotificationCategory(Integer categoryId, Integer neighborhoodId) {
-        NotificationCategory category = notificationCategoryPort
-            .getNotificationCategoryByIdAndNeighborhoodId(categoryId, neighborhoodId);
+        if (category == null) throw new NotificationCategoryNotFoundException(requestDto.categoryId());
 
-        if (category == null) return null;
+        NotificationMessage notificationMessage = new NotificationMessage(null, requestDto.title(),
+            requestDto.message(), null, category, requestDto.priority());
 
-        return new NotificationCategoryDto(
-            category.id(),
-            category.name(),
-            category.defaultMessage(),
-            category.level(),
-            category.defaultTitle());
-    }
+        requestDto.blocksId().forEach(blockId -> {
+            NotificationBlockRequest pushNotification = new NotificationBlockRequest(requestDto.title(),
+                requestDto.message(), blockId);
+            pushNotificationUseCase.notifyBlock(pushNotification);
+        });
+        notificationRepository.saveNotification(notificationMessage);
 
-    public void createNotificationCategory(NotificationCategoryRequestDto requestDto, Integer neighborhoodId) {
-        NotificationCategory category = new NotificationCategory(null, neighborhoodId,
-            requestDto.name(), requestDto.defaultMessage(), requestDto.priority(),
-            requestDto.defaultTitle());
-
-        notificationCategoryPort.createNewNotificationCategory(category);
     }
 }

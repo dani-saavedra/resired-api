@@ -1,5 +1,6 @@
 package com.resired.api.shared.notification.application.usecase;
 
+import com.resired.api.admin.domain.vo.BlockVo;
 import com.resired.api.shared.notification.domain.entity.Device;
 import com.resired.api.shared.notification.domain.exception.DeviceAlreadyExistsException;
 import com.resired.api.shared.notification.domain.exception.DeviceNotFoundException;
@@ -21,7 +22,10 @@ public class DeviceUseCase {
     @Value("${topic.neighborhood}")
     private String NEIGHBORHOOD_TOPIC;
 
-    public void registerDevice(Device device, String email) {
+    @Value("${topic.block}")
+    private String BLOCK_TOPIC;
+
+    public void registerDevice(Device device, String email, Integer userId) {
         if (devicePort.alreadyExists(device.id())) {
             throw new DeviceAlreadyExistsException(device.id());
         }
@@ -34,6 +38,14 @@ public class DeviceUseCase {
             String topic = NEIGHBORHOOD_TOPIC + neigh;
             notificationSenderService.subscribeDeviceToTopic(device, topic);
         });
+
+        List<BlockVo> blocks = userPort.getAllBlocksByUserId(userId);
+
+        blocks.forEach((blockVo -> {
+            String topic = BLOCK_TOPIC + blockVo.id();
+            notificationSenderService.subscribeDeviceToTopic(device, topic);
+        }));
+
     }
 
     public void removeDevice(String deviceID, String email) {

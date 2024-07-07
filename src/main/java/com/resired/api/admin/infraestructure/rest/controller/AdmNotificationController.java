@@ -64,4 +64,14 @@ public class AdmNotificationController {
         return ResponseEntity.ok("Created");
     }
 
+    @PostMapping("/notifications/blocks")
+    @Operation(summary = "Create a new notification and send to all the list of blocks" +
+        " given (this operation also saves in the database")
+    public ResponseEntity<String> createNotificationForBlocks(
+        @RequestHeader(value = "Authorization") String bearer,
+        @RequestBody CreateNotificationForBlocksDto request) {
+        UserApp userApp = jwtService.extractUser(bearer);
+        adminNotificationUseCase.sendNotificationToBlocks(request);
+        return ResponseEntity.ok("Sent");
+    }
 }
