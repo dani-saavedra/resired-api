@@ -26,7 +26,8 @@ public enum ErrorCode {
     PACKAGE01("Package not found"),
     PQRS01("Invalid PQRS"),
     MULTIPART_FILE01("Multipart file not sent"),
-    MULTIPART_FILE02("Multipart file is not an Excel file .xlsx");
+    MULTIPART_FILE02("Multipart file is not an Excel file .xlsx"),
+    BLOCK01("The block does not belong to the neighborhood");
 
     private final String description;
 

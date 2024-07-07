@@ -20,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 public class BlockAdapterSQL implements BlockPort {
 
-    private BlockJpaRepository blockJpa;
+    private final BlockJpaRepository blockJpa;
 
     @Override
     public void createBlock(Integer neighborhoodId, GroupingType type, String name, List<String> homes) {
@@ -58,5 +58,14 @@ public class BlockAdapterSQL implements BlockPort {
             }
         }
         return null;
+    }
+
+    @Override
+    public BlockVo getBlockByIdAndNeighbor(Integer blockId, Integer neighborhoodId) {
+        BlockOrm blockOrm = blockJpa.findByIdAndNeighborhoodOrmId(blockId, neighborhoodId);
+        if (blockOrm == null) {
+            return null;
+        }
+        return new BlockVo(blockOrm.getId(), blockOrm.getName());
     }
 }

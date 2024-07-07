@@ -10,4 +10,6 @@ public interface BlockJpaRepository extends JpaRepository<BlockOrm, Integer> {
     Optional<BlockOrm> findByNameAndNeighborhoodOrmId(String name, Integer neighborhoodId);
 
     List<BlockOrm> findByNeighborhoodOrmIdOrderByIdAsc(Integer neighborhoodId);
+
+    BlockOrm findByIdAndNeighborhoodOrmId(Integer id, Integer neighborhoodId);
 }

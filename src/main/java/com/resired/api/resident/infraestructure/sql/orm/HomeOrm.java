@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 @Entity
@@ -65,5 +66,14 @@ public class HomeOrm {
         } else {
             return this.block.getName() + " - " + this.number;
         }
+    }
+
+    public HomeOrm(String number, Integer blockId, Double squareMeter) {
+        this.number = number;
+        this.createdDate = LocalDateTime.now(ZoneOffset.UTC);
+        this.squareMeter = BigDecimal.valueOf(squareMeter);
+        BlockOrm block = new BlockOrm();
+        block.setId(blockId);
+        this.block = block;
     }
 }

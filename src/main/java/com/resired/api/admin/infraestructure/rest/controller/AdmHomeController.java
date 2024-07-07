@@ -3,6 +3,7 @@ package com.resired.api.admin.infraestructure.rest.controller;
 import com.resired.api.admin.application.dto.HomeDTO;
 import com.resired.api.admin.application.usecase.AdminHomesUseCase;
 import com.resired.api.admin.infraestructure.exception.InvalidMultipartFileException;
+import com.resired.api.admin.infraestructure.rest.dto.NewHomeDTO;
 import com.resired.api.admin.infraestructure.rest.dto.UpdateHomeDTO;
 import com.resired.api.security.application.usecase.JwtService;
 import com.resired.api.security.domain.entity.UserApp;
@@ -66,5 +67,14 @@ public class AdmHomeController {
         UserApp userApp = jwtService.extractUser(bearer);
         adminHomesUseCase.loadHomesFromExcel(file.getInputStream(), userApp.neighborhoodId());
         return ResponseEntity.ok("Homes added");
+    }
+
+    @PostMapping(path = "/home")
+    @Operation(summary = "Add residence to neighborhood")
+    public ResponseEntity<String> addHome(@RequestHeader(value = "Authorization") String bearer,
+                                          @RequestBody NewHomeDTO homeDTO) {
+        UserApp userApp = jwtService.extractUser(bearer);
+        adminHomesUseCase.addHome(userApp.neighborhoodId(), homeDTO.name(), homeDTO.block(), homeDTO.meter());
+        return ResponseEntity.ok("Added home");
     }
 }

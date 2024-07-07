@@ -72,17 +72,7 @@ public class HomeAdapter implements HomePort {
     @Override
     public void saveAll(List<Home> homes) {
         homes.forEach(home -> {
-            BlockOrm blockOrm = getBlockOrm(home);
-
-            if (blockOrm == null) {
-                Optional<NeighborhoodOrm> neighborhood = neighborhoodJpaRepository.findById(home.getNeighborhood());
-                blockOrm = new BlockOrm();
-                blockOrm.setName(home.getBlock());
-                blockOrm.setType(home.getType());
-                blockOrm.setNeighborhoodOrm(neighborhood.get());
-                blockOrm = blockJpaRepository.save(blockOrm);
-            }
-
+            BlockOrm blockOrm = obtainBlock(home);
             HomeOrm homeOrm = new HomeOrm();
             homeOrm.setBlock(blockOrm);
             homeOrm.setNumber(home.getName());
@@ -91,6 +81,26 @@ public class HomeAdapter implements HomePort {
 
             jpaRepository.save(homeOrm);
         });
+    }
+
+    @Override
+    public void save(String homeName, Integer block, Double squareMeter) {
+        HomeOrm orm = new HomeOrm(homeName, block, squareMeter);
+        jpaRepository.save(orm);
+    }
+
+    private BlockOrm obtainBlock(Home home) {
+        BlockOrm blockOrm = getBlockOrm(home);
+
+        if (blockOrm == null) {
+            Optional<NeighborhoodOrm> neighborhood = neighborhoodJpaRepository.findById(home.getNeighborhood());
+            blockOrm = new BlockOrm();
+            blockOrm.setName(home.getBlock());
+            blockOrm.setType(home.getType());
+            blockOrm.setNeighborhoodOrm(neighborhood.get());
+            blockOrm = blockJpaRepository.save(blockOrm);
+        }
+        return blockOrm;
     }
 
     private BlockOrm getBlockOrm(Home home) {
