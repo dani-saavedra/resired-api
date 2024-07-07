@@ -47,9 +47,9 @@ public class PackageUseCase {
         pushAppUseCase.notifyHome(notification);
     }
 
-    public List<PackageResponseDTO> getPackagesByNeighborhood(String emailGuard, Integer neighborhoodId) {
+    public List<PackageResponseDTO> getPackagesByNeighborhood(String emailGuard, Integer neighborhoodId, int days) {
         validateGuard(emailGuard);
-        LocalDateTime fiveDaysAgo = LocalDateTime.now(ZoneOffset.UTC).minusDays(5);
+        LocalDateTime fiveDaysAgo = LocalDateTime.now(ZoneOffset.UTC).minusDays(days);
         List<Package> packages = packagePort.findAllByNeighborhoodIdAndStartDate(neighborhoodId, fiveDaysAgo);
 
         return packages.stream()

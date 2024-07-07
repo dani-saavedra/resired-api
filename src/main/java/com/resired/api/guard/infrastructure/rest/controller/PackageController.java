@@ -36,7 +36,7 @@ public class PackageController {
     @Operation(summary = "Get all the packages from the last five days per neighborhood")
     public ResponseData<List<PackageResponseDTO>> getPackagesByNeighborhood(@RequestHeader(value = "Authorization") String bearer) {
         UserApp userApp = jwtService.extractUser(bearer);
-        return new ResponseData<>(packageUseCase.getPackagesByNeighborhood(userApp.email(), userApp.neighborhoodId()));
+        return new ResponseData<>(packageUseCase.getPackagesByNeighborhood(userApp.email(), userApp.neighborhoodId(), 5));
     }
 
     @PutMapping("/package/{packageId}/deliver")
