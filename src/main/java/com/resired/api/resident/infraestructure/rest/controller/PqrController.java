@@ -27,7 +27,7 @@ public class PqrController {
     @Operation(summary = "Obtain PQRS registered by the user")
     public List<PqrsResponseDTO> obtainPQRSByResident(@RequestHeader(value = "Authorization") String bearer) {
         UserApp userApp = jwtService.extractUser(bearer);
-        return useCase.obtainPQRSByResident(userApp.userId());
+        return useCase.obtainPQRSByHome(userApp.homeId());
     }
 
     @PostMapping

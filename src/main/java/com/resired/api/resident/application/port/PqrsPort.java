@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface PqrsPort {
 
-    List<PqrsResponseDTO> obtainPQRSByResidentId(Integer residentId);
+    List<PqrsResponseDTO> obtainPQRSByHomeId(Integer homeId);
 
     PqrsDetailDTO obtainPqrByTicketNumber(String ticketNumber);
 
