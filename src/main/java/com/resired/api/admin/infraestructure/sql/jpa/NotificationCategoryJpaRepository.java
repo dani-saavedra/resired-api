@@ -13,9 +13,5 @@ public interface NotificationCategoryJpaRepository extends JpaRepository<Notific
     @Query("update NotificationCategoryOrm nc set nc.active = false where nc.neighborhoodId =:neighborhoodId and nc.name =:name ")
     void deactivateNotificationCategory(Integer neighborhoodId, String name);
 
-    NotificationCategoryOrm getNotificationCategoryOrmByNameAndNeighborhoodId(String name, Integer id);
-
     List<NotificationCategoryOrm> findAllByNeighborhoodId(Integer id);
-
-    NotificationCategoryOrm findByIdAndNeighborhoodId(Integer id, Integer neighborhoodId);
 }

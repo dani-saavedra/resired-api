@@ -49,26 +49,16 @@ public class AdminNotificationUseCase {
         notificationRepository.saveNotification(notificationMessage);
     }
 
-    public List<NotificationCategoryResponseDto> getAllNotificationCategories(Integer neighborhoodId) {
+    public List<NotificationCategoryDto> getAllNotificationCategories(Integer neighborhoodId) {
         return notificationCategoryPort.getAllCategoriesByNeighborhoodId(neighborhoodId)
             .stream()
-            .map(notificationCategory -> new NotificationCategoryResponseDto(notificationCategory.id(),
-                notificationCategory.name()))
+            .map(category -> new NotificationCategoryDto(
+                category.id(),
+                category.name(),
+                category.defaultMessage(),
+                category.level(),
+                category.defaultTitle()))
             .toList();
-    }
-
-    public NotificationCategoryDto getNotificationCategory(Integer categoryId, Integer neighborhoodId) {
-        NotificationCategory category = notificationCategoryPort
-            .getNotificationCategoryByIdAndNeighborhoodId(categoryId, neighborhoodId);
-
-        if (category == null) return null;
-
-        return new NotificationCategoryDto(
-            category.id(),
-            category.name(),
-            category.defaultMessage(),
-            category.level(),
-            category.defaultTitle());
     }
 
     public void createNotificationCategory(NotificationCategoryRequestDto requestDto, Integer neighborhoodId) {

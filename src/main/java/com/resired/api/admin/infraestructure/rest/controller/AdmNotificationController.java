@@ -40,18 +40,9 @@ public class AdmNotificationController {
 
     @GetMapping(path = "/notifications/categories")
     @Operation(summary = "Obtain all notification categories from Neighborhood")
-    public List<NotificationCategoryResponseDto> getCategories(@RequestHeader(value = "Authorization") String bearer) {
+    public List<NotificationCategoryDto> getCategories(@RequestHeader(value = "Authorization") String bearer) {
         UserApp userApp = jwtService.extractUser(bearer);
         return adminNotificationUseCase.getAllNotificationCategories(userApp.neighborhoodId());
-    }
-
-    @GetMapping(path = "/notifications/categories/{category_id}")
-    @Operation(summary = "Obtain the notification category given the id and the neighborhood id")
-    public NotificationCategoryDto getCategories(
-        @RequestHeader(value = "Authorization") String bearer,
-        @PathVariable(value = "category_id") Integer categoryId) {
-        UserApp userApp = jwtService.extractUser(bearer);
-        return adminNotificationUseCase.getNotificationCategory(categoryId, userApp.neighborhoodId());
     }
 
     @PostMapping("/notifications/categories")
