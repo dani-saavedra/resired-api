@@ -12,9 +12,7 @@ public interface NotificationCategoryPort {
     void createNewNotificationCategory(NotificationCategory category);
 
     NotificationCategory getNotificationCategoryById(Integer id);
-
-    NotificationCategory getNotificationCategoryByNameAndNeighborhoodId(String name, Integer id);
-
+    
     List<NotificationCategory> getAllCategoriesByNeighborhoodId(Integer id);
 
     NotificationCategory getNotificationCategoryByIdAndNeighborhoodId(Integer id, Integer neighborhoodId);

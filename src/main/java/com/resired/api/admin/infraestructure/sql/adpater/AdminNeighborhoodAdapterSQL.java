@@ -69,14 +69,6 @@ public class AdminNeighborhoodAdapterSQL implements NotificationCategoryPort, Ad
     }
 
     @Override
-    public NotificationCategory getNotificationCategoryByNameAndNeighborhoodId(String name, Integer id) {
-        NotificationCategoryOrm notificationCategoryOrm = notificationCategoryRepository
-            .getNotificationCategoryOrmByNameAndNeighborhoodId(name, id);
-
-        return notificationCategoryOrm.castToEntity();
-    }
-
-    @Override
     public List<NotificationCategory> getAllCategoriesByNeighborhoodId(Integer id) {
         return notificationCategoryRepository.findAllByNeighborhoodId(id)
             .stream()
