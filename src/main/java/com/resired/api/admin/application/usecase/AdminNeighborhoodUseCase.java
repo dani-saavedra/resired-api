@@ -5,6 +5,7 @@ import com.resired.api.admin.application.exception.BusinessException;
 import com.resired.api.admin.application.exception.InvalidConfigurationException;
 import com.resired.api.admin.application.repository.AdminNewsPort;
 import com.resired.api.admin.domain.entity.Neighborhood;
+import com.resired.api.admin.domain.entity.NotificationCategory;
 import com.resired.api.admin.domain.repository.AdminNeighborhoodPort;
 import com.resired.api.admin.domain.repository.BlockPort;
 import com.resired.api.admin.domain.repository.NotificationCategoryPort;
@@ -43,8 +44,11 @@ public class AdminNeighborhoodUseCase {
 
     private void associateDefaultCategories(Integer idNewNeigh) {
         for (DefaultNotificationCategory category : DefaultNotificationCategory.values()) {
+            NotificationCategory notificationCategory = new NotificationCategory(null, idNewNeigh,
+                category.name(), null, LevelNotificationEnum.MEDIUM,
+                null);
             notificationCategoryPort.createNewNotificationCategory
-                (idNewNeigh, category.name(), LevelNotificationEnum.MEDIUM);
+                (notificationCategory);
         }
     }
 
