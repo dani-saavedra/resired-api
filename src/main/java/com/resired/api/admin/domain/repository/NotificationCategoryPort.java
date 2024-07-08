@@ -13,7 +13,7 @@ public interface NotificationCategoryPort {
 
     NotificationCategory getNotificationCategoryById(Integer id);
     
-    List<NotificationCategory> getAllCategoriesByNeighborhoodId(Integer id);
+    List<NotificationCategory> getAllCategoriesByNeighborhoodId(Integer neighborhoodId);
 
     NotificationCategory getNotificationCategoryByIdAndNeighborhoodId(Integer id, Integer neighborhoodId);
 
