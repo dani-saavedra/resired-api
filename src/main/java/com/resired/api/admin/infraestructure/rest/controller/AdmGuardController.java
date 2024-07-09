@@ -40,13 +40,23 @@ public class AdmGuardController {
     }
 
     @DeleteMapping(path = "/guard/{id_user}")
-    @Operation(summary = "Remove a registered guard from neighborhood")
-    public ResponseEntity<String> removeGuard(@RequestHeader(value = "Authorization") String bearer,
+    @Operation(summary = "Inactive a registered guard from neighborhood")
+    public ResponseEntity<String> inactiveGuard(@RequestHeader(value = "Authorization") String bearer,
                                               @PathVariable(value = "id_user") Integer idUser) {
         UserApp userApp = jwtService.extractUser(bearer);
 
         userUseCase.removeUserInNeighborhood(userApp.neighborhoodId(), idUser);
-        return ResponseEntity.ok("Guard removed successfully");
+        return ResponseEntity.ok("Guard inactive successfully");
+    }
+
+    @PostMapping(path = "/guard/{id_user}")
+    @Operation(summary = "Activate an inactive neighborhood guard")
+    public ResponseEntity<String> activeGuard(@RequestHeader(value = "Authorization") String bearer,
+                                              @PathVariable(value = "id_user") Integer idUser) {
+        UserApp userApp = jwtService.extractUser(bearer);
+
+        userUseCase.reactiveUserInNeighborhood(userApp.neighborhoodId(), idUser);
+        return ResponseEntity.ok("Guard inactive successfully");
     }
 
     @GetMapping(path = "/guards")

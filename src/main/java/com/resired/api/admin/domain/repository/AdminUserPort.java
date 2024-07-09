@@ -14,6 +14,8 @@ public interface AdminUserPort {
 
     void removeUserById(Integer neighborhoodId, Integer userId);
 
+    void reactiveUserById(Integer neighborhoodId, Integer userId);
+
     Integer getUserByEmail(String email);
 
     List<Resident> getResidentByNeighborhood(Integer neighborhoodId, int active);

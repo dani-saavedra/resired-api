@@ -72,6 +72,11 @@ public class AdmAdminUserAdapter implements AdminUserPort, AdminResidentPort, Ad
     }
 
     @Override
+    public void reactiveUserById(Integer neighborhoodId, Integer userId) {
+        jpaRepository.reactiveUserInNeighborhood(neighborhoodId, userId, LocalDateTime.now(ZoneOffset.UTC));
+    }
+
+    @Override
     public Integer getUserByEmail(String email) {
         UserOrm user = jpaRepository.findByEmail(email);
         if (user != null) {

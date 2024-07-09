@@ -37,7 +37,10 @@ public interface UserJpaRepository extends JpaRepository<UserOrm, Integer> {
         " and userRol.neighborhood.id =:neighborhood")
     void removeResidentByUserId(Integer neighborhood, Integer userId, LocalDateTime now);
 
-    UserOrm findByDocumentId(String documentId);
+    @Modifying
+    @Query("update UserRolOrm userRol set userRol.active =1, userRol.updateDate =:now where userRol.user.id =:userId" +
+            " and userRol.neighborhood.id =:neighborhood")
+    void reactiveUserInNeighborhood(Integer neighborhood, Integer userId, LocalDateTime now);
 
     @Query("SELECT ur.neighborhood FROM UserRolOrm ur " +
         "JOIN ur.user u " +

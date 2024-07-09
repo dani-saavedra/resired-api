@@ -45,6 +45,10 @@ public class AdminUserUseCase {
         adminUserPort.removeUserById(neighborhoodId, userId);
     }
 
+    public void reactiveUserInNeighborhood(Integer neighborhoodId, Integer userId) {
+        adminUserPort.reactiveUserById(neighborhoodId, userId);
+    }
+
     public List<GuardDto> getAllGuards(Integer neighborhoodId, boolean active) {
         return adminGuardPort.getAllGuards(neighborhoodId, active ? 1 : 0);
     }
