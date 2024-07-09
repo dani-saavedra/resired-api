@@ -1,6 +1,6 @@
 package com.resired.api.resident.application.dto;
 
-import com.resired.api.resident.domain.entity.Package;
+import com.resired.api.guard.domain.entity.Package;
 
 import java.util.List;
 

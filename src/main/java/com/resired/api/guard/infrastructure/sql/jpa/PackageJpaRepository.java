@@ -9,15 +9,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface PackageJpaRepository extends JpaRepository<PackageOrm, Integer> {
+
     @Query("SELECT package FROM PackageOrm package " +
-        " JOIN HomeOrm home ON package.home = home.id" +
-        " WHERE home.block.neighborhoodOrm.id = :neighborhoodId" +
-        " AND package.createdDate >= :startDate" +
+        " WHERE package.home.block.neighborhoodOrm.id = :neighborhoodId" +
         " ORDER BY package.createdDate DESC")
-    List<PackageOrm> findAllByNeighborhoodIdAndStartDate(Integer neighborhoodId,
-                                                         LocalDateTime startDate);
+    List<PackageOrm> findAllByNeighborhoodId(Integer neighborhoodId);
+
     @Query("SELECT package FROM PackageOrm package " +
-        " JOIN HomeOrm home ON package.home = home.id" +
+        " JOIN HomeOrm home ON package.home = home" +
         " WHERE home.block.neighborhoodOrm.id = :neighborhoodId " +
         " AND package.id = :packageId")
     PackageOrm findByIdAndNeighborhoodId(Integer packageId, Integer neighborhoodId);
@@ -29,4 +28,6 @@ public interface PackageJpaRepository extends JpaRepository<PackageOrm, Integer>
         " AND p.status = :status", nativeQuery = true)
     List<PackageOrm> findAllByNeighborhoodIdAndStatus(@Param("neighborhoodId") Integer neighborhoodId,
                                                       @Param("status") String status);
+
+    List<PackageOrm> findByHomeId(Integer homeId);
 }

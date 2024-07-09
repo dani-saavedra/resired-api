@@ -6,8 +6,6 @@ import java.util.List;
 
 public interface HomePort {
 
-    Home getPackages(Integer homeId);
-
     Home getHomeById(Integer homeId);
 
     List<Home> getHomesByNeighborhood(Integer neighborhoodId);

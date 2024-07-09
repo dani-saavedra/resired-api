@@ -1,8 +1,8 @@
 package com.resired.api.guard.infrastructure.rest.controller;
 
 import com.resired.api.guard.application.dto.PackageRequestDTO;
-import com.resired.api.guard.application.dto.PackageResponseDTO;
 import com.resired.api.guard.application.usecase.PackageUseCase;
+import com.resired.api.guard.domain.entity.Package;
 import com.resired.api.resident.infraestructure.rest.dto.ResponseData;
 import com.resired.api.security.application.usecase.JwtService;
 import com.resired.api.security.domain.entity.UserApp;
@@ -34,9 +34,9 @@ public class PackageController {
 
     @GetMapping("/packages")
     @Operation(summary = "Get all the packages from the last five days per neighborhood")
-    public ResponseData<List<PackageResponseDTO>> getPackagesByNeighborhood(@RequestHeader(value = "Authorization") String bearer) {
+    public ResponseData<List<Package>> getPackagesByNeighborhood(@RequestHeader(value = "Authorization") String bearer) {
         UserApp userApp = jwtService.extractUser(bearer);
-        return new ResponseData<>(packageUseCase.getPackagesByNeighborhood(userApp.email(), userApp.neighborhoodId(), 5));
+        return new ResponseData<>(packageUseCase.getPackagesByNeighborhood(userApp.email(), userApp.neighborhoodId()));
     }
 
     @PutMapping("/package/{packageId}/deliver")
