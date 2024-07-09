@@ -2,6 +2,7 @@ package com.resired.api.guard.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.resired.api.resident.domain.enums.PackageStatusEnum;
+import com.resired.api.utils.FormatDate;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -28,9 +29,9 @@ public class Package {
     private String description;
     private PackageStatusEnum status;
     @JsonProperty("created_date")
-    private LocalDateTime createdDate;
+    private String createdDate;
     @JsonProperty("deliver_date")
-    private LocalDateTime updateDate;
+    private String updateDate;
     @JsonProperty("delivered_guard_id")
     private Integer deliveredGuardId;
     @JsonProperty("delivered_guard")
@@ -48,7 +49,6 @@ public class Package {
         aPackage.packageTransporter = packageTransporter;
         aPackage.description = description;
         aPackage.status = PackageStatusEnum.TO_COLLECT;
-        aPackage.createdDate = LocalDateTime.now(ZoneOffset.UTC);
         return aPackage;
     }
 
@@ -67,18 +67,10 @@ public class Package {
         aPackage.packageTransporter = packageTransporter;
         aPackage.description = description;
         aPackage.status = status;
-        aPackage.createdDate = createdDate;
-        aPackage.updateDate = updateDate;
+        aPackage.createdDate = FormatDate.formatDate(createdDate);
+        aPackage.updateDate = FormatDate.formatDate(updateDate);
         aPackage.deliveredGuard = deliveredGuard;
         aPackage.receiverLastFourDigits = receiverLastFourDigits;
         return aPackage;
     }
-
-    public void deliverPackage(Integer deliveredGuardId, String receiverLastFourDigits) {
-        this.status = PackageStatusEnum.DELIVERED;
-        this.updateDate = LocalDateTime.now(ZoneOffset.UTC);
-        this.deliveredGuardId = deliveredGuardId;
-        this.receiverLastFourDigits = receiverLastFourDigits;
-    }
-
 }

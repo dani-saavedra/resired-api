@@ -63,7 +63,6 @@ public class PackageUseCase {
             throw new PackageNotFoundException(packageId, neighborhoodId);
         }
         validateLastFourDigits(lastFourDigits, packageToDeliver.getHomeId());
-        packageToDeliver.deliverPackage(deliveredGuardId, lastFourDigits);
         packagePort.updatePackage(packageToDeliver);
     }
 

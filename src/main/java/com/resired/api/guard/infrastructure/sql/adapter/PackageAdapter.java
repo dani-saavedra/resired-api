@@ -32,7 +32,7 @@ public class PackageAdapter implements PackagePort {
         packageOrm.setTrackingNumber(packet.getTrackingNumber());
         packageOrm.setPackageTransporter(packet.getPackageTransporter());
         packageOrm.setDescription(packet.getDescription());
-        packageOrm.setCreatedDate(packet.getCreatedDate());
+        packageOrm.setCreatedDate(LocalDateTime.now(ZoneOffset.UTC));
         packageOrm.setStatus(packet.getStatus());
 
         packageJpaRepository.save(packageOrm);
