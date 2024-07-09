@@ -1,6 +1,7 @@
 package com.resired.api.resident.domain.entity;
 
 import com.resired.api.admin.domain.vo.GroupingType;
+import com.resired.api.guard.domain.entity.Package;
 import lombok.Getter;
 import lombok.Setter;
 

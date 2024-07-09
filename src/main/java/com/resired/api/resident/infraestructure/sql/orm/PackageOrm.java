@@ -1,7 +1,7 @@
 package com.resired.api.resident.infraestructure.sql.orm;
 
-import com.resired.api.resident.domain.entity.Package;
 import com.resired.api.resident.domain.enums.PackageStatusEnum;
+import com.resired.api.security.infraestructure.sql.orm.UserOrm;
 import com.resired.api.utils.FormatDate;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -21,11 +21,13 @@ public class PackageOrm {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column
-    private Integer guardReceivedId;
+    @ManyToOne
+    @JoinColumn(name = "guard_received_id")
+    private UserOrm guardReceived;
 
-    @Column(name = "home_id")
-    private Integer home;
+    @ManyToOne
+    @JoinColumn(name = "home_id")
+    private HomeOrm home;
 
     @Column
     private String receiver;
@@ -49,14 +51,24 @@ public class PackageOrm {
     @Column(name = "update_date")
     private LocalDateTime updateDate;
 
-    @Column(name = "guard_delivered_id")
-    private Integer deliveredGuardId;
+    @ManyToOne
+    @JoinColumn(name = "guard_delivered_id")
+    private UserOrm deliveredGuard;
 
     @Column(name = "receiver_last_four_digits")
     private String receiverLastFourDigits;
 
-    public Package toEntity() {
-        return new Package(this.id, this.receiver, this.trackingNumber, this.packageTransporter,
-            this.description, this.status, FormatDate.formatDate(this.createdDate), FormatDate.formatDate(this.updateDate));
+    public String guardDelivered() {
+        if (deliveredGuard != null) {
+            return deliveredGuard.fullName();
+        }
+        return null;
+    }
+
+    public String guardReceived() {
+        if (guardReceived != null) {
+            return guardReceived.fullName();
+        }
+        return null;
     }
 }

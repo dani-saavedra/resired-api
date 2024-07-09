@@ -27,13 +27,6 @@ public class HomeAdapter implements HomePort {
     private final NeighborhoodJpaRepository neighborhoodJpaRepository;
 
     @Override
-    public Home getPackages(Integer homeId) {
-        Home home = new Home(homeId);
-        jpaRepository.getPackages(homeId).forEach(p -> home.addPackages(p.toEntity()));
-        return home;
-    }
-
-    @Override
     public Home getHomeById(Integer homeId) {
         return jpaRepository.findById(homeId)
             .map(orm -> new Home(orm.getId(), orm.getNumber(),

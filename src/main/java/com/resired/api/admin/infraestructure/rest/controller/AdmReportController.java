@@ -2,8 +2,8 @@ package com.resired.api.admin.infraestructure.rest.controller;
 
 import com.resired.api.admin.application.dto.VisitReportDto;
 import com.resired.api.admin.application.usecase.AdminReportUseCase;
-import com.resired.api.guard.application.dto.PackageResponseDTO;
 import com.resired.api.guard.application.usecase.PackageUseCase;
+import com.resired.api.guard.domain.entity.Package;
 import com.resired.api.resident.domain.enums.PackageStatusEnum;
 import com.resired.api.resident.infraestructure.rest.dto.ResponseData;
 import com.resired.api.security.application.usecase.JwtService;
@@ -46,7 +46,7 @@ public class AdmReportController {
 
     @GetMapping("/report/packages")
     @Operation(summary = "Get all the packages by state from the 30 days per neighborhood")
-    public ResponseData<List<PackageResponseDTO>> getPackagesByNeighborhood(@RequestHeader(value = "Authorization") String bearer, @RequestParam PackageStatusEnum status) {
+    public ResponseData<List<Package>> getPackagesByNeighborhood(@RequestHeader(value = "Authorization") String bearer, @RequestParam PackageStatusEnum status) {
         UserApp userApp = jwtService.extractUser(bearer);
         return new ResponseData<>(packageUseCase.getPackagesByStatus(userApp.neighborhoodId(), status));
     }

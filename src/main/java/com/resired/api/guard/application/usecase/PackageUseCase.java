@@ -1,32 +1,26 @@
 package com.resired.api.guard.application.usecase;
 
 import com.resired.api.guard.application.dto.PackageRequestDTO;
-import com.resired.api.guard.application.dto.PackageResponseDTO;
 import com.resired.api.guard.application.exception.PackageNotFoundException;
 import com.resired.api.guard.domain.entity.Package;
 import com.resired.api.guard.domain.exception.ResidentNotFoundOnHomeException;
 import com.resired.api.guard.domain.repository.PackagePort;
-import com.resired.api.resident.domain.entity.Home;
 import com.resired.api.resident.domain.enums.PackageStatusEnum;
-import com.resired.api.resident.domain.repository.HomePort;
 import com.resired.api.security.domain.entity.User;
 import com.resired.api.security.domain.exception.InactiveUserException;
 import com.resired.api.security.domain.repository.UserPort;
 import com.resired.api.shared.notification.application.dto.NotificationHomeRequest;
 import com.resired.api.shared.notification.application.usecase.PushAppUseCase;
-import com.resired.api.utils.FormatDate;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.List;
 
 @Service
 @AllArgsConstructor
 public class PackageUseCase {
+
     private final UserPort userPort;
-    private final HomePort homePort;
     private final PackagePort packagePort;
     private final PushAppUseCase pushAppUseCase;
 
@@ -48,21 +42,17 @@ public class PackageUseCase {
         pushAppUseCase.notifyHome(notification);
     }
 
-    public List<PackageResponseDTO> getPackagesByNeighborhood(String emailGuard, Integer neighborhoodId, int days) {
+    public List<Package> getPackagesByNeighborhood(String emailGuard, Integer neighborhoodId) {
         validateGuard(emailGuard);
-        LocalDateTime fiveDaysAgo = LocalDateTime.now(ZoneOffset.UTC).minusDays(days);
-        List<Package> packages = packagePort.findAllByNeighborhoodIdAndStartDate(neighborhoodId, fiveDaysAgo);
-
-        return packages.stream()
-            .map(this::toPackageResponseDTO)
-            .toList();
+        return packagePort.findAllByNeighborhoodId(neighborhoodId);
     }
 
-    public List<PackageResponseDTO> getPackagesByStatus(Integer neighborhoodId, PackageStatusEnum status) {
-        List<Package> packages = packagePort.findPackagesByStatus(neighborhoodId, status.name());
-        return packages.stream()
-            .map(this::toPackageResponseDTO)
-            .toList();
+    public List<Package> getPackagesByHome(Integer homeId) {
+        return packagePort.findByHome(homeId);
+    }
+
+    public List<Package> getPackagesByStatus(Integer neighborhoodId, PackageStatusEnum status) {
+        return packagePort.findPackagesByStatus(neighborhoodId, status.name());
     }
 
     public void deliverPackage(Integer packageId, Integer neighborhoodId,
@@ -72,9 +62,7 @@ public class PackageUseCase {
         if (packageToDeliver == null) {
             throw new PackageNotFoundException(packageId, neighborhoodId);
         }
-
         validateLastFourDigits(lastFourDigits, packageToDeliver.getHomeId());
-
         packageToDeliver.deliverPackage(deliveredGuardId, lastFourDigits);
         packagePort.updatePackage(packageToDeliver);
     }
@@ -85,22 +73,6 @@ public class PackageUseCase {
             throw new InactiveUserException(emailGuard);
         }
         return guard;
-    }
-
-    private PackageResponseDTO toPackageResponseDTO(Package pkg) {
-        Home home = homePort.getHomeById(pkg.getHomeId());
-        return new PackageResponseDTO(
-            pkg.getId(),
-            home.getName(),
-            pkg.getReceiver(),
-            pkg.getTrackingNumber(),
-            pkg.getPackageTransporter(),
-            pkg.getDescription(),
-            pkg.getStatus(),
-            FormatDate.formatDate(pkg.getCreatedDate()),
-            FormatDate.formatDate(pkg.getUpdateDate()),
-            home.getBlock()
-        );
     }
 
     private void validateLastFourDigits(String lastFourDigits, Integer homeId) {
