@@ -12,6 +12,8 @@ import com.resired.api.shared.notification.domain.repository.NotificationMessage
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 @Service
@@ -43,7 +45,8 @@ public class AdminNotificationUseCase {
         if (category == null) throw new NotificationCategoryNotFoundException(requestDto.categoryId());
 
         NotificationMessage notificationMessage = new NotificationMessage(null, requestDto.title(),
-            requestDto.message(), null, category, requestDto.priority());
+            requestDto.message(), LocalDateTime.now(ZoneOffset.UTC).toString(),
+            category, requestDto.priority());
 
         pushNotificationUseCase.notifyNeighborhood(pushNotification);
         notificationRepository.saveNotification(notificationMessage);
@@ -75,7 +78,8 @@ public class AdminNotificationUseCase {
         if (category == null) throw new NotificationCategoryNotFoundException(requestDto.categoryId());
 
         NotificationMessage notificationMessage = new NotificationMessage(null, requestDto.title(),
-            requestDto.message(), null, category, requestDto.priority());
+            requestDto.message(), LocalDateTime.now(ZoneOffset.UTC).toString(),
+            category, requestDto.priority());
 
         requestDto.blocksId().forEach(blockId -> {
             NotificationBlockRequest pushNotification = new NotificationBlockRequest(requestDto.title(),

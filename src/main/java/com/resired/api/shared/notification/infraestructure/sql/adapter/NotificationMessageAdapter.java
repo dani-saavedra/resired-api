@@ -9,7 +9,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.List;
 
 @Repository
@@ -29,7 +28,7 @@ public class NotificationMessageAdapter implements NotificationMessagePort {
         NotificationOrm notificationOrm = new NotificationOrm();
         notificationOrm.setTitle(notificationMessage.title());
         notificationOrm.setMessage(notificationMessage.message());
-        notificationOrm.setCreatedDate(LocalDateTime.now(ZoneOffset.UTC));
+        notificationOrm.setCreatedDate(LocalDateTime.parse(notificationMessage.date()));
 
         NotificationCategoryOrm notificationCategoryOrm = new NotificationCategoryOrm();
         notificationCategoryOrm.setId(notificationMessage.category().id());
