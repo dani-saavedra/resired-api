@@ -26,6 +26,8 @@ public class PushNotificationAdapter implements NotificationSender {
             .builder()
             .setToken(device.id())
             .setNotification(firebaseNotification)
+            .putData("title", notificationMessage.title())
+            .putData("body", notificationMessage.message())
             .build();
 
         try {
@@ -46,6 +48,8 @@ public class PushNotificationAdapter implements NotificationSender {
         MulticastMessage message = MulticastMessage
             .builder()
             .setNotification(firebaseNotification)
+            .putData("title", notificationMessage.title())
+            .putData("body", notificationMessage.message())
             .addAllTokens(devicesIDs)
             .build();
 
@@ -75,6 +79,8 @@ public class PushNotificationAdapter implements NotificationSender {
         Message message = Message
             .builder()
             .setNotification(firebaseNotification)
+            .putData("title", notificationMessage.title())
+            .putData("body", notificationMessage.message())
             .setTopic(topic)
             .build();
 
