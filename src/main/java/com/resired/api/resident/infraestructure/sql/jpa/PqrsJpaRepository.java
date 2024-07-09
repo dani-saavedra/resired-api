@@ -10,7 +10,7 @@ public interface PqrsJpaRepository extends JpaRepository<PqrsOrm, Integer> {
 
     List<PqrsOrm> findByHomeId(Integer homeId);
 
-    List<PqrsOrm> findByStateAndNeighborhoodId(StatePQRS state, Integer neighborhoodId);
+    List<PqrsOrm> findByStateAndNeighborhoodIdOrderByCreationDateAscResidentAsc(StatePQRS state, Integer neighborhoodId);
 
     Integer countByNeighborhoodId(Integer neighborhoodId);
 

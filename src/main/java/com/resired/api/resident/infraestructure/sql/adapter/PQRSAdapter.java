@@ -44,7 +44,7 @@ public class PQRSAdapter implements PqrsPort {
     @Override
 
     public List<PqrsDetailDTO> obtainPqrByStateAndNeighborhood(StatePQRS statePQRS, Integer neighborhood) {
-        return jpaRepository.findByStateAndNeighborhoodId(statePQRS, neighborhood)
+        return jpaRepository.findByStateAndNeighborhoodIdOrderByCreationDateAscResidentAsc(statePQRS, neighborhood)
             .stream()
             .map(PQRSAdapter::getPqrsDetailDTO)
             .toList();
