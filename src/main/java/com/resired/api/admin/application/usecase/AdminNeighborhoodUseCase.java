@@ -45,8 +45,8 @@ public class AdminNeighborhoodUseCase {
     private void associateDefaultCategories(Integer idNewNeigh) {
         for (DefaultNotificationCategory category : DefaultNotificationCategory.values()) {
             NotificationCategory notificationCategory = new NotificationCategory(null, idNewNeigh,
-                category.name(), null, LevelNotificationEnum.MEDIUM,
-                null);
+                category.name(), category.getDefaultMessage(), LevelNotificationEnum.MEDIUM,
+                category.getDefaultTitle());
             notificationCategoryPort.createNewNotificationCategory
                 (notificationCategory);
         }
