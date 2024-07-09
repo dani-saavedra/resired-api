@@ -62,7 +62,7 @@ public class AdmResidentController {
                                                      @PathVariable(value = "id_user") Integer idUser) {
         UserApp userApp = jwtService.extractUser(bearer);
 
-        userUseCase.removeResidentByUserId(userApp.neighborhoodId(), idUser);
+        userUseCase.removeUserInNeighborhood(userApp.neighborhoodId(), idUser);
         return ResponseEntity.ok("Resident removed successfully");
     }
 

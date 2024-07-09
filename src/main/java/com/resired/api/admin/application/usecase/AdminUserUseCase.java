@@ -41,7 +41,7 @@ public class AdminUserUseCase {
         }
     }
 
-    public void removeResidentByUserId(Integer neighborhoodId, Integer userId) {
+    public void removeUserInNeighborhood(Integer neighborhoodId, Integer userId) {
         adminUserPort.removeUserById(neighborhoodId, userId);
     }
 

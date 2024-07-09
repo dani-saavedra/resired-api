@@ -41,11 +41,11 @@ public class AdmGuardController {
 
     @DeleteMapping(path = "/guard/{id_user}")
     @Operation(summary = "Remove a registered guard from neighborhood")
-    public ResponseEntity<String> removeHomeResident(@RequestHeader(value = "Authorization") String bearer,
-                                                     @PathVariable(value = "id_user") Integer idUser) {
+    public ResponseEntity<String> removeGuard(@RequestHeader(value = "Authorization") String bearer,
+                                              @PathVariable(value = "id_user") Integer idUser) {
         UserApp userApp = jwtService.extractUser(bearer);
 
-        userUseCase.removeResidentByUserId(userApp.neighborhoodId(), idUser);
+        userUseCase.removeUserInNeighborhood(userApp.neighborhoodId(), idUser);
         return ResponseEntity.ok("Guard removed successfully");
     }
 
@@ -53,7 +53,7 @@ public class AdmGuardController {
     @Operation(summary = "Get all guards in the neighborhood")
     public List<GuardDto> getAllGuards(@RequestHeader(value = "Authorization") String bearer,
                                        @Parameter(description = "Active guards as a String in format true or false")
-                                               @RequestParam(value = "active", defaultValue = "true") boolean active) {
+                                       @RequestParam(value = "active", defaultValue = "true") boolean active) {
         UserApp userApp = jwtService.extractUser(bearer);
         return userUseCase.getAllGuards(userApp.neighborhoodId(), active);
     }
