@@ -11,6 +11,6 @@ public interface DevicePort {
 
     List<Device> getDevicesForHomeResident(Integer homeID);
 
-    Device getDeviceByUser(Integer userId);
+    List<Device> getDevicesByUser(Integer userId);
 
 }

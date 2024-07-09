@@ -36,11 +36,13 @@ public class PushAppUseCase {
     }
 
     public void notifyResident(NotificationResident notification) {
-        Device device = deviceRepository.getDeviceByUser(notification.userId());
-        if (device != null) {
-            PushNotification notificationMessage = new PushNotification(notification.title(),
-                notification.message());
-            notificationSenderService.sendToDevice(notificationMessage, device);
+        List<Device> devices = deviceRepository.getDevicesByUser(notification.userId());
+        if (devices != null && !devices.isEmpty()) {
+            devices.forEach(device -> {
+                PushNotification notificationMessage = new PushNotification(notification.title(),
+                    notification.message());
+                notificationSenderService.sendToDevice(notificationMessage, device);
+            });
         }
     }
 

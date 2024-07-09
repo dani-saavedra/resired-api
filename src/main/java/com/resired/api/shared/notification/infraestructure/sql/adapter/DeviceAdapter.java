@@ -36,11 +36,10 @@ public class DeviceAdapter implements DevicePort {
     }
 
     @Override
-    public Device getDeviceByUser(Integer userId) {
-        DeviceOrm orm = deviceRepository.findFirstByUserId(userId);
-        if (orm != null) {
-            return new Device(orm.getId());
-        }
-        return null;
+    public List<Device> getDevicesByUser(Integer userId) {
+        return deviceRepository.findByUserId(userId)
+            .stream()
+            .map(orm -> new Device(orm.getId()))
+            .toList();
     }
 }
