@@ -1,5 +1,6 @@
 package com.resired.api.security.infraestructure.sql.jpa;
 
+import com.resired.api.resident.infraestructure.sql.orm.BlockOrm;
 import com.resired.api.resident.infraestructure.sql.orm.NeighborhoodOrm;
 import com.resired.api.security.domain.enums.UserType;
 import com.resired.api.security.infraestructure.sql.orm.UserOrm;
@@ -58,4 +59,8 @@ public interface UserJpaRepository extends JpaRepository<UserOrm, Integer> {
     @Query("SELECT role FROM UserRolOrm role JOIN role.user user" +
         " WHERE role.neighborhood.id = :neighborhoodId AND role.rol = :role AND role.active = :active")
     List<UserRolOrm> findAllByNeighborhoodIdAndRolAndActive(@Param("neighborhoodId") Integer neighborhoodId, @Param("role") UserType role, @Param("active") int active);
+
+    @Query("SELECT u.home.block FROM UserRolOrm u WHERE u.rol = 'RESIDENT' AND u.active = 1 AND u.user.id = :userId")
+    List<BlockOrm> findBlockOrmsByResidentId(@Param("userId") Integer userId);
+
 }

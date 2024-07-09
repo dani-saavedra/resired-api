@@ -7,7 +7,6 @@ import com.resired.api.admin.domain.entity.NotificationCategory;
 import com.resired.api.admin.domain.repository.AdminNeighborhoodPort;
 import com.resired.api.admin.domain.repository.NotificationCategoryPort;
 import com.resired.api.admin.domain.vo.CreateNeighborhoodVo;
-import com.resired.api.admin.domain.vo.LevelNotificationEnum;
 import com.resired.api.admin.domain.vo.NeighConfig;
 import com.resired.api.admin.infraestructure.sql.jpa.NeighborhoodAdmJpaRepository;
 import com.resired.api.admin.infraestructure.sql.jpa.NewsJpaRepository;
@@ -21,6 +20,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -32,12 +32,14 @@ public class AdminNeighborhoodAdapterSQL implements NotificationCategoryPort, Ad
     private final NewsJpaRepository newsJpaRepository;
 
     @Override
-    public void createNewNotificationCategory(Integer neighborhoodId, String name, LevelNotificationEnum levelNotification) {
+    public void createNewNotificationCategory(NotificationCategory category) {
         NotificationCategoryOrm notificationCategoryOrm = new NotificationCategoryOrm();
-        notificationCategoryOrm.setName(name);
+        notificationCategoryOrm.setName(category.name());
         notificationCategoryOrm.setActive(true);
-        notificationCategoryOrm.setNotificationCategory(levelNotification);
-        notificationCategoryOrm.setNeighborhoodId(neighborhoodId);
+        notificationCategoryOrm.setNotificationCategory(category.level());
+        notificationCategoryOrm.setNeighborhoodId(category.neighborhoodId());
+        notificationCategoryOrm.setDefaultMessage(category.defaultMessage());
+        notificationCategoryOrm.setDefaultTitle(category.defaultTitle());
         notificationCategoryRepository.save(notificationCategoryOrm);
     }
 
@@ -56,11 +58,11 @@ public class AdminNeighborhoodAdapterSQL implements NotificationCategoryPort, Ad
     }
 
     @Override
-    public NotificationCategory getNotificationCategoryByNameAndNeighborhoodId(String name, Integer id) {
-        NotificationCategoryOrm notificationCategoryOrm = notificationCategoryRepository
-            .getNotificationCategoryOrmByNameAndNeighborhoodId(name, id);
-
-        return notificationCategoryOrm.castToEntity();
+    public List<NotificationCategory> getAllCategoriesByNeighborhoodId(Integer neighborhoodId) {
+        return notificationCategoryRepository.findAllByNeighborhoodId(neighborhoodId)
+            .stream()
+            .map(NotificationCategoryOrm::castToEntity)
+            .toList();
     }
 
     @Override

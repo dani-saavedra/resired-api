@@ -1,5 +1,6 @@
 package com.resired.api.shared.notification.application.usecase;
 
+import com.resired.api.shared.notification.application.dto.NotificationBlockRequest;
 import com.resired.api.shared.notification.application.dto.NotificationHomeRequest;
 import com.resired.api.shared.notification.application.dto.NotificationNeighborhoodRequest;
 import com.resired.api.shared.notification.application.dto.NotificationResident;
@@ -22,6 +23,9 @@ public class PushAppUseCase {
     @Value("${topic.neighborhood}")
     private String NEIGHBORHOOD_TOPIC;
 
+    @Value("${topic.block}")
+    private String BLOCK_TOPIC;
+
     public void notifyHome(NotificationHomeRequest requestDTO) {
         List<Device> devices = deviceRepository.getDevicesForHomeResident(requestDTO.homeID());
 
@@ -42,6 +46,12 @@ public class PushAppUseCase {
 
     public void notifyNeighborhood(NotificationNeighborhoodRequest requestDTO) {
         String topic = NEIGHBORHOOD_TOPIC + requestDTO.neighborhoodID();
+        PushNotification notification = new PushNotification(requestDTO.title(), requestDTO.message());
+        notificationSenderService.sendToTopic(notification, topic);
+    }
+
+    public void notifyBlock(NotificationBlockRequest requestDTO) {
+        String topic = BLOCK_TOPIC + requestDTO.blockID();
         PushNotification notification = new PushNotification(requestDTO.title(), requestDTO.message());
         notificationSenderService.sendToTopic(notification, topic);
     }

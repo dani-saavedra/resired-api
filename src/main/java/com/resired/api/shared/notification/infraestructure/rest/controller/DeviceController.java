@@ -26,7 +26,7 @@ public class DeviceController {
         @RequestBody Device request) {
         UserApp userApp = jwtService.extractUser(bearer);
 
-        deviceUseCase.registerDevice(request, userApp.email());
+        deviceUseCase.registerDevice(request, userApp.email(), userApp.userId());
         return ResponseEntity.ok("Device saved successfully");
     }
 

@@ -1,5 +1,6 @@
 package com.resired.api.shared.notification.infraestructure.sql.adapter;
 
+import com.resired.api.admin.infraestructure.sql.orm.NotificationCategoryOrm;
 import com.resired.api.shared.notification.domain.entity.NotificationMessage;
 import com.resired.api.shared.notification.domain.repository.NotificationMessagePort;
 import com.resired.api.shared.notification.infraestructure.sql.jpa.NotificationJpaRepository;
@@ -7,6 +8,7 @@ import com.resired.api.shared.notification.infraestructure.sql.orm.NotificationO
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -19,6 +21,22 @@ public class NotificationMessageAdapter implements NotificationMessagePort {
         return notificationRepository.findAllByNeighborhoodId(neighborhoodId)
             .stream()
             .map(NotificationOrm::castToEntity).toList();
+    }
+
+    @Override
+    public void saveNotification(NotificationMessage notificationMessage) {
+        NotificationOrm notificationOrm = new NotificationOrm();
+        notificationOrm.setTitle(notificationMessage.title());
+        notificationOrm.setMessage(notificationMessage.message());
+        notificationOrm.setCreatedDate(LocalDateTime.parse(notificationMessage.date()));
+
+        NotificationCategoryOrm notificationCategoryOrm = new NotificationCategoryOrm();
+        notificationCategoryOrm.setId(notificationMessage.category().id());
+
+        notificationOrm.setCategoryOrm(notificationCategoryOrm);
+        notificationOrm.setLevel(notificationMessage.level());
+
+        notificationRepository.save(notificationOrm);
     }
 }
 
