@@ -73,4 +73,8 @@ public class Package {
         aPackage.receiverLastFourDigits = receiverLastFourDigits;
         return aPackage;
     }
+
+    public void setDeliveredGuardId(Integer deliveredGuardId) {
+        this.deliveredGuardId = deliveredGuardId;
+    }
 }
