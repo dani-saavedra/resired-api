@@ -19,6 +19,7 @@ public class Package {
     private String receivedGuard;
     @JsonProperty("home_number")
     private String home;
+    @JsonProperty("home_id")
     private Integer homeId;
     private String block;
     private String receiver;
