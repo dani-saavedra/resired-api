@@ -52,7 +52,7 @@ public class Package {
         return aPackage;
     }
 
-    public static Package fromExistingPackage(Integer id, String receivedGuard, String home,
+    public static Package fromExistingPackage(Integer id, String receivedGuard, String home, Integer homeId,
                                               String receiver, String trackingNumber, String packageTransporter,
                                               String description, PackageStatusEnum status, LocalDateTime createdDate,
                                               LocalDateTime updateDate, String deliveredGuard,
@@ -61,6 +61,7 @@ public class Package {
         aPackage.receivedGuard = receivedGuard;
         aPackage.id = id;
         aPackage.home = home;
+        aPackage.homeId = homeId;
         aPackage.block = block;
         aPackage.receiver = receiver;
         aPackage.trackingNumber = trackingNumber;
