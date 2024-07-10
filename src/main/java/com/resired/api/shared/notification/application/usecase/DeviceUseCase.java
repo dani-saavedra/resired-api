@@ -2,6 +2,7 @@ package com.resired.api.shared.notification.application.usecase;
 
 import com.resired.api.admin.domain.vo.BlockVo;
 import com.resired.api.shared.notification.domain.entity.Device;
+import com.resired.api.shared.notification.domain.entity.PushNotification;
 import com.resired.api.shared.notification.domain.exception.DeviceAlreadyExistsException;
 import com.resired.api.shared.notification.domain.exception.DeviceNotFoundException;
 import com.resired.api.shared.notification.domain.repository.DevicePort;
@@ -26,26 +27,24 @@ public class DeviceUseCase {
     private String BLOCK_TOPIC;
 
     public void registerDevice(Device device, String email, Integer userId) {
+
         if (devicePort.alreadyExists(device.id())) {
             throw new DeviceAlreadyExistsException(device.id());
         }
-
         userPort.addDevice(email, device);
-
         List<Integer> neighborhoodIds = userPort.getNeighborhoodIdsForResidentByEmail(email);
-
         neighborhoodIds.forEach((neigh) -> {
             String topic = NEIGHBORHOOD_TOPIC + neigh;
             notificationSenderService.subscribeDeviceToTopic(device, topic);
         });
+        PushNotification notificationMessage = new PushNotification("Bienvenid@", "En ResiRed estamos para servirte");
+        notificationSenderService.sendToDevice(notificationMessage, device);
 
         List<BlockVo> blocks = userPort.getAllBlocksByUserId(userId);
-
         blocks.forEach((blockVo -> {
             String topic = BLOCK_TOPIC + blockVo.id();
             notificationSenderService.subscribeDeviceToTopic(device, topic);
         }));
-
     }
 
     public void removeDevice(String deviceID, String email) {
