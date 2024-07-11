@@ -25,4 +25,17 @@ public interface VisitJpaRepository extends JpaRepository<VisitOrm, Integer> {
         "WHERE home.block.neighborhoodOrm.id = :neighborhoodId " +
         "ORDER BY visit.checkIn DESC")
     List<VisitOrm> findVisitsByNeighborhoodId(Integer neighborhoodId);
+
+    @Query("SELECT visit FROM VisitOrm visit " +
+        "JOIN visit.qr qr " +
+        "JOIN qr.visitor visitor " +
+        "JOIN visitor.authorizingHome home " +
+        "WHERE home.block.neighborhoodOrm.id = :neighborhoodId " +
+        "AND visit.checkIn BETWEEN :startDate AND :endDate " +
+        "AND visit.isCarActive = :isActive " +
+        "ORDER BY visit.checkIn DESC")
+    List<VisitOrm> findVisitsByNeighborhoodIdAndDateRangeAndVehicleIsActive(Integer neighborhoodId,
+                                                                            LocalDateTime startDate,
+                                                                            LocalDateTime endDate,
+                                                                            Boolean isActive);
 }

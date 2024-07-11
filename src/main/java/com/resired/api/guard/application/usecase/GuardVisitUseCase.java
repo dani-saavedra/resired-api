@@ -33,6 +33,17 @@ public class GuardVisitUseCase {
     private final JwtSecurity jwtSecurity;
     private final PushAppUseCase pushAppUseCase;
 
+    private static List<VisitResponseDTO> getVisitResponseDTOs(List<Visit> visits) {
+        return visits.stream().map(visit -> new VisitResponseDTO(
+            visit.getId(),
+            visit.getVisitorName(),
+            visit.getVisitorDocument(),
+            visit.getDestinationHome(),
+            FormatDate.formatDate(visit.getCheckIn()),
+            visit.getVehiclePlateId()
+        )).toList();
+    }
+
     public Visitor validateInfoQR(String qr) {
         validateQR(qr);
         return qrPort.obtainInfoQR(qr);
@@ -81,13 +92,11 @@ public class GuardVisitUseCase {
         return getVisitResponseDTOs(visits);
     }
 
-    private static List<VisitResponseDTO> getVisitResponseDTOs(List<Visit> visits) {
-        return visits.stream().map(visit -> new VisitResponseDTO(
-            visit.getId(),
-            visit.getVisitorName(),
-            visit.getVisitorDocument(),
-            visit.getDestinationHome(),
-            FormatDate.formatDate(visit.getCheckIn())
-        )).toList();
+    public List<VisitResponseDTO> getVisits(Integer neighborhoodId, LocalDate date, Boolean isVehicleActive) {
+        LocalDateTime startDate = date.atStartOfDay();
+        LocalDateTime endDate = date.atTime(LocalTime.MAX);
+        List<Visit> visits = guardPort.findVisitsByNeighborhoodIdAndDateRangeAndVehicleStatus(neighborhoodId,
+            startDate, endDate, isVehicleActive);
+        return getVisitResponseDTOs(visits);
     }
 }

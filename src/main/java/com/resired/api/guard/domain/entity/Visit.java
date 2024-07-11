@@ -14,4 +14,5 @@ public class Visit {
     String destinationHome;
     LocalDateTime checkIn;
     String authorizingGuardName;
+    String vehiclePlateId;
 }
