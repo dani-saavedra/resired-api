@@ -99,4 +99,8 @@ public class GuardVisitUseCase {
             startDate, endDate, isVehicleActive);
         return getVisitResponseDTOs(visits);
     }
+
+    public void deactivateVisitVehicle(Integer visitId) {
+        guardPort.deactivateVehicle(visitId);
+    }
 }

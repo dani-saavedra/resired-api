@@ -29,4 +29,5 @@ public interface GuardPort {
                                                                        LocalDateTime endDate,
                                                                        Boolean isActive);
 
+    void deactivateVehicle(Integer visitId);
 }

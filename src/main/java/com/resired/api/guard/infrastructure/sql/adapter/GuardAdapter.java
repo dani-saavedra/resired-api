@@ -18,6 +18,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -115,6 +116,19 @@ public class GuardAdapter implements GuardPort {
             startDate, endDate, isActive);
         return visitOrms.stream().map(this::toVisitDomain).toList();
     }
+
+    @Override
+    public void deactivateVehicle(Integer visitId) {
+        Optional<VisitOrm> visitOrm = visitJpaRepository.findById(visitId);
+
+        if (visitOrm.isEmpty()) {
+            return;
+        }
+
+        visitOrm.get().setIsCarActive(false);
+        visitJpaRepository.save(visitOrm.get());
+    }
+
 
     private void makeQrUnavailable(QrOrm qr) {
         if (!qr.getVisitor().isFavorite()) {

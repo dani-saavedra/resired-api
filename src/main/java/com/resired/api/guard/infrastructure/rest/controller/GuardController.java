@@ -90,6 +90,14 @@ public class GuardController {
         return new ResponseData<>(visits);
     }
 
+    @PutMapping("/visits/{visitID}/")
+    @Operation(summary = "Deactivate the vehicle for a given visit")
+    public void deactivateVisitVehicle(@RequestHeader(value = "Authorization") String bearer,
+                                       @PathVariable Integer visitID) {
+        visitUseCase.deactivateVisitVehicle(visitID);
+    }
+
+
     @GetMapping("/visitors")
     @Operation(summary = "List all visitors on neighborhood with an active QR code")
     public List<ActiveVisitorDto> getActiveQrVisitors(@RequestHeader(value = "Authorization") String bearer) {
