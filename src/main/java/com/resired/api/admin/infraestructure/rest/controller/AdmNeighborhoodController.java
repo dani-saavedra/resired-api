@@ -63,6 +63,6 @@ public class AdmNeighborhoodController {
     public void changeSecurityCompany(@RequestHeader(value = "Authorization") String bearer,
                                       @RequestBody SecurityCompany securityCompany) {
         UserApp userApp = jwtService.extractUser(bearer);
-        neighborhoodUseCase.changeSecurityCompany(securityCompany,userApp.neighborhoodId());
+        //neighborhoodUseCase.changeSecurityCompany(securityCompany,userApp.neighborhoodId());
     }
 }
