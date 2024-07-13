@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface NotificationJpaRepository extends JpaRepository<NotificationOrm, Integer> {
 
-    @Query("SELECT no FROM NotificationOrm no WHERE no.categoryOrm.neighborhoodId = :neighborhoodId")
+    @Query("SELECT no FROM NotificationOrm no WHERE no.categoryOrm.neighborhoodId = :neighborhoodId order by no.createdDate desc")
     List<NotificationOrm> findAllByNeighborhoodId(Integer neighborhoodId);
 }

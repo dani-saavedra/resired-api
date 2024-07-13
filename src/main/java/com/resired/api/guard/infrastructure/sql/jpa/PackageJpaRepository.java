@@ -25,7 +25,8 @@ public interface PackageJpaRepository extends JpaRepository<PackageOrm, Integer>
         " WHERE p.home_id = h.id" +
         " AND h.block = b.id" +
         " AND b.neighborhood_id = :neighborhoodId" +
-        " AND p.status = :status", nativeQuery = true)
+        " AND p.status = :status" +
+        " ORDER BY p.received_date DESC", nativeQuery = true)
     List<PackageOrm> findAllByNeighborhoodIdAndStatus(@Param("neighborhoodId") Integer neighborhoodId,
                                                       @Param("status") String status);
 
