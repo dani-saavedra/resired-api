@@ -4,6 +4,7 @@ import com.resired.api.admin.application.dto.*;
 import com.resired.api.admin.domain.entity.NotificationCategory;
 import com.resired.api.admin.domain.repository.NotificationCategoryPort;
 import com.resired.api.shared.notification.application.dto.NotificationBlockRequest;
+import com.resired.api.shared.notification.application.dto.NotificationHomeRequest;
 import com.resired.api.shared.notification.application.dto.NotificationNeighborhoodRequest;
 import com.resired.api.shared.notification.application.usecase.PushAppUseCase;
 import com.resired.api.shared.notification.domain.entity.NotificationMessage;
@@ -88,5 +89,22 @@ public class AdminNotificationUseCase {
         });
         notificationRepository.saveNotification(notificationMessage);
 
+    }
+
+    public void sendNotificationToHomes(CreateNotificationForHomesDto requestDto) {
+        NotificationCategory category = notificationCategoryPort.getNotificationCategoryById(requestDto.categoryId());
+
+        if (category == null) throw new NotificationCategoryNotFoundException(requestDto.categoryId());
+
+        NotificationMessage notificationMessage = new NotificationMessage(null, requestDto.title(),
+            requestDto.message(), LocalDateTime.now(ZoneOffset.UTC).toString(),
+            category, requestDto.priority());
+
+        requestDto.homesId().forEach(homeId -> {
+            NotificationHomeRequest pushNotification = new NotificationHomeRequest(requestDto.title(),
+                requestDto.message(), homeId);
+            pushNotificationUseCase.notifyHome(pushNotification);
+        });
+        notificationRepository.saveNotification(notificationMessage);
     }
 }
