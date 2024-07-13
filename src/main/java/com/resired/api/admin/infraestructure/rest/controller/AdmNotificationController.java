@@ -72,7 +72,7 @@ public class AdmNotificationController {
     public ResponseEntity<String> createNotificationForHomes(
         @RequestHeader(value = "Authorization") String bearer,
         @RequestBody CreateNotificationForHomesDto request) {
-        adminNotificationUseCase.sendNotificationToHomes(request);
+        adminNotificationUseCase.createNotificationForHomes(request);
         return ResponseEntity.ok("Sent");
     }
 }

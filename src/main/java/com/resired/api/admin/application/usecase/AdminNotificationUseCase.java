@@ -91,7 +91,7 @@ public class AdminNotificationUseCase {
 
     }
 
-    public void sendNotificationToHomes(CreateNotificationForHomesDto requestDto) {
+    public void createNotificationForHomes(CreateNotificationForHomesDto requestDto) {
         NotificationCategory category = notificationCategoryPort.getNotificationCategoryById(requestDto.categoryId());
 
         if (category == null) throw new NotificationCategoryNotFoundException(requestDto.categoryId());
