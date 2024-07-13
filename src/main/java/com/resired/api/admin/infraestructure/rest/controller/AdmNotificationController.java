@@ -65,4 +65,14 @@ public class AdmNotificationController {
         adminNotificationUseCase.sendNotificationToBlocks(request);
         return ResponseEntity.ok("Sent");
     }
+
+    @PostMapping("/notifications/homes")
+    @Operation(summary = "Create a new notification and send to all the list of homes" +
+        " given (this operation also saves in the database")
+    public ResponseEntity<String> createNotificationForHomes(
+        @RequestHeader(value = "Authorization") String bearer,
+        @RequestBody CreateNotificationForHomesDto request) {
+        adminNotificationUseCase.createNotificationForHomes(request);
+        return ResponseEntity.ok("Sent");
+    }
 }
