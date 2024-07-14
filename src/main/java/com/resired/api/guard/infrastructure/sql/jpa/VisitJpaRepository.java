@@ -1,6 +1,5 @@
 package com.resired.api.guard.infrastructure.sql.jpa;
 
-import com.resired.api.guard.domain.entity.Visit;
 import com.resired.api.guard.infrastructure.sql.orm.VisitOrm;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

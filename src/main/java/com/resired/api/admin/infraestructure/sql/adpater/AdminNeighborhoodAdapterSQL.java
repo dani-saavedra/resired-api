@@ -67,17 +67,20 @@ public class AdminNeighborhoodAdapterSQL implements NotificationCategoryPort, Ad
 
     @Override
     public void configNeighborhood(NeighConfig neighConfig, int towers, int homes) {
-        NeighborhoodOrm neighborhoodOrm = neighborhoodRepository.findById(neighConfig.id()).get();
-        neighborhoodOrm.setId(neighConfig.id());
-        neighborhoodOrm.setCategory(neighborhoodOrm.getCategory());
-        neighborhoodOrm.setUpdateDate(LocalDate.now(ZoneOffset.UTC));
-        neighborhoodOrm.setGroupingType(neighConfig.groupingType());
-        neighborhoodOrm.setPreferredName(neighConfig.preferredName());
-        neighborhoodOrm.setResidenceType(neighConfig.residenceType());
-        neighborhoodOrm.setHomes(homes);
-        neighborhoodOrm.setTowers(towers);
-        neighborhoodOrm.setSecurityCompany(neighConfig.securityCompany());
-        neighborhoodRepository.save(neighborhoodOrm);
+        Optional<NeighborhoodOrm> optional = neighborhoodRepository.findById(neighConfig.id());
+        if (optional.isPresent()) {
+            NeighborhoodOrm neighborhoodOrm = optional.get();
+            neighborhoodOrm.setId(neighConfig.id());
+            neighborhoodOrm.setCategory(neighborhoodOrm.getCategory());
+            neighborhoodOrm.setUpdateDate(LocalDate.now(ZoneOffset.UTC));
+            neighborhoodOrm.setGroupingType(neighConfig.groupingType());
+            neighborhoodOrm.setPreferredName(neighConfig.preferredName());
+            neighborhoodOrm.setResidenceType(neighConfig.residenceType());
+            neighborhoodOrm.setHomes(homes);
+            neighborhoodOrm.setTowers(towers);
+            neighborhoodOrm.setSecurityCompany(neighConfig.securityCompany());
+            neighborhoodRepository.save(neighborhoodOrm);
+        }
     }
 
     @Override

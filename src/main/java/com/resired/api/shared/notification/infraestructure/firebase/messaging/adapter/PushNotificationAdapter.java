@@ -16,6 +16,8 @@ import java.util.stream.IntStream;
 @Service
 @AllArgsConstructor
 public class PushNotificationAdapter implements NotificationSender {
+    public static final String TITLE_NOTIFICATION = "title";
+    public static final String BODY_NOTIFICATION = "body";
     private final FirebaseMessaging firebaseMessaging;
 
     @Override
@@ -26,8 +28,8 @@ public class PushNotificationAdapter implements NotificationSender {
             .builder()
             .setToken(device.id())
             .setNotification(firebaseNotification)
-            .putData("title", notificationMessage.title())
-            .putData("body", notificationMessage.message())
+            .putData(TITLE_NOTIFICATION, notificationMessage.title())
+            .putData(BODY_NOTIFICATION, notificationMessage.message())
             .build();
 
         try {
@@ -48,8 +50,8 @@ public class PushNotificationAdapter implements NotificationSender {
         MulticastMessage message = MulticastMessage
             .builder()
             .setNotification(firebaseNotification)
-            .putData("title", notificationMessage.title())
-            .putData("body", notificationMessage.message())
+            .putData(TITLE_NOTIFICATION, notificationMessage.title())
+            .putData(BODY_NOTIFICATION, notificationMessage.message())
             .addAllTokens(devicesIDs)
             .build();
 
@@ -79,8 +81,8 @@ public class PushNotificationAdapter implements NotificationSender {
         Message message = Message
             .builder()
             .setNotification(firebaseNotification)
-            .putData("title", notificationMessage.title())
-            .putData("body", notificationMessage.message())
+            .putData(TITLE_NOTIFICATION, notificationMessage.title())
+            .putData(BODY_NOTIFICATION, notificationMessage.message())
             .setTopic(topic)
             .build();
 

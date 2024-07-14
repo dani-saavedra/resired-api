@@ -61,7 +61,6 @@ public class AdmNotificationController {
     public ResponseEntity<String> createNotificationForBlocks(
         @RequestHeader(value = "Authorization") String bearer,
         @RequestBody CreateNotificationForBlocksDto request) {
-        UserApp userApp = jwtService.extractUser(bearer);
         adminNotificationUseCase.sendNotificationToBlocks(request);
         return ResponseEntity.ok("Sent");
     }

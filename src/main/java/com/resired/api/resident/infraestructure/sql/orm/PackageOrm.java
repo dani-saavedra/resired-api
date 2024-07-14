@@ -2,7 +2,6 @@ package com.resired.api.resident.infraestructure.sql.orm;
 
 import com.resired.api.resident.domain.enums.PackageStatusEnum;
 import com.resired.api.security.infraestructure.sql.orm.UserOrm;
-import com.resired.api.utils.FormatDate;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

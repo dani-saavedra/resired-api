@@ -68,8 +68,12 @@ public class ResidentAdapter implements ResidentPort {
 
     @Override
     public String reactiveVisitor(Integer idVisitor, Date expirationDate) {
-        VisitorOrm visitorOrm = visitorJpa.findById(idVisitor).get();
-        return generateAndSaveQR(visitorOrm, expirationDate);
+        Optional<VisitorOrm> opt = visitorJpa.findById(idVisitor);
+        if (opt.isPresent()) {
+            VisitorOrm visitorOrm = opt.get();
+            return generateAndSaveQR(visitorOrm, expirationDate);
+        }
+        return null;
     }
 
     @Override

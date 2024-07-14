@@ -56,7 +56,7 @@ public class VisitorOrm {
 
     public static VisitorOrm visitorFromResident(Integer userId, Integer homeId, String homeName, String name, String document,
                                                  String telephone, boolean isFavorite) {
-        VisitorOrm result = getResult(userId, homeId, homeName, name, document, telephone);
+        VisitorOrm result = getResult(homeId, homeName, name, document, telephone);
         UserOrm authorizingUser = new UserOrm();
         authorizingUser.setId(userId);
         result.authorizingUser = authorizingUser;
@@ -65,17 +65,17 @@ public class VisitorOrm {
     }
 
     public static VisitorOrm visitorFromGuard(Integer userId, Integer homeId, String homeName, String name, String document, String telephone) {
-        VisitorOrm result = getResult(userId, homeId, homeName, name, document, telephone);
+        VisitorOrm result = getResult(homeId, homeName, name, document, telephone);
         UserOrm authorizingUser = new UserOrm();
         authorizingUser.setId(userId);
         result.authorizingGuard = authorizingUser;
         return result;
     }
 
-    private static VisitorOrm getResult(Integer userId, Integer homeId, String homeName, String name, String document, String telephone) {
+    private static VisitorOrm getResult(Integer homeId, String homeName, String name, String document, String telephone) {
         HomeOrm authorizingHome = new HomeOrm();
         authorizingHome.setId(homeId);
-        authorizingHome.setNumber(homeName); //TODO revisar q los cambios no se esten borrando
+        authorizingHome.setNumber(homeName);
 
         VisitorOrm visitorOrm = new VisitorOrm();
         visitorOrm.name = name;

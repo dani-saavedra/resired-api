@@ -4,7 +4,6 @@ import com.resired.api.guard.domain.entity.Visitor;
 import com.resired.api.guard.domain.repository.QrPort;
 import com.resired.api.resident.infraestructure.sql.jpa.QrJpaRepository;
 import com.resired.api.resident.infraestructure.sql.orm.QrOrm;
-import com.resired.api.security.infraestructure.sql.orm.UserOrm;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 

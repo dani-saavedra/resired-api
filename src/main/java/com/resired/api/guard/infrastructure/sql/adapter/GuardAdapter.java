@@ -1,18 +1,14 @@
 package com.resired.api.guard.infrastructure.sql.adapter;
 
-import com.resired.api.guard.domain.entity.Package;
 import com.resired.api.guard.domain.entity.Visit;
 import com.resired.api.guard.domain.entity.Visitor;
 import com.resired.api.guard.domain.repository.GuardPort;
-import com.resired.api.guard.domain.repository.PackagePort;
 import com.resired.api.guard.domain.vo.VisitMade;
 import com.resired.api.guard.infrastructure.sql.dto.VisitorWithQrDto;
-import com.resired.api.guard.infrastructure.sql.jpa.PackageJpaRepository;
 import com.resired.api.guard.infrastructure.sql.jpa.VisitJpaRepository;
 import com.resired.api.guard.infrastructure.sql.orm.VisitOrm;
 import com.resired.api.resident.infraestructure.sql.jpa.QrJpaRepository;
 import com.resired.api.resident.infraestructure.sql.jpa.VisitorJpaRepository;
-import com.resired.api.resident.infraestructure.sql.orm.PackageOrm;
 import com.resired.api.resident.infraestructure.sql.orm.QrOrm;
 import com.resired.api.resident.infraestructure.sql.orm.VisitorOrm;
 import com.resired.api.security.infraestructure.sql.orm.UserOrm;
