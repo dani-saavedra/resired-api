@@ -20,6 +20,8 @@ public interface GuardPort {
                                                        LocalDateTime startDate,
                                                        LocalDateTime endDate);
 
+    List<Visit> findVisitsByNeighborhood(Integer neighborhoodId);
+
     List<Visitor> findAllVisitorsWithActiveQr(Integer neighborhoodId);
 
 }

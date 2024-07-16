@@ -84,9 +84,19 @@ public class GuardAdapter implements GuardPort {
     public List<Visit> findVisitsByNeighborhoodIdAndDateRange(Integer neighborhoodId,
                                                               LocalDateTime startDate,
                                                               LocalDateTime endDate) {
-        List<VisitOrm> visitOrms = visitJpaRepository.findVisitsByNeighborhoodIdAndDateRange(neighborhoodId,
-            startDate, endDate);
-        return visitOrms.stream().map(this::toVisitDomain).toList();
+        return visitJpaRepository.findVisitsByNeighborhoodIdAndDateRange(neighborhoodId,
+                startDate, endDate)
+            .stream()
+            .map(this::toVisitDomain)
+            .toList();
+    }
+
+    @Override
+    public List<Visit> findVisitsByNeighborhood(Integer neighborhoodId) {
+        return visitJpaRepository.findVisitsByNeighborhoodId(neighborhoodId)
+            .stream()
+            .map(this::toVisitDomain)
+            .toList();
     }
 
     @Override
@@ -98,7 +108,6 @@ public class GuardAdapter implements GuardPort {
             .map(this::toVisitorDomain)
             .toList();
     }
-
 
 
     private void makeQrUnavailable(QrOrm qr) {

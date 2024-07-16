@@ -16,5 +16,13 @@ public interface VisitJpaRepository extends JpaRepository<VisitOrm, Integer> {
         "AND visit.checkIn BETWEEN :startDate AND :endDate " +
         "ORDER BY visit.checkIn DESC")
     List<VisitOrm> findVisitsByNeighborhoodIdAndDateRange(Integer neighborhoodId,
-                                                       LocalDateTime startDate, LocalDateTime endDate);
+                                                          LocalDateTime startDate, LocalDateTime endDate);
+
+    @Query("SELECT visit FROM VisitOrm visit " +
+        "JOIN visit.qr qr " +
+        "JOIN qr.visitor visitor " +
+        "JOIN visitor.authorizingHome home " +
+        "WHERE home.block.neighborhoodOrm.id = :neighborhoodId " +
+        "ORDER BY visit.checkIn DESC")
+    List<VisitOrm> findVisitsByNeighborhoodId(Integer neighborhoodId);
 }

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneOffset;
 import java.util.List;
 
 @Service
@@ -19,12 +18,8 @@ public class AdminReportUseCase {
 
     private final GuardPort guardPort;
 
-
     public List<VisitReportDto> getVisitsReport(Integer neighborhoodId) {
-        LocalDateTime endDate = LocalDateTime.now(ZoneOffset.UTC);
-        LocalDateTime startDate = endDate.minusDays(5);
-        List<Visit> visits = guardPort.findVisitsByNeighborhoodIdAndDateRange(neighborhoodId, startDate, endDate);
-
+        List<Visit> visits = guardPort.findVisitsByNeighborhood(neighborhoodId);
         return getVisitsReportDto(visits);
     }
 
