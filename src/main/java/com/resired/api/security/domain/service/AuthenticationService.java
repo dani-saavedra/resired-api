@@ -4,6 +4,7 @@ import java.security.GeneralSecurityException;
 import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +14,10 @@ public class AuthenticationService {
     public static final String ALGORITHM = "AES";
 
     @Value("${secret}")
-    private String SECRET_KEY;
+    private String secret;
 
     public String encrypt(String input) throws GeneralSecurityException {
-        SecretKeySpec key = new SecretKeySpec(SECRET_KEY.getBytes(), ALGORITHM);
+        SecretKeySpec key = new SecretKeySpec(secret.getBytes(), ALGORITHM);
         Cipher cipher = Cipher.getInstance(ALGORITHM);
         cipher.init(Cipher.ENCRYPT_MODE, key);
         byte[] encryptedBytes = cipher.doFinal(input.getBytes());
@@ -28,7 +29,7 @@ public class AuthenticationService {
      */
     @Deprecated
     private String decrypt(String input) throws GeneralSecurityException {
-        SecretKeySpec key = new SecretKeySpec(SECRET_KEY.getBytes(), ALGORITHM);
+        SecretKeySpec key = new SecretKeySpec(secret.getBytes(), ALGORITHM);
         Cipher cipher = Cipher.getInstance(ALGORITHM);
         cipher.init(Cipher.DECRYPT_MODE, key);
         byte[] decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(input));

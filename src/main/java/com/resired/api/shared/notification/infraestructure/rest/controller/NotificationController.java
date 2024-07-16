@@ -18,7 +18,7 @@ public class NotificationController {
     private final PushAppUseCase pushAppUseCase;
     private final JwtService jwtService;
 
-    //TODO this controller is just for testing, it should be deleted for production
+    @Deprecated
     @PostMapping("/home")
     public ResponseEntity<String> createNotificationForHome(
         @RequestBody NotificationHomeRequest request) {
@@ -26,7 +26,7 @@ public class NotificationController {
         return ResponseEntity.ok("Sent");
     }
 
-    //TODO this controller is just for testing, it should be deleted for production
+    @Deprecated
     @PostMapping("/neighborhood")
     public ResponseEntity<String> createNotificationForNeighborhood(
         @RequestBody NotificationNeighborhoodRequest request) {

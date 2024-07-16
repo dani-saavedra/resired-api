@@ -21,10 +21,10 @@ public class PushAppUseCase {
     private final DevicePort deviceRepository;
 
     @Value("${topic.neighborhood}")
-    private String NEIGHBORHOOD_TOPIC;
+    private String neighborhoodTopic;
 
     @Value("${topic.block}")
-    private String BLOCK_TOPIC;
+    private String blockTopic;
 
     public void notifyHome(NotificationHomeRequest requestDTO) {
         List<Device> devices = deviceRepository.getDevicesForHomeResident(requestDTO.homeID());
@@ -47,13 +47,13 @@ public class PushAppUseCase {
     }
 
     public void notifyNeighborhood(NotificationNeighborhoodRequest requestDTO) {
-        String topic = NEIGHBORHOOD_TOPIC + requestDTO.neighborhoodID();
+        String topic = neighborhoodTopic + requestDTO.neighborhoodID();
         PushNotification notification = new PushNotification(requestDTO.title(), requestDTO.message());
         notificationSenderService.sendToTopic(notification, topic);
     }
 
     public void notifyBlock(NotificationBlockRequest requestDTO) {
-        String topic = BLOCK_TOPIC + requestDTO.blockID();
+        String topic = blockTopic + requestDTO.blockID();
         PushNotification notification = new PushNotification(requestDTO.title(), requestDTO.message());
         notificationSenderService.sendToTopic(notification, topic);
     }

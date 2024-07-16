@@ -4,7 +4,6 @@ import com.resired.api.admin.application.dto.CreateNewsDto;
 import com.resired.api.admin.application.usecase.AdminNeighborhoodUseCase;
 import com.resired.api.admin.domain.vo.CreateNeighborhoodVo;
 import com.resired.api.admin.domain.vo.NeighConfig;
-import com.resired.api.admin.infraestructure.rest.dto.SecurityCompany;
 import com.resired.api.resident.application.dto.NewsResponse;
 import com.resired.api.resident.application.usecase.NeighborhoodUseCase;
 import com.resired.api.resident.infraestructure.rest.dto.ResponseData;
@@ -28,7 +27,6 @@ public class AdmNeighborhoodController {
     private final NeighborhoodUseCase neighborhoodUseCase;
     private final JwtService jwtService;
 
-    //TODO revisar rol de owner de resired que realizaria esta creación incial
     @PostMapping(path = "/neighborhood")
     public ResponseEntity<String> createNeighborhood(@RequestBody CreateNeighborhoodVo createNeighborhoodVo) throws GeneralSecurityException {
         adminNeighborhoodUseCase.createNewNeighborhood(createNeighborhoodVo);
@@ -56,13 +54,5 @@ public class AdmNeighborhoodController {
     public NewsResponse obtainNews(@RequestHeader(value = "Authorization") String bearer) {
         UserApp userApp = jwtService.extractUser(bearer);
         return neighborhoodUseCase.getNewsFromNeighborhood(userApp.neighborhoodId());
-    }
-
-    @PutMapping(path = "/neighborhood/security-company")
-    @Operation(summary = "Change security company in neighborhood")
-    public void changeSecurityCompany(@RequestHeader(value = "Authorization") String bearer,
-                                      @RequestBody SecurityCompany securityCompany) {
-        UserApp userApp = jwtService.extractUser(bearer);
-        //neighborhoodUseCase.changeSecurityCompany(securityCompany,userApp.neighborhoodId());
     }
 }

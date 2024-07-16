@@ -14,9 +14,4 @@ public class NeighborhoodUseCase {
     public NewsResponse getNewsFromNeighborhood(Integer neighborhood) {
         return new NewsResponse(port.getNews(neighborhood));
     }
-
-  /*  public void changeSecurityCompany(SecurityCompany securityCompany, Integer neighborhood) {
-        //TODO Not implemented yet
-    }
-   */
 }
