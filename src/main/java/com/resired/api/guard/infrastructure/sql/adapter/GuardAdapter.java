@@ -40,9 +40,7 @@ public class GuardAdapter implements GuardPort {
 
         if (plateNumber != null) {
             visit.setPlateCarNumber(plateNumber);
-            visit.setIsCarActive(true);
-        } else {
-            visit.setIsCarActive(false);
+            visit.setCheckout(false);
         }
 
         UserOrm guard = new UserOrm();
@@ -111,21 +109,22 @@ public class GuardAdapter implements GuardPort {
     }
 
     @Override
-    public List<Visit> findVisitsByNeighborhoodIdAndDateRangeAndVehicleStatus(Integer neighborhoodId, LocalDateTime startDate, LocalDateTime endDate, Boolean isActive) {
-        List<VisitOrm> visitOrms = visitJpaRepository.findVisitsByNeighborhoodIdAndDateRangeAndVehicleIsActive(neighborhoodId,
-            startDate, endDate, isActive);
+    public List<Visit> findVisitsByNeighborhoodIdAndVehicleStatus(Integer neighborhoodId, Boolean isVehicleInNeighborhood) {
+        List<VisitOrm> visitOrms = visitJpaRepository.findVisitsByNeighborhoodIdWithVehicleCheckout(neighborhoodId,
+            !isVehicleInNeighborhood);
         return visitOrms.stream().map(this::toVisitDomain).toList();
     }
 
     @Override
-    public void deactivateVehicle(Integer visitId) {
+    public void checkoutVehicle(Integer visitId) {
         Optional<VisitOrm> visitOrm = visitJpaRepository.findById(visitId);
 
         if (visitOrm.isEmpty()) {
             return;
         }
 
-        visitOrm.get().setIsCarActive(false);
+        visitOrm.get().setCheckout(true);
+        visitOrm.get().setCheckoutDate(LocalDateTime.now(ZoneOffset.UTC));
         visitJpaRepository.save(visitOrm.get());
     }
 
@@ -149,7 +148,8 @@ public class GuardAdapter implements GuardPort {
             destination,
             visitOrm.getCheckIn(),
             guardFullName,
-            visitOrm.getPlateCarNumber()
+            visitOrm.getPlateCarNumber(),
+            visitOrm.getCheckoutDate()
         );
     }
 

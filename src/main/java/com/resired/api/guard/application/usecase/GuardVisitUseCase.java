@@ -40,7 +40,8 @@ public class GuardVisitUseCase {
             visit.getVisitorDocument(),
             visit.getDestinationHome(),
             FormatDate.formatDate(visit.getCheckIn()),
-            visit.getVehiclePlateId()
+            visit.getVehiclePlateId(),
+            FormatDate.formatDate(visit.getCheckoutDate())
         )).toList();
     }
 
@@ -92,15 +93,13 @@ public class GuardVisitUseCase {
         return getVisitResponseDTOs(visits);
     }
 
-    public List<VisitResponseDTO> getVisits(Integer neighborhoodId, LocalDate date, Boolean isVehicleActive) {
-        LocalDateTime startDate = date.atStartOfDay();
-        LocalDateTime endDate = date.atTime(LocalTime.MAX);
-        List<Visit> visits = guardPort.findVisitsByNeighborhoodIdAndDateRangeAndVehicleStatus(neighborhoodId,
-            startDate, endDate, isVehicleActive);
+    public List<VisitResponseDTO> getVisits(Integer neighborhoodId, Boolean isVehicleInNeighborhood) {
+        List<Visit> visits = guardPort.findVisitsByNeighborhoodIdAndVehicleStatus(neighborhoodId,
+            isVehicleInNeighborhood);
         return getVisitResponseDTOs(visits);
     }
 
     public void deactivateVisitVehicle(Integer visitId) {
-        guardPort.deactivateVehicle(visitId);
+        guardPort.checkoutVehicle(visitId);
     }
 }

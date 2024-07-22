@@ -15,4 +15,5 @@ public class Visit {
     LocalDateTime checkIn;
     String authorizingGuardName;
     String vehiclePlateId;
+    LocalDateTime checkoutDate;
 }

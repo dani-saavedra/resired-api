@@ -74,17 +74,17 @@ public class GuardController {
         @Parameter(description = "Date as a String in format YYYY-MM-DD", schema = @Schema(type = "string", format = "date"))
         @RequestParam(value = "date") Optional<String> date,
         @Parameter(description = "is_active is a boolean string", schema = @Schema(type = "string", format = "boolean"))
-        @RequestParam(value = "is_active") Optional<String> isActive) {
+        @RequestParam(value = "is_vehicle_in_neighborhood") Optional<String> isVehicleInNeighborhood) {
         UserApp userApp = jwtService.extractUser(bearer);
         List<VisitResponseDTO> visits;
 
-        if (date.isEmpty()) {
+        if (date.isEmpty() && isVehicleInNeighborhood.isEmpty()) {
             visits = visitUseCase.getVisits(userApp.neighborhoodId());
-        } else if (isActive.isEmpty()) {
+        } else if (isVehicleInNeighborhood.isEmpty()) {
             visits = visitUseCase.getVisits(userApp.neighborhoodId(), LocalDate.parse(date.get()));
         } else {
-            visits = visitUseCase.getVisits(userApp.neighborhoodId(), LocalDate.parse(date.get()),
-                Boolean.valueOf(isActive.get()));
+            visits = visitUseCase.getVisits(userApp.neighborhoodId(),
+                Boolean.valueOf(isVehicleInNeighborhood.get()));
         }
 
         return new ResponseData<>(visits);
