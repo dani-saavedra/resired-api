@@ -25,4 +25,14 @@ public interface VisitJpaRepository extends JpaRepository<VisitOrm, Integer> {
         "WHERE home.block.neighborhoodOrm.id = :neighborhoodId " +
         "ORDER BY visit.checkIn DESC")
     List<VisitOrm> findVisitsByNeighborhoodId(Integer neighborhoodId);
+
+    @Query("SELECT visit FROM VisitOrm visit " +
+        "JOIN visit.qr qr " +
+        "JOIN qr.visitor visitor " +
+        "JOIN visitor.authorizingHome home " +
+        "WHERE home.block.neighborhoodOrm.id = :neighborhoodId " +
+        "AND visit.checkout = :vehicleStatus " +
+        "ORDER BY visit.checkIn DESC")
+    List<VisitOrm> findVisitsByNeighborhoodIdWithVehicleCheckout(Integer neighborhoodId,
+                                                                 Boolean vehicleStatus);
 }

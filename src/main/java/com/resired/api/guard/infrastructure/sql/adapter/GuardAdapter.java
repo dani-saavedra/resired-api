@@ -18,6 +18,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -39,9 +40,7 @@ public class GuardAdapter implements GuardPort {
 
         if (plateNumber != null) {
             visit.setPlateCarNumber(plateNumber);
-            visit.setIsCarActive(true);
-        } else {
-            visit.setIsCarActive(false);
+            visit.setCheckout(false);
         }
 
         UserOrm guard = new UserOrm();
@@ -109,6 +108,26 @@ public class GuardAdapter implements GuardPort {
             .toList();
     }
 
+    @Override
+    public List<Visit> findVisitsByNeighborhoodIdAndVehicleStatus(Integer neighborhoodId, Boolean isVehicleInNeighborhood) {
+        List<VisitOrm> visitOrms = visitJpaRepository.findVisitsByNeighborhoodIdWithVehicleCheckout(neighborhoodId,
+            !isVehicleInNeighborhood);
+        return visitOrms.stream().map(this::toVisitDomain).toList();
+    }
+
+    @Override
+    public void checkoutVehicle(Integer visitId) {
+        Optional<VisitOrm> visitOrm = visitJpaRepository.findById(visitId);
+
+        if (visitOrm.isEmpty()) {
+            return;
+        }
+
+        visitOrm.get().setCheckout(true);
+        visitOrm.get().setCheckoutDate(LocalDateTime.now(ZoneOffset.UTC));
+        visitJpaRepository.save(visitOrm.get());
+    }
+
 
     private void makeQrUnavailable(QrOrm qr) {
         if (!qr.getVisitor().isFavorite()) {
@@ -128,7 +147,9 @@ public class GuardAdapter implements GuardPort {
             visitOrm.getQr().getVisitor().getDocument(),
             destination,
             visitOrm.getCheckIn(),
-            guardFullName
+            guardFullName,
+            visitOrm.getPlateCarNumber(),
+            visitOrm.getCheckoutDate()
         );
     }
 

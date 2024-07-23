@@ -72,18 +72,31 @@ public class GuardController {
     public ResponseData<List<VisitResponseDTO>> getVisits(
         @RequestHeader(value = "Authorization") String bearer,
         @Parameter(description = "Date as a String in format YYYY-MM-DD", schema = @Schema(type = "string", format = "date"))
-        @RequestParam(value = "date") Optional<String> date) {
+        @RequestParam(value = "date") Optional<String> date,
+        @Parameter(description = "is_active is a boolean string", schema = @Schema(type = "string", format = "boolean"))
+        @RequestParam(value = "is_vehicle_in_neighborhood") Optional<String> isVehicleInNeighborhood) {
         UserApp userApp = jwtService.extractUser(bearer);
         List<VisitResponseDTO> visits;
 
-        if (date.isEmpty()) {
+        if (date.isEmpty() && isVehicleInNeighborhood.isEmpty()) {
             visits = visitUseCase.getVisits(userApp.neighborhoodId());
-        } else {
+        } else if (isVehicleInNeighborhood.isEmpty()) {
             visits = visitUseCase.getVisits(userApp.neighborhoodId(), LocalDate.parse(date.get()));
+        } else {
+            visits = visitUseCase.getVisits(userApp.neighborhoodId(),
+                Boolean.valueOf(isVehicleInNeighborhood.get()));
         }
 
         return new ResponseData<>(visits);
     }
+
+    @PutMapping("/visits/{visitID}/")
+    @Operation(summary = "Deactivate the vehicle for a given visit")
+    public void deactivateVisitVehicle(@RequestHeader(value = "Authorization") String bearer,
+                                       @PathVariable Integer visitID) {
+        visitUseCase.deactivateVisitVehicle(visitID);
+    }
+
 
     @GetMapping("/visitors")
     @Operation(summary = "List all visitors on neighborhood with an active QR code")

@@ -35,5 +35,8 @@ public class VisitOrm {
     private String plateCarNumber;
 
     @Column
-    private Boolean isCarActive;
+    private Boolean checkout;
+
+    @Column(name = "checkout_date")
+    private LocalDateTime checkoutDate;
 }

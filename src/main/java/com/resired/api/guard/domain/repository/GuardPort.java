@@ -24,4 +24,8 @@ public interface GuardPort {
 
     List<Visitor> findAllVisitorsWithActiveQr(Integer neighborhoodId);
 
+    List<Visit> findVisitsByNeighborhoodIdAndVehicleStatus(Integer neighborhoodId,
+                                                           Boolean isActive);
+
+    void checkoutVehicle(Integer visitId);
 }
