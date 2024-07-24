@@ -1,7 +1,7 @@
 package com.resired.api.guard.infrastructure.rest.controller;
 
 import com.resired.api.admin.application.dto.*;
-import com.resired.api.admin.application.usecase.AdminNotificationUseCase;
+import com.resired.api.shared.notification.application.NotificationUseCase;
 import com.resired.api.security.application.usecase.JwtService;
 import com.resired.api.security.domain.entity.UserApp;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,14 +18,14 @@ import java.util.List;
 @PreAuthorize("hasAuthority('GUARD')")
 public class GuardNotificationController {
 
-    private final AdminNotificationUseCase adminNotificationUseCase;
+    private final NotificationUseCase notificationUseCase;
     private final JwtService jwtService;
 
     @GetMapping(path = "/notifications")
     @Operation(summary = "Obtain all notifications sent from Neighborhood")
     public List<NotificationResponseDto> getNotificationsByNeighborhood(@RequestHeader(value = "Authorization") String bearer) {
         UserApp userApp = jwtService.extractUser(bearer);
-        return adminNotificationUseCase.getAllNotificationsByNeighborhoodId(userApp.neighborhoodId());
+        return notificationUseCase.getAllNotificationsByNeighborhoodId(userApp.neighborhoodId());
     }
 
     @PostMapping("/notifications/neighborhood")
@@ -35,7 +35,7 @@ public class GuardNotificationController {
         @RequestHeader(value = "Authorization") String bearer,
         @RequestBody CreateNotificationDto request) {
         UserApp userApp = jwtService.extractUser(bearer);
-        adminNotificationUseCase.sendNotificationToNeighborhood(request, userApp.neighborhoodId());
+        notificationUseCase.sendNotificationToNeighborhood(request, userApp.neighborhoodId());
         return ResponseEntity.ok("Sent");
     }
 
@@ -43,7 +43,7 @@ public class GuardNotificationController {
     @Operation(summary = "Obtain all notification categories from Neighborhood")
     public List<NotificationCategoryDto> getCategories(@RequestHeader(value = "Authorization") String bearer) {
         UserApp userApp = jwtService.extractUser(bearer);
-        return adminNotificationUseCase.getAllNotificationCategories(userApp.neighborhoodId());
+        return notificationUseCase.getAllNotificationCategories(userApp.neighborhoodId());
     }
 
     @PostMapping("/notifications/categories")
@@ -52,7 +52,7 @@ public class GuardNotificationController {
         @RequestHeader(value = "Authorization") String bearer,
         @RequestBody NotificationCategoryRequestDto request) {
         UserApp userApp = jwtService.extractUser(bearer);
-        adminNotificationUseCase.createNotificationCategory(request, userApp.neighborhoodId());
+        notificationUseCase.createNotificationCategory(request, userApp.neighborhoodId());
         return ResponseEntity.ok("Created");
     }
 
@@ -62,7 +62,7 @@ public class GuardNotificationController {
     public ResponseEntity<String> createNotificationForBlocks(
         @RequestHeader(value = "Authorization") String bearer,
         @RequestBody CreateNotificationForBlocksDto request) {
-        adminNotificationUseCase.sendNotificationToBlocks(request);
+        notificationUseCase.sendNotificationToBlocks(request);
         return ResponseEntity.ok("Sent");
     }
 
@@ -72,7 +72,7 @@ public class GuardNotificationController {
     public ResponseEntity<String> createNotificationForHomes(
         @RequestHeader(value = "Authorization") String bearer,
         @RequestBody CreateNotificationForHomesDto request) {
-        adminNotificationUseCase.createNotificationForHomes(request);
+        notificationUseCase.createNotificationForHomes(request);
         return ResponseEntity.ok("Sent");
     }
 }

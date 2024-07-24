@@ -1,4 +1,4 @@
-package com.resired.api.admin.application.usecase;
+package com.resired.api.shared.notification.application;
 
 import com.resired.api.admin.application.dto.*;
 import com.resired.api.admin.domain.entity.NotificationCategory;
@@ -19,7 +19,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class AdminNotificationUseCase {
+public class NotificationUseCase {
     private final NotificationMessagePort notificationRepository;
     private final NotificationCategoryPort notificationCategoryPort;
     private final PushAppUseCase pushNotificationUseCase;
