@@ -15,7 +15,7 @@ public class JavaSmtpGmailSenderService implements EmailPort {
     @Override
     public void sendEmailToRecoverPass(String email, String token) {
         SimpleMailMessage message = new SimpleMailMessage();
-        String url = "http://localhost:3000/account/reset/?token=" + token;
+        String url = "https://admin.resired.site/account/reset?token=" + token;
         String body = "Para restablecer su contraseña, haga clic en el siguiente enlace:\n" + url;
 
         message.setTo(email);
