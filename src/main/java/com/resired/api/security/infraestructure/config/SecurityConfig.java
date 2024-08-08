@@ -45,8 +45,6 @@ public class SecurityConfig {
             .authenticationProvider(authenticationProvider()).addFilterBefore(
                 jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
-
-
     }
 
     @Bean
@@ -60,7 +58,6 @@ public class SecurityConfig {
         authenticationProvider.setUserDetailsService(userDetailsService());
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         return authenticationProvider;
-
     }
 
     @Bean
