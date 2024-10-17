@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,22 +43,26 @@ public class JwtService {
         return username.equals(userDetails.getUsername());
     }
 
-    public String generateToken(String username) {
+    public String generateToken(String username, int hoursDuration) {
         Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, username);
+        return createToken(claims, username, hoursDuration);
     }
 
-    public String generateToken(String username, String rol, Integer neighborhood, Integer homeId, Integer userId) {
+    public String generateToken(String username, String rol, Integer neighborhood, Integer homeId, Integer userId, int hoursDuration) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("rol", rol);
         claims.put("neighborhoodId", neighborhood);
         claims.put("homeId", homeId);
         claims.put("userId", userId);
-        return createToken(claims, username);
+        return createToken(claims, username, hoursDuration);
     }
 
-    private String createToken(Map<String, Object> claims, String username) {
+    private String createToken(Map<String, Object> claims, String username, int hoursDuration) {
         Date issuedAt = new Date(System.currentTimeMillis());
-        return jwtSecurity.generateToken(username, claims, issuedAt);
+        Calendar instance = Calendar.getInstance();
+        instance.add(Calendar.HOUR, hoursDuration);
+        Date expiration = instance.getTime();
+
+        return jwtSecurity.generateToken(username, claims, issuedAt, expiration);
     }
 }

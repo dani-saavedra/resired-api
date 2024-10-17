@@ -19,6 +19,7 @@ import java.security.GeneralSecurityException;
 @AllArgsConstructor
 public class AuthUseCase {
 
+    public static final int ONE_YEAR_DURATION = 8760;
     private final AuthenticationService authService;
     private final UserPort userPort;
     private final JwtService jwtService;
@@ -31,9 +32,9 @@ public class AuthUseCase {
         if (user.getRoles().size() == 1) {
             Rol rol = user.getRoles().get(0);
             jwt = jwtService.generateToken(user.getEmail(), rol.getUserType().name(), rol.getNeighborhoodId(),
-                rol.getHomeId(), user.getId());
+                rol.getHomeId(), user.getId(), ONE_YEAR_DURATION);
         } else {
-            jwt = jwtService.generateToken(user.getEmail());
+            jwt = jwtService.generateToken(user.getEmail(), ONE_YEAR_DURATION);
         }
         return new AuthenticationResponse(jwt, user.getRoles(), user.getUserName(), user.getEmail(),
             user.getDocumentId(), user.isMandatoryChangePassword(), null);
@@ -60,7 +61,7 @@ public class AuthUseCase {
         }
         Rol rol = user.getRoles().get(0);
         String jwt = jwtService.generateToken(user.getEmail(), rol.getUserType().name(), rol.getNeighborhoodId(),
-            rol.getHomeId(), user.getId());
+            rol.getHomeId(), user.getId(), 2);
 
         return new AuthenticationAdminResponse(jwt, user.getRoles(), user.getUserName(), user.getEmail(),
             user.getDocumentId(), user.isMandatoryChangePassword());
