@@ -60,10 +60,12 @@ public class AuthUseCase {
             throw new InvalidCredentialException(auth.email());
         }
         Rol rol = user.getRoles().get(0);
-        String jwt = jwtService.generateToken(user.getEmail(), rol.getUserType().name(), rol.getNeighborhoodId(),
+        String accessToken = jwtService.generateToken(user.getEmail(), rol.getUserType().name(), rol.getNeighborhoodId(),
             rol.getHomeId(), user.getId(), 2);
+        String refreshToken = jwtService.generateToken(user.getEmail(), rol.getUserType().name(), rol.getNeighborhoodId(),
+            rol.getHomeId(), user.getId(), 4);
 
-        return new AuthenticationAdminResponse(jwt, user.getRoles(), user.getUserName(), user.getEmail(),
+        return new AuthenticationAdminResponse(accessToken, refreshToken, user.getRoles(), user.getUserName(), user.getEmail(),
             user.getDocumentId(), user.isMandatoryChangePassword());
     }
 }
