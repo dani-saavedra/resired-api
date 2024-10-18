@@ -34,6 +34,11 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
+    public String regenerateToken(String token, int hoursDuration) {
+        String userName = extractClaim(token, Claims::getSubject);
+        return jwtSecurity.regenerateToken(token, userName, obtainExpirationDate(hoursDuration));
+    }
+
     private Claims extractAllClaims(String token) {
         return jwtSecurity.extractAllClaims(token);
     }
@@ -59,10 +64,12 @@ public class JwtService {
 
     private String createToken(Map<String, Object> claims, String username, int hoursDuration) {
         Date issuedAt = new Date(System.currentTimeMillis());
+        return jwtSecurity.generateToken(username, claims, issuedAt, obtainExpirationDate(hoursDuration));
+    }
+
+    private Date obtainExpirationDate(int hoursDuration) {
         Calendar instance = Calendar.getInstance();
         instance.add(Calendar.HOUR, hoursDuration);
-        Date expiration = instance.getTime();
-
-        return jwtSecurity.generateToken(username, claims, issuedAt, expiration);
+        return instance.getTime();
     }
 }

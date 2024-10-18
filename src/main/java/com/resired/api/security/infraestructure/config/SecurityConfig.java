@@ -38,7 +38,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
-            .authorizeHttpRequests(request -> request.requestMatchers("/auth/admin/login", "/auth/login",
+            .authorizeHttpRequests(request -> request.requestMatchers("/auth/admin/refresh-token","/auth/admin/login", "/auth/login",
                     "/swagger-ui/**", "/docs/**", "/actuator/**", "/account/password/**", "/google/forms/submit")
                 .permitAll().anyRequest().authenticated())
             .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

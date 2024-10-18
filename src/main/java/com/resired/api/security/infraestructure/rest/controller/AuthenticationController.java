@@ -1,9 +1,8 @@
 package com.resired.api.security.infraestructure.rest.controller;
 
-import com.resired.api.security.application.dto.AuthenticationAdminResponse;
-import com.resired.api.security.application.dto.AuthenticationRequest;
-import com.resired.api.security.application.dto.AuthenticationResponse;
+import com.resired.api.security.application.dto.*;
 import com.resired.api.security.application.usecase.AuthUseCase;
+
 import java.security.GeneralSecurityException;
 
 import com.resired.api.security.infraestructure.rest.proxy.ErrorDTO;
@@ -44,5 +43,15 @@ public class AuthenticationController {
         @Content(schema = @Schema(implementation = ErrorDTO.class)))})
     public AuthenticationAdminResponse authenticateAdmin(@RequestBody AuthenticationRequest auth) throws GeneralSecurityException {
         return authService.authAdmin(auth);
+    }
+
+    @PostMapping(path = "/admin/refresh-token")
+    @Operation(summary = "Refresh Token")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Successful Authenticacion"),
+        @ApiResponse(responseCode = "400", description = "Refresh token expired", content =
+        @Content(schema = @Schema(implementation = ErrorDTO.class)))})
+    public RefreshResponse refreshToken(@RequestBody RefreshRequest refreshRequest) throws GeneralSecurityException {
+        return authService.refreshToken(refreshRequest);
     }
 }

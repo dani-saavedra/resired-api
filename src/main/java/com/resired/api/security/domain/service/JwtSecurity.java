@@ -51,6 +51,23 @@ public class JwtSecurity {
             .getPayload();
     }
 
+    public String regenerateToken(String token, String username, Date expiration) {
+        Date now = new Date(System.currentTimeMillis());
+        Claims payload = Jwts
+            .parser()
+            .verifyWith(publicKey)
+            .build()
+            .parseSignedClaims(token)
+            .getPayload();
+        return Jwts.builder()
+            .claims(payload)
+            .subject(username)
+            .issuedAt(now)
+            .expiration(expiration)
+            .signWith(privateKey)
+            .compact();
+    }
+
     private PrivateKey loadPrivateKey() throws Exception {
         InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream("private_key.pem");
         String privateKeyContent = new String(resourceAsStream.readAllBytes())
