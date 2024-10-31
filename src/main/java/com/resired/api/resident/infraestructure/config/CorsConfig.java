@@ -1,29 +1,20 @@
 package com.resired.api.resident.infraestructure.config;
 
-import org.springframework.context.annotation.Configuration;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.stereotype.Component;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 
-@Configuration
-public class CorsConfig implements WebMvcConfigurer {
-    @Value("${cors.pathPattern}")
-    private String pathPattern;
+import java.util.List;
 
-    @Value("${cors.allowedOrigins}")
-    private String allowedOrigins;
-
-    @Value("${cors.allowedMethods}")
-    private String allowedMethods;
-
-    @Value("${cors.allowedHeaders}")
-    private String allowedHeaders;
-
+@Component
+public class CorsConfig implements CorsConfigurationSource {
     @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping(pathPattern)
-            .allowedOrigins(allowedOrigins.split(","))
-            .allowedMethods(allowedMethods.split(","))
-            .allowedHeaders(allowedHeaders.split(","));
+    public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowedOrigins(List.of("http://localhost:3000", "https://admin.resired.site"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+        config.setAllowedHeaders(List.of("*"));
+        return config;
     }
 }

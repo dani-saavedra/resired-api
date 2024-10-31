@@ -1,5 +1,6 @@
 package com.resired.api.security.infraestructure.config;
 
+import com.resired.api.resident.infraestructure.config.CorsConfig;
 import com.resired.api.security.infraestructure.authorization.UserDetailsServiceImpl;
 import com.resired.api.security.infraestructure.sql.jpa.UserJpaRepository;
 import lombok.AllArgsConstructor;
@@ -19,8 +20,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
 @Configuration
@@ -31,6 +30,8 @@ public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
     private final UserJpaRepository userJpaRepository;
+    private final CorsConfig customCorsConfiguration;
+
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -41,11 +42,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(request -> request.requestMatchers("/auth/admin/refresh-token","/auth/admin/login", "/auth/login",
-                    "/swagger-ui/**", "/docs/**", "/actuator/**", "/account/password/**", "/google/forms/submit","/account/password/recovery")
+                    "/swagger-ui/**", "/docs/**", "/actuator/**", "/account/password/**", "/google/forms/submit","/account/password/recovery/**")
                 .permitAll().anyRequest().authenticated())
             .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authenticationProvider(authenticationProvider()).addFilterBefore(
-                jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+            .cors(c->c.configurationSource(customCorsConfiguration));
         return http.build();
     }
 
@@ -65,18 +67,5 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
-    }
-
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                    .allowedOrigins("http://localhost:3000","https://admin.resired.site")
-                    .allowedMethods("GET", "POST", "PUT", "DELETE")
-                    .allowedHeaders("*");
-            }
-        };
     }
 }
