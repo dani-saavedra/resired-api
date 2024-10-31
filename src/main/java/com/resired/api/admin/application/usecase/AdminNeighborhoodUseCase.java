@@ -38,7 +38,7 @@ public class AdminNeighborhoodUseCase {
         CreateNeighborhoodVo.AdminUser admin = createNeighborhoodVo.admin();
         RegisterUserVO registerUserVO = new RegisterUserVO(admin.document(), admin.documentType(), "Admin", null,
             admin.email(), idNewNeigh, null, UserType.ADMIN);
-        adminUserUseCase.registerUserToNeighborhood(registerUserVO, "resired");
+        adminUserUseCase.registerUserToNeighborhood(registerUserVO, "resired", true);
 
     }
 

@@ -26,12 +26,21 @@ public class JavaSmtpGmailSenderService implements EmailPort {
     }
 
     @Override
-    public void sendRegisteredUserEmail(String email, String neighborhood) {
+    public void sendRegisteredUserEmail(String email, String neighborhood, boolean isAdmin) {
         SimpleMailMessage message = new SimpleMailMessage();
-        String body = "¡Bienvenido a ResiRed! \n \n" +
-            "Tu cuenta ha sido asociada con éxito a " + neighborhood + ". Ahora puedes acceder a nuestra app para empezar a disfrutar de todas las ventajas que tenemos para ofrecerte. Si aún no tienes la aplicación, puedes descargarla desde cualquier tienda.\n" +
-            "\nRecuerda que tu usuario es el correo electrónico que diligenciaste en tu solicitud y para acceder por primera vez deberás usar tu número de documento como contraseña.\n" +
-            "\n¡Gracias por ser parte de nuestra comunidad! Siempre estamos dispuestos a ayudarte en cualquier cosa que necesites.";
+        String body = null;
+
+        if (isAdmin) {
+            body = "¡Bienvenido a ResiRed! \n \n" +
+                "Tu cuenta como administrador ha sido creada con éxito a " + neighborhood + ". Ahora puedes acceder al portal administrativo a través de https://resired.site para empezar a disfrutar de todas las ventajas que tenemos para ofrecerte. Recuerda que los residentes de tu conjunto deberán tener instalada la aplicación de ResiRed para hacer uso de las funcionalidades, podrán descargarla desde cualquier tienda.\n" +
+                "\nTen presente que tu usuario es el correo electrónico que diligenciaste en tu solicitud y para acceder por primera vez deberás usar tu número de documento como contraseña.\n" +
+                "\n¡Gracias por ser parte de nuestra comunidad! Siempre estamos dispuestos a ayudarte en cualquier cosa que necesites.";
+        } else {
+            body = "¡Bienvenido a ResiRed! \n \n" +
+                "Tu cuenta ha sido asociada con éxito a " + neighborhood + ". Ahora puedes acceder a nuestra app para empezar a disfrutar de todas las ventajas que tenemos para ofrecerte. Si aún no tienes la aplicación, puedes descargarla desde cualquier tienda.\n" +
+                "\nRecuerda que tu usuario es el correo electrónico que diligenciaste en tu solicitud y para acceder por primera vez deberás usar tu número de documento como contraseña.\n" +
+                "\n¡Gracias por ser parte de nuestra comunidad! Siempre estamos dispuestos a ayudarte en cualquier cosa que necesites.";
+        }
 
         message.setTo(email);
         message.setSubject("Bienvenido a Resired");

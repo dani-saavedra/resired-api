@@ -42,7 +42,7 @@ public class RequestResidentUseCase {
         RegisterUserVO registerUserVO = new RegisterUserVO(request.document(), request.documentType(),
             request.firstName(), request.lastName(), request.email(), neighborhood, idHome,
             UserType.RESIDENT);
-        userUseCase.registerUserToNeighborhood(registerUserVO, emailAdmin);
+        userUseCase.registerUserToNeighborhood(registerUserVO, emailAdmin, false);
         boolean acceptationCompleted = port.acceptRequestResident(idRequest, neighborhood);
         if (!acceptationCompleted) {
             log.error("Accept id: {} in neighborhood: {} no exists", idRequest, neighborhood);
