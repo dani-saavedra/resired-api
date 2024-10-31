@@ -32,7 +32,7 @@ public class JavaSmtpGmailSenderService implements EmailPort {
 
         if (isAdmin) {
             body = "¡Bienvenido a ResiRed! \n \n" +
-                "Tu cuenta como administrador ha sido creada con éxito a " + neighborhood + ". Ahora puedes acceder al portal administrativo a través de https://resired.site para empezar a disfrutar de todas las ventajas que tenemos para ofrecerte. Recuerda que los residentes de tu conjunto deberán tener instalada la aplicación de ResiRed para hacer uso de las funcionalidades, podrán descargarla desde cualquier tienda.\n" +
+                "Tu cuenta como administrador ha sido creada con éxito a " + neighborhood + ". Ahora puedes acceder al portal administrativo a través de https://admin.resired.site para empezar a disfrutar de todas las ventajas que tenemos para ofrecerte. Recuerda que los residentes de tu conjunto deberán tener instalada la aplicación de ResiRed para hacer uso de las funcionalidades, podrán descargarla desde cualquier tienda.\n" +
                 "\nTen presente que tu usuario es el correo electrónico que diligenciaste en tu solicitud y para acceder por primera vez deberás usar tu número de documento como contraseña.\n" +
                 "\n¡Gracias por ser parte de nuestra comunidad! Siempre estamos dispuestos a ayudarte en cualquier cosa que necesites.";
         } else {
