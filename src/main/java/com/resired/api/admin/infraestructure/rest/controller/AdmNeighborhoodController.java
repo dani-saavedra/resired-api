@@ -27,7 +27,7 @@ public class AdmNeighborhoodController {
     private final NeighborhoodUseCase neighborhoodUseCase;
     private final JwtService jwtService;
 
-    @PostMapping(path = "/neighborhood")
+    @PostMapping(path = "/create-neighborhood")
     public ResponseEntity<String> createNeighborhood(@RequestBody CreateNeighborhoodVo createNeighborhoodVo) throws GeneralSecurityException {
         adminNeighborhoodUseCase.createNewNeighborhood(createNeighborhoodVo);
         return ResponseEntity.ok("Success");

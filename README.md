@@ -50,7 +50,7 @@ Ejemplo de uso: Almacenamiento seguro de contraseñas (almacenando hashes de con
 
 OPEN API:
 http://localhost:8080/api/swagger-ui/index.html
-
+Generate password for email
 https://myaccount.google.com/u/2/apppasswords
 
 ### Maintainers
