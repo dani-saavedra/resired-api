@@ -17,6 +17,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
@@ -72,10 +73,16 @@ public class AdminNeighborhoodUseCase {
             towers = 0;
         }
         adminNeighborhoodPort.configNeighborhood(neighConfig, towers, totalNumberHouses.intValue());
-        for (NeighConfig.GroupingHomes groupingHome : neighConfig.groupingHomes()) {
+        if (neighConfig.groupingHomes().isEmpty()) {
             blockPort.createBlock(neighborhood.getId(), neighConfig.groupingType(),
-                groupingHome.tower(), groupingHome.homes());
+                "CONJUNTO", new ArrayList<>());
+        } else {
+            for (NeighConfig.GroupingHomes groupingHome : neighConfig.groupingHomes()) {
+                blockPort.createBlock(neighborhood.getId(), neighConfig.groupingType(),
+                    groupingHome.tower(), groupingHome.homes());
+            }
         }
+
     }
 
     public void createNews(CreateNewsDto newsRequest, Integer neighborhoodId) {
