@@ -33,7 +33,7 @@ public class AdmNeighborhoodController {
         return ResponseEntity.ok("Success");
     }
 
-    @PutMapping(path = "/neighborhood")
+    @PutMapping(path = "/update-neighborhood")
     @Operation(summary = "Set up a neighborhood after onboarding")
     public ResponseEntity<String> configureNeighborhood(@RequestBody NeighConfig neighConfig) {
         adminNeighborhoodUseCase.configNeighborhood(neighConfig);
