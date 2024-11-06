@@ -53,6 +53,13 @@ http://localhost:8080/api/swagger-ui/index.html
 Generate password for email
 https://myaccount.google.com/u/2/apppasswords
 
+residence_type:
+APARTAMENTO, CASA, OFICINA
+
+grouping_type:
+INTERIOR, BLOQUE, UNIDAD, TORRE, NINGUNA
+
+
 ### Maintainers
 
 * Daniel Saavedra
