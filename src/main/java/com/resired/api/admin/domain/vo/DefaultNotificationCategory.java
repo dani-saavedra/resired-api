@@ -8,7 +8,7 @@ import lombok.Getter;
 public enum DefaultNotificationCategory {
 
     GENERAL("Hay una nueva novedad", "Ingresé el mensaje de la novedad"),
-    PAQUETE("Novedad en paqueteria", "Ingresé el mensaje relacionadp con paqueteria"),
+    PAQUETE("Novedad en paqueteria", "Ingresé el mensaje relacionado con paqueteria"),
     VISITA("Novedad en visitas", "Ingresé el mensaje relacionado con visitas");
 
     private final String defaultMessage;
