@@ -60,6 +60,10 @@ grouping_type:
 INTERIOR, BLOQUE, UNIDAD, TORRE, NINGUNA
 
 
+CARGAR VARIABLES DE ENTORNO:
+EMAIL_USER & EMAIL_PASS
+
+
 ### Maintainers
 
 * Daniel Saavedra
