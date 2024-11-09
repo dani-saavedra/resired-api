@@ -7,6 +7,7 @@ import com.resired.api.admin.domain.vo.NeighConfig;
 import com.resired.api.resident.application.dto.NewsResponse;
 import com.resired.api.resident.application.usecase.NeighborhoodUseCase;
 import com.resired.api.resident.infraestructure.rest.dto.ResponseData;
+import com.resired.api.security.application.dto.RefreshResponse;
 import com.resired.api.security.application.usecase.JwtService;
 import com.resired.api.security.domain.entity.UserApp;
 import io.swagger.v3.oas.annotations.Operation;
@@ -38,6 +39,14 @@ public class AdmNeighborhoodController {
     public ResponseEntity<String> configureNeighborhood(@RequestBody NeighConfig neighConfig) {
         adminNeighborhoodUseCase.configNeighborhood(neighConfig);
         return ResponseEntity.ok("Success");
+    }
+
+    @GetMapping(path = "/choose-neighborhood/{neighborhoodId}")
+    @Operation(summary = "Choose a neighborhood when admin have several neighborhoods")
+    public RefreshResponse chooseNeighborhood(@RequestHeader(value = "Authorization") String bearer,
+                                              @PathVariable Integer neighborhoodId) {
+        UserApp userApp = jwtService.extractUser(bearer);
+        return adminNeighborhoodUseCase.chooseNeighborhood(neighborhoodId, userApp.userId());
     }
 
     @PostMapping(path = "/neighborhood/news")

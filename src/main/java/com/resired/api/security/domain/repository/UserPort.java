@@ -17,4 +17,6 @@ public interface UserPort {
     User getGuardByEmail(String email);
 
     List<User> findResidentsByHomeId(Integer homeId);
+
+    User getUserById(Integer userId);
 }
