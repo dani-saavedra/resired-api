@@ -86,5 +86,14 @@ public class UserAdapter implements UserPort {
             .toList();
     }
 
+    @Override
+    public User getUserById(Integer userId) {
+        UserOrm userOrm = userJpaRepository.findById(userId).orElse(null);
+        if (userOrm == null) {
+            return null;
+        }
+        return userOrm.toEntity();
+    }
+
 
 }
