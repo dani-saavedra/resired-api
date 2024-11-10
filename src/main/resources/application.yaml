@@ -1,21 +1,4 @@
 spring:
-    flyway:
-        enabled: 'true'
-    mail:
-        username: resired.col@gmail.com
-        port: '587'
-        properties:
-            mail:
-                smtp:
-                    starttls:
-                        enable: 'true'
-                    auth: 'true'
-        host: smtp.gmail.com
-        password: mbiq jvrs ipbb xcbt
-    jpa:
-        hibernate:
-            ddl-auto: validate
-        database-platform: org.hibernate.dialect.MySQL8Dialect
     application:
         name: resired
     servlet:
@@ -26,6 +9,12 @@ spring:
         password: ${DB_PASS}
         username: ${DB_USER}
         url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    flyway:
+        enabled: 'true'
+    jpa:
+        hibernate:
+            ddl-auto: validate
+        database-platform: org.hibernate.dialect.MySQL8Dialect
 info:
     app:
         name: Resired
