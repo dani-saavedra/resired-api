@@ -1,0 +1,45 @@
+spring:
+    flyway:
+        enabled: 'true'
+    mail:
+        username: resired.col@gmail.com
+        port: '587'
+        properties:
+            mail:
+                smtp:
+                    starttls:
+                        enable: 'true'
+                    auth: 'true'
+        host: smtp.gmail.com
+        password: mbiq jvrs ipbb xcbt
+    jpa:
+        hibernate:
+            ddl-auto: validate
+        database-platform: org.hibernate.dialect.MySQL8Dialect
+    application:
+        name: resired
+    datasource:
+        password: resiredPass
+        username: resiredUser
+        url: jdbc:mysql://localhost:3306/resiredDb
+info:
+    app:
+        name: Resired
+        version: '0.1'
+smtp:
+    host: smtp.hostinger.com
+    port: '587'
+    pass: ${EMAIL_PASS}
+    user: ${EMAIL_USER}
+secret: ThisIsASecretKey
+springdoc:
+    api-docs:
+        path: /docs
+cors:
+    allowedMethods: '*'
+    allowedOrigins: '*'
+    pathPattern: /**
+    allowedHeaders: '*'
+server:
+    servlet:
+        context-path: /api
