@@ -94,30 +94,6 @@ public class PushNotificationAdapter implements NotificationSender {
         }
     }
 
-    @Override
-    public void subscribeDeviceToTopic(Device device, String topic) {
-        List<String> devicesID = Collections.singletonList(device.id());
-
-        try {
-            TopicManagementResponse response = firebaseMessaging.subscribeToTopic(devicesID, topic);
-            log.debug("{} devices were subscribed successfully", response.getSuccessCount());
-        } catch (FirebaseMessagingException ex) {
-            log.error("Problem subscribing devices to topic ", ex);
-        }
-    }
-
-    @Override
-    public void unsubscribeDeviceToTopic(Device device, String topic) {
-        List<String> devicesID = Collections.singletonList(device.id());
-
-        try {
-            TopicManagementResponse response = firebaseMessaging.unsubscribeFromTopic(devicesID, topic);
-            log.debug("{} tokens were unsubscribed successfully", response.getSuccessCount());
-        } catch (FirebaseMessagingException ex) {
-            log.error("Problem unsubscribing devices to topic ", ex);
-        }
-    }
-
     private Notification buildNotificationFromNotificationMessage(PushNotification notificationMessage) {
         return Notification
             .builder()
