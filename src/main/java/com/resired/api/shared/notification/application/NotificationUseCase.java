@@ -27,7 +27,7 @@ public class NotificationUseCase {
     private final PushAppUseCase pushNotificationUseCase;
 
 
-    public void sendNotificationToNeighborhood(CreateNotificationDto requestDto, Integer neighborhoodId) {
+    public void sendNotification(CreateNotificationDto requestDto, Integer neighborhoodId) {
         NotificationNeighborhoodRequest pushNotification = new NotificationNeighborhoodRequest(requestDto.title(),
             requestDto.message(), neighborhoodId);
 
@@ -43,7 +43,7 @@ public class NotificationUseCase {
         notificationRepository.saveNotification(notificationMessage);
     }
 
-    public void sendNotificationToBlocks(CreateNotificationForBlocksDto requestDto) {
+    public void sendNotification(CreateNotificationForBlocksDto requestDto) {
         NotificationCategory category = notificationCategoryPort.getNotificationCategoryById(requestDto.categoryId());
 
         if (category == null) throw new NotificationCategoryNotFoundException(requestDto.categoryId());
@@ -61,7 +61,7 @@ public class NotificationUseCase {
 
     }
 
-    public void createNotificationForHomes(CreateNotificationForHomesDto requestDto) {
+    public void sendNotification(CreateNotificationForHomesDto requestDto) {
         NotificationCategory category = notificationCategoryPort.getNotificationCategoryById(requestDto.categoryId());
 
         if (category == null) throw new NotificationCategoryNotFoundException(requestDto.categoryId());

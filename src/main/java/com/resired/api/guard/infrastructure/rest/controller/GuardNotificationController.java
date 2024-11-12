@@ -37,7 +37,7 @@ public class GuardNotificationController {
         @RequestHeader(value = "Authorization") String bearer,
         @RequestBody CreateNotificationDto request) {
         UserApp userApp = jwtService.extractUser(bearer);
-        notificationUseCase.sendNotificationToNeighborhood(request, userApp.neighborhoodId());
+        notificationUseCase.sendNotification(request, userApp.neighborhoodId());
         return ResponseEntity.ok("Sent");
     }
 
@@ -64,7 +64,7 @@ public class GuardNotificationController {
     public ResponseEntity<String> createNotificationForBlocks(
         @RequestHeader(value = "Authorization") String bearer,
         @RequestBody CreateNotificationForBlocksDto request) {
-        notificationUseCase.sendNotificationToBlocks(request);
+        notificationUseCase.sendNotification(request);
         return ResponseEntity.ok("Sent");
     }
 
@@ -74,7 +74,7 @@ public class GuardNotificationController {
     public ResponseEntity<String> createNotificationForHomes(
         @RequestHeader(value = "Authorization") String bearer,
         @RequestBody CreateNotificationForHomesDto request) {
-        notificationUseCase.createNotificationForHomes(request);
+        notificationUseCase.sendNotification(request);
         return ResponseEntity.ok("Sent");
     }
 }
