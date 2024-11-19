@@ -111,11 +111,11 @@ public class AdminNeighborhoodUseCase {
         String imageUrl = null;
         String detail = null;
         if (newsRequest.image() != null) {
-            String name = neighborhoodId + "-" + newsRequest.title().trim() + "-" + newsRequest.image().name().trim();
+            String name = neighborhoodId + "-" + newsRequest.title().trim().replaceAll(" ", "") + "-" + newsRequest.image().name().trim();
             imageUrl = fileBucket.uploadFileToBucket(BUCKET_IMAGES_NAME, name, newsRequest.image().inputStream());
         }
         if (newsRequest.details() != null) {
-            String name = neighborhoodId + "-" + newsRequest.title().trim() + "-" + newsRequest.details().name().trim();
+            String name = neighborhoodId + "-" + newsRequest.title().trim().replaceAll(" ", "") + "-" + newsRequest.details().name().trim();
             detail = fileBucket.uploadFileToBucket(BUCKET_ATTACHMENT_NAME, name, newsRequest.details().inputStream());
         }
         adminNewsPort.createNews(newsRequest, neighborhoodId, imageUrl, detail);
