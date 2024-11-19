@@ -66,10 +66,10 @@ public class AdmNeighborhoodController {
                                              @RequestParam("details") MultipartFile details,
                                              @RequestParam("image") MultipartFile image,
                                              @RequestParam("title") String title,
-                                             @RequestParam("contet") String contet,
+                                             @RequestParam("content") String content,
                                              @RequestParam("category") String category) throws IOException {
         UserApp userApp = jwtService.extractUser(bearer);
-        CreateNewsDto news = new CreateNewsDto(title, contet, category,
+        CreateNewsDto news = new CreateNewsDto(title, content, category,
             new CreateNewsDto.Attachment(image.getOriginalFilename(), image.getInputStream()),
             new CreateNewsDto.Attachment(details.getOriginalFilename(), details.getInputStream()));
         adminNeighborhoodUseCase.createNewsV2(news, userApp.neighborhoodId());
