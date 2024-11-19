@@ -116,7 +116,7 @@ public class AdminNeighborhoodUseCase {
         }
         if (newsRequest.details() != null) {
             String name = neighborhoodId + "-" + newsRequest.title().trim() + "-" + newsRequest.details().name().trim();
-            detail = fileBucket.uploadFileToBucket(BUCKET_IMAGES_NAME, name, newsRequest.details().inputStream());
+            detail = fileBucket.uploadFileToBucket(BUCKET_ATTACHMENT_NAME, name, newsRequest.details().inputStream());
         }
         adminNewsPort.createNews(newsRequest, neighborhoodId, imageUrl, detail);
 

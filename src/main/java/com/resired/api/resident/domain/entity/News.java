@@ -12,6 +12,7 @@ public class News {
     private String title;
     private String description;
     private String image;
+    private String details;
     private String category;
     @JsonProperty("creation_date")
     private String creationDate;
