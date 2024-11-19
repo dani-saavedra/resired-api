@@ -15,7 +15,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.security.GeneralSecurityException;
 
 @RestController
@@ -49,12 +51,28 @@ public class AdmNeighborhoodController {
         return adminNeighborhoodUseCase.chooseNeighborhood(neighborhoodId, userApp.userId());
     }
 
-    @PostMapping(path = "/neighborhood/news")
-    @Operation(summary = "Create a news for the neighborhood")
-    public ResponseData<String> createNews(@RequestHeader(value = "Authorization") String bearer,
-                                           @RequestBody CreateNewsDto newsRequest) {
+    @PostMapping(path = "/v1/neighborhood/news")
+    @Operation(summary = "Create a news for the neighborhood v1")
+    public ResponseData<String> createNewsV1(@RequestHeader(value = "Authorization") String bearer,
+                                             @RequestBody CreateNewsDto newsRequest) {
         UserApp userApp = jwtService.extractUser(bearer);
-        adminNeighborhoodUseCase.createNews(newsRequest, userApp.neighborhoodId());
+        adminNeighborhoodUseCase.createNewsV1(newsRequest, userApp.neighborhoodId());
+        return new ResponseData<>("News created successfully");
+    }
+
+    @PostMapping(path = "/v2/neighborhood/news")
+    @Operation(summary = "Create a news for the neighborhood v2")
+    public ResponseData<String> createNewsV2(@RequestHeader(value = "Authorization") String bearer,
+                                             @RequestParam("details") MultipartFile details,
+                                             @RequestParam("image") MultipartFile image,
+                                             @RequestParam("title") String title,
+                                             @RequestParam("contet") String contet,
+                                             @RequestParam("category") String category) throws IOException {
+        UserApp userApp = jwtService.extractUser(bearer);
+        CreateNewsDto news = new CreateNewsDto(title, contet, category,
+            new CreateNewsDto.Attachment(image.getOriginalFilename(), image.getInputStream()),
+            new CreateNewsDto.Attachment(details.getOriginalFilename(), details.getInputStream()));
+        adminNeighborhoodUseCase.createNewsV2(news, userApp.neighborhoodId());
         return new ResponseData<>("News created successfully");
     }
 

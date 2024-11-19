@@ -92,13 +92,14 @@ public class AdminNeighborhoodAdapterSQL implements NotificationCategoryPort, Ad
     }
 
     @Override
-    public void createNews(CreateNewsDto createNews, Integer neighborhoodId) {
+    public void createNews(CreateNewsDto createNews, Integer neighborhoodId, String imageUrl, String detail) {
         NewsOrm newsOrm = new NewsOrm();
         newsOrm.setTitle(createNews.title());
         newsOrm.setContent(createNews.content());
         newsOrm.setCategory(createNews.category());
         newsOrm.setNeighborhoodId(neighborhoodId);
-        newsOrm.setImage(createNews.image().orElse(null));
+        newsOrm.setImage(imageUrl);
+        newsOrm.setDetails(detail);
         newsOrm.setCreatedDate(LocalDateTime.now(ZoneOffset.UTC));
 
         newsJpaRepository.save(newsOrm);

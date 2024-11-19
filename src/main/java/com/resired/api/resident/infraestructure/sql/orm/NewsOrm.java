@@ -34,6 +34,9 @@ public class NewsOrm {
     private String image;
 
     @Column
+    private String details;
+
+    @Column
     private LocalDateTime createdDate;
 
 }

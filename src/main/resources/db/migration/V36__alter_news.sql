@@ -1,0 +1,6 @@
+ALTER TABLE news
+    ADD COLUMN details VARCHAR(2000);
+
+ALTER TABLE news
+    MODIFY COLUMN image VARCHAR (2000);
+
