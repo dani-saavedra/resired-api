@@ -16,7 +16,7 @@ public interface HomeJpaRepository extends JpaRepository<HomeOrm, Integer> {
 
     List<HomeOrm> findByBlockIdOrderByNumberAsc(Integer blockId);
 
-    List<HomeOrm> findByBlockNeighborhoodOrmIdOrderByNumberAsc(Integer neighborhoodId);
+    List<HomeOrm> findByBlockNeighborhoodOrmIdOrderByBlockAscNumberAsc(Integer neighborhoodId);
 
     @Modifying
     @Query("update HomeOrm home set home.number = :name, home.squareMeter =:squareMeter where home.id =:homeId ")

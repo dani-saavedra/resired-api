@@ -38,7 +38,7 @@ public class HomeAdapter implements HomePort {
 
     @Override
     public List<Home> getHomesByNeighborhood(Integer neighborhoodId) {
-        List<HomeOrm> byBlockNeighborhoodOrmId = jpaRepository.findByBlockNeighborhoodOrmIdOrderByNumberAsc(neighborhoodId);
+        List<HomeOrm> byBlockNeighborhoodOrmId = jpaRepository.findByBlockNeighborhoodOrmIdOrderByBlockAscNumberAsc(neighborhoodId);
         return byBlockNeighborhoodOrmId
             .stream()
             .map(orm -> {
