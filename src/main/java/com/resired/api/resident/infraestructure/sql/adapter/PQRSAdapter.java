@@ -97,7 +97,7 @@ public class PQRSAdapter implements PqrsPort {
         return new PqrsDetailDTO(FormatDate.formatDate(pqrOrm.getCreationDate()),
             FormatDate.formatDate(pqrOrm.getResponseDate()), pqrOrm.getTitle(), pqrOrm.getCategory(),
             pqrOrm.getTicketNumber(), pqrOrm.getState(), responder, pqrOrm.getResponse(), pqrOrm.getDescription(),
-            pqrOrm.getResident().fullName(), pqrOrm.getHome().getFullHomeName(), pqrOrm.getHome().getId());
+            pqrOrm.getResident().fullName(), pqrOrm.getHome().getFullHomeName(), pqrOrm.getHome().getId(), pqrOrm.getDetails());
     }
 
 }
