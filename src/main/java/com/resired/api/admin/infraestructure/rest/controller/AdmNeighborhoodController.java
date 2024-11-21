@@ -1,5 +1,6 @@
 package com.resired.api.admin.infraestructure.rest.controller;
 
+import com.resired.api.admin.application.dto.Attachment;
 import com.resired.api.admin.application.dto.CreateNewsDto;
 import com.resired.api.admin.application.usecase.AdminNeighborhoodUseCase;
 import com.resired.api.admin.domain.vo.CreateNeighborhoodVo;
@@ -70,8 +71,8 @@ public class AdmNeighborhoodController {
                                              @RequestParam("category") String category) throws IOException {
         UserApp userApp = jwtService.extractUser(bearer);
         CreateNewsDto news = new CreateNewsDto(title, content, category,
-            new CreateNewsDto.Attachment(image.getOriginalFilename(), image.getInputStream()),
-            new CreateNewsDto.Attachment(details.getOriginalFilename(), details.getInputStream()));
+            new Attachment(image.getOriginalFilename(), image.getInputStream()),
+            new Attachment(details.getOriginalFilename(), details.getInputStream()));
         adminNeighborhoodUseCase.createNewsV2(news, userApp.neighborhoodId());
         return new ResponseData<>("News created successfully");
     }

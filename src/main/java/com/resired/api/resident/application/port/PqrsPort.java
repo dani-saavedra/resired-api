@@ -17,7 +17,7 @@ public interface PqrsPort {
 
     Integer totalPqrByNeighborhood(Integer neighborhoodId);
 
-    void registerPQRr(RegisterPqrs registerPqrs, String ticketNumber, StatePQRS statePQRS);
+    void registerPQRr(RegisterPqrs registerPqrs, String ticketNumber, StatePQRS statePQRS, String url);
 
     Integer getNeighborByTicketNumber(String ticketNumber);
 

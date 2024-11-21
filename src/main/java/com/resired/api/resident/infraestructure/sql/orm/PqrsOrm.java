@@ -62,8 +62,11 @@ public class PqrsOrm {
     @JoinColumn(name = "home")
     private HomeOrm home;
 
+    @Column
+    private String details;
+
     public PqrsOrm(String title, String description, String ticketNumber, CategoryPQRS category, StatePQRS state,
-                   Integer residentId, Integer neighborhoodId, Integer homeId) {
+                   Integer residentId, Integer neighborhoodId, Integer homeId, String details) {
         this.title = title;
         this.description = description;
         this.ticketNumber = ticketNumber;
@@ -79,5 +82,6 @@ public class PqrsOrm {
         HomeOrm home = new HomeOrm();
         home.setId(homeId);
         this.home = home;
+        this.details = details;
     }
 }

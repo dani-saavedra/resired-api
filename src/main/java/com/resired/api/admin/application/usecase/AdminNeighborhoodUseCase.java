@@ -8,9 +8,9 @@ import com.resired.api.admin.domain.entity.Neighborhood;
 import com.resired.api.admin.domain.entity.NotificationCategory;
 import com.resired.api.admin.domain.repository.AdminNeighborhoodPort;
 import com.resired.api.admin.domain.repository.BlockPort;
+import com.resired.api.admin.domain.repository.FilePort;
 import com.resired.api.admin.domain.repository.NotificationCategoryPort;
 import com.resired.api.admin.domain.vo.*;
-import com.resired.api.admin.infraestructure.gcp.FileBucket;
 import com.resired.api.security.application.dto.RefreshResponse;
 import com.resired.api.security.application.usecase.JwtService;
 import com.resired.api.security.domain.entity.Rol;
@@ -40,7 +40,7 @@ public class AdminNeighborhoodUseCase {
     private final PushAppUseCase pushAppUseCase;
     private final UserPort userPort;
     private final JwtService jwtService;
-    private final FileBucket fileBucket;
+    private final FilePort fileBucket;
 
 
     private static final String BUCKET_IMAGES_NAME = "cover_image_resired";
