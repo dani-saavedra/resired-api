@@ -5,10 +5,10 @@ import com.resired.api.shared.notification.domain.entity.Device;
 import com.resired.api.shared.notification.domain.entity.PushNotification;
 import com.resired.api.shared.notification.domain.exception.DeviceAlreadyExistsException;
 import com.resired.api.shared.notification.domain.exception.DeviceNotFoundException;
-import com.resired.api.shared.notification.domain.repository.DevicePort;
-import com.resired.api.shared.notification.domain.repository.UserNotificationPort;
 import com.resired.api.shared.notification.domain.port.ManageSubscriptionsTopicPort;
 import com.resired.api.shared.notification.domain.port.PushNotificationPort;
+import com.resired.api.shared.notification.domain.repository.DevicePort;
+import com.resired.api.shared.notification.domain.repository.UserNotificationPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -34,7 +34,7 @@ public class DeviceUseCase {
         if (devicePort.alreadyExists(device.id())) {
             throw new DeviceAlreadyExistsException(device.id());
         }
-        userPort.addDevice(email, device);
+        devicePort.addDevice(userId, device);
         List<Integer> neighborhoodIds = userPort.getNeighborhoodIdsForResidentByEmail(email);
         neighborhoodIds.forEach(neigh -> {
             String topic = NEIGHBORHOOD_TOPIC + neigh;
