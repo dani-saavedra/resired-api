@@ -4,7 +4,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.TopicManagementResponse;
 import com.resired.api.shared.notification.domain.entity.Device;
-import com.resired.api.shared.notification.domain.service.DeviceNotificationManagement;
+import com.resired.api.shared.notification.domain.port.ManageSubscriptionsTopicPort;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import java.util.List;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class DeviceNotificationManagementAdapter implements DeviceNotificationManagement {
+public class ManageSubscriptionsTopicAdapter implements ManageSubscriptionsTopicPort {
 
     private final FirebaseMessaging firebaseMessaging;
 

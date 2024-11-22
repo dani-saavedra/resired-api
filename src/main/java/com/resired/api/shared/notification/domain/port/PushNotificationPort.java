@@ -1,11 +1,11 @@
-package com.resired.api.shared.notification.domain.service;
+package com.resired.api.shared.notification.domain.port;
 
 import com.resired.api.shared.notification.domain.entity.Device;
 import com.resired.api.shared.notification.domain.entity.PushNotification;
 
 import java.util.List;
 
-public interface NotificationSender {
+public interface PushNotificationPort {
 
     void sendToDevice(PushNotification notificationMessage, Device device);
 

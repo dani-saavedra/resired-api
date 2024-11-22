@@ -3,19 +3,18 @@ package com.resired.api.shared.notification.infraestructure.firebase.messaging.a
 import com.google.firebase.messaging.*;
 import com.resired.api.shared.notification.domain.entity.Device;
 import com.resired.api.shared.notification.domain.entity.PushNotification;
-import com.resired.api.shared.notification.domain.service.NotificationSender;
+import com.resired.api.shared.notification.domain.port.PushNotificationPort;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.IntStream;
 
 @Slf4j
 @Service
 @AllArgsConstructor
-public class PushNotificationAdapter implements NotificationSender {
+public class PushPushNotificationAdapter implements PushNotificationPort {
     public static final String TITLE_NOTIFICATION = "title";
     public static final String BODY_NOTIFICATION = "body";
     private final FirebaseMessaging firebaseMessaging;

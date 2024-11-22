@@ -7,8 +7,8 @@ import com.resired.api.shared.notification.domain.exception.DeviceAlreadyExistsE
 import com.resired.api.shared.notification.domain.exception.DeviceNotFoundException;
 import com.resired.api.shared.notification.domain.repository.DevicePort;
 import com.resired.api.shared.notification.domain.repository.UserNotificationPort;
-import com.resired.api.shared.notification.domain.service.DeviceNotificationManagement;
-import com.resired.api.shared.notification.domain.service.NotificationSender;
+import com.resired.api.shared.notification.domain.port.ManageSubscriptionsTopicPort;
+import com.resired.api.shared.notification.domain.port.PushNotificationPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -21,8 +21,8 @@ public class DeviceUseCase {
 
     private final UserNotificationPort userPort;
     private final DevicePort devicePort;
-    private final NotificationSender notificationSenderService;
-    private final DeviceNotificationManagement deviceNotificationManagement;
+    private final PushNotificationPort pushNotificationPortService;
+    private final ManageSubscriptionsTopicPort manageSubscriptionsTopicPort;
     @Value("${topic.neighborhood}")
     private String NEIGHBORHOOD_TOPIC;
 
@@ -38,15 +38,15 @@ public class DeviceUseCase {
         List<Integer> neighborhoodIds = userPort.getNeighborhoodIdsForResidentByEmail(email);
         neighborhoodIds.forEach(neigh -> {
             String topic = NEIGHBORHOOD_TOPIC + neigh;
-            deviceNotificationManagement.subscribeDeviceToTopic(device, topic);
+            manageSubscriptionsTopicPort.subscribeDeviceToTopic(device, topic);
         });
         PushNotification notificationMessage = new PushNotification("Bienvenid@", "En ResiRed estamos para servirte");
-        notificationSenderService.sendToDevice(notificationMessage, device);
+        pushNotificationPortService.sendToDevice(notificationMessage, device);
 
         List<BlockVo> blocks = userPort.getAllBlocksByUserId(userId);
         blocks.forEach((blockVo -> {
             String topic = BLOCK_TOPIC + blockVo.id();
-            deviceNotificationManagement.subscribeDeviceToTopic(device, topic);
+            manageSubscriptionsTopicPort.subscribeDeviceToTopic(device, topic);
         }));
     }
 
@@ -60,7 +60,7 @@ public class DeviceUseCase {
         List<Integer> neighborhoodIds = userPort.getNeighborhoodIdsForResidentByEmail(email);
         neighborhoodIds.forEach(neigh -> {
             String topic = NEIGHBORHOOD_TOPIC + neigh;
-            deviceNotificationManagement.unsubscribeDeviceToTopic(device, topic);
+            manageSubscriptionsTopicPort.unsubscribeDeviceToTopic(device, topic);
         });
 
     }
