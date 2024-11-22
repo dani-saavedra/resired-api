@@ -28,13 +28,13 @@ public class AdminUserUseCase {
     private final EmailPort emailPort;
     private final NeighborhoodPort neighborhoodPort;
 
-    public void registerUserToNeighborhood(RegisterUserVO registerUserVO, String registeredBy) throws GeneralSecurityException {
+    public void registerUserToNeighborhood(RegisterUserVO registerUserVO, String registeredBy, boolean isAdmin) throws GeneralSecurityException {
         String password = authService.encrypt(registerUserVO.documentId());
         Integer userId = adminUserPort.getUserByEmail(registerUserVO.email());
         Neighborhood neighborhood = neighborhoodPort.findById(registerUserVO.neighborhoodId());
         if (userId == null) {
             adminUserPort.registerUserToNeighborhood(registerUserVO, registeredBy, password);
-            emailPort.sendRegisteredUserEmail(registerUserVO.email(), neighborhood.getName());
+            emailPort.sendRegisteredUserEmail(registerUserVO.email(), neighborhood.getName(), isAdmin);
         } else {
             adminUserPort.associateNewUserToNeighborhood(registerUserVO, userId);
             emailPort.sendAssociateNewUserToNeighborhood(registerUserVO.email(), neighborhood.getName());

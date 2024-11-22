@@ -50,8 +50,19 @@ Ejemplo de uso: Almacenamiento seguro de contraseñas (almacenando hashes de con
 
 OPEN API:
 http://localhost:8080/api/swagger-ui/index.html
-
+Generate password for email
 https://myaccount.google.com/u/2/apppasswords
+
+residence_type:
+APARTAMENTO, CASA, OFICINA
+
+grouping_type:
+MANZANA,INTERIOR, BLOQUE, UNIDAD, TORRE, NINGUNA
+
+
+CARGAR VARIABLES DE ENTORNO:
+EMAIL_USER & EMAIL_PASS
+
 
 ### Maintainers
 

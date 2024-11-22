@@ -35,7 +35,7 @@ public class AdmGuardController {
             request.firstName(), request.lastName(), request.email(), userApp.neighborhoodId(), null,
             UserType.GUARD);
 
-        userUseCase.registerUserToNeighborhood(registerGuardVO, userApp.email());
+        userUseCase.registerUserToNeighborhood(registerGuardVO, userApp.email(), false);
         return ResponseEntity.ok("Guard registered successfully");
     }
 

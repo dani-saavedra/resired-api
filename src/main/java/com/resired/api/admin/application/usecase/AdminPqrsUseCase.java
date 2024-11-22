@@ -26,7 +26,7 @@ public class AdminPqrsUseCase {
         }
         port.updateStatePQRS(ticketNumber);
         NotificationHomeRequest notificationHome = new NotificationHomeRequest("PQRS " + ticketNumber + " en gestión",
-            "La PQRS " + ticketNumber + " comenzo a ser gestionada por la administración", pqrs.homeId());
+            "La PQRS " + ticketNumber + " comenzó a ser gestionada por la administración", pqrs.homeId());
         pushAppUseCase.notifyHome(notificationHome);
     }
 

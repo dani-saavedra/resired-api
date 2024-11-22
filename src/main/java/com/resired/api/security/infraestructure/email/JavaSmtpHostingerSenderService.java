@@ -1,0 +1,87 @@
+package com.resired.api.security.infraestructure.email;
+
+import com.resired.api.security.domain.repository.EmailPort;
+import jakarta.mail.Message;
+import jakarta.mail.MessagingException;
+import jakarta.mail.Session;
+import jakarta.mail.Transport;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+
+@Service
+@RequiredArgsConstructor
+@Slf4j
+public class JavaSmtpHostingerSenderService implements EmailPort {
+
+
+    private final Session sessionEmail;
+
+    @Value("${smtp.user}")
+    private String smtpUser;
+
+    @Override
+    public void sendEmailToRecoverPass(String email, String token) {
+        String url = "https://admin.resired.site/account/reset?token=" + token;
+        String body = "Para restablecer su contraseña, haga clic en el siguiente enlace:\n" + url;
+
+        try {
+            Message message = new MimeMessage(sessionEmail);
+            message.setFrom(new InternetAddress(smtpUser));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
+            message.setSubject("Restablecimiento de contraseña");
+            message.setText(body);
+
+            Transport.send(message);
+
+        } catch (MessagingException e) {
+            log.error("Error sending email", e);
+        }
+    }
+
+    @Override
+    public void sendRegisteredUserEmail(String email, String neighborhood, boolean isAdmin) {
+        String body;
+        if (isAdmin) {
+            body = "¡Bienvenido a ResiRed! \n \n" +
+                "Tu cuenta como administrador ha sido creada con éxito a " + neighborhood + ". Ahora puedes acceder al portal administrativo a través de https://admin.resired.site para empezar a disfrutar de todas las ventajas que tenemos para ofrecerte. Recuerda que los residentes de tu conjunto deberán tener instalada la aplicación de ResiRed para hacer uso de las funcionalidades la podrán descargarla desde cualquier tienda.\n" +
+                "\nTen presente que tu usuario es el correo electrónico que diligenciaste en tu solicitud y para acceder por primera vez deberás usar tu número de documento como contraseña.\n" +
+                "\n¡Gracias por ser parte de nuestra comunidad! Siempre estamos dispuestos a ayudarte en cualquier cosa que necesites.";
+        } else {
+            body = "¡Bienvenido a ResiRed! \n \n" +
+                "Tu cuenta ha sido asociada con éxito a " + neighborhood + ". Ahora puedes acceder a nuestra app para empezar a disfrutar de todas las ventajas que tenemos para ofrecerte. Si aún no tienes la aplicación, puedes descargarla desde cualquier tienda.\n" +
+                "\nRecuerda que tu usuario es el correo electrónico que diligenciaste en tu solicitud y para acceder por primera vez deberás usar tu número de documento como contraseña.\n" +
+                "\n¡Gracias por ser parte de nuestra comunidad! Siempre estamos dispuestos a ayudarte en cualquier cosa que necesites.";
+        }
+
+        try {
+            Message message = new MimeMessage(sessionEmail);
+            message.setFrom(new InternetAddress(smtpUser));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
+            message.setSubject("Bienvenido a Resired");
+            message.setText(body);
+            Transport.send(message);
+        } catch (MessagingException e) {
+            log.error("Error sending email", e);
+        }
+    }
+
+    @Override
+    public void sendAssociateNewUserToNeighborhood(String email, String neighborhood) {
+        String body = "Tu cuenta en resired ha sido vinculada ha " + neighborhood + ", ten presente que tu ingreso será con las mismas crendenciales.";
+        try {
+            Message message = new MimeMessage(sessionEmail);
+            message.setFrom(new InternetAddress(smtpUser));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
+            message.setSubject("Registro completado a " + neighborhood);
+            message.setText(body);
+            Transport.send(message);
+        } catch (MessagingException e) {
+            log.error("Error sending email", e);
+        }
+    }
+}

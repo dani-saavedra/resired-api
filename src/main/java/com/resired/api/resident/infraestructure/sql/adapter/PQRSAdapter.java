@@ -29,7 +29,7 @@ public class PQRSAdapter implements PqrsPort {
             .map(orm ->
                 new PqrsResponseDTO(FormatDate.formatDate(orm.getCreationDate()),
                     FormatDate.formatDate(orm.getResponseDate()), orm.getTitle(), orm.getCategory(),
-                    orm.getTicketNumber(), orm.getState())).toList();
+                    orm.getTicketNumber(), orm.getState(), orm.getDetails())).toList();
     }
 
     @Override
@@ -56,9 +56,9 @@ public class PQRSAdapter implements PqrsPort {
     }
 
     @Override
-    public void registerPQRr(RegisterPqrs registerPqrs, String ticketNumber, StatePQRS state) {
-        PqrsOrm orm = new PqrsOrm(registerPqrs.title(), registerPqrs.description(), ticketNumber,
-            registerPqrs.category(), state, registerPqrs.residentId(), registerPqrs.neighbor(), registerPqrs.homeId());
+    public void registerPQRr(RegisterPqrs registerPqrs, String ticketNumber, StatePQRS state, String details) {
+        PqrsOrm orm = new PqrsOrm(registerPqrs.title(), registerPqrs.description(), ticketNumber, registerPqrs.category(),
+            state, registerPqrs.residentId(), registerPqrs.neighbor(), registerPqrs.homeId(), details);
         jpaRepository.save(orm);
     }
 
@@ -97,7 +97,7 @@ public class PQRSAdapter implements PqrsPort {
         return new PqrsDetailDTO(FormatDate.formatDate(pqrOrm.getCreationDate()),
             FormatDate.formatDate(pqrOrm.getResponseDate()), pqrOrm.getTitle(), pqrOrm.getCategory(),
             pqrOrm.getTicketNumber(), pqrOrm.getState(), responder, pqrOrm.getResponse(), pqrOrm.getDescription(),
-            pqrOrm.getResident().fullName(), pqrOrm.getHome().getFullHomeName(), pqrOrm.getHome().getId());
+            pqrOrm.getResident().fullName(), pqrOrm.getHome().getFullHomeName(), pqrOrm.getHome().getId(), pqrOrm.getDetails());
     }
 
 }

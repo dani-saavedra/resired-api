@@ -41,7 +41,7 @@ public class AdmResidentController {
         RegisterUserVO registerUserVO = new RegisterUserVO(request.documentId(), request.documentType(),
             request.firstName(), request.lastName(), request.email(), userApp.neighborhoodId(), request.homeId(), UserType.RESIDENT);
 
-        userUseCase.registerUserToNeighborhood(registerUserVO, userApp.email());
+        userUseCase.registerUserToNeighborhood(registerUserVO, userApp.email(), false);
         return ResponseEntity.ok("Resident registered successfully");
     }
 

@@ -1,6 +1,8 @@
 package com.resired.api.shared.notification.application;
 
-import com.resired.api.admin.application.dto.*;
+import com.resired.api.admin.application.dto.CreateNotificationDto;
+import com.resired.api.admin.application.dto.CreateNotificationForBlocksDto;
+import com.resired.api.admin.application.dto.CreateNotificationForHomesDto;
 import com.resired.api.admin.domain.entity.NotificationCategory;
 import com.resired.api.admin.domain.repository.NotificationCategoryPort;
 import com.resired.api.shared.notification.application.dto.NotificationBlockRequest;
@@ -15,29 +17,17 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.List;
 
 @Service
 @AllArgsConstructor
 public class NotificationUseCase {
+
     private final NotificationMessagePort notificationRepository;
     private final NotificationCategoryPort notificationCategoryPort;
     private final PushAppUseCase pushNotificationUseCase;
 
-    public List<NotificationResponseDto> getAllNotificationsByNeighborhoodId(Integer neighborhoodId) {
-        return notificationRepository.getAllNotificationMessagesByNeighborhoodId(neighborhoodId)
-            .stream()
-            .map(notificationMessage ->
-                new NotificationResponseDto(notificationMessage.id(),
-                    notificationMessage.title(),
-                    notificationMessage.message(),
-                    notificationMessage.date(),
-                    notificationMessage.category().name(),
-                    notificationMessage.level().name()))
-            .toList();
-    }
 
-    public void sendNotificationToNeighborhood(CreateNotificationDto requestDto, Integer neighborhoodId) {
+    public void sendNotification(CreateNotificationDto requestDto, Integer neighborhoodId) {
         NotificationNeighborhoodRequest pushNotification = new NotificationNeighborhoodRequest(requestDto.title(),
             requestDto.message(), neighborhoodId);
 
@@ -53,27 +43,7 @@ public class NotificationUseCase {
         notificationRepository.saveNotification(notificationMessage);
     }
 
-    public List<NotificationCategoryDto> getAllNotificationCategories(Integer neighborhoodId) {
-        return notificationCategoryPort.getAllCategoriesByNeighborhoodId(neighborhoodId)
-            .stream()
-            .map(category -> new NotificationCategoryDto(
-                category.id(),
-                category.name(),
-                category.defaultMessage(),
-                category.level(),
-                category.defaultTitle()))
-            .toList();
-    }
-
-    public void createNotificationCategory(NotificationCategoryRequestDto requestDto, Integer neighborhoodId) {
-        NotificationCategory category = new NotificationCategory(null, neighborhoodId,
-            requestDto.name(), requestDto.defaultMessage(), requestDto.priority(),
-            requestDto.defaultTitle());
-
-        notificationCategoryPort.createNewNotificationCategory(category);
-    }
-
-    public void sendNotificationToBlocks(CreateNotificationForBlocksDto requestDto) {
+    public void sendNotification(CreateNotificationForBlocksDto requestDto) {
         NotificationCategory category = notificationCategoryPort.getNotificationCategoryById(requestDto.categoryId());
 
         if (category == null) throw new NotificationCategoryNotFoundException(requestDto.categoryId());
@@ -91,7 +61,7 @@ public class NotificationUseCase {
 
     }
 
-    public void createNotificationForHomes(CreateNotificationForHomesDto requestDto) {
+    public void sendNotification(CreateNotificationForHomesDto requestDto) {
         NotificationCategory category = notificationCategoryPort.getNotificationCategoryById(requestDto.categoryId());
 
         if (category == null) throw new NotificationCategoryNotFoundException(requestDto.categoryId());

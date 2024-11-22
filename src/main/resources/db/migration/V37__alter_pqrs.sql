@@ -1,0 +1,4 @@
+ALTER TABLE pqrs
+    ADD COLUMN details VARCHAR(2000);
+
+

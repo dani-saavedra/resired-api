@@ -24,15 +24,6 @@ public class JwtSecurity {
 
     }
 
-    public String generateToken(String username, Map<String, Object> claims, Date issuedAt) {
-        return Jwts.builder()
-            .claims(claims)
-            .subject(username)
-            .issuedAt(issuedAt)
-            .signWith(privateKey)
-            .compact();
-    }
-
     public String generateToken(String username, Map<String, Object> claims, Date issuedAt, Date expiration) {
         return Jwts.builder()
             .claims(claims)
@@ -58,6 +49,23 @@ public class JwtSecurity {
             .build()
             .parseSignedClaims(token)
             .getPayload();
+    }
+
+    public String regenerateToken(String token, String username, Date expiration) {
+        Date now = new Date(System.currentTimeMillis());
+        Claims payload = Jwts
+            .parser()
+            .verifyWith(publicKey)
+            .build()
+            .parseSignedClaims(token)
+            .getPayload();
+        return Jwts.builder()
+            .claims(payload)
+            .subject(username)
+            .issuedAt(now)
+            .expiration(expiration)
+            .signWith(privateKey)
+            .compact();
     }
 
     private PrivateKey loadPrivateKey() throws Exception {

@@ -20,13 +20,6 @@ public class UserNotificationAdapter implements UserNotificationPort {
     private final DeviceJpaRepository deviceRepository;
     private final UserJpaRepository userRepository;
 
-    @Override
-    public void addDevice(String email, Device device) {
-        UserOrm user = userRepository.findByEmail(email);
-
-        DeviceOrm deviceOrm = new DeviceOrm(device.id(), user.getId());
-        deviceRepository.save(deviceOrm);
-    }
 
     @Override
     public List<Device> getAllDevicesByEmail(String email) {
@@ -62,6 +55,22 @@ public class UserNotificationAdapter implements UserNotificationPort {
             .stream()
             .map(blockOrm -> new BlockVo(blockOrm.getId(),
                 blockOrm.getName()))
+            .toList();
+    }
+
+    @Override
+    public List<Device> getDevicesForHomeResident(Integer homeID) {
+        return deviceRepository.findDevicesByHomeIdAndUserRole(homeID, UserType.RESIDENT)
+            .stream()
+            .map(deviceOrm -> new Device(deviceOrm.getId()))
+            .toList();
+    }
+
+    @Override
+    public List<Device> getDevicesByUser(Integer userId) {
+        return deviceRepository.findByUserId(userId)
+            .stream()
+            .map(orm -> new Device(orm.getId()))
             .toList();
     }
 

@@ -5,7 +5,9 @@ import com.resired.api.security.domain.entity.Rol;
 
 import java.util.List;
 
-public record AuthenticationAdminResponse(@JsonProperty("access_token") String accessToken, List<Rol> roles,
+public record AuthenticationAdminResponse(@JsonProperty("access_token") String accessToken,
+                                          @JsonProperty("refresh_token") String refreshToken,
+                                          @JsonProperty("roles") List<Rol> roles,
                                           @JsonProperty("user_name") String userName,
                                           @JsonProperty("user_email") String userEmail,
                                           @JsonProperty("document_id") String documentId,

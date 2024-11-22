@@ -6,7 +6,6 @@ import com.resired.api.shared.notification.domain.entity.Device;
 import java.util.List;
 
 public interface UserNotificationPort {
-    void addDevice(String email, Device device);
 
     List<Device> getAllDevicesByEmail(String email);
 
@@ -16,4 +15,7 @@ public interface UserNotificationPort {
 
     List<BlockVo> getAllBlocksByUserId(Integer id);
 
+    List<Device> getDevicesForHomeResident(Integer homeID);
+
+    List<Device> getDevicesByUser(Integer userId);
 }

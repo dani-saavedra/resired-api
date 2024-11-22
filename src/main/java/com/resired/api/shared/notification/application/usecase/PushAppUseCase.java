@@ -6,8 +6,8 @@ import com.resired.api.shared.notification.application.dto.NotificationNeighborh
 import com.resired.api.shared.notification.application.dto.NotificationResident;
 import com.resired.api.shared.notification.domain.entity.Device;
 import com.resired.api.shared.notification.domain.entity.PushNotification;
-import com.resired.api.shared.notification.domain.repository.DevicePort;
-import com.resired.api.shared.notification.domain.service.NotificationSender;
+import com.resired.api.shared.notification.domain.port.PushNotificationPort;
+import com.resired.api.shared.notification.domain.repository.UserNotificationPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,8 +17,8 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class PushAppUseCase {
-    private final NotificationSender notificationSenderService;
-    private final DevicePort deviceRepository;
+    private final PushNotificationPort pushNotificationPortService;
+    private final UserNotificationPort userNotificationPort;
 
     @Value("${topic.neighborhood}")
     private String neighborhoodTopic;
@@ -27,21 +27,21 @@ public class PushAppUseCase {
     private String blockTopic;
 
     public void notifyHome(NotificationHomeRequest requestDTO) {
-        List<Device> devices = deviceRepository.getDevicesForHomeResident(requestDTO.homeID());
+        List<Device> devices = userNotificationPort.getDevicesForHomeResident(requestDTO.homeID());
 
         if (!devices.isEmpty()) {
             PushNotification notification = new PushNotification(requestDTO.title(), requestDTO.message());
-            notificationSenderService.sendToDeviceList(notification, devices);
+            pushNotificationPortService.sendToDeviceList(notification, devices);
         }
     }
 
     public void notifyResident(NotificationResident notification) {
-        List<Device> devices = deviceRepository.getDevicesByUser(notification.userId());
+        List<Device> devices = userNotificationPort.getDevicesByUser(notification.userId());
         if (devices != null && !devices.isEmpty()) {
             devices.forEach(device -> {
                 PushNotification notificationMessage = new PushNotification(notification.title(),
                     notification.message());
-                notificationSenderService.sendToDevice(notificationMessage, device);
+                pushNotificationPortService.sendToDevice(notificationMessage, device);
             });
         }
     }
@@ -49,12 +49,12 @@ public class PushAppUseCase {
     public void notifyNeighborhood(NotificationNeighborhoodRequest requestDTO) {
         String topic = neighborhoodTopic + requestDTO.neighborhoodID();
         PushNotification notification = new PushNotification(requestDTO.title(), requestDTO.message());
-        notificationSenderService.sendToTopic(notification, topic);
+        pushNotificationPortService.sendToTopic(notification, topic);
     }
 
     public void notifyBlock(NotificationBlockRequest requestDTO) {
         String topic = blockTopic + requestDTO.blockID();
         PushNotification notification = new PushNotification(requestDTO.title(), requestDTO.message());
-        notificationSenderService.sendToTopic(notification, topic);
+        pushNotificationPortService.sendToTopic(notification, topic);
     }
 }

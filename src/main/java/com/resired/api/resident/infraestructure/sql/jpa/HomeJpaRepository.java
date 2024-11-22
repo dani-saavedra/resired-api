@@ -14,9 +14,9 @@ public interface HomeJpaRepository extends JpaRepository<HomeOrm, Integer> {
     @Query(value = "SELECT pac FROM PackageOrm  pac WHERE pac.home = ?1 order by pac.updateDate desc, pac.createdDate desc")
     List<PackageOrm> getPackages(Integer homeId);
 
-    List<HomeOrm> findByBlockId(Integer blockId);
+    List<HomeOrm> findByBlockIdOrderByNumberAsc(Integer blockId);
 
-    List<HomeOrm> findByBlockNeighborhoodOrmId(Integer neighborhoodId);
+    List<HomeOrm> findByBlockNeighborhoodOrmIdOrderByBlockAscNumberAsc(Integer neighborhoodId);
 
     @Modifying
     @Query("update HomeOrm home set home.number = :name, home.squareMeter =:squareMeter where home.id =:homeId ")

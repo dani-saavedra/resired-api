@@ -2,15 +2,12 @@ package com.resired.api.shared.notification.domain.repository;
 
 import com.resired.api.shared.notification.domain.entity.Device;
 
-import java.util.List;
-
 public interface DevicePort {
-    Boolean alreadyExists(String deviceID);
+
+    void addDevice(Integer userId, Device device);
 
     void removeDevice(String deviceID);
 
-    List<Device> getDevicesForHomeResident(Integer homeID);
-
-    List<Device> getDevicesByUser(Integer userId);
+    Boolean alreadyExists(String deviceID);
 
 }

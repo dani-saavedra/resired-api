@@ -3,19 +3,18 @@ package com.resired.api.shared.notification.infraestructure.firebase.messaging.a
 import com.google.firebase.messaging.*;
 import com.resired.api.shared.notification.domain.entity.Device;
 import com.resired.api.shared.notification.domain.entity.PushNotification;
-import com.resired.api.shared.notification.domain.service.NotificationSender;
+import com.resired.api.shared.notification.domain.port.PushNotificationPort;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.IntStream;
 
 @Slf4j
 @Service
 @AllArgsConstructor
-public class PushNotificationAdapter implements NotificationSender {
+public class PushPushNotificationAdapter implements PushNotificationPort {
     public static final String TITLE_NOTIFICATION = "title";
     public static final String BODY_NOTIFICATION = "body";
     private final FirebaseMessaging firebaseMessaging;
@@ -91,30 +90,6 @@ public class PushNotificationAdapter implements NotificationSender {
             log.debug("Firebase notification sent successfully by topic: {}", response);
         } catch (FirebaseMessagingException ex) {
             log.error("Problem sending message to firebase messaging topic ", ex);
-        }
-    }
-
-    @Override
-    public void subscribeDeviceToTopic(Device device, String topic) {
-        List<String> devicesID = Collections.singletonList(device.id());
-
-        try {
-            TopicManagementResponse response = firebaseMessaging.subscribeToTopic(devicesID, topic);
-            log.debug("{} devices were subscribed successfully", response.getSuccessCount());
-        } catch (FirebaseMessagingException ex) {
-            log.error("Problem subscribing devices to topic ", ex);
-        }
-    }
-
-    @Override
-    public void unsubscribeDeviceToTopic(Device device, String topic) {
-        List<String> devicesID = Collections.singletonList(device.id());
-
-        try {
-            TopicManagementResponse response = firebaseMessaging.unsubscribeFromTopic(devicesID, topic);
-            log.debug("{} tokens were unsubscribed successfully", response.getSuccessCount());
-        } catch (FirebaseMessagingException ex) {
-            log.error("Problem unsubscribing devices to topic ", ex);
         }
     }
 

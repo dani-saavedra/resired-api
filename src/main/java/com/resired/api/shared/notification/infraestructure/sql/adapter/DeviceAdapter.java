@@ -1,6 +1,5 @@
 package com.resired.api.shared.notification.infraestructure.sql.adapter;
 
-import com.resired.api.security.domain.enums.UserType;
 import com.resired.api.shared.notification.domain.entity.Device;
 import com.resired.api.shared.notification.domain.repository.DevicePort;
 import com.resired.api.shared.notification.infraestructure.sql.jpa.DeviceJpaRepository;
@@ -8,13 +7,18 @@ import com.resired.api.shared.notification.infraestructure.sql.orm.DeviceOrm;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
 @AllArgsConstructor
 public class DeviceAdapter implements DevicePort {
+
     private final DeviceJpaRepository deviceRepository;
+
+    @Override
+    public void addDevice(Integer userId, Device device) {
+        deviceRepository.save(new DeviceOrm(device.id(), userId));
+    }
 
     @Override
     public Boolean alreadyExists(String deviceID) {
@@ -25,21 +29,5 @@ public class DeviceAdapter implements DevicePort {
     @Override
     public void removeDevice(String deviceID) {
         deviceRepository.deleteById(deviceID);
-    }
-
-    @Override
-    public List<Device> getDevicesForHomeResident(Integer homeID) {
-        return deviceRepository.findDevicesByHomeIdAndUserRole(homeID, UserType.RESIDENT)
-            .stream()
-            .map(deviceOrm -> new Device(deviceOrm.getId()))
-            .toList();
-    }
-
-    @Override
-    public List<Device> getDevicesByUser(Integer userId) {
-        return deviceRepository.findByUserId(userId)
-            .stream()
-            .map(orm -> new Device(orm.getId()))
-            .toList();
     }
 }
