@@ -8,6 +8,10 @@ public interface UserPort {
 
     User getUserByCredentials(String email, String password);
 
+    User getUserAppByCredentials(String email, String password);
+
+    User getUserAdminByCredentials(String email, String password);
+
     void changePassword(String documentId, String newEncryptPass);
 
     void changePassword(Integer userId, String newEncryptPass);

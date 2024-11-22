@@ -28,7 +28,7 @@ public class AuthUseCase {
 
     public AuthenticationResponse authUser(AuthenticationRequest auth) throws GeneralSecurityException {
         String encryptPass = authService.encrypt(auth.password());
-        User user = userPort.getUserByCredentials(auth.email(), encryptPass);
+        User user = userPort.getUserAppByCredentials(auth.email(), encryptPass);
         validateUser(auth, user);
         String jwt;
         if (user.getRoles().size() == 1) {
@@ -57,8 +57,8 @@ public class AuthUseCase {
 
     public AuthenticationAdminResponse authAdmin(AuthenticationRequest auth) throws GeneralSecurityException {
         String encryptPass = authService.encrypt(auth.password());
-        User user = userPort.getUserByCredentials(auth.email(), encryptPass);
-        if (user == null || user.getRoles().stream().noneMatch(n -> UserType.ADMIN.equals(n.getUserType()))) {
+        User user = userPort.getUserAdminByCredentials(auth.email(), encryptPass);
+        if (user == null) {
             throw new InvalidCredentialException(auth.email());
         }
         Rol rol = user.getRoles().get(0);
