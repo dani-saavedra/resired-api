@@ -4,7 +4,7 @@ import com.resired.api.security.domain.enums.UserType;
 import com.resired.api.security.infraestructure.sql.jpa.UserJpaRepository;
 import com.resired.api.security.infraestructure.sql.orm.UserOrm;
 import com.resired.api.shared.notification.domain.entity.Device;
-import com.resired.api.shared.notification.domain.repository.DeviceQuery;
+import com.resired.api.shared.notification.domain.repository.DeviceQueryPort;
 import com.resired.api.shared.notification.infraestructure.sql.jpa.DeviceJpaRepository;
 import com.resired.api.shared.notification.infraestructure.sql.orm.DeviceOrm;
 import lombok.AllArgsConstructor;
@@ -14,7 +14,7 @@ import java.util.List;
 
 @Repository
 @AllArgsConstructor
-public class DeviceQueryAdapter implements DeviceQuery {
+public class DeviceQueryAdapter implements DeviceQueryPort {
 
     private final DeviceJpaRepository deviceRepository;
     private final UserJpaRepository userRepository;

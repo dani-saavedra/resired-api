@@ -4,7 +4,7 @@ import com.resired.api.shared.notification.domain.entity.Device;
 
 import java.util.List;
 
-public interface DeviceQuery {
+public interface DeviceQueryPort {
 
     List<Device> getAllDevicesByEmail(String email);
 
