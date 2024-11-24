@@ -36,7 +36,7 @@ public class PqrController {
     @PostMapping("/v2")
     @Operation(summary = "Register PQRS per resident ")
     public ResponseData<String> registerPqrsv2(@RequestHeader(value = "Authorization") String bearer,
-                                               @RequestParam("details") MultipartFile details,
+                                               @RequestParam(value = "details", required = false) MultipartFile details,
                                                @RequestParam("title") String title,
                                                @RequestParam("description") String description,
                                                @RequestParam("category") String category) throws IOException {

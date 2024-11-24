@@ -64,8 +64,8 @@ public class AdmNeighborhoodController {
     @PostMapping(path = "/v2/neighborhood/news")
     @Operation(summary = "Create a news for the neighborhood v2")
     public ResponseData<String> createNewsV2(@RequestHeader(value = "Authorization") String bearer,
-                                             @RequestParam("details") MultipartFile details,
-                                             @RequestParam("image") MultipartFile image,
+                                             @RequestParam(value = "details", required = false) MultipartFile details,
+                                             @RequestParam(value = "image", required = false) MultipartFile image,
                                              @RequestParam("title") String title,
                                              @RequestParam("content") String content,
                                              @RequestParam("category") String category) throws IOException {
