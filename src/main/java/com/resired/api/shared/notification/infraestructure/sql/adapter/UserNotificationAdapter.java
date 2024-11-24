@@ -50,8 +50,8 @@ public class UserNotificationAdapter implements UserNotificationPort {
     }
 
     @Override
-    public List<BlockVo> getAllBlocksByUserId(Integer id) {
-        return userRepository.findBlockOrmsByResidentId(id)
+    public List<BlockVo> getAllBlocksByUserEmail(String email) {
+        return userRepository.findBlockOrmsByResidentEmail(email)
             .stream()
             .map(blockOrm -> new BlockVo(blockOrm.getId(),
                 blockOrm.getName()))

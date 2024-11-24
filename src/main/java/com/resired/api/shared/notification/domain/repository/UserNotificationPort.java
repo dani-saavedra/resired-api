@@ -13,7 +13,7 @@ public interface UserNotificationPort {
 
     List<Integer> getNeighborhoodIdsForResidentByEmail(String email);
 
-    List<BlockVo> getAllBlocksByUserId(Integer id);
+    List<BlockVo> getAllBlocksByUserEmail(String email);
 
     List<Device> getDevicesForHomeResident(Integer homeID);
 

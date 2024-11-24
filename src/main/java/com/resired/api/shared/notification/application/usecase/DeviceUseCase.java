@@ -43,7 +43,7 @@ public class DeviceUseCase {
         PushNotification notificationMessage = new PushNotification("Bienvenid@", "En ResiRed estamos para servirte");
         pushNotificationPortService.sendToDevice(notificationMessage, device);
 
-        List<BlockVo> blocks = userPort.getAllBlocksByUserId(userId);
+        List<BlockVo> blocks = userPort.getAllBlocksByUserEmail(email);
         blocks.forEach((blockVo -> {
             String topic = BLOCK_TOPIC + blockVo.id();
             manageSubscriptionsTopicPort.subscribeDeviceToTopic(device, topic);
