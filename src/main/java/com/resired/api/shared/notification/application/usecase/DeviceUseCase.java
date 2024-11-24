@@ -7,7 +7,7 @@ import com.resired.api.shared.notification.domain.exception.DeviceAlreadyExistsE
 import com.resired.api.shared.notification.domain.exception.DeviceNotFoundException;
 import com.resired.api.shared.notification.domain.port.ManageSubscriptionsTopicPort;
 import com.resired.api.shared.notification.domain.port.PushNotificationPort;
-import com.resired.api.shared.notification.domain.repository.DevicePort;
+import com.resired.api.shared.notification.domain.repository.DeviceManagementPort;
 import com.resired.api.shared.notification.domain.repository.UserNotificationPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,7 +20,7 @@ import java.util.List;
 public class DeviceUseCase {
 
     private final UserNotificationPort userPort;
-    private final DevicePort devicePort;
+    private final DeviceManagementPort deviceManagementPort;
     private final PushNotificationPort pushNotificationPortService;
     private final ManageSubscriptionsTopicPort manageSubscriptionsTopicPort;
     @Value("${topic.neighborhood}")
@@ -31,10 +31,10 @@ public class DeviceUseCase {
 
     public void registerDevice(Device device, String email, Integer userId) {
 
-        if (devicePort.alreadyExists(device.id())) {
+        if (deviceManagementPort.alreadyExists(device.id())) {
             throw new DeviceAlreadyExistsException(device.id());
         }
-        devicePort.addDevice(userId, device);
+        deviceManagementPort.addDevice(userId, device);
         List<Integer> neighborhoodIds = userPort.getNeighborhoodIdsForResidentByEmail(email);
         neighborhoodIds.forEach(neigh -> {
             String topic = NEIGHBORHOOD_TOPIC + neigh;
@@ -55,7 +55,7 @@ public class DeviceUseCase {
         if (device == null) {
             throw new DeviceNotFoundException(deviceID, email);
         }
-        devicePort.removeDevice(deviceID);
+        deviceManagementPort.removeDevice(deviceID);
 
         List<Integer> neighborhoodIds = userPort.getNeighborhoodIdsForResidentByEmail(email);
         neighborhoodIds.forEach(neigh -> {
