@@ -1,12 +1,10 @@
 package com.resired.api.shared.notification.infraestructure.sql.adapter;
 
-import com.resired.api.admin.domain.vo.BlockVo;
-import com.resired.api.resident.infraestructure.sql.orm.NeighborhoodOrm;
 import com.resired.api.security.domain.enums.UserType;
 import com.resired.api.security.infraestructure.sql.jpa.UserJpaRepository;
 import com.resired.api.security.infraestructure.sql.orm.UserOrm;
 import com.resired.api.shared.notification.domain.entity.Device;
-import com.resired.api.shared.notification.domain.repository.UserNotificationPort;
+import com.resired.api.shared.notification.domain.repository.DeviceQuery;
 import com.resired.api.shared.notification.infraestructure.sql.jpa.DeviceJpaRepository;
 import com.resired.api.shared.notification.infraestructure.sql.orm.DeviceOrm;
 import lombok.AllArgsConstructor;
@@ -16,10 +14,10 @@ import java.util.List;
 
 @Repository
 @AllArgsConstructor
-public class UserNotificationAdapter implements UserNotificationPort {
+public class DeviceQueryAdapter implements DeviceQuery {
+
     private final DeviceJpaRepository deviceRepository;
     private final UserJpaRepository userRepository;
-
 
     @Override
     public List<Device> getAllDevicesByEmail(String email) {
@@ -38,24 +36,6 @@ public class UserNotificationAdapter implements UserNotificationPort {
 
         if (device == null) return null;
         return convertToDevice(device);
-    }
-
-    @Override
-    public List<Integer> getNeighborhoodIdsForResidentByEmail(String email) {
-        return userRepository
-            .findNeighborhoodsByUserEmailAndUserRole(email, UserType.RESIDENT)
-            .stream()
-            .map(NeighborhoodOrm::getId)
-            .toList();
-    }
-
-    @Override
-    public List<BlockVo> getAllBlocksByUserEmail(String email) {
-        return userRepository.findBlockOrmsByResidentEmail(email)
-            .stream()
-            .map(blockOrm -> new BlockVo(blockOrm.getId(),
-                blockOrm.getName()))
-            .toList();
     }
 
     @Override

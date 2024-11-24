@@ -8,7 +8,8 @@ import com.resired.api.shared.notification.domain.exception.DeviceNotFoundExcept
 import com.resired.api.shared.notification.domain.port.ManageSubscriptionsTopicPort;
 import com.resired.api.shared.notification.domain.port.PushNotificationPort;
 import com.resired.api.shared.notification.domain.repository.DeviceManagementPort;
-import com.resired.api.shared.notification.domain.repository.UserNotificationPort;
+import com.resired.api.shared.notification.domain.repository.DeviceQuery;
+import com.resired.api.shared.notification.domain.repository.MassNotificationQueryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DeviceUseCase {
 
-    private final UserNotificationPort userPort;
+    private final MassNotificationQueryPort userPort;
+    private final DeviceQuery deviceQuery;
     private final DeviceManagementPort deviceManagementPort;
     private final PushNotificationPort pushNotificationPortService;
     private final ManageSubscriptionsTopicPort manageSubscriptionsTopicPort;
@@ -51,7 +53,7 @@ public class DeviceUseCase {
     }
 
     public void removeDevice(String deviceID, String email) {
-        Device device = userPort.getDeviceByIDAndEmail(deviceID, email);
+        Device device = deviceQuery.getDeviceByIDAndEmail(deviceID, email);
         if (device == null) {
             throw new DeviceNotFoundException(deviceID, email);
         }
@@ -66,7 +68,7 @@ public class DeviceUseCase {
     }
 
     public Device getDevice(String deviceID, String email) {
-        Device device = userPort.getDeviceByIDAndEmail(deviceID, email);
+        Device device = deviceQuery.getDeviceByIDAndEmail(deviceID, email);
         if (device == null) {
             throw new DeviceNotFoundException(deviceID, email);
         }
@@ -74,6 +76,6 @@ public class DeviceUseCase {
     }
 
     public List<Device> getDevicesByUser(String email) {
-        return userPort.getAllDevicesByEmail(email);
+        return deviceQuery.getAllDevicesByEmail(email);
     }
 }
