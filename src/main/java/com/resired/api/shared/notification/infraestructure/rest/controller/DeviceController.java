@@ -19,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 public class DeviceController {
     private final DeviceUseCase deviceUseCase;
-    private final PushNotificationPort pushNotificationPortService;
+    private final PushNotificationPort pushNotification;
     private final JwtService jwtService;
 
     @PostMapping
@@ -32,7 +32,7 @@ public class DeviceController {
         deviceUseCase.registerDevice(request, userApp.email(), userApp.userId());
         PushNotification notificationMessage = new PushNotification("Bienvenid@", "En ResiRed estamos para servirte");
 
-        pushNotificationPortService.sendToDevice(notificationMessage, request);
+        pushNotification.sendToDevice(notificationMessage, request);
         return ResponseEntity.ok("Device saved successfully");
     }
 
