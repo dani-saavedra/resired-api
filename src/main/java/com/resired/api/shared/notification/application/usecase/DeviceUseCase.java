@@ -2,11 +2,9 @@ package com.resired.api.shared.notification.application.usecase;
 
 import com.resired.api.admin.domain.vo.BlockVo;
 import com.resired.api.shared.notification.domain.entity.Device;
-import com.resired.api.shared.notification.domain.entity.PushNotification;
 import com.resired.api.shared.notification.domain.exception.DeviceAlreadyExistsException;
 import com.resired.api.shared.notification.domain.exception.DeviceNotFoundException;
 import com.resired.api.shared.notification.domain.port.ManageSubscriptionsTopicPort;
-import com.resired.api.shared.notification.domain.port.PushNotificationPort;
 import com.resired.api.shared.notification.domain.repository.DeviceManagementPort;
 import com.resired.api.shared.notification.domain.repository.DeviceQueryPort;
 import com.resired.api.shared.notification.domain.repository.MassNotificationQueryPort;
@@ -23,7 +21,6 @@ public class DeviceUseCase {
     private final MassNotificationQueryPort userPort;
     private final DeviceQueryPort deviceQueryPort;
     private final DeviceManagementPort deviceManagementPort;
-    private final PushNotificationPort pushNotificationPortService;
     private final ManageSubscriptionsTopicPort manageSubscriptionsTopicPort;
     @Value("${topic.neighborhood}")
     private String NEIGHBORHOOD_TOPIC;
@@ -42,8 +39,6 @@ public class DeviceUseCase {
             String topic = NEIGHBORHOOD_TOPIC + neigh;
             manageSubscriptionsTopicPort.subscribeDeviceToTopic(device, topic);
         });
-        PushNotification notificationMessage = new PushNotification("Bienvenid@", "En ResiRed estamos para servirte");
-        pushNotificationPortService.sendToDevice(notificationMessage, device);
 
         List<BlockVo> blocks = userPort.getAllBlocksByUserEmail(email);
         blocks.forEach((blockVo -> {
