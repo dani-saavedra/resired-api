@@ -11,12 +11,7 @@ import com.resired.api.admin.domain.repository.BlockPort;
 import com.resired.api.admin.domain.repository.FilePort;
 import com.resired.api.admin.domain.repository.NotificationCategoryPort;
 import com.resired.api.admin.domain.vo.*;
-import com.resired.api.security.application.dto.RefreshResponse;
-import com.resired.api.security.application.usecase.JwtService;
-import com.resired.api.security.domain.entity.Rol;
-import com.resired.api.security.domain.entity.User;
 import com.resired.api.security.domain.enums.UserType;
-import com.resired.api.security.domain.repository.UserPort;
 import com.resired.api.shared.notification.application.dto.NotificationNeighborhoodRequest;
 import com.resired.api.shared.notification.application.usecase.PushAppUseCase;
 import lombok.AllArgsConstructor;
@@ -25,7 +20,6 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
@@ -38,8 +32,6 @@ public class AdminNeighborhoodUseCase {
     private final AdminUserUseCase adminUserUseCase;
     private final BlockPort blockPort;
     private final PushAppUseCase pushAppUseCase;
-    private final UserPort userPort;
-    private final JwtService jwtService;
     private final FilePort fileBucket;
 
 
@@ -123,21 +115,5 @@ public class AdminNeighborhoodUseCase {
         NotificationNeighborhoodRequest requestDTO = new NotificationNeighborhoodRequest("¡Novedad en tu conjunto!",
             newsRequest.title(), neighborhoodId);
         pushAppUseCase.notifyNeighborhood(requestDTO);
-    }
-
-    public RefreshResponse chooseNeighborhood(Integer neighborhoodId, Integer integer) {
-        User user = userPort.getUserById(integer);
-
-        Rol rol = user.getRoles().stream()
-            .filter(n -> UserType.ADMIN.equals(n.getUserType()) && Objects.equals(n.getNeighborhoodId(), neighborhoodId))
-            .findFirst()
-            .orElseThrow(() -> new BusinessException("Neighborhood not found", "GENERAL_BAD_REQUEST"));
-
-        String accessToken = jwtService.generateToken(user.getEmail(), rol.getUserType().name(), rol.getNeighborhoodId(),
-            rol.getHomeId(), user.getId(), 2);
-        String refreshToken = jwtService.generateToken(user.getEmail(), rol.getUserType().name(), rol.getNeighborhoodId(),
-            rol.getHomeId(), user.getId(), 4);
-
-        return new RefreshResponse(accessToken, refreshToken);
     }
 }

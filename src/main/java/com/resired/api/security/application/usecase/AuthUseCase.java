@@ -1,5 +1,6 @@
 package com.resired.api.security.application.usecase;
 
+import com.resired.api.admin.application.exception.BusinessException;
 import com.resired.api.security.application.dto.*;
 import com.resired.api.security.application.exception.ExpiredTokenException;
 import com.resired.api.security.application.exception.InvalidCredentialException;
@@ -15,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.security.GeneralSecurityException;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 @Service
@@ -60,17 +62,6 @@ public class AuthUseCase {
             user.getDocumentId(), user.isMandatoryChangePassword());
     }
 
-    private static void validateUser(AuthenticationRequest auth, User user, Predicate<UserType> userTypeFilter) {
-        if (user == null || user.getRoles()
-            .stream()
-            .filter(userOrm -> userTypeFilter.test(userOrm.getUserType()))
-            .toList().isEmpty()) {
-            throw new InvalidCredentialException(auth.email());
-        }
-        if (!user.isActive()) {
-            throw new InactiveUserException(user.getDocumentId());
-        }
-    }
 
     public RefreshResponse refreshToken(RefreshRequest token) {
         try {
@@ -82,5 +73,33 @@ public class AuthUseCase {
             throw new ExpiredTokenException();
         }
 
+    }
+
+    public RefreshResponse chooseNeighborhood(Integer neighborhoodId, Integer integer) {
+        User user = userPort.getUserById(integer);
+
+        Rol rol = user.getRoles().stream()
+            .filter(n -> UserType.ADMIN.equals(n.getUserType()) && Objects.equals(n.getNeighborhoodId(), neighborhoodId))
+            .findFirst()
+            .orElseThrow(() -> new BusinessException("Neighborhood not found", "GENERAL_BAD_REQUEST"));
+
+        String accessToken = jwtService.generateToken(user.getEmail(), rol.getUserType().name(), rol.getNeighborhoodId(),
+            rol.getHomeId(), user.getId(), 2);
+        String refreshToken = jwtService.generateToken(user.getEmail(), rol.getUserType().name(), rol.getNeighborhoodId(),
+            rol.getHomeId(), user.getId(), 4);
+
+        return new RefreshResponse(accessToken, refreshToken);
+    }
+
+    private static void validateUser(AuthenticationRequest auth, User user, Predicate<UserType> userTypeFilter) {
+        if (user == null || user.getRoles()
+            .stream()
+            .filter(userOrm -> userTypeFilter.test(userOrm.getUserType()))
+            .toList().isEmpty()) {
+            throw new InvalidCredentialException(auth.email());
+        }
+        if (!user.isActive()) {
+            throw new InactiveUserException(user.getDocumentId());
+        }
     }
 }
