@@ -11,6 +11,7 @@ import com.resired.api.resident.domain.repository.ResidentPort;
 import com.resired.api.resident.domain.vo.QrVisitor;
 import com.resired.api.resident.domain.vo.RegisteredVisitor;
 import com.resired.api.security.domain.entity.User;
+import com.resired.api.security.domain.enums.UserType;
 import com.resired.api.security.domain.exception.InactiveUserException;
 import com.resired.api.security.domain.repository.UserPort;
 import jakarta.transaction.Transactional;
@@ -32,7 +33,7 @@ public class VisitorResidentService implements CreateVisitorResident, ManageVisi
 
     @Override
     public Integer createVisitor(VisitVO residentVisit) {
-        User resident = userPort.getResidentByEmail(residentVisit.authorizer());
+        User resident = userPort.getUserByEmailAndType(residentVisit.authorizer(), UserType.RESIDENT);
         if (resident == null || !resident.isActive()) {
             throw new InactiveUserException(residentVisit.authorizer());
         }

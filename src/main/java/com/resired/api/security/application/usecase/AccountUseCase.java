@@ -5,6 +5,7 @@ import com.resired.api.security.application.dto.ResetPasswordRequest;
 import com.resired.api.security.application.exception.ExpiredTokenException;
 import com.resired.api.security.application.exception.InvalidCredentialException;
 import com.resired.api.security.domain.entity.User;
+import com.resired.api.security.domain.enums.UserType;
 import com.resired.api.security.domain.repository.EmailPort;
 import com.resired.api.security.domain.repository.PassResetTokenPort;
 import com.resired.api.security.domain.repository.UserPort;
@@ -40,7 +41,7 @@ public class AccountUseCase {
 
     public void createPasswordResetTokenForUser(String email) {
         String token = UUID.randomUUID().toString();
-        User user = userPort.getResidentByEmail(email);
+        User user = userPort.getUserByEmailAndType(email, UserType.RESIDENT);
         if (user == null) {
             return;
         }

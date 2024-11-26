@@ -7,6 +7,7 @@ import com.resired.api.guard.domain.exception.ResidentNotFoundOnHomeException;
 import com.resired.api.guard.domain.repository.PackagePort;
 import com.resired.api.resident.domain.enums.PackageStatusEnum;
 import com.resired.api.security.domain.entity.User;
+import com.resired.api.security.domain.enums.UserType;
 import com.resired.api.security.domain.exception.InactiveUserException;
 import com.resired.api.security.domain.repository.UserPort;
 import com.resired.api.shared.notification.application.dto.NotificationHomeRequest;
@@ -70,7 +71,7 @@ public class PackageUseCase {
     }
 
     private User validateGuard(String emailGuard) {
-        User guard = userPort.getGuardByEmail(emailGuard);
+        User guard = userPort.getUserByEmailAndType(emailGuard, UserType.GUARD);
         if (guard == null || !guard.isActive()) {
             throw new InactiveUserException(emailGuard);
         }
