@@ -24,7 +24,7 @@ smtp:
     port: '587'
     pass: ${EMAIL_PASS}
     user: ${EMAIL_USER}
-secret: ThisIsASecretKey
+secret: ${SECRET_KEY}
 springdoc:
     api-docs:
         path: /docs
