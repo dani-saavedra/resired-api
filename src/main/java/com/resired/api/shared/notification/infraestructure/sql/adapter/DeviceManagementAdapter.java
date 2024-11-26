@@ -1,7 +1,7 @@
 package com.resired.api.shared.notification.infraestructure.sql.adapter;
 
 import com.resired.api.shared.notification.domain.entity.Device;
-import com.resired.api.shared.notification.domain.repository.DevicePort;
+import com.resired.api.shared.notification.domain.repository.DeviceManagementPort;
 import com.resired.api.shared.notification.infraestructure.sql.jpa.DeviceJpaRepository;
 import com.resired.api.shared.notification.infraestructure.sql.orm.DeviceOrm;
 import lombok.AllArgsConstructor;
@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 @AllArgsConstructor
-public class DeviceAdapter implements DevicePort {
+public class DeviceManagementAdapter implements DeviceManagementPort {
 
     private final DeviceJpaRepository deviceRepository;
 

@@ -4,6 +4,8 @@ import com.resired.api.security.application.usecase.JwtService;
 import com.resired.api.security.domain.entity.UserApp;
 import com.resired.api.shared.notification.application.usecase.DeviceUseCase;
 import com.resired.api.shared.notification.domain.entity.Device;
+import com.resired.api.shared.notification.domain.entity.PushNotification;
+import com.resired.api.shared.notification.domain.port.PushNotificationPort;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 public class DeviceController {
     private final DeviceUseCase deviceUseCase;
+    private final PushNotificationPort pushNotification;
     private final JwtService jwtService;
 
     @PostMapping
@@ -27,6 +30,9 @@ public class DeviceController {
         UserApp userApp = jwtService.extractUser(bearer);
 
         deviceUseCase.registerDevice(request, userApp.email(), userApp.userId());
+        PushNotification notificationMessage = new PushNotification("Bienvenid@", "En ResiRed estamos para servirte");
+
+        pushNotification.sendToDevice(notificationMessage, request);
         return ResponseEntity.ok("Device saved successfully");
     }
 

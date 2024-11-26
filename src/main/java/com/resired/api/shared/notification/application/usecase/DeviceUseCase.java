@@ -2,13 +2,12 @@ package com.resired.api.shared.notification.application.usecase;
 
 import com.resired.api.admin.domain.vo.BlockVo;
 import com.resired.api.shared.notification.domain.entity.Device;
-import com.resired.api.shared.notification.domain.entity.PushNotification;
 import com.resired.api.shared.notification.domain.exception.DeviceAlreadyExistsException;
 import com.resired.api.shared.notification.domain.exception.DeviceNotFoundException;
 import com.resired.api.shared.notification.domain.port.ManageSubscriptionsTopicPort;
-import com.resired.api.shared.notification.domain.port.PushNotificationPort;
-import com.resired.api.shared.notification.domain.repository.DevicePort;
-import com.resired.api.shared.notification.domain.repository.UserNotificationPort;
+import com.resired.api.shared.notification.domain.repository.DeviceManagementPort;
+import com.resired.api.shared.notification.domain.repository.DeviceQueryPort;
+import com.resired.api.shared.notification.domain.repository.MassNotificationQueryPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -19,9 +18,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DeviceUseCase {
 
-    private final UserNotificationPort userPort;
-    private final DevicePort devicePort;
-    private final PushNotificationPort pushNotificationPortService;
+    private final MassNotificationQueryPort userPort;
+    private final DeviceQueryPort deviceQueryPort;
+    private final DeviceManagementPort deviceManagementPort;
     private final ManageSubscriptionsTopicPort manageSubscriptionsTopicPort;
     @Value("${topic.neighborhood}")
     private String NEIGHBORHOOD_TOPIC;
@@ -31,19 +30,17 @@ public class DeviceUseCase {
 
     public void registerDevice(Device device, String email, Integer userId) {
 
-        if (devicePort.alreadyExists(device.id())) {
+        if (deviceManagementPort.alreadyExists(device.id())) {
             throw new DeviceAlreadyExistsException(device.id());
         }
-        devicePort.addDevice(userId, device);
+        deviceManagementPort.addDevice(userId, device);
         List<Integer> neighborhoodIds = userPort.getNeighborhoodIdsForResidentByEmail(email);
         neighborhoodIds.forEach(neigh -> {
             String topic = NEIGHBORHOOD_TOPIC + neigh;
             manageSubscriptionsTopicPort.subscribeDeviceToTopic(device, topic);
         });
-        PushNotification notificationMessage = new PushNotification("Bienvenid@", "En ResiRed estamos para servirte");
-        pushNotificationPortService.sendToDevice(notificationMessage, device);
 
-        List<BlockVo> blocks = userPort.getAllBlocksByUserId(userId);
+        List<BlockVo> blocks = userPort.getAllBlocksByUserEmail(email);
         blocks.forEach((blockVo -> {
             String topic = BLOCK_TOPIC + blockVo.id();
             manageSubscriptionsTopicPort.subscribeDeviceToTopic(device, topic);
@@ -51,11 +48,11 @@ public class DeviceUseCase {
     }
 
     public void removeDevice(String deviceID, String email) {
-        Device device = userPort.getDeviceByIDAndEmail(deviceID, email);
+        Device device = deviceQueryPort.getDeviceByIDAndEmail(deviceID, email);
         if (device == null) {
             throw new DeviceNotFoundException(deviceID, email);
         }
-        devicePort.removeDevice(deviceID);
+        deviceManagementPort.removeDevice(deviceID);
 
         List<Integer> neighborhoodIds = userPort.getNeighborhoodIdsForResidentByEmail(email);
         neighborhoodIds.forEach(neigh -> {
@@ -66,7 +63,7 @@ public class DeviceUseCase {
     }
 
     public Device getDevice(String deviceID, String email) {
-        Device device = userPort.getDeviceByIDAndEmail(deviceID, email);
+        Device device = deviceQueryPort.getDeviceByIDAndEmail(deviceID, email);
         if (device == null) {
             throw new DeviceNotFoundException(deviceID, email);
         }
@@ -74,6 +71,6 @@ public class DeviceUseCase {
     }
 
     public List<Device> getDevicesByUser(String email) {
-        return userPort.getAllDevicesByEmail(email);
+        return deviceQueryPort.getAllDevicesByEmail(email);
     }
 }
