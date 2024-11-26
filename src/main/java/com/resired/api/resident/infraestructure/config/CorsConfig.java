@@ -12,7 +12,7 @@ public class CorsConfig implements CorsConfigurationSource {
     @Override
     public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:3000", "https://admin.resired.site"));
+        config.setAllowedOrigins(List.of("http://localhost:3000", "https://admin.resired.site","https://admin-pruebas.resired.site"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
         config.setAllowedHeaders(List.of("*"));
         return config;
