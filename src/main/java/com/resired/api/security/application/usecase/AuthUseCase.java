@@ -41,6 +41,21 @@ public class AuthUseCase {
         return new AuthenticationResponse(jwt, user.getRoles(), user.getUserName(), user.getEmail(),
             user.getDocumentId(), user.isMandatoryChangePassword(), null);
     }
+    public AuthenticationAdminResponse authAdmin(AuthenticationRequest auth) throws GeneralSecurityException {
+        String encryptPass = authService.encrypt(auth.password());
+        User user = userPort.getUserAdminByCredentials(auth.email(), encryptPass);
+        if (user == null || user.getRoles().isEmpty()) {
+            throw new InvalidCredentialException(auth.email());
+        }
+        Rol rol = user.getRoles().get(0);
+        String accessToken = jwtService.generateToken(user.getEmail(), rol.getUserType().name(), rol.getNeighborhoodId(),
+            rol.getHomeId(), user.getId(), 2);
+        String refreshToken = jwtService.generateToken(user.getEmail(), rol.getUserType().name(), rol.getNeighborhoodId(),
+            rol.getHomeId(), user.getId(), 4);
+
+        return new AuthenticationAdminResponse(accessToken, refreshToken, user.getRoles(), user.getUserName(), user.getEmail(),
+            user.getDocumentId(), user.isMandatoryChangePassword());
+    }
 
     private static void validateUser(AuthenticationRequest auth, User user) {
         if (user == null || user.getRoles()
@@ -52,23 +67,6 @@ public class AuthUseCase {
         if (!user.isActive()) {
             throw new InactiveUserException(user.getDocumentId());
         }
-    }
-
-
-    public AuthenticationAdminResponse authAdmin(AuthenticationRequest auth) throws GeneralSecurityException {
-        String encryptPass = authService.encrypt(auth.password());
-        User user = userPort.getUserAdminByCredentials(auth.email(), encryptPass);
-        if (user == null) {
-            throw new InvalidCredentialException(auth.email());
-        }
-        Rol rol = user.getRoles().get(0);
-        String accessToken = jwtService.generateToken(user.getEmail(), rol.getUserType().name(), rol.getNeighborhoodId(),
-            rol.getHomeId(), user.getId(), 2);
-        String refreshToken = jwtService.generateToken(user.getEmail(), rol.getUserType().name(), rol.getNeighborhoodId(),
-            rol.getHomeId(), user.getId(), 4);
-
-        return new AuthenticationAdminResponse(accessToken, refreshToken, user.getRoles(), user.getUserName(), user.getEmail(),
-            user.getDocumentId(), user.isMandatoryChangePassword());
     }
 
     public RefreshResponse refreshToken(RefreshRequest token) {
