@@ -24,22 +24,6 @@ public class UserAdapter implements UserPort {
     @Override
     public User getUserByCredentials(String email, String password) {
         UserOrm userOrm = userJpaRepository.findByEmailAndPassword(email, password);
-        if (userOrm == null) {
-            return null;
-        }
-        User user = new User(userOrm.getId(), userOrm.getDocumentId(), userOrm.getFirstName(), userOrm.getEmail(),
-            userOrm.getLastName(), userOrm.isActive(),
-            userOrm.getUserRols().stream()
-                .filter(UserRolOrm::isActive)
-                .map(UserRolOrm::converToEntity)
-                .toList());
-        user.validateMandatoryChangePassword(userOrm.getUpdateDate());
-        return user;
-    }
-
-    @Override
-    public User getUserAppByCredentials(String email, String password) {
-        UserOrm userOrm = userJpaRepository.findByEmailAndPassword(email, password);
         if (userOrm == null || userOrm.getUserRols().isEmpty()) {
             return null;
         }
@@ -47,24 +31,6 @@ public class UserAdapter implements UserPort {
             userOrm.getLastName(), userOrm.isActive(),
             userOrm.getUserRols().stream()
                 .filter(UserRolOrm::isActive)
-                .filter(userRolOrm -> userRolOrm.getRol().equals(UserType.RESIDENT) || userRolOrm.getRol().equals(UserType.GUARD))
-                .map(UserRolOrm::converToEntity)
-                .toList());
-        user.validateMandatoryChangePassword(userOrm.getUpdateDate());
-        return user;
-    }
-
-    @Override
-    public User getUserAdminByCredentials(String email, String password) {
-        UserOrm userOrm = userJpaRepository.findByEmailAndPassword(email, password);
-        if (userOrm == null || userOrm.getUserRols().isEmpty()) {
-            return null;
-        }
-        User user = new User(userOrm.getId(), userOrm.getDocumentId(), userOrm.getFirstName(), userOrm.getEmail(),
-            userOrm.getLastName(), userOrm.isActive(),
-            userOrm.getUserRols().stream()
-                .filter(UserRolOrm::isActive)
-                .filter(userRolOrm -> userRolOrm.getRol().equals(UserType.ADMIN))
                 .map(UserRolOrm::converToEntity)
                 .toList());
         user.validateMandatoryChangePassword(userOrm.getUpdateDate());
@@ -81,33 +47,17 @@ public class UserAdapter implements UserPort {
         userJpaRepository.updatePassword(userId, newEncryptPass, LocalDateTime.now(ZoneOffset.UTC));
     }
 
-
     @Override
-    public User getResidentByEmail(String email) {
-        UserOrm residentOrm = userJpaRepository.findByEmail(email);
-        if (residentOrm == null) {
+    public User getUserByEmailAndType(String email, UserType roleFilter) {
+        UserOrm userOrm = userJpaRepository.findByEmail(email);
+        if (userOrm == null) {
             return null;
         }
-        return new User(residentOrm.getId(), residentOrm.getDocumentId(), residentOrm.getFirstName(), residentOrm.getEmail(),
-            residentOrm.getLastName(), residentOrm.isActive(),
-            residentOrm.getUserRols().stream()
+        return new User(userOrm.getId(), userOrm.getDocumentId(), userOrm.getFirstName(), userOrm.getEmail(),
+            userOrm.getLastName(), userOrm.isActive(),
+            userOrm.getUserRols().stream()
                 .filter(UserRolOrm::isActive)
-                .filter(userRolOrm -> userRolOrm.getRol().equals(UserType.RESIDENT))
-                .map(UserRolOrm::converToEntity)
-                .toList());
-    }
-
-    @Override
-    public User getGuardByEmail(String email) {
-        UserOrm guardOrm = userJpaRepository.findByEmail(email);
-        if (guardOrm == null) {
-            return null;
-        }
-        return new User(guardOrm.getId(), guardOrm.getDocumentId(), guardOrm.getFirstName(), guardOrm.getEmail(),
-            guardOrm.getLastName(), guardOrm.isActive(),
-            guardOrm.getUserRols().stream()
-                .filter(UserRolOrm::isActive)
-                .filter(userRolOrm -> userRolOrm.getRol().equals(UserType.GUARD))
+                .filter(userRolOrm -> roleFilter.equals(userRolOrm.getRol()))
                 .map(UserRolOrm::converToEntity)
                 .toList());
     }

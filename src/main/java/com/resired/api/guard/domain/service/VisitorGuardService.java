@@ -6,6 +6,7 @@ import com.resired.api.resident.domain.entity.Home;
 import com.resired.api.resident.domain.exception.InvalidHomeException;
 import com.resired.api.resident.domain.repository.HomePort;
 import com.resired.api.security.domain.entity.User;
+import com.resired.api.security.domain.enums.UserType;
 import com.resired.api.security.domain.exception.InactiveUserException;
 import com.resired.api.security.domain.repository.UserPort;
 import lombok.AllArgsConstructor;
@@ -20,7 +21,7 @@ public class VisitorGuardService implements CreateVisitor {
 
     @Override
     public String createVisitor(VisitVO homeVisit) {
-        User guard = userPort.getGuardByEmail(homeVisit.authorizer());
+        User guard = userPort.getUserByEmailAndType(homeVisit.authorizer(), UserType.GUARD);
         if (guard == null || !guard.isActive()) {
             throw new InactiveUserException(homeVisit.authorizer());
         }

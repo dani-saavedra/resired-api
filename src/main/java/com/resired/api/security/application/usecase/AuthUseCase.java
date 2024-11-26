@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.security.GeneralSecurityException;
+import java.util.function.Predicate;
 
 @Service
 @AllArgsConstructor
@@ -28,8 +29,8 @@ public class AuthUseCase {
 
     public AuthenticationResponse authUser(AuthenticationRequest auth) throws GeneralSecurityException {
         String encryptPass = authService.encrypt(auth.password());
-        User user = userPort.getUserAppByCredentials(auth.email(), encryptPass);
-        validateUser(auth, user);
+        User user = userPort.getUserByCredentials(auth.email(), encryptPass);
+        validateUser(auth, user, userType -> !userType.equals(UserType.ADMIN));
         String jwt;
         if (user.getRoles().size() == 1) {
             Rol rol = user.getRoles().get(0);
@@ -42,23 +43,11 @@ public class AuthUseCase {
             user.getDocumentId(), user.isMandatoryChangePassword(), null);
     }
 
-    private static void validateUser(AuthenticationRequest auth, User user) {
-        if (user == null || user.getRoles()
-            .stream()
-            .filter(userOrm -> !userOrm.getUserType().equals(UserType.ADMIN))
-            .toList().isEmpty()) {
-            throw new InvalidCredentialException(auth.email());
-        }
-        if (!user.isActive()) {
-            throw new InactiveUserException(user.getDocumentId());
-        }
-    }
-
-
     public AuthenticationAdminResponse authAdmin(AuthenticationRequest auth) throws GeneralSecurityException {
         String encryptPass = authService.encrypt(auth.password());
-        User user = userPort.getUserAdminByCredentials(auth.email(), encryptPass);
-        if (user == null) {
+        User user = userPort.getUserByCredentials(auth.email(), encryptPass);
+        validateUser(auth, user, userType -> !userType.equals(UserType.RESIDENT) && !userType.equals(UserType.GUARD));
+        if (user.getRoles().isEmpty()) {
             throw new InvalidCredentialException(auth.email());
         }
         Rol rol = user.getRoles().get(0);
@@ -69,6 +58,18 @@ public class AuthUseCase {
 
         return new AuthenticationAdminResponse(accessToken, refreshToken, user.getRoles(), user.getUserName(), user.getEmail(),
             user.getDocumentId(), user.isMandatoryChangePassword());
+    }
+
+    private static void validateUser(AuthenticationRequest auth, User user, Predicate<UserType> userTypeFilter) {
+        if (user == null || user.getRoles()
+            .stream()
+            .filter(userOrm -> userTypeFilter.test(userOrm.getUserType()))
+            .toList().isEmpty()) {
+            throw new InvalidCredentialException(auth.email());
+        }
+        if (!user.isActive()) {
+            throw new InactiveUserException(user.getDocumentId());
+        }
     }
 
     public RefreshResponse refreshToken(RefreshRequest token) {
