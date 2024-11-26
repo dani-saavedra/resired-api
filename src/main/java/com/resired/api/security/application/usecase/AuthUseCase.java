@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.security.GeneralSecurityException;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
 
@@ -32,33 +33,33 @@ public class AuthUseCase {
     public AuthenticationResponse authUser(AuthenticationRequest auth) throws GeneralSecurityException {
         String encryptPass = authService.encrypt(auth.password());
         User user = userPort.getUserByCredentials(auth.email(), encryptPass);
-        validateUser(auth, user, userType -> !userType.equals(UserType.ADMIN));
+        List<Rol> rols = validateUser(auth, user, userType -> !userType.equals(UserType.ADMIN));
         String jwt;
-        if (user.getRoles().size() == 1) {
-            Rol rol = user.getRoles().get(0);
+        if (rols.size() == 1) {
+            Rol rol = rols.get(0);
             jwt = jwtService.generateToken(user.getEmail(), rol.getUserType().name(), rol.getNeighborhoodId(),
                 rol.getHomeId(), user.getId(), ONE_YEAR_DURATION);
         } else {
             jwt = jwtService.generateToken(user.getEmail(), ONE_YEAR_DURATION);
         }
-        return new AuthenticationResponse(jwt, user.getRoles(), user.getUserName(), user.getEmail(),
+        return new AuthenticationResponse(jwt, rols, user.getUserName(), user.getEmail(),
             user.getDocumentId(), user.isMandatoryChangePassword(), null);
     }
 
     public AuthenticationAdminResponse authAdmin(AuthenticationRequest auth) throws GeneralSecurityException {
         String encryptPass = authService.encrypt(auth.password());
         User user = userPort.getUserByCredentials(auth.email(), encryptPass);
-        validateUser(auth, user, userType -> !userType.equals(UserType.RESIDENT) && !userType.equals(UserType.GUARD));
-        if (user.getRoles().isEmpty()) {
+        List<Rol> rols = validateUser(auth, user, userType -> !userType.equals(UserType.RESIDENT) && !userType.equals(UserType.GUARD));
+        if (rols.isEmpty()) {
             throw new InvalidCredentialException(auth.email());
         }
-        Rol rol = user.getRoles().get(0);
+        Rol rol = rols.get(0);
         String accessToken = jwtService.generateToken(user.getEmail(), rol.getUserType().name(), rol.getNeighborhoodId(),
             rol.getHomeId(), user.getId(), 2);
         String refreshToken = jwtService.generateToken(user.getEmail(), rol.getUserType().name(), rol.getNeighborhoodId(),
             rol.getHomeId(), user.getId(), 4);
 
-        return new AuthenticationAdminResponse(accessToken, refreshToken, user.getRoles(), user.getUserName(), user.getEmail(),
+        return new AuthenticationAdminResponse(accessToken, refreshToken, rols, user.getUserName(), user.getEmail(),
             user.getDocumentId(), user.isMandatoryChangePassword());
     }
 
@@ -91,7 +92,7 @@ public class AuthUseCase {
         return new RefreshResponse(accessToken, refreshToken);
     }
 
-    private static void validateUser(AuthenticationRequest auth, User user, Predicate<UserType> userTypeFilter) {
+    private static List<Rol> validateUser(AuthenticationRequest auth, User user, Predicate<UserType> userTypeFilter) {
         if (user == null || user.getRoles()
             .stream()
             .filter(userOrm -> userTypeFilter.test(userOrm.getUserType()))
@@ -101,5 +102,9 @@ public class AuthUseCase {
         if (!user.isActive()) {
             throw new InactiveUserException(user.getDocumentId());
         }
+        return user.getRoles()
+            .stream()
+            .filter(userOrm -> userTypeFilter.test(userOrm.getUserType()))
+            .toList();
     }
 }
