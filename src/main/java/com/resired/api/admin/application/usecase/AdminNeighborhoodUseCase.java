@@ -91,14 +91,6 @@ public class AdminNeighborhoodUseCase {
 
     }
 
-    public void createNewsV1(CreateNewsDto newsRequest, Integer neighborhoodId) {
-        adminNewsPort.createNews(newsRequest, neighborhoodId, "", "");
-
-        NotificationNeighborhoodRequest requestDTO = new NotificationNeighborhoodRequest("¡Novedad en tu conjunto!",
-            newsRequest.title(), neighborhoodId);
-        pushAppUseCase.notifyNeighborhood(requestDTO);
-    }
-
     public void createNewsV2(CreateNewsDto newsRequest, Integer neighborhoodId) throws IOException {
         String imageUrl = null;
         String detail = null;

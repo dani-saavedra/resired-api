@@ -43,14 +43,6 @@ public class AdmNeighborhoodController {
         return ResponseEntity.ok("Success");
     }
 
-    @PostMapping(path = "/v1/neighborhood/news")
-    @Operation(summary = "Create a news for the neighborhood v1")
-    public ResponseData<String> createNewsV1(@RequestHeader(value = "Authorization") String bearer,
-                                             @RequestBody CreateNewsDto newsRequest) {
-        UserApp userApp = jwtService.extractUser(bearer);
-        adminNeighborhoodUseCase.createNewsV1(newsRequest, userApp.neighborhoodId());
-        return new ResponseData<>("News created successfully");
-    }
 
     @PostMapping(path = "/v2/neighborhood/news")
     @Operation(summary = "Create a news for the neighborhood v2")
