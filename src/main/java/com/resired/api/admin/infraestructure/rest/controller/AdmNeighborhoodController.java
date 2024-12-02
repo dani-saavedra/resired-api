@@ -3,6 +3,7 @@ package com.resired.api.admin.infraestructure.rest.controller;
 import com.resired.api.admin.application.dto.Attachment;
 import com.resired.api.admin.application.dto.CreateNewsDto;
 import com.resired.api.admin.application.usecase.AdminNeighborhoodUseCase;
+import com.resired.api.admin.application.usecase.AdminNewsUseCase;
 import com.resired.api.admin.domain.vo.CreateNeighborhoodVo;
 import com.resired.api.admin.domain.vo.NeighConfig;
 import com.resired.api.resident.application.dto.NewsResponse;
@@ -27,6 +28,7 @@ import java.security.GeneralSecurityException;
 public class AdmNeighborhoodController {
 
     private final AdminNeighborhoodUseCase adminNeighborhoodUseCase;
+    private final AdminNewsUseCase adminNewsUseCase;
     private final NeighborhoodUseCase neighborhoodUseCase;
     private final JwtService jwtService;
 
@@ -45,18 +47,18 @@ public class AdmNeighborhoodController {
 
 
     @PostMapping(path = "/v2/neighborhood/news")
-    @Operation(summary = "Create a news for the neighborhood v2")
-    public ResponseData<String> createNewsV2(@RequestHeader(value = "Authorization") String bearer,
-                                             @RequestParam(value = "details", required = false) MultipartFile details,
-                                             @RequestParam(value = "image", required = false) MultipartFile image,
-                                             @RequestParam("title") String title,
-                                             @RequestParam("content") String content,
-                                             @RequestParam("category") String category) throws IOException {
+    @Operation(summary = "Create a news for the neighborhood")
+    public ResponseData<String> createNews(@RequestHeader(value = "Authorization") String bearer,
+                                           @RequestParam(value = "details", required = false) MultipartFile details,
+                                           @RequestParam(value = "image", required = false) MultipartFile image,
+                                           @RequestParam("title") String title,
+                                           @RequestParam("content") String content,
+                                           @RequestParam("category") String category) throws IOException {
         UserApp userApp = jwtService.extractUser(bearer);
         CreateNewsDto news = new CreateNewsDto(title, content, category,
             new Attachment(image.getOriginalFilename(), image.getInputStream()),
             new Attachment(details.getOriginalFilename(), details.getInputStream()));
-        adminNeighborhoodUseCase.createNewsV2(news, userApp.neighborhoodId());
+        adminNewsUseCase.createNews(news, userApp.neighborhoodId());
         return new ResponseData<>("News created successfully");
     }
 

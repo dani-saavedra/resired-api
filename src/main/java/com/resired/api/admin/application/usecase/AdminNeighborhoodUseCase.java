@@ -28,15 +28,8 @@ public class AdminNeighborhoodUseCase {
 
     private final NotificationCategoryPort notificationCategoryPort;
     private final AdminNeighborhoodPort adminNeighborhoodPort;
-    private final AdminNewsPort adminNewsPort;
     private final AdminUserUseCase adminUserUseCase;
     private final BlockPort blockPort;
-    private final PushAppUseCase pushAppUseCase;
-    private final FilePort fileBucket;
-
-
-    private static final String BUCKET_IMAGES_NAME = "cover_image_resired";
-    private static final String BUCKET_ATTACHMENT_NAME = "attachment_resired";
 
     public void createNewNeighborhood(CreateNeighborhoodVo createNeighborhoodVo) throws GeneralSecurityException {
         Integer idNewNeigh = adminNeighborhoodPort.createNeighborHood(createNeighborhoodVo);
@@ -88,24 +81,5 @@ public class AdminNeighborhoodUseCase {
                     groupingHome.tower(), groupingHome.homes());
             }
         }
-
-    }
-
-    public void createNewsV2(CreateNewsDto newsRequest, Integer neighborhoodId) throws IOException {
-        String imageUrl = null;
-        String detail = null;
-        if (newsRequest.image() != null) {
-            String name = neighborhoodId + "-" + newsRequest.title().trim().replaceAll(" ", "") + "-" + newsRequest.image().name().trim();
-            imageUrl = fileBucket.uploadFileToBucket(BUCKET_IMAGES_NAME, name, newsRequest.image().inputStream());
-        }
-        if (newsRequest.details() != null) {
-            String name = neighborhoodId + "-" + newsRequest.title().trim().replaceAll(" ", "") + "-" + newsRequest.details().name().trim();
-            detail = fileBucket.uploadFileToBucket(BUCKET_ATTACHMENT_NAME, name, newsRequest.details().inputStream());
-        }
-        adminNewsPort.createNews(newsRequest, neighborhoodId, imageUrl, detail);
-
-        NotificationNeighborhoodRequest requestDTO = new NotificationNeighborhoodRequest("¡Novedad en tu conjunto!",
-            newsRequest.title(), neighborhoodId);
-        pushAppUseCase.notifyNeighborhood(requestDTO);
     }
 }
