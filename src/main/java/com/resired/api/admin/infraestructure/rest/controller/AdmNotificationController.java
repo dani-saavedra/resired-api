@@ -1,7 +1,7 @@
 package com.resired.api.admin.infraestructure.rest.controller;
 
 import com.resired.api.admin.application.dto.*;
-import com.resired.api.shared.notification.application.NotificationUseCase;
+import com.resired.api.shared.notification.application.usecase.NotificationUseCase;
 import com.resired.api.security.application.usecase.JwtService;
 import com.resired.api.security.domain.entity.UserApp;
 import com.resired.api.shared.notification.application.usecase.NotificationManagementUseCase;

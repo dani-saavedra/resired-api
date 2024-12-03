@@ -1,4 +1,4 @@
-package com.resired.api.shared.notification.application;
+package com.resired.api.shared.notification.application.usecase;
 
 import com.resired.api.admin.application.dto.CreateNotificationDto;
 import com.resired.api.admin.application.dto.CreateNotificationForBlocksDto;
@@ -8,7 +8,6 @@ import com.resired.api.admin.domain.repository.NotificationCategoryPort;
 import com.resired.api.shared.notification.application.dto.NotificationBlockRequest;
 import com.resired.api.shared.notification.application.dto.NotificationHomeRequest;
 import com.resired.api.shared.notification.application.dto.NotificationNeighborhoodRequest;
-import com.resired.api.shared.notification.application.usecase.PushAppUseCase;
 import com.resired.api.shared.notification.domain.entity.NotificationMessage;
 import com.resired.api.shared.notification.domain.exception.NotificationCategoryNotFoundException;
 import com.resired.api.shared.notification.domain.repository.NotificationMessagePort;
