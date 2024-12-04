@@ -1,23 +1,17 @@
 package com.resired.api.admin.application.usecase;
 
-import com.resired.api.admin.application.dto.CreateNewsDto;
 import com.resired.api.admin.application.exception.BusinessException;
 import com.resired.api.admin.application.exception.InvalidConfigurationException;
-import com.resired.api.admin.application.repository.AdminNewsPort;
 import com.resired.api.admin.domain.entity.Neighborhood;
 import com.resired.api.admin.domain.entity.NotificationCategory;
 import com.resired.api.admin.domain.repository.AdminNeighborhoodPort;
 import com.resired.api.admin.domain.repository.BlockPort;
-import com.resired.api.admin.domain.repository.FilePort;
 import com.resired.api.admin.domain.repository.NotificationCategoryPort;
 import com.resired.api.admin.domain.vo.*;
 import com.resired.api.security.domain.enums.UserType;
-import com.resired.api.shared.notification.application.dto.NotificationNeighborhoodRequest;
-import com.resired.api.shared.notification.application.usecase.PushAppUseCase;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -31,6 +25,8 @@ public class AdminNeighborhoodUseCase {
     private final AdminUserUseCase adminUserUseCase;
     private final BlockPort blockPort;
 
+    public static final String DEFAULT_NAME_BLOCK = "CONJUNTO";
+
     public void createNewNeighborhood(CreateNeighborhoodVo createNeighborhoodVo) throws GeneralSecurityException {
         Integer idNewNeigh = adminNeighborhoodPort.createNeighborHood(createNeighborhoodVo);
         associateDefaultCategories(idNewNeigh);
@@ -40,16 +36,6 @@ public class AdminNeighborhoodUseCase {
             admin.email(), idNewNeigh, null, UserType.ADMIN);
         adminUserUseCase.registerUserToNeighborhood(registerUserVO, "resired", true);
 
-    }
-
-    private void associateDefaultCategories(Integer idNewNeigh) {
-        for (DefaultNotificationCategory category : DefaultNotificationCategory.values()) {
-            NotificationCategory notificationCategory = new NotificationCategory(null, idNewNeigh,
-                category.name(), category.getDefaultMessage(), LevelNotificationEnum.MEDIUM,
-                category.getDefaultTitle());
-            notificationCategoryPort.createNewNotificationCategory
-                (notificationCategory);
-        }
     }
 
     public void configNeighborhood(NeighConfig neighConfig) {
@@ -74,12 +60,22 @@ public class AdminNeighborhoodUseCase {
         adminNeighborhoodPort.configNeighborhood(neighConfig, towers, totalNumberHouses.intValue());
         if (neighConfig.groupingHomes().isEmpty()) {
             blockPort.createBlock(neighborhood.getId(), neighConfig.groupingType(),
-                "CONJUNTO", new ArrayList<>());
+                DEFAULT_NAME_BLOCK, new ArrayList<>());
         } else {
             for (NeighConfig.GroupingHomes groupingHome : neighConfig.groupingHomes()) {
                 blockPort.createBlock(neighborhood.getId(), neighConfig.groupingType(),
                     groupingHome.tower(), groupingHome.homes());
             }
+        }
+    }
+
+    private void associateDefaultCategories(Integer idNewNeigh) {
+        for (DefaultNotificationCategory category : DefaultNotificationCategory.values()) {
+            NotificationCategory notificationCategory = new NotificationCategory(null, idNewNeigh,
+                category.name(), category.getDefaultMessage(), LevelNotificationEnum.MEDIUM,
+                category.getDefaultTitle());
+            notificationCategoryPort.createNewNotificationCategory
+                (notificationCategory);
         }
     }
 }
