@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+
+    <title>Bienvenido a ResiRed</title>
+
+    <!-- FONT -->
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&family=Space+Grotesk:wght@300..700&display=swap"
+        rel="stylesheet"
+    />
+
+    <style>
+        html {
+            margin: 0;
+        }
+
+        body {
+            padding: 48px;
+            background-color: #f8f8fc;
+
+            font-family: "Space Grotesk", serif;
+            font-optical-sizing: auto;
+            font-style: normal;
+        }
+
+        @media only screen and (max-width: 500px) {
+            body {
+                padding: 24px;
+            }
+        }
+
+        header,
+        main,
+        footer {
+            width: 100%;
+        }
+
+        /* GENERAL */
+        .bold {
+            font-weight: bold;
+        }
+
+        img {
+            width: 100%;
+        }
+
+        .link {
+            color: #416bd8;
+        }
+
+        button {
+            font-family: "Space Grotesk", serif;
+            background-color: #b4282b;
+            padding: 16px 32px;
+            color: #ffffff;
+            border: 0;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        button p {
+            margin: 0;
+        }
+
+        .separator {
+            margin: 20px 0;
+        }
+
+        /* HEADER */
+        header {
+            height: 30px;
+        }
+
+        .logo {
+            width: 120px;
+        }
+
+        .td-icon {
+            width: 22px;
+            height: 22px;
+
+            padding: 10px 8px 0 8px;
+        }
+
+        .linkedin-icon {
+            width: 30px;
+            height: 30px;
+
+            padding-left: 4px;
+        }
+
+        @media only screen and (max-width: 500px) {
+            .logo {
+                width: 100px;
+            }
+
+            .td-icon {
+                width: 20px;
+                height: 20px;
+            }
+
+            .linkedin-icon {
+                width: 28px;
+                height: 28px;
+            }
+        }
+
+        /* MAIN */
+        main {
+            margin: 48px 0;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border-radius: 10px;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .content h1 {
+            margin-top: 0;
+        }
+
+        /* FOOTER */
+        footer {
+            color: #8f8b9f;
+        }
+
+        .footer-logo {
+            width: 80px;
+        }
+
+        .google-play-logo {
+            width: 120px;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <table width="100%">
+        <tbody>
+        <tr>
+            <td>
+                <a
+                    href="https://resired.site/"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                >
+                    <img alt="header-logo"
+                         class="logo"
+                         src="missing-Logo-Text.png"/>
+                </a>
+            </td>
+            <td class="td-icon">
+                <a
+                    href="https://www.instagram.com/resired_col/"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                >
+                    <img
+                        alt="resired-instagram"
+                        src="missing-Instagram%20-%20Social%20Icons.png"
+                    /></a>
+            </td>
+            <td class="td-icon">
+                <a
+                    href="https://www.tiktok.com/@resired_col"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                >
+                    <img
+                        alt="resired-tiktok"
+                        src="missing-TikTok%20-%20Social%20Icons.png"/>
+                </a>
+            </td>
+            <td class="td-icon">
+                <a
+                    href="https://x.com/ResiRed_Col"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                >
+                    <img
+                        alt="resired-twitter"
+                        src="missing-Twitter%20-%20Social%20Icons.png"
+                    />
+                </a>
+            </td>
+            <td class="td-icon linkedin-icon">
+                <a
+                    href="https://www.linkedin.com/company/resired/"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                ><img
+                    alt="resired-linkedin"
+                    src="missing-LinkedIn%20-%20Social%20Icons.png"
+                /></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</header>
+<main>
+    <div class="card">
+        <img alt="welcome-banner"
+             src="missing-Illustration.jpg"/>
+        <div class="content">
+            <h1>¡Bienvenid@ a ResiRed!</h1>
+            <p>Hola, <span class="bold" th:text="${name}">User Name</span>,</p>
+
+
+            <!-- This is the content for the resident-welcome -->
+            <p th:if="${!isAdmin}">
+                Tu cuenta ha sido asociada con éxito a
+                <span class="bold" th:text="${neighborhood}">Neighborhood Name</span>. Ahora puedes acceder a
+                nuestra app para empezar a disfrutar de todas las ventajas que
+                tenemos para ofrecerte. Si aún no tienes la aplicación, puedes
+                descargarla desde cualquier tienda.
+            </p>
+            <p th:if="${!isAdmin}">
+                Recuerda que tu usuario es el correo electrónico que diligenciaste
+                en tu solicitud y para acceder por primera vez deberás usar tu
+                número de documento como contraseña.
+            </p>
+            <!-- End resident welcome content -->
+
+
+            <!-- This is the content for the admin-welcome -->
+            <p th:if="${isAdmin}">
+                Tu cuenta como administrador ha sido creada y asociada con éxito a
+                <span class="bold" th:text="${neighborhood}">Neighborhood Name</span>. Ahora puedes acceder al
+                portal administrativo a través de
+                <a
+                    href="https://admin.resired.site"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                ><span>Admin ResiRed</span></a>
+                para empezar a disfrutar de todas las ventajas que tenemos para
+                ofrecerte.
+            </p>
+            <p th:if="${isAdmin}">
+                Recuerda que los residentes de tu conjunto deberán tener instalada
+                la aplicación de ResiRed para hacer uso de las funcionalidades.
+            </p>
+            <p th:if="${isAdmin}">
+                Ten presente que tu usuario es el correo electrónico que
+                diligenciaste en tu solicitud y para acceder por primera vez deberás
+                usar tu número de documento como contraseña.
+            </p>
+            <!-- End admin welcome content -->
+
+
+            <p>
+                !Gracias por ser parte de nuestra comunidad! Siempre estamos
+                dispuestos a asistirte en cualquier cosa que necesites.
+            </p>
+            <p>
+                Estamos aquí para ayudarte, <br/><span class="bold"
+            >Equipo de ResiRed</span
+            >
+            </p>
+            <button type="button">Empecemos</button>
+        </div>
+    </div>
+</main>
+<footer>
+    <img
+        alt="footer-logo"
+        class="footer-logo"
+        src="missing-ResiRed%20-%20Footer.png"
+    />
+    <p>
+        ¡ResiRed al alcance de un botón! Descarga nuestra app en un instante:
+    </p>
+    <a
+        href="https://play.google.com/store/apps/details?id=com.resiredapp"
+        rel="noopener noreferrer"
+        target="_blank"
+    >
+        <img
+            alt="google-play-resired"
+            class="google-play-logo"
+            src="missing-Google%20Play%20-%20Footer.png"
+        />
+    </a>
+    <p>
+        Este correo electrónico fue enviado a
+        <span class="bold" th:text="${email}">User Email</span>. Si prefieres no recibir este tipo
+        de correo electrónico,
+        <span class="bold">Darse de baja.</span>
+    </p>
+
+    <p>Chía, Cundinamarca. Calle 17 # 14 <br/>©ResiRed 2024</p>
+</footer>
+</body>
+</html>

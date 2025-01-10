@@ -1,9 +1,9 @@
 package com.resired.api.admin.application.usecase;
 
 import com.resired.api.admin.application.dto.GuardDto;
+import com.resired.api.admin.application.repository.AdminGuardPort;
 import com.resired.api.admin.domain.entity.Neighborhood;
 import com.resired.api.admin.domain.entity.Resident;
-import com.resired.api.admin.application.repository.AdminGuardPort;
 import com.resired.api.admin.domain.entity.ResidentHome;
 import com.resired.api.admin.domain.repository.AdminUserPort;
 import com.resired.api.admin.domain.vo.RegisterUserVO;
@@ -34,7 +34,8 @@ public class AdminUserUseCase {
         Neighborhood neighborhood = neighborhoodPort.findById(registerUserVO.neighborhoodId());
         if (userId == null) {
             adminUserPort.registerUserToNeighborhood(registerUserVO, registeredBy, password);
-            emailPort.sendRegisteredUserEmail(registerUserVO.email(), neighborhood.getName(), isAdmin);
+            emailPort.sendRegisteredUserEmail(registerUserVO.email(), neighborhood.getName(), isAdmin,
+                registerUserVO.firstName());
         } else {
             adminUserPort.associateNewUserToNeighborhood(registerUserVO, userId);
             emailPort.sendAssociateNewUserToNeighborhood(registerUserVO.email(), neighborhood.getName());
