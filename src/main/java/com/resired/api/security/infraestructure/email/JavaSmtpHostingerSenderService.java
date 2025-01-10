@@ -28,16 +28,21 @@ public class JavaSmtpHostingerSenderService implements EmailPort {
     private String smtpUser;
 
     @Override
-    public void sendEmailToRecoverPass(String email, String token) {
-        String url = "https://admin.resired.site/account/reset?token=" + token;
-        String body = "Para restablecer su contraseña, haga clic en el siguiente enlace:\n" + url;
+    public void sendEmailToRecoverPass(String email, String token, String name) {
+        Context context = new Context();
+
+        context.setVariable("name", name);
+        context.setVariable("email", email);
+        context.setVariable("token", token);
+
+        String body = templateEngine.process("reset-password", context);
 
         try {
             Message message = new MimeMessage(sessionEmail);
             message.setFrom(new InternetAddress(smtpUser));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
             message.setSubject("Restablecimiento de contraseña");
-            message.setText(body);
+            message.setContent(body, "text/html; charset=utf-8");
 
             Transport.send(message);
 
@@ -49,6 +54,7 @@ public class JavaSmtpHostingerSenderService implements EmailPort {
     @Override
     public void sendRegisteredUserEmail(String email, String neighborhood, boolean isAdmin, String firstName) {
         Context context = new Context();
+
         context.setVariable("neighborhood", neighborhood);
         context.setVariable("name", firstName);
         context.setVariable("isAdmin", isAdmin);
@@ -62,6 +68,7 @@ public class JavaSmtpHostingerSenderService implements EmailPort {
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
             message.setSubject("Bienvenido a Resired");
             message.setContent(body, "text/html; charset=utf-8");
+
             Transport.send(message);
         } catch (MessagingException e) {
             log.error("Error sending email", e);
