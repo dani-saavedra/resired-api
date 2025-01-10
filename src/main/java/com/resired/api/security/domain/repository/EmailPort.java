@@ -6,5 +6,5 @@ public interface EmailPort {
 
     void sendRegisteredUserEmail(String email, String neighborhood, boolean isAdmin, String firstName);
 
-    void sendAssociateNewUserToNeighborhood(String email, String neighborhood);
+    void sendAssociateNewUserToNeighborhood(String email, String neighborhood, String firstName);
 }

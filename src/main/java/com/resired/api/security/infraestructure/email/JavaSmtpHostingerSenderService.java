@@ -76,14 +76,21 @@ public class JavaSmtpHostingerSenderService implements EmailPort {
     }
 
     @Override
-    public void sendAssociateNewUserToNeighborhood(String email, String neighborhood) {
-        String body = "Tu cuenta en resired ha sido vinculada ha " + neighborhood + ", ten presente que tu ingreso será con las mismas crendenciales.";
+    public void sendAssociateNewUserToNeighborhood(String email, String neighborhood, String firstName) {
+        Context context = new Context();
+
+        context.setVariable("neighborhood", neighborhood);
+        context.setVariable("name", firstName);
+        context.setVariable("email", email);
+
+        String body = templateEngine.process("resident-association", context);
         try {
             Message message = new MimeMessage(sessionEmail);
             message.setFrom(new InternetAddress(smtpUser));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
             message.setSubject("Registro completado a " + neighborhood);
-            message.setText(body);
+            message.setContent(body, "text/html; charset=utf-8");
+            
             Transport.send(message);
         } catch (MessagingException e) {
             log.error("Error sending email", e);

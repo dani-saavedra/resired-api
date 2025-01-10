@@ -38,7 +38,8 @@ public class AdminUserUseCase {
                 registerUserVO.firstName());
         } else {
             adminUserPort.associateNewUserToNeighborhood(registerUserVO, userId);
-            emailPort.sendAssociateNewUserToNeighborhood(registerUserVO.email(), neighborhood.getName());
+            emailPort.sendAssociateNewUserToNeighborhood(registerUserVO.email(), neighborhood.getName(),
+                registerUserVO.firstName());
         }
     }
 
