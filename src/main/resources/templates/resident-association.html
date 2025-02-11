@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Cuenta vinculada a nuevo conjunto</title>
+
+    <!-- FONT -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&family=Space+Grotesk:wght@300..700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      html {
+        margin: 0;
+      }
+
+      body {
+        padding: 48px;
+        background-color: #f8f8fc;
+
+        font-family: "Space Grotesk", Arial, sans-serif;
+        font-optical-sizing: auto;
+        font-style: normal;
+      }
+
+      @media only screen and (max-width: 500px) {
+        body {
+          padding: 24px;
+        }
+      }
+
+      header,
+      main,
+      footer {
+        width: 100%;
+      }
+
+      /* GENERAL */
+      .bold {
+        font-weight: bold;
+      }
+
+      img {
+        width: 100%;
+      }
+
+      .link {
+        color: #416bd8;
+      }
+
+      button {
+        font-family: "Space Grotesk", Arial, sans-serif;
+        background-color: #b4282b;
+        padding: 16px 32px;
+        color: #ffffff;
+        border: 0;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 14px;
+      }
+
+      button p {
+        margin: 0;
+      }
+
+      .separator {
+        margin: 20px 0;
+      }
+
+      /* HEADER */
+      header {
+        height: 30px;
+      }
+
+      .logo {
+        width: 120px;
+      }
+
+      .td-icon {
+        width: 22px;
+        height: 22px;
+
+        padding: 10px 8px 0 8px;
+      }
+
+      .linkedin-icon {
+        width: 30px;
+        height: 30px;
+
+        padding-left: 4px;
+      }
+
+      @media only screen and (max-width: 500px) {
+        .logo {
+          width: 100px;
+        }
+
+        .td-icon {
+          width: 20px;
+          height: 20px;
+        }
+
+        .linkedin-icon {
+          width: 28px;
+          height: 28px;
+        }
+      }
+
+      /* MAIN */
+      main {
+        margin: 48px 0;
+      }
+
+      .card {
+        background-color: #ffffff;
+        border-radius: 10px;
+        margin-top: 20px;
+      }
+
+      .illustration{
+          border-radius: 12px;
+      }
+
+      .content {
+        padding: 40px;
+      }
+
+      .content h1 {
+        margin-top: 0;
+      }
+
+      /* FOOTER */
+      footer {
+        color: #8f8b9f;
+      }
+
+      .footer-logo {
+        width: 80px;
+      }
+
+      .google-play-logo {
+        width: 120px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <table width="100%">
+        <tbody>
+          <tr>
+            <td>
+              <a
+              href="https://resired.site/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img class="logo" src="https://storage.googleapis.com/email_assets_resired/Logo-Text.png" alt="header-logo" />
+            </a>
+            </td>
+            <td class="td-icon">
+              <a
+                href="https://www.instagram.com/resired_col/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src="https://storage.googleapis.com/email_assets_resired/Instagram%20-%20Social%20Icons.png"
+                  alt="resired-instagram"
+              /></a>
+            </td>
+            <td class="td-icon">
+              <a
+                href="https://www.tiktok.com/@resired_col"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img src="https://storage.googleapis.com/email_assets_resired/TikTok%20-%20Social%20Icons.png" alt="resired-tiktok" />
+              </a>
+            </td>
+            <td class="td-icon">
+              <a
+                href="https://x.com/ResiRed_Col"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src="https://storage.googleapis.com/email_assets_resired/Twitter%20-%20Social%20Icons.png"
+                  alt="resired-twitter"
+                />
+              </a>
+            </td>
+            <td class="td-icon linkedin-icon">
+              <a
+                href="https://www.linkedin.com/company/resired/"
+                target="_blank"
+                rel="noopener noreferrer"
+                ><img
+                  src="https://storage.googleapis.com/email_assets_resired/LinkedIn%20-%20Social%20Icons.png"
+                  alt="resired-linkedin"
+              /></a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </header>
+    <main>
+      <div class="card">
+        <img class="illustration" src="https://storage.googleapis.com/email_assets_resired/EmailConfirmation-Ilustration.jpg" alt="welcome-banner" />
+        <div class="content">
+            <h1>Cuenta vinculada al conjunto <span class="bold" th:text="${neighborhood}">conjunto</span></h1>
+            <p>Hola, <span class="bold" th:text="${name}">nombre</span>,</p>
+            <p>
+            Nos complace informarte que tu cuenta en ResiRed ha sido vinculada
+            exitosamente al vecindario
+                <span class="bold" th:text="${neighborhood}">conjunto</span>. A partir de ahora,
+            podrás acceder a todas las funcionalidades utilizando tus mismas
+            credenciales.
+          </p>
+          <p>
+            ¿Qué sigue? 
+            <ul>
+              <li>Utiliza tus credenciales actuales para ingresar.</li>
+              <li>Explora
+                las nuevas herramientas y opciones disponibles para
+                  <span class="bold" th:text="${neighborhood}">conjunto</span>.</li>
+            </ul>
+          </p>
+        </div>
+      </div>
+      <div class="separator" />
+      <div class="card">
+        <div class="content">
+          <h1>¿Necesitas ayuda?</h1>
+          <p>
+            Envíe sus comentarios o información de errores a,
+            <br />
+            <a href="mailto:tech@resired.site">tech@resired.site</a>
+          </p>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <img
+        class="footer-logo"
+        src="https://storage.googleapis.com/email_assets_resired/ResiRed%20-%20Footer.png"
+        alt="footer-logo"
+      />
+      <p>
+        ¡ResiRed al alcance de un botón! Descarga nuestra app en un instante:
+      </p>
+      <a
+        href="https://play.google.com/store/apps/details?id=com.resiredapp"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <img
+          class="google-play-logo"
+          src="https://storage.googleapis.com/email_assets_resired/Google%20Play%20-%20Footer.png"
+          alt="google-play-resired"
+        />
+      </a>
+      <p>
+        Este correo electrónico fue enviado a
+          <span class="bold" th:text="${email}">email</span>. Si prefieres no recibir este tipo
+        de correo electrónico,
+        <span class="bold">Darse de baja.</span>
+      </p>
+
+      <p>Chía, Cundinamarca. Calle 17 # 14 <br />©ResiRed 2024</p>
+    </footer>
+  </body>
+</html>

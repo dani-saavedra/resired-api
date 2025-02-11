@@ -46,7 +46,7 @@ public class AccountUseCase {
             return;
         }
         passResetTokenPort.savePassResetToken(user.getId(), token, LocalDateTime.now(ZoneOffset.UTC).plusDays(1));
-        emailPort.sendEmailToRecoverPass(email, token);
+        emailPort.sendEmailToRecoverPass(email, token, user.getUserName());
     }
 
     public void resetPassword(RecoveryPasswordRequest request) throws GeneralSecurityException {
