@@ -1,6 +1,8 @@
 package com.resired.api.security.application.usecase;
 
 import com.resired.api.admin.application.exception.BusinessException;
+import com.resired.api.admin.domain.entity.Neighborhood;
+import com.resired.api.resident.domain.repository.NeighborhoodPort;
 import com.resired.api.security.application.dto.*;
 import com.resired.api.security.application.exception.ExpiredTokenException;
 import com.resired.api.security.application.exception.InvalidCredentialException;
@@ -29,6 +31,7 @@ public class AuthUseCase {
     private final AuthenticationService authService;
     private final UserPort userPort;
     private final JwtService jwtService;
+    private final NeighborhoodPort neighborhoodPort;
 
     public AuthenticationResponse authUser(AuthenticationRequest auth) throws GeneralSecurityException {
         String encryptPass = authService.encrypt(auth.password());
@@ -58,9 +61,9 @@ public class AuthUseCase {
             rol.getHomeId(), user.getId(), 2);
         String refreshToken = jwtService.generateToken(user.getEmail(), rol.getUserType().name(), rol.getNeighborhoodId(),
             rol.getHomeId(), user.getId(), 4);
-
+        Neighborhood neighborhood = neighborhoodPort.findById(rol.getNeighborhoodId());
         return new AuthenticationAdminResponse(accessToken, refreshToken, rols, user.getUserName(), user.getEmail(),
-            user.getDocumentId(), user.isMandatoryChangePassword());
+            user.getDocumentId(), user.isMandatoryChangePassword(), neighborhood.getGroupingType() == null);
     }
 
 

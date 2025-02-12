@@ -11,6 +11,7 @@ public record AuthenticationAdminResponse(@JsonProperty("access_token") String a
                                           @JsonProperty("user_name") String userName,
                                           @JsonProperty("user_email") String userEmail,
                                           @JsonProperty("document_id") String documentId,
-                                          @JsonProperty("mandatory_change") Boolean mandatoryChange) {
+                                          @JsonProperty("mandatory_change") Boolean mandatoryChange,
+                                          @JsonProperty("mandatory_configuration") Boolean mandatoryConfiguration) {
 
 }
