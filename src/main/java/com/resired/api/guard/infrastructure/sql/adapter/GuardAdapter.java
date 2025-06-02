@@ -4,7 +4,6 @@ import com.resired.api.guard.application.dto.VisitResponseDTO;
 import com.resired.api.guard.domain.entity.Package;
 import com.resired.api.guard.domain.repository.GuardPort;
 import com.resired.api.guard.domain.repository.PackagePort;
-import com.resired.api.guard.domain.vo.Visit;
 import com.resired.api.guard.infrastructure.sql.jpa.PackageJpaRepository;
 import com.resired.api.guard.infrastructure.sql.jpa.VisitJpaRepository;
 import com.resired.api.guard.infrastructure.sql.orm.VisitOrm;
@@ -58,6 +57,13 @@ public class GuardAdapter implements GuardPort, PackagePort {
     @Override
     public List<VisitResponseDTO> findVisitsByNeighborhoodIdAndDate(Integer neighborhoodId, LocalDateTime fromDate) {
         return visitJpaRepository.findVisitsByNeighborhoodIdAndFromDate(neighborhoodId, fromDate);
+    }
+
+    @Override
+    public List<VisitResponseDTO> findVisitsByNeighborhoodIdAndDateRange(Integer neighborhoodId,
+                                                                         LocalDateTime startDate,
+                                                                         LocalDateTime endDate) {
+        return visitJpaRepository.findVisitsByNeighborhoodIdAndDateRange(neighborhoodId, startDate, endDate);
     }
 
     @Override

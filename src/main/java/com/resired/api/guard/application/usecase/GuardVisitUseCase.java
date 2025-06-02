@@ -12,7 +12,9 @@ import com.resired.api.security.domain.service.JwtSecurity;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -56,5 +58,11 @@ public class GuardVisitUseCase {
     public List<VisitResponseDTO> getRecentVisits(Integer neighborhoodId) {
         LocalDateTime fromDate = LocalDateTime.now().minusDays(1);
         return guardPort.findVisitsByNeighborhoodIdAndDate(neighborhoodId, fromDate);
+    }
+
+    public List<VisitResponseDTO> getVisitsByDate(Integer neighborhoodId, LocalDate date) {
+        LocalDateTime startDate = date.atStartOfDay();
+        LocalDateTime endDate = date.atTime(LocalTime.MAX);
+        return guardPort.findVisitsByNeighborhoodIdAndDateRange(neighborhoodId, startDate, endDate);
     }
 }

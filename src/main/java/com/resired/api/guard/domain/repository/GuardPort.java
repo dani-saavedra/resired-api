@@ -14,4 +14,8 @@ public interface GuardPort {
                                   String name, String visitorDocument, String telephone);
 
     List<VisitResponseDTO> findVisitsByNeighborhoodIdAndDate(Integer neighborhoodId,LocalDateTime fromDate);
+
+    List<VisitResponseDTO> findVisitsByNeighborhoodIdAndDateRange(Integer neighborhoodId,
+                                                                  LocalDateTime startDate,
+                                                                  LocalDateTime endDate);
 }

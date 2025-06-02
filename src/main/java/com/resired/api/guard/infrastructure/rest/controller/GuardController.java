@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -71,4 +72,12 @@ public class GuardController {
         return new ResponseData<>(visitUseCase.getRecentVisits(neighborhoodId));
     }
 
+    @GetMapping("/visits-by-date")
+    public ResponseData<List<VisitResponseDTO>> getVisitsByDate(
+        @RequestHeader(value = "Authorization") String bearer,
+        @RequestParam(value = "date") String date) {
+        String token = bearer.substring(7);
+        Integer neighborhoodId = jwtService.extractNeighborhood(token);
+        return new ResponseData<>(visitUseCase.getVisitsByDate(neighborhoodId, LocalDate.parse(date)));
+    }
 }
