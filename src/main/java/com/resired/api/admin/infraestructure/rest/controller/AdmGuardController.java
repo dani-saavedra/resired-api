@@ -20,7 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/admin")
 @AllArgsConstructor
-@PreAuthorize("hasAuthority('ADMIN')")
+
 public class AdmGuardController {
 
     private final JwtService jwtService;
