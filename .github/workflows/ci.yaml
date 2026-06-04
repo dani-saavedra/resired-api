@@ -14,5 +14,11 @@ jobs:
                     java-version: '17'
             -   name: Configure Gradle
                 uses: gradle/gradle-build-action@v2
-            -   name: Compilando el proyecto build project
-                run: ./gradlew build
+            -   name: Build and Verify Coverage
+                run: ./gradlew clean build jacocoTestReport jacocoTestCoverageVerification
+            -   name: Upload JaCoCo Report
+                if: always()
+                uses: actions/upload-artifact@v4
+                with:
+                    name: jacoco-report
+                    path: build/reports/jacoco/test/html/
