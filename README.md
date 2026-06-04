@@ -202,6 +202,32 @@ public class AdmGuardControllerTest {
 ```
 
 ---
+## 6. Pruebas Unitarias de la arquitectura
+El proyecto usa **ArchUnit** para realizar pruebas de cumplimiento de la arquitectura estipulada.
+```java
+public class ArchitectureTest {
+
+    @ArchTest
+    public static final ArchRule domainShouldNotHaveAnyDependenciesFromApplication = ArchRuleDefinition
+        .noClasses()
+        .that().resideInAPackage("..domain..")
+        .should().dependOnClassesThat()
+        .resideInAPackage("..application..");
+    @ArchTest
+    public static final ArchRule domainShouldNotHaveAnyDependenciesFromInfra = ArchRuleDefinition
+        .noClasses()
+        .that().resideInAPackage("..domain..")
+        .should().dependOnClassesThat()
+        .resideInAPackage("..infraestructure..");
+
+    @ArchTest
+    public static final ArchRule applicationShouldNotHaveAnyDependenciesFromInfra = ArchRuleDefinition
+        .noClasses()
+        .that().resideInAPackage("..application..")
+        .should().dependOnClassesThat()
+        .resideInAPackage("..infraestructure..");
+}
+```
 
 ## 6. Pruebas con Mockito
 
